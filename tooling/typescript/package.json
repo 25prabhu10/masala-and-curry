@@ -1,0 +1,16 @@
+{
+  "name": "@mac/tsconfig",
+  "version": "0.0.0",
+  "description": "TypeScript configuration files.",
+  "private": true,
+  "author": "Prabhu K H",
+  "files": [
+    "*.json"
+  ],
+  "keywords": [
+    "typescript",
+    "tsconfig"
+  ],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.12.4"
+}
