@@ -1,0 +1,22 @@
+packages:
+  - apps/*
+  - packages/*
+  - tooling/*
+
+catalog:
+  "@biomejs/biome": 2.0.6
+  typescript: ^5.8.3
+  oxlint: ^1.6.0
+
+catalogs:
+  react19:
+    react: 19.1.0
+    react-dom: 19.1.0
+    "@types/react": ^19.1.8
+    "@types/react-dom": ^19.1.6
+
+nodeLinker: hoisted
+
+onlyBuiltDependencies:
+  - "@swc/core"
+  - esbuild

@@ -1,1 +1,1 @@
-# masala-and-curry
+# Masala and Curry
