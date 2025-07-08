@@ -3,9 +3,15 @@
   "assist": {
     "actions": {
       "source": {
-        "organizeImports": "on",
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [{ "type": true }]
+          }
+        },
         "recommended": true
-      }
+      },
+      "recommended": true
     },
     "enabled": true
   },
