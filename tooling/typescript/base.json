@@ -1,32 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "target": "ES2022",
-    "lib": ["ES2022"],
     "allowJs": true,
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
-    "isolatedModules": true,
+    "checkJs": true,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "erasableSyntaxOnly": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
     "incremental": true,
-    "disableSourceOfProjectReferenceRedirect": true,
-    "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json",
-
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noUncheckedIndexedAccess": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "checkJs": true,
+    "isolatedModules": true,
+    "lib": ["ES2022"],
 
     "module": "Preserve",
+    "moduleDetection": "force",
     "moduleResolution": "Bundler",
-    "noEmit": true
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noUncheckedSideEffectImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+
+    "strict": true,
+    "target": "ES2022",
+    "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json"
   },
   "exclude": ["node_modules", "build", "dist", ".expo"]
 }

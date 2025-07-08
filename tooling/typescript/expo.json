@@ -1,10 +1,10 @@
 {
-  "extends": "./base.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "customConditions": ["react-native"],
     "jsx": "react-native",
     "lib": ["DOM", "ESNext"],
-    "customConditions": ["react-native"],
     "target": "ESNext"
   },
-  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
+  "extends": "./base.json"
 }

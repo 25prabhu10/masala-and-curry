@@ -4,6 +4,7 @@ import base from './base'
 
 export default {
   content: base.content,
+  plugins: [animate],
   presets: [base],
   theme: {
     container: {
@@ -14,6 +15,10 @@ export default {
       },
     },
     extend: {
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
@@ -29,11 +34,6 @@ export default {
           to: { height: '0' },
         },
       },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-      },
     },
   },
-  plugins: [animate],
 } satisfies Config

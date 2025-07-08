@@ -1,11 +1,12 @@
 {
-  "extends": "./base.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "useDefineForClassFields": true,
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "jsx": "react-jsx"
-  }
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": true
+  },
+  "extends": "./base.json"
 }

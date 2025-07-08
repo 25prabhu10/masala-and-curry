@@ -21,6 +21,7 @@
   "devDependencies": {
     "@mac/tailwind-config": "workspace:*",
     "@mac/tsconfig": "workspace:*",
+    "@mac/web-ui": "workspace:*",
     "@types/node": "^24.0.10",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
