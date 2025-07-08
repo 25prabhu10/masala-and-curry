@@ -19,12 +19,14 @@
     "react-dom": "catalog:react19"
   },
   "devDependencies": {
+    "@mac/tailwind-config": "workspace:*",
     "@mac/tsconfig": "workspace:*",
     "@types/node": "^24.0.10",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
     "@vitejs/plugin-react-swc": "^3.10.2",
     "oxlint": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "^7.0.3"
   },

@@ -2,6 +2,11 @@
   "$schema": "https://turborepo.com/schema.json",
   "ui": "tui",
   "tasks": {
+    "dev": {
+      "dependsOn": ["^dev"],
+      "persistent": true,
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -18,11 +23,6 @@
     },
     "lint:fix": {
       "dependsOn": ["^lint:fix"]
-    },
-    "dev": {
-      "dependsOn": ["^dev"],
-      "persistent": true,
-      "cache": false
     }
   }
 }

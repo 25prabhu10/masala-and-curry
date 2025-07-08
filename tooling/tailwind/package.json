@@ -1,0 +1,35 @@
+{
+  "name": "@mac/tailwind-config",
+  "version": "0.0.1",
+  "description": "Tailwind CSS configuration files.",
+  "private": true,
+  "author": "Prabhu K H",
+  "type": "module",
+  "exports": {
+    "./native": "./native.ts",
+    "./web": "./web.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo node_modules",
+    "lint": "oxlint . --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "check-types": "tsc --noEmit"
+  },
+  "keywords": [
+    "css",
+    "tailwind"
+  ],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "@mac/tsconfig": "workspace:*",
+    "autoprefixer": "^10.4.21",
+    "oxlint": "catalog:",
+    "postcss": "^8.5.6",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "tailwindcss": "catalog:",
+    "tailwindcss-animate": "^1.0.7"
+  }
+}

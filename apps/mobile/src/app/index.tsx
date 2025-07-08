@@ -23,8 +23,8 @@ export default function Home() {
           }}
         />
         <Text>🍜Welcome to Masala and Curry🍛</Text>
-        <View className="flex-1 items-center justify-center bg-white">
-          <Text className="text-xl font-bold text-blue-500">Welcome to Nativewind!</Text>
+        <View className="flex flex-row rounded-lg bg-muted p-4">
+          <Text className="font-bold uppercase text-primary">Welcome to Nativewind!</Text>
         </View>
       </View>
     </SafeAreaView>
