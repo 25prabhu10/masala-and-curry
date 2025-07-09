@@ -1,4 +1,4 @@
-import { cn } from '@mac/web-ui'
+import { cn } from '@mac/tailwind-config'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'

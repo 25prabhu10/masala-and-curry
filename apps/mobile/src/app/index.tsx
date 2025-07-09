@@ -1,6 +1,8 @@
+import { Button, Text } from '@mac/mobile-ui'
 import { Stack, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export default function Home() {
   const navigation = useNavigation()
@@ -15,6 +17,7 @@ export default function Home() {
         <Stack.Screen
           options={{
             title: 'Home',
+            headerRight: () => <ThemeToggle />,
             headerStyle: { backgroundColor: '#f4511e' },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -22,10 +25,15 @@ export default function Home() {
             },
           }}
         />
-        <Text>🍜Welcome to Masala and Curry🍛</Text>
-        <View className="flex flex-row rounded-lg bg-muted p-4">
-          <Text className="font-bold uppercase text-primary">Welcome to Nativewind!</Text>
+        <View>
+          <Text>🍜Welcome to Masala and Curry🍛</Text>
         </View>
+        <View className="flex flex-row rounded-lg bg-muted p-4">
+          <Text>Welcome to Nativewind!</Text>
+        </View>
+        <Button size="lg">
+          <Text>Get Started</Text>
+        </Button>
       </View>
     </SafeAreaView>
   )

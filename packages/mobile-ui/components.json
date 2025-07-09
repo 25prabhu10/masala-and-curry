@@ -1,0 +1,7 @@
+{
+  "aliases": {
+    "components": "src/",
+    "lib": "@mac/tailwind-config",
+    "ui": "src/"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": ["../../.oxlintrc.json"],
+  "plugins": ["react", "react-perf", "jsx-a11y"],
+  "rules": {
+    "react/jsx-no-target-blank": "off",
+    "react/no-array-index-key": "error",
+    "react/no-this-in-sfc": "warn",
+    "react/no-unknown-property": "warn",
+    "react/prop-types": "off",
+    "jsx-a11y/prefer-tag-over-role": "off",
+    "react/react-in-jsx-scope": "off",
+    "typescript/no-require-imports": "off",
+    "react/self-closing-comp": [
+      "error",
+      {
+        "html": false
+      }
+    ]
+  }
+}
