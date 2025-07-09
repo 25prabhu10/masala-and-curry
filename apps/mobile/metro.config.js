@@ -1,6 +1,6 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
+// const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config')
 const { getDefaultConfig } = require('expo/metro-config')
-const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config')
 const { FileStore } = require('metro-cache')
 const { withNativeWind } = require('nativewind/metro')
 
