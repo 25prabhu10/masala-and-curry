@@ -1,3 +1,13 @@
 {
-  "extends": "@mac/tsconfig/hono.json"
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "typeRoots": ["../../node_modules/@types"],
+    "types": ["../../apps/server/worker-configuration.d.ts", "node"]
+  },
+  "extends": "@mac/tsconfig/hono.json",
+  "tsc-alias": {
+    "resolveFullPaths": true
+  }
 }

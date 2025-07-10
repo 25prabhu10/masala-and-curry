@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "env": {
+    "node": true
+  },
+  "extends": ["../../.oxlintrc.json"],
+  "ignorePatterns": ["worker-configuration.d.ts"],
+  "plugins": ["vitest"],
+  "rules": {
+    "no-console": "off",
+    "unicorn/no-process-exit": "error",
+    "vitest/no-import-node-test": "error",
+    "vitest/prefer-to-be-falsy": "error",
+    "vitest/prefer-to-be-object": "error",
+    "vitest/prefer-to-be-truthy": "error"
+  }
+}

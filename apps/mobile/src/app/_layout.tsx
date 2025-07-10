@@ -1,5 +1,5 @@
 import '@/styles/global.css'
-import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation/native'
+import { DarkTheme, DefaultTheme, type Theme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useColorScheme } from '@/hooks/use-color-scheme'
@@ -13,11 +13,6 @@ const DARK_THEME: Theme = {
   ...DarkTheme,
   colors: NAV_THEME.dark,
 }
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router'
 
 function App() {
   return <Stack />
@@ -33,3 +28,8 @@ export default function RootLayout() {
     </ThemeProvider>
   )
 }
+
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from 'expo-router'

@@ -1,6 +1,8 @@
 import { cx } from 'class-variance-authority'
 import { twMerge } from 'tailwind-merge'
 
-const cn = (...inputs: Parameters<typeof cx>) => twMerge(cx(inputs))
+function cn(...inputs: Parameters<typeof cx>) {
+  return twMerge(cx(inputs))
+}
 
 export { cn }

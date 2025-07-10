@@ -40,5 +40,5 @@
     "vite"
   ],
   "license": "GPL-2.0-only",
-  "packageManager": "pnpm@10.12.4"
+  "packageManager": "pnpm@10.13.1"
 }

@@ -4,8 +4,7 @@
     "allowImportingTsExtensions": true,
     "lib": ["ES2023"],
     "module": "ESNext",
-    "target": "ES2023",
-    "verbatimModuleSyntax": true
+    "target": "ES2023"
   },
   "extends": "./base.json"
 }

@@ -16,12 +16,12 @@
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
     "check-types": "tsc --noEmit"
   },
-  "keywords": [
-    "css",
-    "tailwind"
-  ],
-  "license": "GPL-2.0-only",
-  "packageManager": "pnpm@10.12.4",
+  "dependencies": {
+    "class-variance-authority": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tailwindcss": "catalog:",
+    "tailwindcss-animate": "^1.0.7"
+  },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
     "autoprefixer": "^10.4.21",
@@ -29,10 +29,10 @@
     "postcss": "^8.5.6",
     "typescript": "catalog:"
   },
-  "dependencies": {
-    "class-variance-authority": "catalog:",
-    "tailwind-merge": "catalog:",
-    "tailwindcss": "catalog:",
-    "tailwindcss-animate": "^1.0.7"
-  }
+  "keywords": [
+    "css",
+    "tailwind"
+  ],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.13.1"
 }

@@ -26,7 +26,8 @@
 
     "strict": true,
     "target": "ES2022",
-    "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json"
+    "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json",
+    "verbatimModuleSyntax": true
   },
   "exclude": ["node_modules", "build", "dist", ".expo"]
 }

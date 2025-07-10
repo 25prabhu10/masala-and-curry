@@ -1,7 +1,7 @@
 import { Button, Text } from '@mac/mobile-ui'
 import { Stack, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, View } from 'react-native'
 import { ThemeToggle } from '@/components/theme-toggle'
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
   }, [navigation])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Stack.Screen
           options={{
@@ -38,15 +38,3 @@ export default function Home() {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: 50,
-    height: 50,
-  },
-})

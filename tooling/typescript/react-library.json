@@ -5,8 +5,7 @@
     "jsx": "react-jsx",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "useDefineForClassFields": true,
-    "verbatimModuleSyntax": true
+    "useDefineForClassFields": true
   },
   "extends": "./base.json"
 }

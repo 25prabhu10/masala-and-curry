@@ -1,24 +1,43 @@
 {
   "name": "@mac/server",
   "version": "0.0.1",
-  "description": "Masala and Curry mobile app.",
+  "description": "Masala and Curry API.",
   "private": true,
   "author": "Prabhu K H",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
+    "clean": "git clean -xdf dist .turbo .wrangler node_modules",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "check-types": "tsc --noEmit"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "wrangler d1 migrations apply mac-db --local",
+    "db:studio": "drizzle-kit studio",
+    "check-types": "tsc --noEmit",
+    "test": "vitest"
   },
   "dependencies": {
-    "hono": "^4.8.4"
+    "@hono/zod-openapi": "1.0.0-beta.1",
+    "@scalar/hono-api-reference": "^0.9.9",
+    "better-auth": "^1.2.12",
+    "drizzle-orm": "^0.44.2",
+    "drizzle-zod": "^0.8.2",
+    "hono": "^4.8.4",
+    "nanoid": "^5.1.5",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
+    "@types/node": "^24.0.12",
+    "drizzle-kit": "^0.31.4",
     "oxlint": "catalog:",
+    "tsc-alias": "^1.8.16",
     "typescript": "catalog:",
-    "wrangler": "^4.4.0"
-  }
+    "vitest": "^3.2.4",
+    "wrangler": "^4.24.0"
+  },
+  "keywords": [],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.13.1"
 }

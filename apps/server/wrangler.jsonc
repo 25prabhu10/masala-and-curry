@@ -1,14 +1,20 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
-  "name": "server",
-  "main": "src/index.ts",
-  "compatibility_date": "2025-07-09"
-  // "compatibility_flags": [
-  //   "nodejs_compat"
-  // ],
+  "name": "mac-server",
+  "main": "./src/index.ts",
+  "compatibility_date": "2025-07-09",
+  "workers_dev": true,
+  "minify": true,
+  "dev": {
+    "local_protocol": "http",
+    "upstream_protocol": "https",
+    "ip": "127.0.0.1",
+    "port": 8080
+  },
+  "compatibility_flags": ["nodejs_compat"],
   // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
+  //   "LOG_LEVEL": "debug"
+  // }
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
@@ -21,13 +27,14 @@
   //     "bucket_name": "my-bucket"
   //   }
   // ],
-  // "d1_databases": [
-  //   {
-  //     "binding": "MY_DB",
-  //     "database_name": "my-database",
-  //     "database_id": ""
-  //   }
-  // ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mac-db",
+      "database_id": "000-000-000-000",
+      "migrations_dir": "./src/db/migrations"
+    }
+  ]
   // "ai": {
   //   "binding": "AI"
   // },

@@ -1,14 +1,14 @@
 {
-  "extends": "@mac/tsconfig/expo.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "checkJs": false,
+    "moduleSuffixes": [".ios", ".android", ".native", ""],
     "paths": {
       "@/*": ["./src/*"]
     },
-    "checkJs": false,
-    "moduleSuffixes": [".ios", ".android", ".native", ""],
     "types": ["nativewind/types"]
   },
   "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"],
+  "extends": "@mac/tsconfig/expo.json",
   "include": ["src", "*.ts", "*.js", ".expo/types/**/*.ts", "expo-env.d.ts", "nativewind-env.d.ts"]
 }

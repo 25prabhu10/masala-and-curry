@@ -16,6 +16,9 @@
     "./button": "./src/button.tsx",
     "./text": "./src/text.tsx"
   },
+  "dependencies": {
+    "@rn-primitives/slot": "^1.2.0"
+  },
   "devDependencies": {
     "@mac/tailwind-config": "workspace:*",
     "@mac/tsconfig": "workspace:*",
@@ -32,8 +35,5 @@
   },
   "keywords": [],
   "license": "GPL-2.0-only",
-  "packageManager": "pnpm@10.12.4",
-  "dependencies": {
-    "@rn-primitives/slot": "^1.2.0"
-  }
+  "packageManager": "pnpm@10.13.1"
 }

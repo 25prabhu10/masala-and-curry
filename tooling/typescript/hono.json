@@ -1,11 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "ESNext",
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "lib": ["ESNext"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": ["ESNext"],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
-  }
+    "outDir": "dist",
+    "target": "ESNext"
+  },
+  "extends": "./base.json"
 }
