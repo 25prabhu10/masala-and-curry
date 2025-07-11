@@ -1,11 +1,24 @@
-function App() {
-  return (
-    <>
-      <h1 className="text-center font-bold uppercase text-amber-900">
-        Welcome to Masala and Curry
-      </h1>
-    </>
-  )
+import { createRouter, ErrorComponent, RouterProvider } from '@tanstack/react-router'
+import queryClient from '@/lib/query-client'
+import { routeTree } from './routeTree.gen'
+
+const router = createRouter({
+  routeTree,
+  context: {
+    queryClient,
+  },
+  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+  defaultPreload: 'intent',
+  defaultPreloadStaleTime: 0,
+  scrollRestoration: true,
+})
+
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
 }
 
-export default App
+export default function App() {
+  return <RouterProvider router={router} />
+}
