@@ -1,9 +1,13 @@
 {
   "name": "masala-and-curry",
   "version": "0.0.1",
-  "description": "",
+  "description": "Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste.",
   "private": true,
   "author": "Prabhu K H",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/25prabhu10/masala-and-curry.git"
+  },
   "scripts": {
     "android": "cd apps/mobile && pnpm run android",
     "build": "turbo run build",

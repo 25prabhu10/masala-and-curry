@@ -2,6 +2,7 @@ import '@/styles/global.css'
 import { DarkTheme, DefaultTheme, type Theme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { useColorScheme } from '@/hooks/use-color-scheme'
 import { NAV_THEME } from '@/lib/constants'
 
@@ -15,7 +16,16 @@ const DARK_THEME: Theme = {
 }
 
 function App() {
-  return <Stack />
+  return (
+    <Stack>
+      <Stack.Screen
+        options={{
+          title: 'Home',
+          headerRight: () => <ThemeToggle />,
+        }}
+      />
+    </Stack>
+  )
 }
 
 export default function RootLayout() {
@@ -23,7 +33,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+      <StatusBar style={isDarkColorScheme ? 'dark' : 'light'} />
       <App />
     </ThemeProvider>
   )
