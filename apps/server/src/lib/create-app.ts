@@ -1,11 +1,10 @@
-import { requestId } from 'hono/request-id'
 // import { secureHeaders } from 'hono/secure-headers'
 import { notFound, onError, serveEmojiFavicon } from '@/middlewares'
 import { BASE_PATH } from './constants'
 import createRouter from './create-router'
 
 export default function createApp() {
-  const app = createRouter().basePath(BASE_PATH)
+  const app = createRouter()
 
   // TODO: add secure headers and auth middleware
   app
@@ -16,10 +15,9 @@ export default function createApp() {
     // .use('/auth/*', authHandler())
     // .use(`${BASE_PATH}/*`, cors())
     // .use(secureHeaders())
-    .use(requestId())
-    .use(serveEmojiFavicon('🍴'))
+    .use('/favicon.ico', serveEmojiFavicon('🍴'))
     .notFound(notFound)
     .onError(onError)
 
-  return app
+  return app.basePath(BASE_PATH)
 }

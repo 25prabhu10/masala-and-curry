@@ -15,6 +15,8 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@mac/api-client": "workspace:*",
+    "better-auth": "catalog:api",
     "react": "catalog:react19",
     "react-dom": "catalog:react19"
   },
@@ -22,14 +24,15 @@
     "@mac/tailwind-config": "workspace:*",
     "@mac/tsconfig": "workspace:*",
     "@mac/web-ui": "workspace:*",
-    "@types/node": "^24.0.10",
+    "@types/node": "^24.0.12",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
     "@vitejs/plugin-react-swc": "^3.10.2",
     "oxlint": "catalog:",
-    "tailwindcss": "catalog:",
+    "rollup-plugin-visualizer": "^6.0.3",
+    "tailwindcss": "catalog:ui",
     "typescript": "catalog:",
-    "vite": "^7.0.3"
+    "vite": "^7.0.4"
   },
   "keywords": [
     "masala",

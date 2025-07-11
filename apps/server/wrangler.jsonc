@@ -4,7 +4,6 @@
   "main": "./src/index.ts",
   "compatibility_date": "2025-07-09",
   "workers_dev": true,
-  "minify": true,
   "dev": {
     "local_protocol": "http",
     "upstream_protocol": "https",

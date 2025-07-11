@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "rootDir": "."
+    "rootDir": ".",
+    "jsx": "preserve"
   },
   "exclude": ["node_modules"],
   "extends": ["@mac/tsconfig/react-library.json", "@mac/tsconfig/internal-package.json"],

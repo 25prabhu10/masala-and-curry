@@ -3,7 +3,8 @@
   "aliases": {
     "components": "src/",
     "ui": "src/",
-    "utils": "@mac//tailwind-config"
+    "utils": "@mac/tailwind-config",
+    "lib": "@mac/tailwind-config"
   },
   "rsc": false,
   "style": "new-york",

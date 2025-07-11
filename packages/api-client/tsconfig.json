@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "composite": true,
+    "emitDeclarationOnly": false,
+    "paths": {
+      "@/*": ["../../apps/server/src/*"]
+    },
+    "typeRoots": ["../../node_modules/@types"],
+    "types": ["../../apps/server/worker-configuration.d.ts", "node"]
+  },
+  "exclude": ["node_modules"],
+  "extends": ["@mac/tsconfig/internal-package.json"],
+  "include": ["src"],
+  "watchOptions": {
+    "excludeDirectories": ["**/node_modules", "dist"]
+  }
+}

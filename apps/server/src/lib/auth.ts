@@ -44,6 +44,8 @@ export async function auth(env: CloudflareBindings): Promise<ReturnType<typeof b
     //     clientSecret: process.env.GITHUB_CLIENT_SECRET!
     //   }
     // }
+
+    // TODO: merge openapi
     plugins: [username(), openAPI()],
   })
 }

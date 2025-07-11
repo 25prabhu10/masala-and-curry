@@ -23,7 +23,7 @@
     "@mac/tailwind-config": "workspace:*",
     "@mac/tsconfig": "workspace:*",
     "@types/react": "catalog:react19",
-    "nativewind": "catalog:",
+    "nativewind": "catalog:ui",
     "oxlint": "catalog:",
     "react": "catalog:react19",
     "react-native": "catalog:react19",

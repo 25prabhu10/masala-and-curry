@@ -1,38 +1,36 @@
 {
-  "name": "@mac/tailwind-config",
+  "name": "@mac/api-client",
   "version": "0.0.1",
-  "description": "Tailwind CSS configuration files.",
+  "description": "",
   "private": true,
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
-    "./native": "./native.ts",
-    "./web": "./web.ts",
-    ".": "./index.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "clean": "git clean -xdf .cache .turbo node_modules",
+    "dev": "tsc --watch",
+    "clean": "git clean -xdf dist .turbo node_modules .cache",
+    "build": "tsc",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "class-variance-authority": "catalog:ui",
-    "tailwind-merge": "catalog:ui",
-    "tailwindcss": "catalog:ui",
-    "tailwindcss-animate": "^1.0.7"
+    "@mac/server": "workspace:*",
+    "hono": "catalog:api"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
-    "autoprefixer": "^10.4.21",
     "oxlint": "catalog:",
-    "postcss": "^8.5.6",
     "typescript": "catalog:"
   },
-  "keywords": [
-    "css",
-    "tailwind"
-  ],
+  "keywords": [],
   "license": "GPL-2.0-only",
   "packageManager": "pnpm@10.13.1"
 }

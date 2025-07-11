@@ -28,6 +28,7 @@ app
     '/reference',
     Scalar({
       url: `${BASE_PATH}/${OPEN_API_SCHEMA_FILE}`,
+      layout: 'classic',
       defaultHttpClient: {
         targetKey: 'js',
         clientKey: 'fetch',

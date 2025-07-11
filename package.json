@@ -24,7 +24,6 @@
     "typescript": "catalog:"
   },
   "lint-staged": {
-    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint",
     "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
       "biome format --write --no-errors-on-unmatched --files-ignore-unknown=true"
     ]

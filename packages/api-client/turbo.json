@@ -2,9 +2,9 @@
   "$schema": "https://turborepo.org/schema.json",
   "extends": ["//"],
   "tasks": {
-    "dev": {
-      "persistent": true,
-      "interactive": true
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     }
   }
 }

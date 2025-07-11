@@ -6,7 +6,9 @@
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
-    "./button": "./src/button.tsx"
+    "./button": "./src/button.tsx",
+    "./input": "./src/input.tsx",
+    "./label": "./src/label.tsx"
   },
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
@@ -16,6 +18,7 @@
     "ui-add": "pnpm dlx shadcn@latest add"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3"
   },
   "devDependencies": {

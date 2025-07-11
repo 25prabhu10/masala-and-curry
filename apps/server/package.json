@@ -4,6 +4,9 @@
   "description": "Masala and Curry API.",
   "private": true,
   "author": "Prabhu K H",
+  "exports": {
+    "./routes": "./src/routes/index.ts"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
@@ -20,10 +23,10 @@
   "dependencies": {
     "@hono/zod-openapi": "1.0.0-beta.1",
     "@scalar/hono-api-reference": "^0.9.9",
-    "better-auth": "^1.2.12",
+    "better-auth": "catalog:api",
     "drizzle-orm": "^0.44.2",
     "drizzle-zod": "^0.8.2",
-    "hono": "^4.8.4",
+    "hono": "catalog:api",
     "nanoid": "^5.1.5",
     "zod": "catalog:"
   },
@@ -35,7 +38,7 @@
     "tsc-alias": "^1.8.16",
     "typescript": "catalog:",
     "vitest": "^3.2.4",
-    "wrangler": "^4.24.0"
+    "wrangler": "^4.24.3"
   },
   "keywords": [],
   "license": "GPL-2.0-only",
