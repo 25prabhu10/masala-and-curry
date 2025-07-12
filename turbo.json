@@ -21,6 +21,10 @@
     },
     "lint:fix": {
       "dependsOn": ["^lint:fix"]
+    },
+    "ui-add": {
+      "cache": false,
+      "interactive": true
     }
   },
   "ui": "tui"

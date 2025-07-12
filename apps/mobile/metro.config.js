@@ -6,8 +6,23 @@ const { withNativeWind } = require('nativewind/metro')
 
 const path = require('node:path')
 
+const defaultConfig = getDefaultConfig(__dirname)
+
+defaultConfig.transformer.getTransformOptions = async () => {
+  return {
+    transform: {
+      // Inline requires are very useful for deferring loading of large dependencies/components.
+      // For example, we use it in app.tsx to conditionally load Reactotron.
+      // However, this comes with some gotchas.
+      // Read more here: https://reactnative.dev/docs/optimizing-javascript-loading
+      // And here: https://github.com/expo/expo/issues/27279#issuecomment-1971610698
+      inlineRequires: true,
+    },
+  }
+}
+
 const config = withTurborepoManagedCache(
-  withNativeWind(getDefaultConfig(__dirname), {
+  withNativeWind(defaultConfig, {
     configPath: './tailwind.config.ts',
     input: './src/styles/global.css',
   })

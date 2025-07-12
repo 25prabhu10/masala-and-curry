@@ -35,7 +35,7 @@ export default defineConfig({
   server: {
     cors: false,
     proxy: {
-      '/api/v1': 'http://localhost:8080',
+      '/api/v1': 'http://localhost:8787',
     },
   },
 })

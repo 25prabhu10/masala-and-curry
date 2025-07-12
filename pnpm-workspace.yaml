@@ -4,31 +4,31 @@ packages:
   - tooling/*
 
 catalog:
-  "@biomejs/biome": 2.0.6
+  '@biomejs/biome': 2.1.1
   oxlint: 1.6.0
   typescript: 5.8.3
   zod: ^3.25.76
 
 catalogs:
+  api:
+    better-auth: ^1.2.12
+    hono: ^4.8.4
   react19:
-    "@types/react": ^19.1.8
-    "@types/react-dom": ^19.1.6
+    '@types/react': ~19.0.10
+    '@types/react-dom': ^19.1.6
     react: ^19.0.0
     react-dom: ^19.0.0
     react-native: ^0.79.5
   ui:
     class-variance-authority: ^0.7.1
-    tailwind-merge: ^3.3.1
-    tailwindcss: 3.4.17
     nativewind: ^4.1.23
-  api:
-    hono: "^4.8.4"
-    better-auth: "^1.2.12"
+    tailwind-merge: ^3.3.1
+    tailwindcss: ^3.4.17
 
 nodeLinker: hoisted
 
 onlyBuiltDependencies:
-  - "@swc/core"
+  - '@swc/core'
   - esbuild
   - sharp
   - simple-git-hooks

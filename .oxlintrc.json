@@ -181,7 +181,6 @@
     "unicorn/no-invalid-remove-event-listener": "warn",
     "unicorn/no-length-as-slice-end": "error",
     "unicorn/no-new-array": "warn",
-    "unicorn/no-null": "error",
     "unicorn/no-single-promise-in-promise-methods": "warn",
     "unicorn/no-thenable": "warn",
     "unicorn/no-unnecessary-await": "warn",

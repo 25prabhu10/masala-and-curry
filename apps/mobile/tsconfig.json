@@ -3,11 +3,21 @@
     "baseUrl": ".",
     "moduleSuffixes": [".ios", ".android", ".native", ""],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@assets/*": ["./assets/*"]
     },
+    "typeRoots": ["../../node_modules/@types", "./types"],
     "types": ["nativewind/types"]
   },
   "exclude": [".expo", "babel.config.js", "metro.config.js"],
   "extends": "@mac/tsconfig/expo.json",
-  "include": ["src", "*.ts", "*.js", ".expo/types/**/*.ts", "expo-env.d.ts", "nativewind-env.d.ts"]
+  "include": [
+    "src",
+    "*.ts",
+    "*.tsx",
+    "*.js",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "nativewind-env.d.ts"
+  ]
 }

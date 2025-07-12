@@ -9,6 +9,7 @@ app.on(['POST', 'GET'], '/auth/**', async (c) => (await auth(c.env)).handler(c.r
 
 app
   .doc31(`/${OPEN_API_SCHEMA_FILE}`, (c) => {
+    console.log(`Generating OpenAPI schema for ${new URL(c.req.url).origin}`)
     return {
       openapi: '3.1.1',
       info: {
@@ -19,7 +20,7 @@ app
       servers: [
         {
           url: new URL(c.req.url).origin,
-          description: appResources.en.API_SERVER_DESCRIPTION,
+          description: c.req.url, //appResources.en.API_SERVER_DESCRIPTION,
         },
       ],
     }

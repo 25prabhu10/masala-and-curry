@@ -7,6 +7,28 @@
   "extends": ["../../.oxlintrc.json"],
   "plugins": ["react", "react-perf", "jsx-a11y"],
   "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "react",
+            "importNames": ["default"],
+            "message": "Import named exports from 'react' instead."
+          },
+          {
+            "name": "react-native",
+            "importNames": ["SafeAreaView"],
+            "message": "Use the SafeAreaView from 'react-native-safe-area-context' instead."
+          },
+          {
+            "name": "react-native",
+            "importNames": ["Text", "Button", "TextInput"],
+            "message": "Use the custom wrapper component from '@/components'."
+          }
+        ]
+      }
+    ],
     "jsx-a11y/anchor-ambiguous-text": "error",
     "react/iframe-missing-sandbox": "error",
     "react/jsx-no-comment-textnodes": "error",

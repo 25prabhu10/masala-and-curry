@@ -4,12 +4,6 @@
   "main": "./src/index.ts",
   "compatibility_date": "2025-07-09",
   "workers_dev": true,
-  "dev": {
-    "local_protocol": "http",
-    "upstream_protocol": "https",
-    "ip": "127.0.0.1",
-    "port": 8080
-  },
   "compatibility_flags": ["nodejs_compat"],
   // "vars": {
   //   "LOG_LEVEL": "debug"

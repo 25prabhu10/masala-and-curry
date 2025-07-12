@@ -1,9 +1,10 @@
+// oxlint-disable no-restricted-imports
 import { cn } from '@mac/tailwind-config'
 import * as Slot from '@rn-primitives/slot'
-import * as React from 'react'
+import { createContext, useContext } from 'react'
 import { Platform, Text as RNText } from 'react-native'
 
-const TextClassContext = React.createContext<string | undefined>(undefined)
+const TextClassContext = createContext<string | undefined>(undefined)
 
 function Text({
   className,
@@ -13,7 +14,7 @@ function Text({
   ref?: React.RefObject<RNText>
   asChild?: boolean
 }) {
-  const textClass = React.useContext(TextClassContext)
+  const textClass = useContext(TextClassContext)
   const Component = asChild ? Slot.Text : RNText
   return (
     <Component

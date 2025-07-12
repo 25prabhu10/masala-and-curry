@@ -6,5 +6,9 @@
     "lib": ["DOM", "ESNext"],
     "target": "ESNext"
   },
+  "noImplicitAny": true,
+  "noImplicitReturns": true,
+  "noImplicitThis": true,
+  "sourceMap": true,
   "extends": "./base.json"
 }

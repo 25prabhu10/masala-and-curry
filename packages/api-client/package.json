@@ -22,10 +22,10 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@mac/server": "workspace:*",
     "hono": "catalog:api"
   },
   "devDependencies": {
+    "@mac/server": "workspace:*",
     "@mac/tsconfig": "workspace:*",
     "oxlint": "catalog:",
     "typescript": "catalog:"

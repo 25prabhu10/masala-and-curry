@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "clean": "git clean -xdf dist .turbo node_modules",
+    "clean": "git clean -xdf dist .turbo .tanstack node_modules",
     "build": "tsc -b && vite build",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
