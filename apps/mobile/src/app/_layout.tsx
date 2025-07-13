@@ -1,10 +1,10 @@
-// oxlint-disable style-prop-object
 import '@/styles/global.css'
 
 import { DarkTheme, DefaultTheme, type Theme, ThemeProvider } from '@react-navigation/native'
 import { SplashScreen, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useLayoutEffect, useRef, useState } from 'react'
+import { View } from 'react-native'
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { useColorScheme } from '@/hooks/use-color-scheme'
@@ -19,18 +19,10 @@ const DARK_THEME: Theme = {
   colors: NAV_THEME.dark,
 }
 
-// SplashScreen.preventAutoHideAsync()
+SplashScreen.preventAutoHideAsync()
 
 function App() {
-  return (
-    <Stack>
-      <Stack.Screen
-        options={{
-          title: 'Home',
-        }}
-      />
-    </Stack>
-  )
+  return <Stack screenOptions={{ headerShown: false }} />
 }
 
 export default function RootLayout() {
@@ -52,12 +44,12 @@ export default function RootLayout() {
     return null
   }
 
-  console.log('isDarkColorScheme', isDarkColorScheme)
-
   return (
-    <SafeAreaProvider className="flex-1" initialMetrics={initialWindowMetrics}>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-        <App />
+        <View className={`flex-1 ${isDarkColorScheme ? 'dark' : ''}`}>
+          <App />
+        </View>
         <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
       </ThemeProvider>
     </SafeAreaProvider>

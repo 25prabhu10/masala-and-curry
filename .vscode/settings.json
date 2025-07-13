@@ -18,7 +18,7 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "biome.requireConfiguration": true,
-  "cSpell.words": ["Masala", "Pressable"],
+  "cSpell.words": ["Masala", "nativewind", "Pressable"],
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"

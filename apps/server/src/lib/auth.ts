@@ -9,8 +9,6 @@ import { BASE_PATH } from './constants'
 export async function auth(env: CloudflareBindings): Promise<ReturnType<typeof betterAuth>> {
   const db = await createDb(env)
 
-  console.log('URL', env.BETTER_AUTH_URL)
-
   return betterAuth({
     appName: appResources.en.TITLE,
     basePath: `${BASE_PATH}/auth`,

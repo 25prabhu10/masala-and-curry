@@ -5,6 +5,9 @@
   "compatibility_date": "2025-07-09",
   "workers_dev": true,
   "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "public"
+  },
   // "vars": {
   //   "LOG_LEVEL": "debug"
   // }

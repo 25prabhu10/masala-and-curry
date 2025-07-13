@@ -27,6 +27,7 @@
     "@types/react": "catalog:react19",
     "oxlint": "catalog:",
     "react": "catalog:react19",
+    "react-dom": "catalog:react19",
     "typescript": "catalog:"
   },
   "peerDependencies": {

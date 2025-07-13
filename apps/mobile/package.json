@@ -18,10 +18,10 @@
     "assist": "biome check --write --assist-enabled=true --formatter-enabled=false --linter-enabled=false",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "postinstall": "pnpm exec tailwindcss -i ./src/styles/global.css -o ./node_modules/.cache/nativewind/global.css"
   },
   "dependencies": {
-    "@expo-google-fonts/poppins": "^0.4.0",
     "@mac/mobile-ui": "workspace:*",
     "expo": "~53.0.19",
     "expo-constants": "~17.1.7",

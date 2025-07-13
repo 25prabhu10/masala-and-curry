@@ -10,7 +10,7 @@ const router = createRouter().openapi(
     tags: ['Index'],
     method: 'get',
     path: '/',
-    summary: 'Index',
+    summary: 'API Server',
     description: appResources.en.API_SERVER_DESCRIPTION,
     responses: {
       [HttpStatusCodes.OK]: jsonContent(

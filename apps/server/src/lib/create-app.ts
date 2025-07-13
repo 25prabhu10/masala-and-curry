@@ -1,5 +1,4 @@
-// import { secureHeaders } from 'hono/secure-headers'
-import { notFound, onError, serveEmojiFavicon } from '@/middlewares'
+import { notFound, onError } from '@/middlewares'
 import { BASE_PATH } from './constants'
 import createRouter from './create-router'
 
@@ -15,7 +14,6 @@ export default function createApp() {
     // .use('/auth/*', authHandler())
     // .use(`${BASE_PATH}/*`, cors())
     // .use(secureHeaders())
-    .use('/favicon.ico', serveEmojiFavicon('🍴'))
     .notFound(notFound)
     .onError(onError)
 
