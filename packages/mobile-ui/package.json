@@ -14,10 +14,13 @@
   "exports": {
     ".": "./src/index.ts",
     "./button": "./src/button.tsx",
-    "./text": "./src/text.tsx"
+    "./text": "./src/text.tsx",
+    "./icons/*": "./src/icons/*.tsx"
   },
   "dependencies": {
-    "@rn-primitives/slot": "^1.2.0"
+    "@rn-primitives/slot": "^1.2.0",
+    "lucide-react-native": "^0.525.0",
+    "react-native-svg": "catalog:mobile"
   },
   "devDependencies": {
     "@mac/tailwind-config": "workspace:*",

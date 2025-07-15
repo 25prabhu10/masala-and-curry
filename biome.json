@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
   "assist": {
     "actions": {
       "recommended": true,
@@ -7,7 +7,11 @@
         "organizeImports": {
           "level": "on",
           "options": {
-            "groups": [{ "type": true }]
+            "groups": [
+              {
+                "type": true
+              }
+            ]
           }
         },
         "recommended": true
@@ -36,5 +40,18 @@
     "clientKind": "git",
     "enabled": true,
     "useIgnoreFile": true
-  }
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!**/.turbo/**",
+      "!**/.venv/**",
+      "!**/android/**",
+      "!**/ios/**"
+    ],
+    "experimentalScannerIgnores": ["node_modules", "dist", ".turbo", ".venv"]
+  },
+  "extends": ["ultracite"]
 }

@@ -28,6 +28,7 @@ export default function Home() {
           <Text className="text-4xl">
             {`${isDarkColorScheme}`} : {isDarkColorScheme ? 'Dark Mode' : 'Light Mode'}
           </Text>
+          <Text className="text-2xl">{process.env.NODE_ENV}</Text>
         </View>
         <Button size="lg">
           <Text>Get Started</Text>

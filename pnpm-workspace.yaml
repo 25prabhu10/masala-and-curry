@@ -12,7 +12,9 @@ catalog:
 catalogs:
   api:
     better-auth: ^1.2.12
-    hono: ^4.8.4
+    hono: ^4.8.5
+  mobile:
+    react-native-svg: 15.11.2
   react19:
     '@types/react': ~19.0.10
     '@types/react-dom': ~19.1.6

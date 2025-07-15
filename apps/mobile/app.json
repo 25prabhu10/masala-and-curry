@@ -42,6 +42,7 @@
     "typedRoutes": true
   },
   "plugins": [
+    "expo-localization",
     [
       "expo-splash-screen",
       {
@@ -58,7 +59,10 @@
     [
       "expo-font",
       {
-        "fonts": ["./assets/fonts/Poppins-Regular.ttf", "./assets/fonts/Poppins-Bold.ttf"],
+        "fonts": [
+          "./assets/fonts/Poppins-Regular.ttf",
+          "./assets/fonts/Poppins-Bold.ttf"
+        ],
         "android": {
           "fonts": [
             {
@@ -79,7 +83,10 @@
           ]
         },
         "ios": {
-          "fonts": ["./assets/fonts/Poppins-Regular.ttf", "./assets/fonts/Poppins-Bold.ttf"]
+          "fonts": [
+            "./assets/fonts/Poppins-Regular.ttf",
+            "./assets/fonts/Poppins-Bold.ttf"
+          ]
         }
       }
     ],
