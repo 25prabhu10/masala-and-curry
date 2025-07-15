@@ -1,5 +1,6 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { lingui } from '@lingui/vite-plugin'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react-swc'
 import { visualizer } from 'rollup-plugin-visualizer'
@@ -13,7 +14,10 @@ export default defineConfig({
       target: 'react',
       autoCodeSplitting: true,
     }),
-    react(),
+    react({
+      plugins: [['@lingui/swc-plugin', {}]],
+    }),
+    lingui(),
     visualizer({
       filename: 'stats.html',
       open: true,
@@ -26,6 +30,7 @@ export default defineConfig({
   ],
   build: {
     sourcemap: true,
+    emptyOutDir: true,
   },
   resolve: {
     alias: {

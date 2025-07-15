@@ -3,9 +3,22 @@
   "env": {
     "builtin": true
   },
-  "plugins": ["unicorn", "typescript", "oxc", "eslint", "node", "import", "promise", "jsdoc"],
+  "plugins": [
+    "unicorn",
+    "typescript",
+    "oxc",
+    "eslint",
+    "node",
+    "import",
+    "promise",
+    "jsdoc"
+  ],
   "rules": {
-    "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": true }],
+    "arrow-body-style": [
+      "error",
+      "as-needed",
+      { "requireReturnForObjectLiteral": true }
+    ],
     "block-scoped-var": "error",
     "curly": "error",
     "default-case-last": "error",

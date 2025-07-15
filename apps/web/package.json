@@ -9,12 +9,15 @@
     "dev": "vite",
     "clean": "git clean -xdf dist .turbo .tanstack node_modules",
     "build": "tsc -b && vite build",
+    "serve": "vite preview",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "lingui:extract": "lingui extract --clean",
     "preview": "vite preview",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@lingui/react": "^5.3.3",
     "@mac/api-client": "workspace:*",
     "@tanstack/react-query": "^5.82.0",
     "@tanstack/react-query-devtools": "^5.82.0",
@@ -25,6 +28,8 @@
     "react-dom": "catalog:react19"
   },
   "devDependencies": {
+    "@lingui/swc-plugin": "^5.5.2",
+    "@lingui/vite-plugin": "^5.3.3",
     "@mac/tailwind-config": "workspace:*",
     "@mac/tsconfig": "workspace:*",
     "@mac/web-ui": "workspace:*",

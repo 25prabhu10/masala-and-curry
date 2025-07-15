@@ -21,6 +21,9 @@ defaultConfig.transformer.getTransformOptions = async () => {
   }
 }
 
+// Enabled by default in RN 0.79+, but this breaks Lingui + others
+defaultConfig.resolver.unstable_enablePackageExports = false
+
 const config = withTurborepoManagedCache(
   withNativeWind(defaultConfig, {
     configPath: './tailwind.config.ts',

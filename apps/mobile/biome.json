@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
   "root": false,
   "extends": "//",
   "assist": {
@@ -11,7 +11,12 @@
             "groups": [
               [":BUN:", ":NODE:"],
               ":BLANK_LINE:",
-              [":PACKAGE:react", ":PACKAGE:react-native", ":PACKAGE:expo", ":PACKAGE:expo-*"],
+              [
+                ":PACKAGE:react",
+                ":PACKAGE:react-native",
+                ":PACKAGE:expo",
+                ":PACKAGE:expo-*"
+              ],
               [":PACKAGE:"],
               ":BLANK_LINE:",
               [":ALIAS:", ":PATH:"]

@@ -42,15 +42,6 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": [
-      "**",
-      "!**/node_modules/**",
-      "!**/dist/**",
-      "!**/.turbo/**",
-      "!**/.venv/**",
-      "!**/android/**",
-      "!**/ios/**"
-    ],
     "experimentalScannerIgnores": ["node_modules", "dist", ".turbo", ".venv"]
   },
   "extends": ["ultracite"]
