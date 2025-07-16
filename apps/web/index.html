@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      document.documentElement.classList.toggle(
+        "dark",
+        localStorage.theme === "dark" ||
+          (!("theme" in localStorage) &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches),
+      );
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -110,6 +118,25 @@
   <body
     class="min-h-screen bg-background font-sans text-foreground antialiased"
   >
+    <noscript>
+      <strong
+        >We're sorry but Personal Finance doesn't work properly without
+        JavaScript enabled. Please enable it to continue.</strong
+      >
+    </noscript>
+    <!--[if lt IE 9]>
+      <p class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4">
+        You are using an <strong>outdated</strong> browser. Please
+        <a
+          href="https://browsehappy.com/"
+          class="font-bold underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          >upgrade your browser</a
+        >
+        to improve your experience.
+      </p>
+    <![endif]-->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import '@/styles/global.css'
 import { I18nProvider } from '@lingui/react'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from '@/context/theme-context'
 import { loadTranslations } from '@/lib/i18nt'
 import queryClient from '@/lib/query-client'
 import App from './app'
@@ -18,7 +19,9 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <I18nProvider i18n={i18n}>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </I18nProvider>
       </QueryClientProvider>
     </StrictMode>

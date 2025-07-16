@@ -6,7 +6,9 @@ alwaysApply: true
 
 # Project Context
 
-This is a **Masala and Curry** food delivery application built as a modern monorepo. The project includes:
+This is a **Masala and Curry** food delivery application built as a modern monorepo. This app is dedicated to a single restaurant: "Masala and Curry".
+
+The project includes:
 
 - **Web App** (`apps/web`) - Customer-facing React application with TanStack Router
 - **Mobile App** (`apps/mobile`) - Cross-platform React Native app with Expo
@@ -31,6 +33,7 @@ This is a **Masala and Curry** food delivery application built as a modern monor
 ### Food Delivery Domain Rules
 
 - Use clear, food-focused terminology (menu items, orders, restaurants)
+- Do not implement multi-restaurant features. All logic and UI should assume only "Masala and Curry" is available.
 - Implement proper order state management (pending, confirmed, preparing, delivered)
 - Handle currency formatting consistently across platforms
 - Validate food safety and allergen information properly

@@ -26,6 +26,8 @@ catalogs:
     nativewind: ^4.1.23
     tailwind-merge: ^3.3.1
     tailwindcss: ^3.4.17
+    lucide-react: ^0.525.0
+    lucide-react-native: ^0.525.0
 
 nodeLinker: hoisted
 

@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@rn-primitives/slot": "^1.2.0",
-    "lucide-react-native": "^0.525.0",
+    "lucide-react-native": "catalog:ui",
     "react-native-svg": "catalog:mobile"
   },
   "devDependencies": {
