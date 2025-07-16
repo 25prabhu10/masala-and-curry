@@ -6,12 +6,12 @@ import Header from '@/components/header'
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   component: () => (
-    <>
+    <div className="min-h-svh border-2 border-border/60 flex flex-col">
       <Header />
       <hr />
       <Outlet />
       <ReactQueryDevtools initialIsOpen={false} />
       <TanStackRouterDevtools />
-    </>
+    </div>
   ),
 })

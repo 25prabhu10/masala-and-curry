@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { Link } from '@tanstack/react-router'
 import logoDark from '@/assets/logo-dark.svg'
 import logoLight from '@/assets/logo-light.svg'
@@ -7,13 +8,21 @@ export function Logo() {
   const { theme } = useTheme()
 
   return (
-    <Link className="text-2xl font-bold text-primary hover:text-accent transition-colors" to="/">
+    <Link
+      className="flex items-center gap-3 text-2xl lg:text-3xl font-bold text-primary hover:text-primary/80 transition-colors group"
+      to="/"
+    >
       <img
         alt="Masala and Curry Logo"
-        className="h-8 w-8 mr-2 inline-block"
+        className="h-10 w-10 lg:h-12 lg:w-12"
         src={theme === 'light' ? logoLight : logoDark}
       />
-      Masala & Curry
+      <span className="hidden sm:inline">
+        <Trans>Masala & Curry</Trans>
+      </span>
+      <span className="sm:hidden">
+        <Trans>M&C</Trans>
+      </span>
     </Link>
   )
 }

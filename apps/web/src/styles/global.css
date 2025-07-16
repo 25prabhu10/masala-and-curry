@@ -73,4 +73,8 @@
     font-weight: 700;
     src: url("/fonts/Poppins-Bold.woff2") format("woff2");
   }
+
+  html {
+    scrollbar-gutter: stable both-edges;
+  }
 }
