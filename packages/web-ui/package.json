@@ -8,7 +8,10 @@
   "exports": {
     "./button": "./src/button.tsx",
     "./input": "./src/input.tsx",
-    "./label": "./src/label.tsx"
+    "./card": "./src/card.tsx",
+    "./checkbox": "./src/checkbox.tsx",
+    "./label": "./src/label.tsx",
+    "./sonner": "./src/sonner.tsx"
   },
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
@@ -18,8 +21,9 @@
     "ui-add": "pnpm dlx shadcn@latest add"
   },
   "dependencies": {
-    "@radix-ui/react-label": "^2.1.7",
-    "@radix-ui/react-slot": "^1.2.3"
+    "next-themes": "^0.4.6",
+    "radix-ui": "latest",
+    "sonner": "^2.0.6"
   },
   "devDependencies": {
     "@mac/tailwind-config": "workspace:*",

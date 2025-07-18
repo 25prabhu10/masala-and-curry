@@ -8,16 +8,26 @@
   "plugins": ["react", "react-perf", "jsx-a11y"],
   "ignorePatterns": ["routeTree.gen.ts"],
   "rules": {
+    "react/no-children-prop": "off",
     "import/exports-last": "off",
     "jsx-a11y/anchor-ambiguous-text": "error",
     "react/button-has-type": "error",
+    "react/forbid-elements": "error",
     "react/iframe-missing-sandbox": "error",
     "react/jsx-no-comment-textnodes": "error",
     "react/jsx-no-script-url": "error",
     "react/no-array-index-key": "error",
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".jsx", ".tsx"] }
+    ],
     "react/no-danger": "error",
     "react/no-this-in-sfc": "warn",
+    "react/rules-of-hooks": "error",
     "react/no-unknown-property": "warn",
+    "react/no-unescaped-entities": "error",
+    "react/jsx-no-useless-fragment": "error",
+    "react/checked-requires-onchange-or-readonly": "error",
     "react/self-closing-comp": [
       "error",
       {

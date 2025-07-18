@@ -1,4 +1,6 @@
-import { createRouter, ErrorComponent, RouterProvider } from '@tanstack/react-router'
+import { createRouter, RouterProvider } from '@tanstack/react-router'
+import { DefaultCatchBoundary } from '@/components/default-error-boundary'
+import { NotFound } from '@/components/not-found'
 import queryClient from '@/lib/query-client'
 import { routeTree } from './routeTree.gen'
 
@@ -7,7 +9,8 @@ const router = createRouter({
   context: {
     queryClient,
   },
-  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+  defaultErrorComponent: DefaultCatchBoundary,
+  defaultNotFoundComponent: () => <NotFound />,
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
   scrollRestoration: true,

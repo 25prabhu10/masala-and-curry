@@ -20,7 +20,7 @@ export function MainNavigation() {
           to={item.href}
         >
           <span className="relative z-10">{item.label}</span>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-0 bg-primary transition-all duration-300 ease-in-out group-hover:w-full [.active_&]:w-full" />
+          <div className="absolute bottom-0 motion-reduce:left-0 motion-safe:left-1/2 motion-safe:-translate-x-1/2 h-0.5 w-0 bg-primary motion-safe:transition-all motion-safe:duration-300 ease-in-out group-hover:w-full [.active_&]:w-full" />
         </Link>
       ))}
     </div>

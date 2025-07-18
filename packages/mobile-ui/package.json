@@ -12,7 +12,6 @@
     "check-types": "tsc --noEmit"
   },
   "exports": {
-    ".": "./src/index.ts",
     "./button": "./src/button.tsx",
     "./text": "./src/text.tsx",
     "./icons/*": "./src/icons/*.tsx"

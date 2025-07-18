@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
-    "clean": "git clean -xdf dist .turbo .wrangler node_modules",
+    "clean": "git clean -xdf dist .cache .turbo .wrangler node_modules",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@hono/zod-openapi": "1.0.0-beta.1",
-    "@scalar/hono-api-reference": "^0.9.9",
+    "@scalar/hono-api-reference": "^0.9.11",
     "better-auth": "catalog:api",
     "drizzle-orm": "^0.44.3",
     "drizzle-zod": "^0.8.2",
@@ -32,13 +32,13 @@
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
-    "@types/node": "^24.0.12",
+    "@types/node": "catalog:",
     "drizzle-kit": "^0.31.4",
     "oxlint": "catalog:",
     "tsc-alias": "^1.8.16",
     "typescript": "catalog:",
     "vitest": "^3.2.4",
-    "wrangler": "^4.24.3"
+    "wrangler": "^4.25.0"
   },
   "keywords": [],
   "license": "GPL-2.0-only",

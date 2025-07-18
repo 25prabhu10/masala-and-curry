@@ -9,10 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
-import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
+import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',

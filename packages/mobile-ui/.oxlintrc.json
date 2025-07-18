@@ -14,10 +14,19 @@
     "react/jsx-no-script-url": "error",
     "react/jsx-no-target-blank": "off",
     "react/no-array-index-key": "error",
+    "react/forbid-elements": "error",
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".jsx", ".tsx"] }
+    ],
     "react/no-danger": "error",
     "react/no-this-in-sfc": "warn",
+    "react/rules-of-hooks": "error",
     "react/no-unknown-property": "warn",
     "react/prop-types": "off",
+    "react/no-unescaped-entities": "error",
+    "react/jsx-no-useless-fragment": "error",
+    "react/checked-requires-onchange-or-readonly": "error",
     "react/react-in-jsx-scope": "off",
     "react/self-closing-comp": [
       "error",

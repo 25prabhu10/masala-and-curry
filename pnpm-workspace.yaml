@@ -4,10 +4,11 @@ packages:
   - tooling/*
 
 catalog:
-  '@biomejs/biome': 2.1.1
+  "@biomejs/biome": 2.1.1
   oxlint: 1.6.0
   typescript: 5.8.3
   zod: ^3.25.76
+  "@types/node": "^24.0.14"
 
 catalogs:
   api:
@@ -16,8 +17,8 @@ catalogs:
   mobile:
     react-native-svg: 15.11.2
   react19:
-    '@types/react': ~19.0.10
-    '@types/react-dom': ~19.1.6
+    "@types/react": ~19.0.10
+    "@types/react-dom": ~19.1.6
     react: 19.0.0
     react-dom: 19.0.0
     react-native: 0.79.5
@@ -32,7 +33,7 @@ catalogs:
 nodeLinker: hoisted
 
 onlyBuiltDependencies:
-  - '@swc/core'
+  - "@swc/core"
   - esbuild
   - sharp
   - simple-git-hooks

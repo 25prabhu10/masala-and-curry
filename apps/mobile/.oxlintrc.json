@@ -34,12 +34,21 @@
     "react/jsx-no-comment-textnodes": "error",
     "react/jsx-no-script-url": "error",
     "react/jsx-no-target-blank": "off",
+    "react/forbid-elements": "error",
+    "react/rules-of-hooks": "error",
     "react/no-array-index-key": "error",
     "react/no-danger": "error",
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".jsx", ".tsx"] }
+    ],
     "react/no-this-in-sfc": "warn",
     "react/no-unknown-property": "warn",
+    "react/no-unescaped-entities": "error",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
+    "react/jsx-no-useless-fragment": "error",
+    "react/checked-requires-onchange-or-readonly": "error",
     "react/self-closing-comp": [
       "error",
       {

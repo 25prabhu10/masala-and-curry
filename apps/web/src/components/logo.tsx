@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/react/macro'
 import { Link } from '@tanstack/react-router'
 import logoDark from '@/assets/logo-dark.svg'
 import logoLight from '@/assets/logo-light.svg'
@@ -17,12 +16,8 @@ export function Logo() {
         className="h-10 w-10 lg:h-12 lg:w-12"
         src={theme === 'light' ? logoLight : logoDark}
       />
-      <span className="hidden sm:inline">
-        <Trans>Masala & Curry</Trans>
-      </span>
-      <span className="sm:hidden">
-        <Trans>M&C</Trans>
-      </span>
+      <span className="hidden sm:inline">Masala & Curry</span>
+      <span className="sm:hidden">M&C</span>
     </Link>
   )
 }
