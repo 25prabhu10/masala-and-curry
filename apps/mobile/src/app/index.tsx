@@ -1,4 +1,5 @@
-import { Button, Text } from '@mac/mobile-ui'
+import { Button } from '@mac/mobile-ui/button'
+import { Text } from '@mac/mobile-ui/text'
 import { Stack, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
 import { View } from 'react-native'

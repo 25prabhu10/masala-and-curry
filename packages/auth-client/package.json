@@ -1,0 +1,28 @@
+{
+  "name": "@mac/auth-client",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "author": "Prabhu K H",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf dist .turbo node_modules .cache",
+    "lint": "oxlint . --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "better-auth": "catalog:api"
+  },
+  "devDependencies": {
+    "@mac/tsconfig": "workspace:*",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "keywords": [],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.13.1"
+}

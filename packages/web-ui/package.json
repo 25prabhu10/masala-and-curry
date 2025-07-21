@@ -18,10 +18,9 @@
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
     "check-types": "tsc --noEmit",
-    "ui-add": "pnpm dlx shadcn@latest add"
+    "ui-add": "pnpm dlx shadcn@canary add"
   },
   "dependencies": {
-    "next-themes": "^0.4.6",
     "radix-ui": "latest",
     "sonner": "^2.0.6"
   },

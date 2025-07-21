@@ -1,10 +1,31 @@
-import type { QueryClient } from '@tanstack/react-query'
+import { getSessionQuery } from '@mac/queries/auth'
 import { Toaster } from '@mac/web-ui/sonner'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { type QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import React from 'react'
 import Header from '@/components/header'
 import { useTheme } from '@/context/theme-context'
+import { authClient, type UserSession } from '@/lib/auth-client'
+
+const TanStackRouterDevtools =
+  process.env.NODE_ENV === 'production'
+    ? () => null
+    : React.lazy(async () => {
+        const res = await import('@tanstack/react-router-devtools')
+        return {
+          default: res.TanStackRouterDevtools,
+        }
+      })
+
+const ReactQueryDevtools =
+  process.env.NODE_ENV === 'production'
+    ? () => null
+    : React.lazy(async () => {
+        const res = await import('@tanstack/react-query-devtools')
+        return {
+          default: res.ReactQueryDevtools,
+        }
+      })
 
 function RootLayout() {
   const { theme } = useTheme()
@@ -14,12 +35,23 @@ function RootLayout() {
       <hr />
       <Outlet />
       <Toaster richColors theme={theme} />
-      <ReactQueryDevtools initialIsOpen={false} />
-      <TanStackRouterDevtools />
+      <React.Suspense>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </React.Suspense>
+      <React.Suspense>
+        <TanStackRouterDevtools />
+      </React.Suspense>
     </div>
   )
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+  userSession: UserSession | undefined
+}>()({
   component: RootLayout,
+  beforeLoad: async ({ context }) => {
+    const userSession = await context.queryClient.fetchQuery(getSessionQuery(authClient))
+    return { userSession }
+  },
 })

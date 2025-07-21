@@ -7,14 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@mac/web-ui/card'
-import { useMutation } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { z } from 'zod/v4'
+import * as z from 'zod'
 import { useAppForm } from '@/hooks/use-form'
 import { signIn, signOut } from '@/lib/auth-client'
 
-async function signInLocal(params: { email: string; password: string; rememberMe: boolean }) {
+async function signInEmail(params: { email: string; password: string; rememberMe: boolean }) {
   const res = await signIn.email(params)
 
   if (res.error && res.error.status >= 500) {
@@ -24,9 +24,16 @@ async function signInLocal(params: { email: string; password: string; rememberMe
   return res
 }
 
-export function SignInForm() {
+type SignInFormProps = {
+  callback?: string
+}
+
+export function SignInForm({ callback }: SignInFormProps) {
+  const navigate = useNavigate({ from: '/sign-in' })
+  const queryClient = useQueryClient()
+
   const SignIN = useMutation({
-    mutationFn: signInLocal,
+    mutationFn: signInEmail,
   })
 
   const form = useAppForm({
@@ -49,6 +56,9 @@ export function SignInForm() {
           const res = await SignIN.mutateAsync(value)
 
           if (!res.error) {
+            toast.success('Login successful.')
+            queryClient.resetQueries()
+            navigate({ to: callback ?? '/' })
             return null
           }
 

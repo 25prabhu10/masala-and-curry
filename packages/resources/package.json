@@ -1,0 +1,51 @@
+{
+  "name": "@mac/resources",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "author": "Prabhu K H",
+  "type": "module",
+  "exports": {
+    "./app": {
+      "types": "./dist/app.d.ts",
+      "import": "./dist/app.js",
+      "default": "./dist/app.js"
+    },
+    "./constants": {
+      "types": "./dist/constants.d.ts",
+      "import": "./dist/constants.js",
+      "default": "./dist/constants.js"
+    },
+    "./user": {
+      "types": "./dist/user.d.ts",
+      "import": "./dist/user.js",
+      "default": "./dist/user.js"
+    },
+    "./http-status-codes": {
+      "types": "./dist/http-status-codes.d.ts",
+      "import": "./dist/http-status-codes.js",
+      "default": "./dist/http-status-codes.js"
+    },
+    "./http-status-phrases": {
+      "types": "./dist/http-status-phrases.d.ts",
+      "import": "./dist/http-status-phrases.js",
+      "default": "./dist/http-status-phrases.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc",
+    "clean": "git clean -xdf dist .turbo node_modules .cache",
+    "build": "tsc",
+    "lint": "oxlint . --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@mac/tsconfig": "workspace:*",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "keywords": [],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.13.1"
+}

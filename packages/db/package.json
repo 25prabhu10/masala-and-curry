@@ -1,0 +1,47 @@
+{
+  "name": "@mac/db",
+  "version": "0.0.1",
+  "description": "Masala and Curry API.",
+  "private": true,
+  "author": "Prabhu K H",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schemas": {
+      "types": "./dist/schemas/index.d.ts",
+      "import": "./src/schemas/index.ts",
+      "default": "./src/schemas/index.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsc",
+    "build": "tsc",
+    "clean": "git clean -xdf dist .cache .turbo node_modules",
+    "lint": "oxlint . --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "generate": "drizzle-kit generate",
+    "migrate": "wrangler d1 migrations apply mac-db --local",
+    "studio": "drizzle-kit studio",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/zod-openapi": "1.0.2",
+    "@mac/resources": "workspace:*",
+    "drizzle-orm": "^0.44.3",
+    "drizzle-zod": "^0.8.2",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@mac/tsconfig": "workspace:*",
+    "drizzle-kit": "^0.31.4",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "keywords": [],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.13.1"
+}

@@ -1,7 +1,7 @@
 import { cn } from '@mac/tailwind-config'
 import * as React from 'react'
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
+const Input = React.forwardRef<HTMLInputElement, React.ComponentPropsWithRef<'input'>>(
   ({ className, type, ...props }, ref) => (
     <input
       className={cn(

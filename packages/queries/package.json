@@ -1,0 +1,31 @@
+{
+  "name": "@mac/queries",
+  "version": "0.0.1",
+  "description": "Masala and Curry API.",
+  "private": true,
+  "author": "Prabhu K H",
+  "type": "module",
+  "exports": {
+    "./auth": "./src/auth.queries.ts",
+    "./user": "./src/user.queries.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf dist .cache .turbo node_modules",
+    "lint": "oxlint . --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mac/validators": "workspace:*",
+    "@tanstack/react-query": "^5.82.0"
+  },
+  "devDependencies": {
+    "@mac/auth-client": "workspace:*",
+    "@mac/tsconfig": "workspace:*",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "keywords": [],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.13.1"
+}

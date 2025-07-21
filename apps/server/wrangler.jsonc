@@ -13,7 +13,7 @@
       "binding": "DB",
       "database_name": "mac-db",
       "database_id": "000-000-000-000",
-      "migrations_dir": "./src/db/migrations"
+      "migrations_dir": "../../packages/db/src/migrations"
     }
   ]
 }

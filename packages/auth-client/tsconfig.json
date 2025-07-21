@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "declaration": false,
+    "declarationMap": false,
+    "typeRoots": ["../../node_modules/@types"]
+  },
+  "exclude": ["node_modules"],
+  "extends": ["@mac/tsconfig/internal-package.json"],
+  "include": ["src"],
+  "watchOptions": {
+    "excludeDirectories": ["**/node_modules", "dist"]
+  }
+}

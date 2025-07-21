@@ -8,6 +8,7 @@ const router = createRouter({
   routeTree,
   context: {
     queryClient,
+    userSession: undefined,
   },
   defaultErrorComponent: DefaultCatchBoundary,
   defaultNotFoundComponent: () => <NotFound />,
@@ -21,6 +22,14 @@ declare module '@tanstack/react-router' {
     router: typeof router
   }
 }
+
+// TODO: Remove this when the issue is fixed
+router.subscribe('onBeforeLoad', console.log)
+router.subscribe('onBeforeNavigate', console.log)
+router.subscribe('onBeforeRouteMount', console.log)
+router.subscribe('onLoad', console.log)
+router.subscribe('onRendered', console.log)
+router.subscribe('onResolved', console.log)
 
 export default function App() {
   return <RouterProvider router={router} />

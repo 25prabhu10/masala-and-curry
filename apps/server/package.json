@@ -10,30 +10,27 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
+    "build": "wrangler deploy --dry-run --outdir dist",
     "clean": "git clean -xdf dist .cache .turbo .wrangler node_modules",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "db:generate": "drizzle-kit generate",
     "db:migrate": "wrangler d1 migrations apply mac-db --local",
-    "db:studio": "drizzle-kit studio",
     "check-types": "tsc --noEmit",
     "test": "vitest"
   },
   "dependencies": {
-    "@hono/zod-openapi": "1.0.0-beta.1",
+    "@hono/zod-openapi": "1.0.2",
+    "@mac/db": "workspace:*",
+    "@mac/resources": "workspace:*",
     "@scalar/hono-api-reference": "^0.9.11",
     "better-auth": "catalog:api",
-    "drizzle-orm": "^0.44.3",
-    "drizzle-zod": "^0.8.2",
     "hono": "catalog:api",
-    "nanoid": "^5.1.5",
-    "zod": "catalog:"
+    "nanoid": "^5.1.5"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
     "@types/node": "catalog:",
-    "drizzle-kit": "^0.31.4",
     "oxlint": "catalog:",
     "tsc-alias": "^1.8.16",
     "typescript": "catalog:",

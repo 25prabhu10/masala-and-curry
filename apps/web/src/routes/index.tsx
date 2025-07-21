@@ -4,9 +4,14 @@ import { ArrowRight, Clock, MapPin, Phone, Star } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
   component: Index,
+  loader: ({ context }) => context.userSession,
 })
 
 function Index() {
+  const posts = Route.useLoaderData()
+
+  console.log('Posts:', posts)
+
   return (
     <main className="flex-1">
       <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">

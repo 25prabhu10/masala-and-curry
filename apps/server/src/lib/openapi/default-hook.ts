@@ -1,5 +1,5 @@
 import type { Hook } from '@hono/zod-openapi'
-import { UNPROCESSABLE_ENTITY } from '../constants/http-status-codes'
+import { UNPROCESSABLE_ENTITY } from '@mac/resources/http-status-codes'
 
 // oxlint-disable-next-line no-explicit-any
 const defaultHook: Hook<any, any, any, any> = (result, c) => {

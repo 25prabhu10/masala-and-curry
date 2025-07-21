@@ -1,8 +1,7 @@
-import { createAuthClient } from 'better-auth/react'
+import { createNewClient } from '@mac/auth-client'
 
-export const authClient = createAuthClient({
-  baseURL: 'http://localhost:5173',
-  basePath: '/api/v1/auth',
-})
+export const authClient = createNewClient('http://localhost:5173', '/api/v1/auth')
 
-export const { signIn, signOut, signUp, useSession } = authClient
+export const { signIn, signOut, signUp, getSession } = authClient
+
+export type UserSession = typeof authClient.$Infer.Session

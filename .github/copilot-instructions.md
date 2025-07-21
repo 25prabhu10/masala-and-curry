@@ -6,7 +6,7 @@ alwaysApply: true
 
 # Project Context
 
-This is a **Masala and Curry** food delivery application built as a modern monorepo. This app is dedicated to a single restaurant: "Masala and Curry".
+This is a food delivery application for the restaurant **Masala and Curry** built as a modern monorepo. This app is dedicated to a single restaurant: "Masala and Curry".
 
 The project includes:
 
@@ -75,6 +75,7 @@ The project includes:
 - Implement proper SEO optimization
 - Use progressive enhancement patterns
 - Follow web accessibility guidelines strictly
+- Use HTML escape characters, like `'` can be escaped with `&apos;` or `&lsquo;` or `&#39;` or `&rsquo;`
 
 ## Prime Directive
 

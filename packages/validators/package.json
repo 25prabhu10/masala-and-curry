@@ -1,0 +1,33 @@
+{
+  "name": "@mac/validators",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "author": "Prabhu K H",
+  "type": "module",
+  "exports": {
+    "./auth": "./src/auth.validators.ts",
+    "./user": "./src/user.validators.ts",
+    "./session": "./src/session.validators.ts"
+  },
+  "scripts": {
+    "dev": "tsc",
+    "clean": "git clean -xdf dist .turbo node_modules .cache",
+    "build": "tsc",
+    "lint": "oxlint . --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mac/db": "workspace:*",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@mac/tsconfig": "workspace:*",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "keywords": [],
+  "license": "GPL-2.0-only",
+  "packageManager": "pnpm@10.13.1"
+}
