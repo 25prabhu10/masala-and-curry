@@ -7,11 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@mac/web-ui/card'
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
-import { CheckCircle, Home, LogOut, User } from 'lucide-react'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { CheckCircle, Home, User } from 'lucide-react'
 import * as z from 'zod'
 import { SignInForm } from '@/components/auth/sign-in-form'
-import { signOut } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/_auth/sign-in')({
   component: RouteComponent,
@@ -26,8 +25,6 @@ export const Route = createFileRoute('/_auth/sign-in')({
 function RouteComponent() {
   const { callback } = Route.useSearch()
   const { user } = Route.useLoaderData()
-  const navigate = Route.useNavigate()
-  const router = useRouter()
 
   if (user) {
     return (
@@ -55,26 +52,12 @@ function RouteComponent() {
               </CardContent>
 
               <CardFooter className="flex flex-col gap-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                <div className="w-full">
                   <Button asChild className="w-full">
                     <Link to={callback ?? '/'}>
                       <Home className="h-4 w-4 mr-2" />
                       Continue
                     </Link>
-                  </Button>
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      signOut().then(() => {
-                        router.invalidate().finally(() => {
-                          navigate({ to: '/' })
-                        })
-                      })
-                    }}
-                    variant="outline"
-                  >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Sign Out
                   </Button>
                 </div>
 

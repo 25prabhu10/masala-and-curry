@@ -6,10 +6,12 @@
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
+    "./avatar": "./src/avatar.tsx",
     "./button": "./src/button.tsx",
-    "./input": "./src/input.tsx",
     "./card": "./src/card.tsx",
     "./checkbox": "./src/checkbox.tsx",
+    "./dropdown-menu": "./src/dropdown-menu.tsx",
+    "./input": "./src/input.tsx",
     "./label": "./src/label.tsx",
     "./sonner": "./src/sonner.tsx"
   },
