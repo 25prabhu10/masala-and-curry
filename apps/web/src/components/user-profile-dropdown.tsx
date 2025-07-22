@@ -10,8 +10,8 @@ import {
 } from '@mac/web-ui/dropdown-menu'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useRouter } from '@tanstack/react-router'
-import { Clock, Heart, LogOut, Settings, User } from 'lucide-react'
-import { useState } from 'react'
+import { Clock, Heart, Loader2, LogOut, Settings, User } from 'lucide-react'
+import { useTransition } from 'react'
 import { toast } from 'sonner'
 import { signOut, type User as UserType } from '@/lib/auth-client'
 
@@ -20,33 +20,31 @@ type UserProfileDropdownProps = {
 }
 
 export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
-  const [isPending, setIsPending] = useState(false)
+  const [isPending, startTransition] = useTransition()
   const navigate = useNavigate()
   const router = useRouter()
   const queryClient = useQueryClient()
 
   function handleLogout() {
-    setIsPending(true)
-    signOut()
-      .then(() => {
+    startTransition(async () => {
+      try {
+        await signOut()
         toast.success('Signed out successfully', {
           description: 'You have been signed out of your account.',
         })
-        setIsPending(false)
-        queryClient.invalidateQueries()
-        router.invalidate().finally(() => {
-          navigate({ to: '/' })
-        })
-      })
-      .catch((error) => {
+
+        await queryClient.invalidateQueries()
+        await router.invalidate()
+        await navigate({ to: '/' })
+      } catch (error) {
         toast.error('Failed to sign out', {
-          description: error.message,
+          description: error instanceof Error ? error.message : '',
         })
-        setIsPending(false)
-      })
+      }
+    })
   }
 
-  const getInitials = (name: string) => {
+  function getInitials(name: string) {
     return name
       .split(' ')
       .map((part) => part.charAt(0))
@@ -57,12 +55,27 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
 
   return (
     <div className="ml-auto">
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button className="h-10 w-10 rounded-full" variant="outline">
+          <Button
+            aria-disabled={isPending}
+            className="h-10 w-10 rounded-full"
+            disabled={isPending}
+            variant="outline"
+          >
             <Avatar>
-              <AvatarImage alt={user.name} src={user.image ?? ''} />
-              <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+              {isPending ? (
+                <div className="absolute bg-primary flex justify-center items-center h-10 w-10 z-10">
+                  <Loader2 className="motion-safe:animate-spin" />
+                </div>
+              ) : (
+                <>
+                  <AvatarImage alt={user.name} src={user.image ?? ''} />
+                  <AvatarFallback className="hover:text-accent">
+                    {getInitials(user.name)}
+                  </AvatarFallback>
+                </>
+              )}
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -76,7 +89,7 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
           <DropdownMenuSeparator />
 
           <DropdownMenuItem asChild>
-            <Link className="cursor-pointer" to="/">
+            <Link className="cursor-pointer" to="/profile">
               <User className="mr-2 h-4 w-4" />
               <span>Profile Settings</span>
             </Link>
@@ -111,7 +124,8 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
             onClick={handleLogout}
           >
             <LogOut className="mr-2 h-4 w-4" />
-            <span>{isPending ? 'Signing out...' : 'Sign Out'}</span>
+            <span>Sign Out</span>
+            {isPending && <Loader2 className="ml-2 h-4 w-4 motion-safe:animate-spin" />}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

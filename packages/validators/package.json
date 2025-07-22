@@ -11,9 +11,7 @@
     "./session": "./src/session.validators.ts"
   },
   "scripts": {
-    "dev": "tsc",
     "clean": "git clean -xdf dist .turbo node_modules .cache",
-    "build": "tsc",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
     "check-types": "tsc --noEmit"

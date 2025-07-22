@@ -15,7 +15,7 @@ function RouteComponent() {
   const { callback } = Route.useSearch()
 
   return (
-    <main className="flex-1 flex flex items-center justify-center bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">
+    <main className="flex-1 flex items-center justify-center bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">
       <section className="container">
         <Card className="mx-auto max-w-md border-destructive/20">
           <CardHeader className="text-center">
@@ -24,7 +24,7 @@ function RouteComponent() {
             </div>
             <CardTitle className="text-2xl font-semibold">Access Denied</CardTitle>
             <CardDescription className="text-base">
-              You don't have permission to access this page. Please sign in with an authorized
+              You don&apos;t have permission to access this page. Please sign in with an authorized
               account or contact support if you believe this is an error.
             </CardDescription>
           </CardHeader>

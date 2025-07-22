@@ -8,55 +8,78 @@ import {
   CardTitle,
 } from '@mac/web-ui/card'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import * as z from 'zod'
 import { useAppForm } from '@/hooks/use-form'
-import { signIn, signOut } from '@/lib/auth-client'
+import { signUp } from '@/lib/auth-client'
 
-async function signInEmail(params: { email: string; password: string; rememberMe: boolean }) {
-  const res = await signIn.email(params)
+async function signUpEmail(params: {
+  name: string
+  email: string
+  password: string
+  confirmPassword: string
+}) {
+  const res = await signUp.email({
+    name: params.name,
+    email: params.email,
+    password: params.password,
+  })
 
   if (res.error && res.error.status >= 500) {
-    throw new Error(res.error.message ?? 'An error occurred while signing in')
+    throw new Error(res.error.message ?? 'An error occurred while signing up')
   }
 
   return res
 }
 
-type SignInFormProps = {
+type SignUpFormProps = {
   callback?: string
 }
 
-export function SignInForm({ callback }: SignInFormProps) {
-  const navigate = useNavigate({ from: '/sign-in' })
+export function SignUpForm({ callback }: SignUpFormProps) {
+  const navigate = useNavigate({ from: '/sign-up' })
   const queryClient = useQueryClient()
 
-  const SignIN = useMutation({
-    mutationFn: signInEmail,
+  const signUpMutation = useMutation({
+    mutationFn: signUpEmail,
   })
 
   const form = useAppForm({
     defaultValues: {
-      password: '123456798@Abc',
-      email: 'john@doe.com',
-      rememberMe: false,
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
     validators: {
-      onChange: z.object({
-        password: z
-          .string()
-          .min(8, 'Password must be at least 8 characters long')
-          .max(255, `Password must be at most ${255} characters long`),
-        email: z.email().max(255, `Email must be at most ${255} characters long`),
-        rememberMe: z.boolean(),
-      }),
+      onChange: z
+        .object({
+          name: z
+            .string()
+            .min(2, 'Name must be at least 2 characters long')
+            .max(100, 'Name must be at most 100 characters long'),
+          email: z.email().max(255, 'Email must be at most 255 characters long'),
+          password: z
+            .string()
+            .min(8, 'Password must be at least 8 characters long')
+            .max(255, 'Password must be at most 255 characters long')
+            .regex(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+              'Password must contain at least one lowercase letter, one uppercase letter, and one number'
+            ),
+          confirmPassword: z.string(),
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+          message: 'Passwords do not match',
+          path: ['confirmPassword'],
+        }),
       onSubmitAsync: async ({ value }) => {
         try {
-          const res = await SignIN.mutateAsync(value)
+          const res = await signUpMutation.mutateAsync(value)
 
           if (!res.error) {
-            toast.success('Login successful.')
+            toast.success('Account created successfully! You are now signed in.')
             queryClient.resetQueries()
             navigate({ to: callback ?? '/' })
             return null
@@ -64,12 +87,12 @@ export function SignInForm({ callback }: SignInFormProps) {
 
           if (res.error.status === 400) {
             return res.error.code === 'VALIDATION_ERROR'
-              ? { form: 'Please check your email and password' }
+              ? { form: 'Please check your information and try again' }
               : { fields: { email: res.error.message } }
           }
-          return { form: res.error.message ?? 'Invalid email or password' }
+          return { form: res.error.message ?? 'Failed to create account' }
         } catch {
-          return
+          return { form: 'An unexpected error occurred. Please try again.' }
         }
       },
     },
@@ -81,9 +104,9 @@ export function SignInForm({ callback }: SignInFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
+        <CardTitle className="text-lg md:text-xl">Create Account</CardTitle>
         <CardDescription className="text-xs md:text-sm">
-          Enter your email below to login to your account
+          Enter your information below to create your Masala and Curry account
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -98,6 +121,20 @@ export function SignInForm({ callback }: SignInFormProps) {
           <form.AppField
             children={(field) => (
               <field.TextField
+                autoComplete="name"
+                className="h-12"
+                label="Full Name"
+                placeholder="John Doe"
+                required
+                title="Enter your full name"
+                type="text"
+              />
+            )}
+            name="name"
+          />
+          <form.AppField
+            children={(field) => (
+              <field.TextField
                 autoComplete="email"
                 className="h-12"
                 label="Email"
@@ -109,35 +146,35 @@ export function SignInForm({ callback }: SignInFormProps) {
             )}
             name="email"
           />
-          <div className="relative">
-            <form.AppField
-              children={(field) => (
-                <field.PasswordField
-                  autoComplete="current-password"
-                  className="h-12"
-                  label="Password"
-                  placeholder="********"
-                  required
-                />
-              )}
-              name="password"
-            />
-            <Link
-              className="absolute top-0 right-0 text-sm text-primary hover:text-primary/80 transition-colors"
-              to="/"
-            >
-              Forgot password?
-            </Link>
-          </div>
           <form.AppField
-            children={(field) => <field.CheckboxField label="Remember me" />}
-            name="rememberMe"
+            children={(field) => (
+              <field.PasswordField
+                autoComplete="new-password"
+                className="h-12"
+                label="Password"
+                placeholder="********"
+                required
+              />
+            )}
+            name="password"
+          />
+          <form.AppField
+            children={(field) => (
+              <field.PasswordField
+                autoComplete="new-password"
+                className="h-12"
+                label="Confirm Password"
+                placeholder="********"
+                required
+              />
+            )}
+            name="confirmPassword"
           />
           <form.AppForm>
             <form.FormErrors />
           </form.AppForm>
           <form.AppForm>
-            <form.SubmitButton className="w-full h-12" label="Sign In" />
+            <form.SubmitButton className="w-full h-12" label="Create Account" />
           </form.AppForm>
         </form>
       </CardContent>
@@ -176,9 +213,9 @@ export function SignInForm({ callback }: SignInFormProps) {
                 fill="#EB4335"
               />
             </svg>
-            Sign in with Google
+            Sign up with Google
           </Button>
-          <Button className="h-12" onClick={() => signOut()} type="button" variant="outline">
+          <Button className="h-12" type="button" variant="outline">
             <svg
               height="1em"
               viewBox="0 0 814 1000"
@@ -191,7 +228,7 @@ export function SignInForm({ callback }: SignInFormProps) {
                 fill="currentColor"
               />
             </svg>
-            Sign in with Apple
+            Sign up with Apple
           </Button>
         </div>
       </CardFooter>

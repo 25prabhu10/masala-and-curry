@@ -21,12 +21,12 @@ const betterAuthOptions: BetterAuthOptions = {
   // },
 
   // https://www.better-auth.com/docs/concepts/session-management#session-caching
-  // session: {
-  //   cookieCache: {
-  //     enabled: true,
-  //     maxAge: 5 * 60, // 5 minutes
-  //   },
-  // },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60, // 5 minutes
+    },
+  },
 
   // https://www.better-auth.com/docs/concepts/oauth
   // socialProviders: {
@@ -37,7 +37,7 @@ const betterAuthOptions: BetterAuthOptions = {
   // }
 
   // TODO: merge openapi
-  plugins: [username(), admin(), openAPI()],
+  plugins: [admin(), openAPI()],
 }
 
 export async function authClient(env: CloudflareBindings): Promise<ReturnType<typeof betterAuth>> {

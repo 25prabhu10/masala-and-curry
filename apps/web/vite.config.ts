@@ -1,14 +1,14 @@
-import { dirname, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react-swc'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig, type PluginOption } from 'vite'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   plugins: [
+    tsconfigPaths({
+      projects: ['./tsconfig.json', './tsconfig.app.json'],
+    }),
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
@@ -27,11 +27,6 @@ export default defineConfig({
   build: {
     sourcemap: true,
     emptyOutDir: true,
-  },
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-    },
   },
   server: {
     cors: false,

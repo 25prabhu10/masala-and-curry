@@ -8,10 +8,6 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
-  const posts = Route.useLoaderData()
-
-  console.log('Posts:', posts)
-
   return (
     <main className="flex-1">
       <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">
@@ -25,7 +21,7 @@ function Index() {
                 <p className="text-lg text-muted-foreground leading-relaxed">
                   Experience the rich culinary heritage where aromatic Indian spices meet the hearty
                   traditions of Nepal. From creamy butter chicken to authentic momos, every dish
-                  tells a story of flavor and tradition.
+                  tells a story of flavour and tradition.
                 </p>
               </div>
 

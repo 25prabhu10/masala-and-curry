@@ -60,10 +60,12 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
                 Try Again
               </Button>
               {isRoot ? (
-                <Link to="/">
-                  <ArrowLeft />
-                  Go Home
-                </Link>
+                <Button asChild variant="outline">
+                  <Link to="/">
+                    <ArrowLeft />
+                    Go Home
+                  </Link>
+                </Button>
               ) : (
                 <Button asChild variant="outline">
                   <Link

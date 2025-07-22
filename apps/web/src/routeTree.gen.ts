@@ -17,7 +17,13 @@ import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NotAuthorizedRouteImport } from './routes/not-authorized'
+import { Route as ProfileRouteImport } from './routes/profile'
 
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NotAuthorizedRoute = NotAuthorizedRouteImport.update({
   id: '/not-authorized',
   path: '/not-authorized',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/not-authorized': typeof NotAuthorizedRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/not-authorized': typeof NotAuthorizedRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/about': typeof AboutRoute
   '/not-authorized': typeof NotAuthorizedRoute
+  '/profile': typeof ProfileRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/admin/dashboard': typeof AdminDashboardRoute
@@ -94,11 +103,20 @@ export interface FileRouteTypes {
     | '/admin'
     | '/about'
     | '/not-authorized'
+    | '/profile'
     | '/sign-in'
     | '/sign-up'
     | '/admin/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/about' | '/not-authorized' | '/sign-in' | '/sign-up' | '/admin/dashboard'
+  to:
+    | '/'
+    | '/admin'
+    | '/about'
+    | '/not-authorized'
+    | '/profile'
+    | '/sign-in'
+    | '/sign-up'
+    | '/admin/dashboard'
   id:
     | '__root__'
     | '/'
@@ -106,6 +124,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/about'
     | '/not-authorized'
+    | '/profile'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/admin/dashboard'
@@ -117,10 +136,18 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   AboutRoute: typeof AboutRoute
   NotAuthorizedRoute: typeof NotAuthorizedRoute
+  ProfileRoute: typeof ProfileRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/not-authorized': {
       id: '/not-authorized'
       path: '/not-authorized'
@@ -208,6 +235,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   AboutRoute: AboutRoute,
   NotAuthorizedRoute: NotAuthorizedRoute,
+  ProfileRoute: ProfileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

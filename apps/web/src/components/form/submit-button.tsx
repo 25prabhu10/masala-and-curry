@@ -17,7 +17,7 @@ export function SubmitButton({
       {([canSubmit, isSubmitting]) => (
         <Button disabled={isSubmitting || !canSubmit} type="submit" {...props}>
           {label}
-          {isSubmitting && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+          {isSubmitting && <Loader2 className="ml-2 h-4 w-4 motion-safe:animate-spin" />}
         </Button>
       )}
     </form.Subscribe>

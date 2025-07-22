@@ -23,7 +23,7 @@
     "@hono/zod-openapi": "1.0.2",
     "@mac/db": "workspace:*",
     "@mac/resources": "workspace:*",
-    "@scalar/hono-api-reference": "^0.9.11",
+    "@scalar/hono-api-reference": "^0.9.12",
     "better-auth": "catalog:api",
     "hono": "catalog:api",
     "nanoid": "^5.1.5"

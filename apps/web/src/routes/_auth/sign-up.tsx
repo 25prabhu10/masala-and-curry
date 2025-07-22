@@ -1,9 +1,52 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import * as z from 'zod'
+import { AlreadySignedIn } from '@/components/auth/already-signed-in'
+import { SignUpForm } from '@/components/auth/sign-up-form'
 
 export const Route = createFileRoute('/_auth/sign-up')({
   component: RouteComponent,
+  loader: async ({ context }) => {
+    return { user: context.userSession?.user }
+  },
+  validateSearch: z.object({
+    callback: z.string().optional(),
+  }),
 })
 
 function RouteComponent() {
-  return <div>Hello sign-up!</div>
+  const { callback } = Route.useSearch()
+  const { user } = Route.useLoaderData()
+
+  if (user) {
+    return <AlreadySignedIn callback={callback} user={user} />
+  }
+
+  return (
+    <main className="flex-1 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 p-4 flex flex-col justify-center">
+      <div className="w-full mx-auto max-w-md">
+        <section>
+          <SignUpForm callback={callback} />
+        </section>
+        <div className="text-center mt-8">
+          <p className="text-muted-foreground">
+            Already have an account?{' '}
+            <Link
+              className="text-primary hover:text-primary/80 font-medium transition-colors"
+              to="/sign-in"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
+
+        <div className="text-center mt-6">
+          <p className="text-xs text-muted-foreground text-balance">
+            By creating an account, you agree to our{' '}
+            <span className="text-primary underline underline-offset-4">Terms of Service</span> and{' '}
+            <span className="text-primary underline underline-offset-4">Privacy Policy</span>
+          </p>
+        </div>
+      </div>
+    </main>
+  )
 }

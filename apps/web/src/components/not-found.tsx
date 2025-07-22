@@ -24,8 +24,8 @@ export function NotFound({ children }: { children?: ReactNode }) {
             <CardDescription className="text-base">
               {children ?? (
                 <>
-                  The page you're looking for doesn't exist. It might have been moved, deleted, or
-                  you entered the wrong URL.
+                  The page you&apos;re looking for doesn&apos;t exist. It might have been moved,
+                  deleted, or you entered the wrong URL.
                 </>
               )}
             </CardDescription>
