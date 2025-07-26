@@ -1,4 +1,4 @@
-import { cn } from '@mac/tailwind-config'
+import { cn } from '@mac/tailwind-config/utils'
 import { CheckIcon } from 'lucide-react'
 import { Checkbox as CheckboxPrimitive } from 'radix-ui'
 import * as React from 'react'

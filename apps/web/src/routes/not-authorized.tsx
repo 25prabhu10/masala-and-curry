@@ -29,12 +29,7 @@ function RouteComponent() {
             </CardDescription>
           </CardHeader>
           <CardFooter className="flex flex-col gap-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-              <Button asChild className="w-full">
-                <Link search={{ callback }} to="/sign-in">
-                  Sign In
-                </Link>
-              </Button>
+            <div className="grid grid-cols-1 gap-3 w-full">
               <Button asChild className="w-full" variant="outline">
                 <Link to="/">
                   <Home className="h-4 w-4 mr-2" />

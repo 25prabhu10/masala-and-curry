@@ -7,10 +7,10 @@ function createMessageObjectSchema(exampleMessage: string = '42') {
     })
     .openapi({
       description: 'Generic message object',
-      required: ['message'],
       example: {
         message: exampleMessage,
       },
+      required: ['message'],
     })
     .openapi('Message')
 }

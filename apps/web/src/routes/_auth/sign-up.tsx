@@ -1,25 +1,13 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import * as z from 'zod'
-import { AlreadySignedIn } from '@/components/auth/already-signed-in'
+
 import { SignUpForm } from '@/components/auth/sign-up-form'
 
 export const Route = createFileRoute('/_auth/sign-up')({
   component: RouteComponent,
-  loader: async ({ context }) => {
-    return { user: context.userSession?.user }
-  },
-  validateSearch: z.object({
-    callback: z.string().optional(),
-  }),
 })
 
 function RouteComponent() {
   const { callback } = Route.useSearch()
-  const { user } = Route.useLoaderData()
-
-  if (user) {
-    return <AlreadySignedIn callback={callback} user={user} />
-  }
 
   return (
     <main className="flex-1 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 p-4 flex flex-col justify-center">
@@ -32,6 +20,7 @@ function RouteComponent() {
             Already have an account?{' '}
             <Link
               className="text-primary hover:text-primary/80 font-medium transition-colors"
+              search={{ callback }}
               to="/sign-in"
             >
               Sign in

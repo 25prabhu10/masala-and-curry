@@ -1,5 +1,6 @@
-import type { User } from '@/lib/auth-client'
 import { create } from 'zustand'
+
+import type { User } from '@/lib/auth-client'
 
 interface AppState {
   user: User | undefined

@@ -1,3 +1,9 @@
+import { allUserKeys } from '@mac/queries/user'
+import {
+  FORM_SUBMISSION_ERROR_DESC,
+  FORM_SUBMISSION_GENERIC_DESC,
+  UNEXPECTED_ERROR_DESC,
+} from '@mac/resources/general'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -8,9 +14,10 @@ import {
   CardTitle,
 } from '@mac/web-ui/card'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import * as z from 'zod'
+
 import { useAppForm } from '@/hooks/use-form'
 import { signUp } from '@/lib/auth-client'
 
@@ -21,8 +28,8 @@ async function signUpEmail(params: {
   confirmPassword: string
 }) {
   const res = await signUp.email({
-    name: params.name,
     email: params.email,
+    name: params.name,
     password: params.password,
   })
 
@@ -38,6 +45,7 @@ type SignUpFormProps = {
 }
 
 export function SignUpForm({ callback }: SignUpFormProps) {
+  const router = useRouter()
   const navigate = useNavigate({ from: '/sign-up' })
   const queryClient = useQueryClient()
 
@@ -47,28 +55,27 @@ export function SignUpForm({ callback }: SignUpFormProps) {
 
   const form = useAppForm({
     defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
+      confirmPassword: '123456798@Abc',
+      email: 'john@doe.com',
+      name: 'John Doe',
+      password: '123456798@Abc',
+    },
+    onSubmitInvalid: () => {
+      toast.error(FORM_SUBMISSION_ERROR_DESC)
     },
     validators: {
       onChange: z
         .object({
+          confirmPassword: z.string(),
+          email: z.email('Invalid email').max(255, 'Email must be at most 255 characters long'),
           name: z
             .string()
             .min(2, 'Name must be at least 2 characters long')
             .max(100, 'Name must be at most 100 characters long'),
-          email: z.email().max(255, 'Email must be at most 255 characters long'),
           password: z
             .string()
             .min(8, 'Password must be at least 8 characters long')
-            .max(255, 'Password must be at most 255 characters long')
-            .regex(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-              'Password must contain at least one lowercase letter, one uppercase letter, and one number'
-            ),
-          confirmPassword: z.string(),
+            .max(255, 'Password must be at most 255 characters long'),
         })
         .refine((data) => data.password === data.confirmPassword, {
           message: 'Passwords do not match',
@@ -80,24 +87,29 @@ export function SignUpForm({ callback }: SignUpFormProps) {
 
           if (!res.error) {
             toast.success('Account created successfully! You are now signed in.')
-            queryClient.resetQueries()
-            navigate({ to: callback ?? '/' })
+            await queryClient.resetQueries({ queryKey: allUserKeys })
+            if (callback) {
+              router.history.push(callback)
+            } else {
+              await navigate({ replace: true, to: '/' })
+            }
             return null
           }
 
           if (res.error.status === 400) {
-            return res.error.code === 'VALIDATION_ERROR'
-              ? { form: 'Please check your information and try again' }
-              : { fields: { email: res.error.message } }
+            if (res.error.code === 'VALIDATION_ERROR') {
+              return { form: FORM_SUBMISSION_GENERIC_DESC }
+            } else if (res.error.code?.includes('EMAIL')) {
+              return { fields: { email: res.error.message } }
+            } else if (res.error.code?.includes('PASSWORD')) {
+              return { fields: { password: res.error.message } }
+            }
           }
           return { form: res.error.message ?? 'Failed to create account' }
         } catch {
-          return { form: 'An unexpected error occurred. Please try again.' }
+          return { form: UNEXPECTED_ERROR_DESC }
         }
       },
-    },
-    onSubmitInvalid: () => {
-      toast.error('Please fix the errors in the form before submitting')
     },
   })
 

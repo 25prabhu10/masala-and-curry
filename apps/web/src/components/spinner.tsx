@@ -10,9 +10,9 @@ export function Spinner({
   size?: 'sm' | 'default' | 'lg'
 }) {
   const sizeClasses = {
-    sm: 'h-4 w-4',
     default: 'h-5 w-5',
     lg: 'h-6 w-6',
+    sm: 'h-4 w-4',
   }
 
   return (

@@ -1,4 +1,5 @@
 import { type AnyD1Database, drizzle } from 'drizzle-orm/d1'
+
 import * as schema from './schemas'
 
 export async function createDb<TClient extends AnyD1Database = AnyD1Database>(db: TClient) {
@@ -8,3 +9,5 @@ export async function createDb<TClient extends AnyD1Database = AnyD1Database>(db
     schema,
   })
 }
+
+export type DB = Awaited<ReturnType<typeof createDb>>

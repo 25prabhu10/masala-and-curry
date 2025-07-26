@@ -1,5 +1,5 @@
 import { Button } from '@mac/web-ui/button'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowRight, Clock, MapPin, Phone, Star } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
@@ -8,6 +8,7 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
+  const userSession = Route.useLoaderData()
   return (
     <main className="flex-1">
       <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">
@@ -26,9 +27,11 @@ function Index() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="text-lg px-8 py-3" size="lg">
-                  Order Online
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                <Button asChild className="text-lg px-8 py-3" size="lg">
+                  <Link to={userSession ? '/' : '/sign-in'}>
+                    Order Online
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
                 </Button>
                 <Button className="text-lg px-8 py-3" size="lg" variant="outline">
                   View Menu
@@ -176,43 +179,43 @@ function Index() {
 
 const featuredDishes = [
   {
-    name: 'Butter Chicken',
     description: 'Tender chicken in a rich, creamy tomato sauce with aromatic spices',
-    price: '$16.99',
     emoji: '🍗',
+    name: 'Butter Chicken',
+    price: '$16.99',
   },
   {
-    name: 'Chicken Momos',
     description: 'Traditional Nepalese dumplings filled with spiced chicken and herbs',
-    price: '$12.99',
     emoji: '🥟',
+    name: 'Chicken Momos',
+    price: '$12.99',
   },
   {
-    name: 'Lamb Biryani',
     description: 'Fragrant basmati rice layered with tender lamb and saffron',
-    price: '$19.99',
     emoji: '🍛',
+    name: 'Lamb Biryani',
+    price: '$19.99',
   },
 ]
 
 const features = [
   {
-    icon: Star,
-    title: 'Authentic Recipes',
     description:
       'Traditional family recipes passed down through generations, prepared with love and authenticity',
+    icon: Star,
+    title: 'Authentic Recipes',
   },
   {
-    icon: Clock,
-    title: 'Fresh Daily',
     description:
       'All ingredients sourced fresh daily and spices ground in-house for maximum flavour',
+    icon: Clock,
+    title: 'Fresh Daily',
   },
   {
-    icon: MapPin,
-    title: 'Fast Delivery',
     description:
       'Hot, fresh meals delivered to your door in 30 minutes or less within our delivery zone',
+    icon: MapPin,
+    title: 'Fast Delivery',
   },
 ]
 

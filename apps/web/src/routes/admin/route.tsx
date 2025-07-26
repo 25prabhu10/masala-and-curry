@@ -1,17 +1,20 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin')({
-  component: RouteComponent,
   beforeLoad: async ({ context }) => {
-    console.log('Admin route beforeLoad', context.userSession)
-    if (!context.userSession?.user?.role?.includes('admin')) {
+    if (!context.userSession?.user) {
       throw redirect({
-        to: '/not-authorized',
+        search: { callback: location.href },
+        to: '/sign-in',
+      })
+    } else if (!context.userSession?.user?.role?.includes('admin')) {
+      throw redirect({
         replace: true,
-        search: { callback: location.pathname + location.search },
+        to: '/not-authorized',
       })
     }
   },
+  component: RouteComponent,
 })
 
 function RouteComponent() {

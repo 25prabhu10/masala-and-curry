@@ -1,29 +1,40 @@
 {
   "name": "@mac/web",
   "version": "0.0.1",
-  "description": "Masala and Curry website.",
   "private": true,
+  "description": "Masala and Curry website.",
+  "keywords": [
+    "masala",
+    "curry",
+    "website",
+    "react",
+    "typescript",
+    "vite"
+  ],
+  "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "clean": "git clean -xdf dist .swc .tanstack .turbo node_modules",
     "build": "tsc -b && vite build",
-    "serve": "vite preview",
+    "check-types": "tsc --noEmit",
+    "clean": "git clean -xdf dist .swc .tanstack .turbo node_modules",
+    "dev": "vite",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
     "preview": "vite preview",
-    "check-types": "tsc --noEmit"
+    "serve": "vite preview"
   },
   "dependencies": {
     "@mac/api-client": "workspace:*",
     "@mac/auth-client": "workspace:*",
     "@mac/queries": "workspace:*",
-    "@tanstack/react-form": "^1.14.1",
+    "@mac/resources": "workspace:*",
+    "@mac/validators": "workspace:*",
+    "@tanstack/react-form": "^1.14.2",
     "@tanstack/react-query": "^5.82.0",
     "@tanstack/react-query-devtools": "^5.82.0",
-    "@tanstack/react-router": "^1.129.0",
-    "@tanstack/react-router-devtools": "^1.129.0",
+    "@tanstack/react-router": "^1.129.8",
+    "@tanstack/react-router-devtools": "^1.129.8",
     "better-auth": "catalog:api",
     "lucide-react": "catalog:ui",
     "react": "catalog:react19",
@@ -34,7 +45,7 @@
     "@mac/tailwind-config": "workspace:*",
     "@mac/tsconfig": "workspace:*",
     "@mac/web-ui": "workspace:*",
-    "@tanstack/router-plugin": "^1.129.0",
+    "@tanstack/router-plugin": "^1.129.8",
     "@types/node": "catalog:",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
@@ -43,17 +54,8 @@
     "rollup-plugin-visualizer": "^6.0.3",
     "tailwindcss": "catalog:ui",
     "typescript": "catalog:",
-    "vite": "^7.0.5",
+    "vite": "^7.0.6",
     "vite-tsconfig-paths": "6.0.0-beta.3"
   },
-  "keywords": [
-    "masala",
-    "curry",
-    "website",
-    "react",
-    "typescript",
-    "vite"
-  ],
-  "license": "GPL-2.0-only",
   "packageManager": "pnpm@10.13.1"
 }

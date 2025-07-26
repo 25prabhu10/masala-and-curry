@@ -6,8 +6,8 @@ import type { Config } from 'tailwindcss'
 
 export default {
   content: [...baseConfig.content, '../../packages/mobile-ui/src/*.{ts,tsx}'],
-  presets: [baseConfig, nativewind],
   darkMode: 'class',
+  presets: [baseConfig, nativewind],
   theme: {
     extend: {
       borderWidth: {

@@ -3,8 +3,10 @@
   "aliases": {
     "components": "src/",
     "ui": "src/",
-    "utils": "@mac/tailwind-config"
+    "lib": "@mac/tailwind-config",
+    "utils": "@mac/tailwind-config/utils"
   },
+  "iconLibrary": "lucide",
   "rsc": false,
   "style": "new-york",
   "tailwind": {

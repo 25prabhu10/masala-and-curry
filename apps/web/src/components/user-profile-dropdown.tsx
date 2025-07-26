@@ -13,7 +13,9 @@ import { Link, useNavigate, useRouter } from '@tanstack/react-router'
 import { Clock, Heart, Loader2, LogOut, Settings, User } from 'lucide-react'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
+
 import { signOut, type User as UserType } from '@/lib/auth-client'
+import { getInitials } from '@/lib/utils'
 
 type UserProfileDropdownProps = {
   user: UserType
@@ -42,15 +44,6 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
         })
       }
     })
-  }
-
-  function getInitials(name: string) {
-    return name
-      .split(' ')
-      .map((part) => part.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2)
   }
 
   return (
@@ -105,7 +98,7 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
           <DropdownMenuItem asChild>
             <Link className="cursor-pointer" to="/">
               <Heart className="mr-2 h-4 w-4" />
-              <span>Favorite Items</span>
+              <span>Favourite Items</span>
             </Link>
           </DropdownMenuItem>
 

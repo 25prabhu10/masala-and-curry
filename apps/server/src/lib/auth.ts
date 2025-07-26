@@ -3,7 +3,8 @@ import * as schema from '@mac/db/schemas'
 import { TITLE } from '@mac/resources/app'
 import { type BetterAuthOptions, betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin, openAPI, username } from 'better-auth/plugins'
+import { admin, openAPI, phoneNumber } from 'better-auth/plugins'
+
 import { BASE_PATH } from './constants'
 
 const betterAuthOptions: BetterAuthOptions = {
@@ -12,20 +13,6 @@ const betterAuthOptions: BetterAuthOptions = {
 
   emailAndPassword: {
     enabled: true,
-  },
-
-  // advanced: {
-  //   database: {
-  //     generateId: false, // Disable ID generation by better-auth
-  //   },
-  // },
-
-  // https://www.better-auth.com/docs/concepts/session-management#session-caching
-  session: {
-    cookieCache: {
-      enabled: true,
-      maxAge: 60, // 5 minutes
-    },
   },
 
   // https://www.better-auth.com/docs/concepts/oauth
@@ -37,20 +24,44 @@ const betterAuthOptions: BetterAuthOptions = {
   // }
 
   // TODO: merge openapi
-  plugins: [admin(), openAPI()],
+  plugins: [
+    phoneNumber({
+      sendOTP: () => {
+        // { phoneNumber, code }, request
+        // Implement sending OTP code via SMS
+      },
+    }),
+    admin(),
+    openAPI(),
+  ],
+
+  // advanced: {
+  //   database: {
+  //     generateId: false, // Disable ID generation by better-auth
+  //   },
+  // },
+
+  // https://www.better-auth.com/docs/concepts/session-management#session-caching
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60, // 60 seconds
+    },
+    expiresIn: 60, // 60 seconds
+    freshAge: 10, // 10 seconds
+    updateAge: 30, // 30 seconds
+  },
 }
 
 export async function authClient(env: CloudflareBindings): Promise<ReturnType<typeof betterAuth>> {
-  const db = await createDb(env.DB)
-
   return betterAuth({
     ...betterAuthOptions,
-    baseURL: env.BETTER_AUTH_URL,
-    secret: env.BETTER_AUTH_SECRET,
-    database: drizzleAdapter(db, {
+    baseURL: env.AUTH_URL,
+    database: drizzleAdapter(await createDb(env.DB), {
       provider: 'sqlite',
       schema,
     }),
+    secret: env.AUTH_SECRET,
   })
 }
 

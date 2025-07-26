@@ -1,20 +1,22 @@
 {
   "name": "@mac/mobile-ui",
   "version": "0.0.1",
-  "description": "",
   "private": true,
+  "description": "",
+  "keywords": [],
+  "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "type": "module",
-  "scripts": {
-    "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "check-types": "tsc --noEmit"
-  },
   "exports": {
     "./button": "./src/button.tsx",
     "./text": "./src/text.tsx",
     "./icons/*": "./src/icons/*.tsx"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "lint": "oxlint . --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@rn-primitives/slot": "^1.2.0",
@@ -35,7 +37,5 @@
     "react": "catalog:react19",
     "react-native": "catalog:react19"
   },
-  "keywords": [],
-  "license": "GPL-2.0-only",
   "packageManager": "pnpm@10.13.1"
 }

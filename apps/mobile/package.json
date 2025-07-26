@@ -1,24 +1,26 @@
 {
   "name": "@mac/mobile",
-  "main": "expo-router/entry",
   "version": "0.0.1",
-  "description": "Masala and Curry mobile app.",
   "private": true,
+  "description": "Masala and Curry mobile app.",
+  "keywords": [],
+  "license": "GPL-2.0-only",
   "author": "Prabhu K H",
+  "main": "expo-router/entry",
   "scripts": {
-    "clean": "git clean -xdf .cache .expo .turbo node_modules",
     "android": "expo run:android",
-    "ios": "expo run:ios",
-    "web": "expo start -c --web",
-    "bundle:web": "expo export --platform web",
-    "serve:web": "serve dist",
-    "prebuild": "expo prebuild",
-    "prebuild:clean": "expo prebuild --clean",
     "assist": "biome check --write --assist-enabled=true --formatter-enabled=false --linter-enabled=false",
+    "bundle:web": "expo export --platform web",
+    "check-types": "tsc --noEmit",
+    "clean": "git clean -xdf .cache .expo .turbo node_modules",
+    "postinstall": "pnpm exec tailwindcss -i ./src/styles/global.css -o ./node_modules/.cache/nativewind/global.css",
+    "ios": "expo run:ios",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "check-types": "tsc --noEmit",
-    "postinstall": "pnpm exec tailwindcss -i ./src/styles/global.css -o ./node_modules/.cache/nativewind/global.css"
+    "prebuild": "expo prebuild",
+    "prebuild:clean": "expo prebuild --clean",
+    "serve:web": "serve dist",
+    "web": "expo start -c --web"
   },
   "dependencies": {
     "@mac/mobile-ui": "workspace:*",
@@ -50,7 +52,5 @@
     "tailwindcss": "catalog:ui",
     "typescript": "catalog:"
   },
-  "keywords": [],
-  "license": "GPL-2.0-only",
   "packageManager": "pnpm@10.13.1"
 }

@@ -1,28 +1,32 @@
 {
   "name": "@mac/server",
   "version": "0.0.1",
-  "description": "Masala and Curry API.",
   "private": true,
+  "description": "Masala and Curry API.",
+  "keywords": [],
+  "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "exports": {
-    "./routes": "./src/routes/index.ts"
+    "./routes": "./src/routes/index.ts",
+    "./types": "./src/lib/types.ts"
   },
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
     "build": "wrangler deploy --dry-run --outdir dist",
-    "clean": "git clean -xdf dist .cache .turbo .wrangler node_modules",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "check-types": "tsc --noEmit",
+    "clean": "git clean -xdf dist .cache .turbo .wrangler node_modules",
+    "db:migrate": "wrangler d1 migrations apply mac-db --local",
+    "deploy": "wrangler deploy --minify",
+    "dev": "wrangler dev",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "db:migrate": "wrangler d1 migrations apply mac-db --local",
-    "check-types": "tsc --noEmit",
     "test": "vitest"
   },
   "dependencies": {
     "@hono/zod-openapi": "1.0.2",
     "@mac/db": "workspace:*",
     "@mac/resources": "workspace:*",
+    "@mac/validators": "workspace:*",
     "@scalar/hono-api-reference": "^0.9.12",
     "better-auth": "catalog:api",
     "hono": "catalog:api",
@@ -32,12 +36,9 @@
     "@mac/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "oxlint": "catalog:",
-    "tsc-alias": "^1.8.16",
     "typescript": "catalog:",
     "vitest": "^3.2.4",
-    "wrangler": "^4.25.0"
+    "wrangler": "^4.26.0"
   },
-  "keywords": [],
-  "license": "GPL-2.0-only",
   "packageManager": "pnpm@10.13.1"
 }

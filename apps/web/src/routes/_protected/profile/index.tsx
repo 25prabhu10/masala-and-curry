@@ -1,21 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@mac/web-ui/avatar'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { Calendar, Clock, Edit, Heart, Mail, MapPin, Phone, Shield, Star, User } from 'lucide-react'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { Calendar, Clock, Edit, Heart, Mail, MapPin, Phone, Star, User } from 'lucide-react'
 
-export const Route = createFileRoute('/profile')({
+import { formatDate, getInitials } from '@/lib/utils'
+
+export const Route = createFileRoute('/_protected/profile/')({
   component: RouteComponent,
-  beforeLoad: async ({ context }) => {
-    if (!context.userSession?.user) {
-      throw redirect({
-        to: '/sign-in',
-        search: { callback: '/profile' },
-      })
-    }
-  },
   loader: async ({ context }) => {
-    return { user: context.userSession!.user }
+    return { user: context.userSession.user }
   },
 })
 
@@ -26,7 +20,6 @@ function RouteComponent() {
     <main className="flex-1 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-8">
-          {/* Header */}
           <div className="text-center space-y-4">
             <h1 className="text-3xl lg:text-4xl font-bold text-foreground">Your Profile</h1>
             <p className="text-lg text-muted-foreground">
@@ -35,7 +28,6 @@ function RouteComponent() {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Profile Overview */}
             <div className="lg:col-span-1">
               <Card>
                 <CardHeader className="text-center pb-4">
@@ -51,50 +43,31 @@ function RouteComponent() {
                   <CardDescription className="text-base">{user.email}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Member since</span>
-                    <span className="text-sm font-medium">{formatDate(user.createdAt)}</span>
-                  </div>
+                  <div className="w-full h-px bg-border" />
 
-                  {user.role && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Role</span>
-                      <div className="flex items-center gap-1">
-                        <Shield className="h-3 w-3 text-primary" />
-                        <span className="text-sm font-medium capitalize">
-                          {user.role.replace('_', ' ')}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="w-full h-px bg-border my-4" />
-
-                  <Button className="w-full" variant="outline">
-                    <Edit className="mr-2 h-4 w-4" />
-                    Edit Profile
+                  <Button asChild className="w-full" variant="outline">
+                    <Link to="/profile/edit">
+                      <Edit className="mr-2 h-4 w-4" />
+                      Edit Profile
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Profile Details */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Personal Information */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <User className="h-5 w-5 text-primary" />
                     Personal Information
                   </CardTitle>
-                  <CardDescription>
-                    Your basic account information for Masala and Curry
-                  </CardDescription>
+                  <CardDescription>Your basic account information</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+                      <p className="text-sm font-medium text-muted-foreground">Full Name</p>
                       <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                         <User className="h-4 w-4 text-muted-foreground" />
                         <span className="text-foreground">{user.name}</span>
@@ -102,9 +75,7 @@ function RouteComponent() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-muted-foreground">
-                        Email Address
-                      </label>
+                      <p className="text-sm font-medium text-muted-foreground">Email Address</p>
                       <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                         <Mail className="h-4 w-4 text-muted-foreground" />
                         <span className="text-foreground">{user.email}</span>
@@ -114,19 +85,15 @@ function RouteComponent() {
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-muted-foreground">
-                        Phone Number
-                      </label>
+                      <p className="text-sm font-medium text-muted-foreground">Phone Number</p>
                       <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                         <Phone className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Not provided</span>
+                        <span className="text-muted-foreground">{user.phoneNumber}</span>
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-muted-foreground">
-                        Account Created
-                      </label>
+                      <p className="text-sm font-medium text-muted-foreground">Account Created</p>
                       <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                         <span className="text-foreground">{formatDate(user.createdAt)}</span>
@@ -136,7 +103,6 @@ function RouteComponent() {
                 </CardContent>
               </Card>
 
-              {/* Account Activity */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -165,7 +131,7 @@ function RouteComponent() {
                       </div>
                       <div>
                         <p className="text-2xl font-bold text-foreground">0</p>
-                        <p className="text-sm text-muted-foreground">Favorite Items</p>
+                        <p className="text-sm text-muted-foreground">Favourite Items</p>
                       </div>
                     </div>
 
@@ -182,7 +148,6 @@ function RouteComponent() {
                 </CardContent>
               </Card>
 
-              {/* Address Information */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -217,26 +182,4 @@ function RouteComponent() {
       </div>
     </main>
   )
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((part) => part.charAt(0))
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-}
-
-function formatDate(dateString: string): string {
-  try {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  } catch {
-    return 'Unknown'
-  }
 }

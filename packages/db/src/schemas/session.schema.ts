@@ -1,6 +1,7 @@
 import { MAX_STRING_LENGTH } from '@mac/resources/constants'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createSelectSchema } from 'drizzle-zod'
+
 import { user } from './user.schema'
 
 export const session = sqliteTable('session', {

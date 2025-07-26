@@ -1,8 +1,10 @@
 {
   "name": "@mac/resources",
   "version": "0.0.1",
-  "description": "",
   "private": true,
+  "description": "",
+  "keywords": [],
+  "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
@@ -15,6 +17,11 @@
       "types": "./dist/constants.d.ts",
       "import": "./dist/constants.js",
       "default": "./dist/constants.js"
+    },
+    "./general": {
+      "types": "./dist/general.d.ts",
+      "import": "./dist/general.js",
+      "default": "./dist/general.js"
     },
     "./user": {
       "types": "./dist/user.d.ts",
@@ -33,19 +40,17 @@
     }
   },
   "scripts": {
-    "dev": "tsc",
-    "clean": "git clean -xdf dist .turbo node_modules .cache",
     "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "clean": "git clean -xdf dist .turbo node_modules .cache",
+    "dev": "tsc",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "check-types": "tsc --noEmit"
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
     "oxlint": "catalog:",
     "typescript": "catalog:"
   },
-  "keywords": [],
-  "license": "GPL-2.0-only",
   "packageManager": "pnpm@10.13.1"
 }

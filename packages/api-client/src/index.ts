@@ -9,3 +9,5 @@ function hcWithType(...args: Parameters<typeof hc>): Client {
 
 export type Client = typeof client
 export default hcWithType
+
+export type { APIErrorResponse } from '@mac/server/types'

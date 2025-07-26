@@ -1,14 +1,15 @@
 import { Button } from '@mac/web-ui/button'
 import { Monitor, Moon, Sun } from 'lucide-react'
+
 import { useTheme } from '@/context/theme-context'
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme()
 
   const themes = [
-    { value: 'light' as const, label: 'Light', icon: Sun },
-    { value: 'dark' as const, label: 'Dark', icon: Moon },
-    { value: 'system' as const, label: 'System', icon: Monitor },
+    { icon: Sun, label: 'Light', value: 'light' as const },
+    { icon: Moon, label: 'Dark', value: 'dark' as const },
+    { icon: Monitor, label: 'System', value: 'system' as const },
   ]
 
   function cycleTheme() {

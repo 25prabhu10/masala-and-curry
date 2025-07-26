@@ -170,66 +170,66 @@ function About() {
 
 const values = [
   {
-    icon: Heart,
-    title: 'Authenticity',
     description:
       'Every recipe honors traditional cooking methods and genuine flavors from our homeland',
+    icon: Heart,
+    title: 'Authenticity',
   },
   {
+    description: 'We source the finest ingredients and prepare everything fresh daily with care',
     icon: Utensils,
     title: 'Quality',
-    description: 'We source the finest ingredients and prepare everything fresh daily with care',
   },
   {
+    description: 'Building connections through food and sharing our culture with our neighbors',
     icon: Users,
     title: 'Community',
-    description: 'Building connections through food and sharing our culture with our neighbors',
   },
   {
+    description: 'Committed to delivering exceptional dining experiences in every interaction',
     icon: Award,
     title: 'Excellence',
-    description: 'Committed to delivering exceptional dining experiences in every interaction',
   },
 ]
 
 const team = [
   {
-    name: 'Chef Rajesh Sharma',
-    role: 'Head Chef & Co-Founder',
     description:
       'With 20 years of experience in Indian cuisine, Chef Rajesh brings authentic flavors from Delhi to your table',
     emoji: '👨‍🍳',
+    name: 'Chef Rajesh Sharma',
+    role: 'Head Chef & Co-Founder',
   },
   {
-    name: 'Priya Sharma',
-    role: 'Operations Manager & Co-Founder',
     description:
       'Priya ensures every guest feels the warmth of Nepalese hospitality in our welcoming atmosphere',
     emoji: '👩‍💼',
+    name: 'Priya Sharma',
+    role: 'Operations Manager & Co-Founder',
   },
   {
-    name: 'Kumar Patel',
-    role: 'Sous Chef',
     description:
       'Specializing in traditional momos and Nepalese dishes, Kumar adds authentic mountain flavors to our menu',
     emoji: '👨‍🍳',
+    name: 'Kumar Patel',
+    role: 'Sous Chef',
   },
 ]
 
 const awards = [
   {
+    organization: 'Local Dining Awards',
     title: 'Best Indian Restaurant',
     year: '2023',
-    organization: 'Local Dining Awards',
   },
   {
+    organization: 'Restaurant Association',
     title: 'Excellence in Service',
     year: '2022',
-    organization: 'Restaurant Association',
   },
   {
+    organization: 'City Chamber of Commerce',
     title: 'Community Choice Award',
     year: '2021',
-    organization: 'City Chamber of Commerce',
   },
 ]

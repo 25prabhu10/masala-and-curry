@@ -9,8 +9,5 @@
   },
   "exclude": ["node_modules"],
   "extends": ["@mac/tsconfig/internal-package.json"],
-  "include": ["src"],
-  "watchOptions": {
-    "excludeDirectories": ["**/node_modules", "dist"]
-  }
+  "include": ["src"]
 }

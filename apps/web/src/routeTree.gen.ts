@@ -12,56 +12,67 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
+import { Route as ProtectedRouteImport } from './routes/_protected'
+import { Route as ProtectedProfileEditRouteImport } from './routes/_protected/profile/edit'
+import { Route as ProtectedProfileIndexRouteImport } from './routes/_protected/profile/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NotAuthorizedRouteImport } from './routes/not-authorized'
-import { Route as ProfileRouteImport } from './routes/profile'
 
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const NotAuthorizedRoute = NotAuthorizedRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/not-authorized',
   path: '/not-authorized',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/about',
   path: '/about',
+} as any)
+const ProtectedRoute = ProtectedRouteImport.update({
   getParentRoute: () => rootRouteImport,
+  id: '/_protected',
 } as any)
 const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
   getParentRoute: () => rootRouteImport,
+  id: '/_auth',
 } as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/admin',
   path: '/admin',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  getParentRoute: () => AdminRouteRoute,
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
+  getParentRoute: () => AuthRoute,
   id: '/sign-up',
   path: '/sign-up',
-  getParentRoute: () => AuthRoute,
 } as any)
 const AuthSignInRoute = AuthSignInRouteImport.update({
+  getParentRoute: () => AuthRoute,
   id: '/sign-in',
   path: '/sign-in',
-  getParentRoute: () => AuthRoute,
+} as any)
+const ProtectedProfileIndexRoute = ProtectedProfileIndexRouteImport.update({
+  getParentRoute: () => ProtectedRoute,
+  id: '/profile/',
+  path: '/profile/',
+} as any)
+const ProtectedProfileEditRoute = ProtectedProfileEditRouteImport.update({
+  getParentRoute: () => ProtectedRoute,
+  id: '/profile/edit',
+  path: '/profile/edit',
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -69,32 +80,36 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/not-authorized': typeof NotAuthorizedRoute
-  '/profile': typeof ProfileRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/profile/edit': typeof ProtectedProfileEditRoute
+  '/profile': typeof ProtectedProfileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/not-authorized': typeof NotAuthorizedRoute
-  '/profile': typeof ProfileRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/profile/edit': typeof ProtectedProfileEditRoute
+  '/profile': typeof ProtectedProfileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
+  '/_protected': typeof ProtectedRouteWithChildren
   '/about': typeof AboutRoute
   '/not-authorized': typeof NotAuthorizedRoute
-  '/profile': typeof ProfileRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/_protected/profile/edit': typeof ProtectedProfileEditRoute
+  '/_protected/profile/': typeof ProtectedProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -103,51 +118,48 @@ export interface FileRouteTypes {
     | '/admin'
     | '/about'
     | '/not-authorized'
-    | '/profile'
     | '/sign-in'
     | '/sign-up'
     | '/admin/dashboard'
+    | '/profile/edit'
+    | '/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admin'
     | '/about'
     | '/not-authorized'
-    | '/profile'
     | '/sign-in'
     | '/sign-up'
     | '/admin/dashboard'
+    | '/profile/edit'
+    | '/profile'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/_auth'
+    | '/_protected'
     | '/about'
     | '/not-authorized'
-    | '/profile'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/admin/dashboard'
+    | '/_protected/profile/edit'
+    | '/_protected/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  ProtectedRoute: typeof ProtectedRouteWithChildren
   AboutRoute: typeof AboutRoute
   NotAuthorizedRoute: typeof NotAuthorizedRoute
-  ProfileRoute: typeof ProfileRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/not-authorized': {
       id: '/not-authorized'
       path: '/not-authorized'
@@ -160,6 +172,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
@@ -204,6 +223,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_protected/profile/': {
+      id: '/_protected/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProtectedProfileIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/profile/edit': {
+      id: '/_protected/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof ProtectedProfileEditRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
   }
 }
 
@@ -229,13 +262,25 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface ProtectedRouteChildren {
+  ProtectedProfileEditRoute: typeof ProtectedProfileEditRoute
+  ProtectedProfileIndexRoute: typeof ProtectedProfileIndexRoute
+}
+
+const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedProfileEditRoute: ProtectedProfileEditRoute,
+  ProtectedProfileIndexRoute: ProtectedProfileIndexRoute,
+}
+
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(ProtectedRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
-  AboutRoute: AboutRoute,
+  IndexRoute: IndexRoute,
   NotAuthorizedRoute: NotAuthorizedRoute,
-  ProfileRoute: ProfileRoute,
+  ProtectedRoute: ProtectedRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

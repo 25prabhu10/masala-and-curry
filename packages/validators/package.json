@@ -1,23 +1,40 @@
 {
   "name": "@mac/validators",
   "version": "0.0.1",
-  "description": "",
   "private": true,
+  "description": "",
+  "keywords": [],
+  "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
-    "./auth": "./src/auth.validators.ts",
-    "./user": "./src/user.validators.ts",
-    "./session": "./src/session.validators.ts"
+    "./auth": {
+      "types": "./dist/auth.validators.d.ts",
+      "import": "./dist/auth.validators.js",
+      "default": "./dist/auth.validators.js"
+    },
+    "./user": {
+      "types": "./dist/user.validators.d.ts",
+      "import": "./dist/user.validators.js",
+      "default": "./dist/user.validators.js"
+    },
+    "./session": {
+      "types": "./dist/session.validators.d.ts",
+      "import": "./dist/session.validators.js",
+      "default": "./dist/session.validators.js"
+    }
   },
   "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
     "clean": "git clean -xdf dist .turbo node_modules .cache",
+    "dev": "tsc",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "check-types": "tsc --noEmit"
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@mac/db": "workspace:*",
+    "@mac/resources": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -25,7 +42,5 @@
     "oxlint": "catalog:",
     "typescript": "catalog:"
   },
-  "keywords": [],
-  "license": "GPL-2.0-only",
   "packageManager": "pnpm@10.13.1"
 }

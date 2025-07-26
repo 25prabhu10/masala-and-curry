@@ -1,4 +1,5 @@
 import { notFound, onError } from '@/middlewares'
+
 import { BASE_PATH } from './constants'
 import createRouter from './create-router'
 

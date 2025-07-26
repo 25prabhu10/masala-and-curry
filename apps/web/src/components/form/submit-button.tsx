@@ -1,5 +1,6 @@
 import { Button } from '@mac/web-ui/button'
 import { Loader2 } from 'lucide-react'
+
 import { useFormContext } from '@/context/form-context'
 
 interface SubmitButtonProps {
@@ -9,15 +10,21 @@ interface SubmitButtonProps {
 export function SubmitButton({
   label,
   ...props
-}: React.ComponentProps<typeof Button> & SubmitButtonProps) {
+}: Omit<React.ComponentProps<typeof Button>, 'children'> & SubmitButtonProps) {
   const form = useFormContext()
 
   return (
     <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
       {([canSubmit, isSubmitting]) => (
         <Button disabled={isSubmitting || !canSubmit} type="submit" {...props}>
-          {label}
-          {isSubmitting && <Loader2 className="ml-2 h-4 w-4 motion-safe:animate-spin" />}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="ml-2 h-4 w-4 animate-spin block motion-reduce:hidden" />
+              <p className="hidden motion-reduce:block">...</p>
+            </>
+          ) : (
+            label
+          )}
         </Button>
       )}
     </form.Subscribe>

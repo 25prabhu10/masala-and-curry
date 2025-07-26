@@ -1,4 +1,4 @@
-import { cn } from '@mac/tailwind-config'
+import { cn } from '@mac/tailwind-config/utils'
 import * as React from 'react'
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {

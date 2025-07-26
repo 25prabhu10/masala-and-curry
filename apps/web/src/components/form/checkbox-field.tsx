@@ -1,6 +1,8 @@
 import { Checkbox } from '@mac/web-ui/checkbox'
 import { Label } from '@mac/web-ui/label'
+
 import { useFieldContext } from '@/context/form-context'
+
 import FieldInfo from './field-info'
 
 type CheckboxFieldProps = React.ComponentProps<typeof Checkbox> & {

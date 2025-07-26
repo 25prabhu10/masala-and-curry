@@ -5,29 +5,29 @@ import { defineConfig, type PluginOption } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
+  build: {
+    emptyOutDir: true,
+    sourcemap: true,
+  },
   plugins: [
     tsconfigPaths({
       projects: ['./tsconfig.json', './tsconfig.app.json'],
     }),
     tanstackRouter({
-      target: 'react',
       autoCodeSplitting: true,
+      target: 'react',
     }),
     react(),
     visualizer({
-      filename: 'stats.html',
-      open: true,
-      gzipSize: true,
       brotliSize: true,
-      template: 'treemap',
-      sourcemap: true,
       emitFile: true,
+      filename: 'stats.html',
+      gzipSize: true,
+      open: true,
+      sourcemap: true,
+      template: 'treemap',
     }) as PluginOption,
   ],
-  build: {
-    sourcemap: true,
-    emptyOutDir: true,
-  },
   server: {
     cors: false,
     proxy: {

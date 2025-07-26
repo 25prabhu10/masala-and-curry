@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -10,6 +9,7 @@ import {
 } from '@mac/web-ui/card'
 import { Link } from '@tanstack/react-router'
 import { ArrowLeft, Home, Search } from 'lucide-react'
+import type { ReactNode } from 'react'
 
 export function NotFound({ children }: { children?: ReactNode }) {
   return (

@@ -1,7 +1,8 @@
-import type { Session } from './session.validators'
-import type { User } from './user.validators'
 import { InsertUserSchema } from '@mac/db/schemas'
 import * as z from 'zod'
+
+import type { Session } from './session.validators'
+import type { User } from './user.validators'
 
 export const signUpUserValidator = z.object({
   ...InsertUserSchema.shape,

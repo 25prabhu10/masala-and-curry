@@ -1,4 +1,3 @@
-import type { User as UserType } from '@/lib/auth-client'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -10,6 +9,8 @@ import {
 } from '@mac/web-ui/card'
 import { Link } from '@tanstack/react-router'
 import { CheckCircle, Home, User } from 'lucide-react'
+
+import type { User as UserType } from '@/lib/auth-client'
 
 type AlreadySignedInProps = {
   user: UserType

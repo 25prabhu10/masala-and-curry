@@ -1,5 +1,6 @@
 import { MAX_STRING_LENGTH } from '@mac/resources/constants'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+
 import { user } from './user.schema'
 
 export const account = sqliteTable('account', {

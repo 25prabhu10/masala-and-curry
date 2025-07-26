@@ -1,3 +1,9 @@
+import { allUserKeys } from '@mac/queries/user'
+import {
+  FORM_SUBMISSION_ERROR_DESC,
+  FORM_SUBMISSION_GENERIC_DESC,
+  UNEXPECTED_ERROR_DESC,
+} from '@mac/resources/general'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -8,9 +14,10 @@ import {
   CardTitle,
 } from '@mac/web-ui/card'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import * as z from 'zod'
+
 import { useAppForm } from '@/hooks/use-form'
 import { signIn, signOut } from '@/lib/auth-client'
 
@@ -29,6 +36,7 @@ type SignInFormProps = {
 }
 
 export function SignInForm({ callback }: SignInFormProps) {
+  const router = useRouter()
   const navigate = useNavigate({ from: '/sign-in' })
   const queryClient = useQueryClient()
 
@@ -38,17 +46,20 @@ export function SignInForm({ callback }: SignInFormProps) {
 
   const form = useAppForm({
     defaultValues: {
-      password: '123456798@Abc',
       email: 'john@doe.com',
+      password: '123456798@Abc',
       rememberMe: false,
+    },
+    onSubmitInvalid: () => {
+      toast.error(FORM_SUBMISSION_ERROR_DESC)
     },
     validators: {
       onChange: z.object({
+        email: z.email().max(255, `Email must be at most ${255} characters long`),
         password: z
           .string()
           .min(8, 'Password must be at least 8 characters long')
           .max(255, `Password must be at most ${255} characters long`),
-        email: z.email().max(255, `Email must be at most ${255} characters long`),
         rememberMe: z.boolean(),
       }),
       onSubmitAsync: async ({ value }) => {
@@ -57,24 +68,26 @@ export function SignInForm({ callback }: SignInFormProps) {
 
           if (!res.error) {
             toast.success('Login successful.')
-            queryClient.resetQueries()
-            navigate({ to: callback ?? '/' })
+            await queryClient.resetQueries({ queryKey: allUserKeys })
+            if (callback) {
+              router.history.push(callback)
+            } else {
+              await navigate({ replace: true, to: '/' })
+            }
+
             return null
           }
 
           if (res.error.status === 400) {
             return res.error.code === 'VALIDATION_ERROR'
-              ? { form: 'Please check your email and password' }
+              ? { form: FORM_SUBMISSION_GENERIC_DESC }
               : { fields: { email: res.error.message } }
           }
           return { form: res.error.message ?? 'Invalid email or password' }
         } catch {
-          return
+          return { form: UNEXPECTED_ERROR_DESC }
         }
       },
-    },
-    onSubmitInvalid: () => {
-      toast.error('Please fix the errors in the form before submitting')
     },
   })
 

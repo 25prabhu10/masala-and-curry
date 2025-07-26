@@ -1,4 +1,4 @@
-import { cn } from '@mac/tailwind-config'
+import { cn } from '@mac/tailwind-config/utils'
 import * as Slot from '@rn-primitives/slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
@@ -7,14 +7,14 @@ import { Text as RNText } from 'react-native'
 const TextClassContext = React.createContext<string | undefined>(undefined)
 
 const textVariants = cva('text-base text-foreground web:select-text', {
-  variants: {
-    variant: {
-      default: 'font-poppins',
-      bold: 'font-poppins-bold',
-    },
-  },
   defaultVariants: {
     variant: 'default',
+  },
+  variants: {
+    variant: {
+      bold: 'font-poppins-bold',
+      default: 'font-poppins',
+    },
   },
 })
 

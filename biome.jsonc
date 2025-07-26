@@ -8,15 +8,19 @@
           "level": "on",
           "options": {
             "groups": [
-              {
-                "type": true
-              }
+              ":NODE:",
+              ":BLANK_LINE:",
+              [":PACKAGE:", ":PACKAGE_WITH_PROTOCOL:"],
+              ":BLANK_LINE:",
+              ":ALIAS:",
+              ":BLANK_LINE:",
+              ":PATH:"
             ]
           }
         },
-        // "useSortedAttributes": "on",
-        // "useSortedKeys": "on",
-        // "useSortedProperties": "off",
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "off",
         "recommended": true
       }
     },
@@ -45,7 +49,14 @@
     "useIgnoreFile": true
   },
   "files": {
-    "experimentalScannerIgnores": ["node_modules", "dist", ".turbo", ".venv"]
+    "ignoreUnknown": true,
+    "experimentalScannerIgnores": [
+      "node_modules",
+      "dist",
+      ".turbo",
+      ".cache",
+      "routeTree.gen.ts"
+    ]
   },
   "extends": ["ultracite"]
 }

@@ -1,6 +1,7 @@
-import { cn } from '@mac/tailwind-config'
+import { cn } from '@mac/tailwind-config/utils'
 import { Input } from '@mac/web-ui/input'
 import { Label } from '@mac/web-ui/label'
+
 import FieldInfo from '@/components/form/field-info'
 import { useFieldContext } from '@/context/form-context'
 

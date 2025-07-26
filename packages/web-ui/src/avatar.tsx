@@ -1,4 +1,4 @@
-import { cn } from '@mac/tailwind-config'
+import { cn } from '@mac/tailwind-config/utils'
 import { Avatar as AvatarPrimitive } from 'radix-ui'
 import * as React from 'react'
 

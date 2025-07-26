@@ -1,38 +1,8 @@
 {
   "name": "masala-and-curry",
   "version": "0.0.1",
-  "description": "Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste.",
   "private": true,
-  "author": "Prabhu K H",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/25prabhu10/masala-and-curry.git"
-  },
-  "scripts": {
-    "android": "pnpm --filter @mac/mobile run android",
-    "build": "turbo run build",
-    "clean": "git clean -xdf node_modules .turbo",
-    "clean:ws": "turbo run clean",
-    "dev": "turbo run dev --continue",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
-    "lint:ws": "pnpm dlx sherif@latest",
-    "postinstall": "pnpm lint:ws",
-    "check-types": "turbo run check-types",
-    "format": "ultracite format"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "lefthook": "^1.12.2",
-    "oxlint": "catalog:",
-    "turbo": "^2.5.5",
-    "typescript": "catalog:",
-    "ultracite": "5.0.47"
-  },
-  "engines": {
-    "node": ">=22.17.0",
-    "pnpm": ">=10.12.4"
-  },
+  "description": "Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste.",
   "keywords": [
     "masala",
     "curry",
@@ -43,6 +13,38 @@
     "indian cuisine",
     "culinary"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/25prabhu10/masala-and-curry.git"
+  },
   "license": "GPL-2.0-only",
-  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
+  "author": "Prabhu K H",
+  "scripts": {
+    "android": "pnpm --filter @mac/mobile run android",
+    "build": "turbo run build",
+    "check-types": "turbo run check-types",
+    "clean": "git clean -xdf node_modules .turbo",
+    "clean:ws": "turbo run clean",
+    "dev": "turbo watch dev --continue",
+    "format": "ultracite format",
+    "postinstall": "pnpm lint:ws",
+    "knip": "knip",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "lint:ws": "pnpm dlx sherif@latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "knip": "^5.62.0",
+    "lefthook": "^1.12.2",
+    "oxlint": "catalog:",
+    "turbo": "latest",
+    "typescript": "catalog:",
+    "ultracite": "5.0.48"
+  },
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
+  "engines": {
+    "node": ">=22.17.0",
+    "pnpm": ">=10.12.4"
+  }
 }

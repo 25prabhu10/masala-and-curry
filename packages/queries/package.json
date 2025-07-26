@@ -1,8 +1,10 @@
 {
   "name": "@mac/queries",
   "version": "0.0.1",
-  "description": "Masala and Curry API.",
   "private": true,
+  "description": "Masala and Curry API.",
+  "keywords": [],
+  "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
@@ -10,10 +12,10 @@
     "./user": "./src/user.queries.ts"
   },
   "scripts": {
+    "check-types": "tsc --noEmit",
     "clean": "git clean -xdf dist .cache .turbo node_modules",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "check-types": "tsc --noEmit"
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@mac/validators": "workspace:*",
@@ -25,7 +27,5 @@
     "oxlint": "catalog:",
     "typescript": "catalog:"
   },
-  "keywords": [],
-  "license": "GPL-2.0-only",
   "packageManager": "pnpm@10.13.1"
 }

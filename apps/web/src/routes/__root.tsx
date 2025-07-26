@@ -1,8 +1,9 @@
-import type { QueryClient } from '@tanstack/react-query'
 import { getSessionQuery } from '@mac/queries/auth'
 import { Toaster } from '@mac/web-ui/sonner'
+import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet, useRouterState } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
+
 import Header from '@/components/header'
 import { Spinner } from '@/components/spinner'
 import { useTheme } from '@/context/theme-context'
@@ -42,14 +43,12 @@ function RouterSpinner() {
 }
 
 function RootLayout() {
-  const userSession = Route.useLoaderData()
   const { theme } = useTheme()
 
-  console.log('User Session __Root: ', userSession)
   return (
     <div className="min-h-svh border-2 border-border/60 flex flex-col">
       <RouterSpinner />
-      <Header user={userSession?.user} />
+      <Header />
       <hr />
       <Outlet />
       <Toaster richColors theme={theme} />
@@ -63,22 +62,25 @@ function RootLayout() {
   )
 }
 
-export const Route = createRootRouteWithContext<{
+type RouterContext = {
   queryClient: QueryClient
-  userSession: UserSession | undefined
-}>()({
-  component: RootLayout,
+  userSession: UserSession | null
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async ({ context }) => {
-    try {
-      console.log('+++++++++++++++++++++ Delay started')
-      await new Promise((resolve) => setTimeout(resolve, 5000))
-      console.log('----------------- ended')
-      const userSession = await context.queryClient.fetchQuery(getSessionQuery(authClient))
-      console.log('======================= Fetch completed')
-      return { userSession }
-    } catch (error) {
-      console.log('API --> Error: ', error)
-    }
+    const userSession = await context.queryClient.fetchQuery(getSessionQuery(authClient))
+    return { userSession }
   },
-  loader: ({ context }) => context.userSession,
+  component: RootLayout,
+  pendingComponent: () => (
+    <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border-b border-border/40 backdrop-blur-sm">
+      <div className="container flex items-center justify-center py-3 px-4">
+        <div className="flex items-center gap-3">
+          <Spinner />
+        </div>
+      </div>
+    </div>
+  ),
+  wrapInSuspense: true,
 })

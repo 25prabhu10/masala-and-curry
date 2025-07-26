@@ -1,11 +1,11 @@
-import { adminClient } from 'better-auth/client/plugins'
+import { adminClient, phoneNumberClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 
 export function createNewClient(baseURL?: string, basePath?: string) {
   return createAuthClient({
-    baseURL,
     basePath,
-    plugins: [adminClient()],
+    baseURL,
+    plugins: [phoneNumberClient(), adminClient()],
   })
 }
 

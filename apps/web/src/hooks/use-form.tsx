@@ -1,4 +1,5 @@
 import { createFormHook } from '@tanstack/react-form'
+
 import CheckboxField from '@/components/form/checkbox-field'
 import { FormErrors } from '@/components/form/form-errors'
 import PasswordField from '@/components/form/password-field'
@@ -14,8 +15,8 @@ export const { useAppForm, withForm } = createFormHook({
   },
   fieldContext,
   formComponents: {
-    SubmitButton,
     FormErrors,
+    SubmitButton,
   },
   formContext,
 })
