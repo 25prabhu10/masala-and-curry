@@ -7,7 +7,10 @@ export function getInitials(name: string): string {
     .slice(0, 2)
 }
 
-export function formatDate(dateString: string | Date): string {
+export function formatDate(dateString: string | undefined): string | null {
+  if (!dateString) {
+    return null
+  }
   try {
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', {
@@ -16,6 +19,6 @@ export function formatDate(dateString: string | Date): string {
       year: 'numeric',
     })
   } catch {
-    return 'Unknown'
+    return null
   }
 }

@@ -1,6 +1,8 @@
+import { getUserByIdQuery } from '@mac/queries/user'
 import { Avatar, AvatarFallback, AvatarImage } from '@mac/web-ui/avatar'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Calendar, Clock, Edit, Heart, Mail, MapPin, Phone, Star, User } from 'lucide-react'
 
@@ -8,13 +10,12 @@ import { formatDate, getInitials } from '@/lib/utils'
 
 export const Route = createFileRoute('/_protected/profile/')({
   component: RouteComponent,
-  loader: async ({ context }) => {
-    return { user: context.session }
-  },
+  loader: ({ context }) => context.session,
 })
 
 function RouteComponent() {
-  const { user } = Route.useLoaderData()
+  const session = Route.useLoaderData()
+  const { data: user } = useSuspenseQuery(getUserByIdQuery(session.userId))
 
   return (
     <main className="flex-1 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10">

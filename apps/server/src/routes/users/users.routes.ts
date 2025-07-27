@@ -2,6 +2,8 @@ import { createRoute } from '@hono/zod-openapi'
 import {
   getDataFailedDesc,
   getDataSuccessDesc,
+  NOT_AUTHENTICATED,
+  NOT_AUTHORIZED,
   notFoundDesc,
   UPDATE_NO_CHANGES,
   updateDataDesc,
@@ -11,9 +13,11 @@ import {
 } from '@mac/resources/general'
 import {
   CONFLICT,
+  FORBIDDEN,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
   OK,
+  UNAUTHORIZED,
   UNPROCESSABLE_ENTITY,
 } from '@mac/resources/http-status-codes'
 import { EMAIL_ALREADY_EXISTS, INVALID_USER_ID } from '@mac/resources/user'
@@ -25,6 +29,7 @@ import {
   createMessageObjectSchema,
   userIdParamsSchema,
 } from '@/lib/openapi/schemas'
+import { protect } from '@/middlewares'
 
 const tags = ['Users']
 
@@ -33,6 +38,7 @@ export const entity: Readonly<string> = 'User'
 export const getUserById = createRoute({
   description: 'Get a user by User ID.',
   method: 'get',
+  middleware: protect,
   path: '/:id',
   request: {
     params: userIdParamsSchema,
@@ -45,6 +51,8 @@ export const getUserById = createRoute({
       createMessageObjectSchema(getDataFailedDesc(entity)),
       getDataFailedDesc(entity)
     ),
+    [UNAUTHORIZED]: jsonContent(createMessageObjectSchema(NOT_AUTHENTICATED), NOT_AUTHENTICATED),
+    [FORBIDDEN]: jsonContent(createMessageObjectSchema(NOT_AUTHORIZED), NOT_AUTHORIZED),
   },
   summary: 'Get User',
   tags,
@@ -53,6 +61,7 @@ export const getUserById = createRoute({
 export const updateUser = createRoute({
   description: 'Update a user by User ID.',
   method: 'post',
+  middleware: protect,
   path: '/:id',
   request: {
     body: jsonContentRequired(updateUserValidator, updateDataDesc(entity)),
@@ -73,9 +82,9 @@ export const updateUser = createRoute({
       createMessageObjectSchema(updateFailedDesc(entity)),
       updateFailedDesc(entity)
     ),
+    [UNAUTHORIZED]: jsonContent(createMessageObjectSchema(NOT_AUTHENTICATED), NOT_AUTHENTICATED),
+    [FORBIDDEN]: jsonContent(createMessageObjectSchema(NOT_AUTHORIZED), NOT_AUTHORIZED),
   },
   summary: 'Update User',
   tags,
 })
-
-export type UpdateUser = typeof updateUser

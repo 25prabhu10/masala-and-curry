@@ -1,4 +1,4 @@
-import { getUserQuery } from '@mac/queries/user'
+import { getUserByIdQuery, userKeys } from '@mac/queries/user'
 import { Avatar, AvatarFallback, AvatarImage } from '@mac/web-ui/avatar'
 import { Button } from '@mac/web-ui/button'
 import {
@@ -23,7 +23,7 @@ type UserProfileDropdownProps = {
 }
 
 export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
-  const { data: user } = useSuspenseQuery(getUserQuery(session.userId))
+  const { data: user } = useSuspenseQuery(getUserByIdQuery(session.userId))
   const [isPending, startTransition] = useTransition()
   const navigate = useNavigate()
   const router = useRouter()
@@ -37,7 +37,7 @@ export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
           description: 'You have been signed out of your account.',
         })
 
-        await queryClient.invalidateQueries()
+        await queryClient.resetQueries({ queryKey: userKeys.all })
         await router.invalidate()
         await navigate({ to: '/' })
       } catch (error) {
@@ -100,7 +100,7 @@ export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
           <DropdownMenuItem asChild>
             <Link className="cursor-pointer" to="/">
               <Heart className="mr-2 h-4 w-4" />
-              <span>Favourite Items</span>
+              <span>Favorite Items</span>
             </Link>
           </DropdownMenuItem>
 

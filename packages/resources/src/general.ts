@@ -10,6 +10,12 @@ export const UNEXPECTED_ERROR_DESC: string = 'An unexpected error occurred. Plea
 
 export const UPDATE_NO_CHANGES: string = 'No changes made.'
 
+export const NOT_AUTHENTICATED: string = 'You are not authenticated. Please sign-in to continue.'
+
+export const NOT_AUTHORIZED: string = 'You are not authorized to perform this action.'
+
+export const UPDATE_SUCCESS_DESC: string = 'Update successful.'
+
 export function notEmptyDesc(name: Readonly<string>): string {
   return `${name} must not be empty.`
 }

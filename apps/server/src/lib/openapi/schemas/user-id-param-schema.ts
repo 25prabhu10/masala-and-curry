@@ -21,3 +21,5 @@ export const userIdParamsSchema = z
     description: 'User ID parameter schema',
   })
   .openapi('User ID')
+
+export type UserIdParams = z.input<typeof userIdParamsSchema>

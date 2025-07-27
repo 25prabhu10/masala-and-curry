@@ -1,3 +1,4 @@
+import { getUserByIdQuery } from '@mac/queries/user'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { Suspense } from 'react'
 
@@ -11,8 +12,14 @@ export const Route = createFileRoute('/_protected')({
         to: '/sign-in',
       })
     }
+
+    return { session: context.session }
   },
   component: RouteComponent,
+  loader: ({ context }) => {
+    context.queryClient.ensureQueryData(getUserByIdQuery(context.session.userId))
+    return context.session
+  },
 })
 
 function RouteComponent() {

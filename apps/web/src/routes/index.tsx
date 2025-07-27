@@ -9,7 +9,6 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   const session = Route.useLoaderData()
-  console.log('Index: session:', session)
   return (
     <main className="flex-1">
       <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">

@@ -421,6 +421,9 @@ importers:
       '@mac/auth-client':
         specifier: workspace:*
         version: link:../auth-client
+      '@mac/resources':
+        specifier: workspace:*
+        version: link:../resources
       '@mac/validators':
         specifier: workspace:*
         version: link:../validators

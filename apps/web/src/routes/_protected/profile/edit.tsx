@@ -1,13 +1,11 @@
-import { userKeys } from '@mac/queries/user'
-import { FORM_SUBMISSION_ERROR_DESC, UNEXPECTED_ERROR_DESC } from '@mac/resources/general'
+import { getUserByIdQuery, updateUserQuery, userKeys } from '@mac/queries/user'
 import {
-  CONFLICT,
-  INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
-  OK,
-  UNPROCESSABLE_ENTITY,
-} from '@mac/resources/http-status-codes'
-import { type UpdateUser, updateUserValidator } from '@mac/validators/user'
+  FORM_SUBMISSION_ERROR_DESC,
+  UNEXPECTED_ERROR_DESC,
+  UPDATE_SUCCESS_DESC,
+} from '@mac/resources/general'
+import { CONFLICT, UNPROCESSABLE_ENTITY } from '@mac/resources/http-status-codes'
+import type { UpdateUser } from '@mac/validators/user'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -17,69 +15,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@mac/web-ui/card'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { User as UserIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { useAppForm } from '@/hooks/use-form'
 
-async function updateUserProfile(id: string, data: UpdateUser) {
-  // const res = await apiClient.api.v1.users.users[':id'].$post({
-  //   json: data,
-  //   param: { id },
-  // })
-
-  // if (res.status !== OK) {
-  //   // const responseData = await res.json()
-  //   // throw new Error(responseData.message ?? 'An error occurred while updating your profile')
-  //   throw res
-  // }
-
-  // if (res.status === INTERNAL_SERVER_ERROR) {
-  // }
-
-  await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate network delay
-
-  return {}
-}
-
 export const Route = createFileRoute('/_protected/profile/edit')({
   component: RouteComponent,
-  loader: async ({ context }) => {
-    return { user: context.session }
-  },
+  loader: ({ context }) => context.session,
 })
 
 function RouteComponent() {
-  const { user } = Route.useLoaderData()
+  const session = Route.useLoaderData()
+  const { data: user } = useSuspenseQuery(getUserByIdQuery(session.userId))
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const UpdateProfile = useMutation({
-    mutationFn: async (data: UpdateUser) => await updateUserProfile(user.id, data),
-    mutationKey: userKeys.user(user.id),
-    onError(error, variables, context) {
-      console.log('Error', error)
-      console.log('variables', variables)
-      console.log('context', context)
-      return error
-    },
-    onSuccess: async (data, variables, context) => {
-      console.log('Data -> ', data)
-      console.log('Var -> ', variables)
-      console.log('CTX -> ', context)
-      console.log('I am called first')
-
-      // if ('message' in data) {
-      //   toast.success(data.message)
-      // } else {
-      //   toast.success('Profile updated successfully')
-      //   await queryClient.resetQueries({ queryKey: allUserKeys })
-      // }
-      return data
-    },
-  })
+  const UpdateProfile = useMutation(updateUserQuery(user.id))
 
   const form = useAppForm({
     defaultValues: {
@@ -88,9 +42,6 @@ function RouteComponent() {
       name: user.name,
       phoneNumber: user.phoneNumber,
     } as UpdateUser,
-    onSubmit: () => {
-      navigate({ to: '/profile' })
-    },
     onSubmitInvalid: () => {
       toast.error(FORM_SUBMISSION_ERROR_DESC)
     },
@@ -100,23 +51,33 @@ function RouteComponent() {
         try {
           const res = await UpdateProfile.mutateAsync(value)
 
-          console.log('In validators: ', res)
+          if (res.ok) {
+            toast.success(UPDATE_SUCCESS_DESC)
+            await queryClient.invalidateQueries({ queryKey: userKeys.user(user.id) })
+            await navigate({ to: '/profile' })
 
-          // if (res.status === CONFLICT || res.status === NOT_FOUND) {
-          //   const responseData = await res.json()
-          //   return { form: responseData.message }
-          // } else if (res.status === UNPROCESSABLE_ENTITY) {
-          //   const responseErrors = await res.json()
+            return null
+          }
 
-          //   return {
-          //     fields: responseErrors,
-          //     form: responseErrors.errors?.join(', '),
-          //   }
-          // }
+          if (res.status === CONFLICT) {
+            const responseData = await res.json()
+            return { form: responseData.message }
+          } else if (res.status === UNPROCESSABLE_ENTITY) {
+            const responseErrors = await res.json()
+
+            return {
+              fields: responseErrors,
+              form: responseErrors.errors?.join(', '),
+            }
+          }
+
           return null
-        } catch {
-          console.log('Catch')
-          return { form: UNEXPECTED_ERROR_DESC }
+        } catch (error) {
+          if (error instanceof Error) {
+            toast.error(error.message)
+          } else {
+            toast.error(UNEXPECTED_ERROR_DESC)
+          }
         }
       },
     },

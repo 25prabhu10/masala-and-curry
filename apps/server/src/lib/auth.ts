@@ -7,7 +7,7 @@ import { admin, openAPI, phoneNumber } from 'better-auth/plugins'
 
 import { BASE_PATH } from './constants'
 
-const betterAuthOptions: BetterAuthOptions = {
+const betterAuthOptions = {
   appName: TITLE,
   basePath: `${BASE_PATH}/auth`,
 
@@ -51,9 +51,18 @@ const betterAuthOptions: BetterAuthOptions = {
     freshAge: 10, // 10 seconds
     updateAge: 30, // 30 seconds
   },
-}
+} satisfies BetterAuthOptions
 
-export async function authClient(env: CloudflareBindings): Promise<ReturnType<typeof betterAuth>> {
+// This is used to generate better auth schemas
+export const auth = betterAuth({
+  ...betterAuthOptions,
+  database: drizzleAdapter(await createDb({} as D1Database), {
+    provider: 'sqlite',
+    schema,
+  }),
+})
+
+export async function authClient(env: CloudflareBindings) {
   return betterAuth({
     ...betterAuthOptions,
     baseURL: env.AUTH_URL,
@@ -65,11 +74,5 @@ export async function authClient(env: CloudflareBindings): Promise<ReturnType<ty
   })
 }
 
-// This is used to generate better auth schemas
-export const auth = betterAuth({
-  ...betterAuthOptions,
-  database: drizzleAdapter(await createDb({} as D1Database), {
-    provider: 'sqlite',
-    schema,
-  }),
-})
+export type Session = (typeof auth.$Infer.Session)['session']
+export type User = (typeof auth.$Infer.Session)['user']

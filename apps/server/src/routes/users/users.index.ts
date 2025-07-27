@@ -2,22 +2,41 @@ import { createDb } from '@mac/db'
 import { checkIfEmailExistsForOtherUser, getUserById, updateUser } from '@mac/db/repository'
 import {
   getDataFailedDesc,
+  NOT_AUTHORIZED,
   notFoundDesc,
   UPDATE_NO_CHANGES,
   updateFailedDesc,
 } from '@mac/resources/general'
-import { CONFLICT, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from '@mac/resources/http-status-codes'
+import {
+  CONFLICT,
+  FORBIDDEN,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  OK,
+} from '@mac/resources/http-status-codes'
 import { EMAIL_ALREADY_EXISTS } from '@mac/resources/user'
 import { readUserValidator, type UpdateUser } from '@mac/validators/user'
 import { HTTPException } from 'hono/http-exception'
 
 import createRouter from '@/lib/create-router'
+import { canAccess } from '@/lib/utils'
 
 import * as routes from './users.routes'
 
 const router = createRouter()
+  // Get user by ID
   .openapi(routes.getUserById, async (c) => {
     const { id } = c.req.valid('param')
+
+    // Check if the user is trying to access their own data or if they are an admin
+    if (canAccess(id, c.var.user)) {
+      return c.json(
+        {
+          message: NOT_AUTHORIZED,
+        },
+        FORBIDDEN
+      )
+    }
 
     const db = await createDb(c.env.DB)
 
@@ -37,9 +56,20 @@ const router = createRouter()
 
     return c.json(result.data, OK)
   })
+  // Update user
   .openapi(routes.updateUser, async (c) => {
     const { id } = c.req.valid('param')
     const reqData = c.req.valid('json')
+
+    // Check if the user is trying to access their own data or if they are an admin
+    if (canAccess(id, c.var.user)) {
+      return c.json(
+        {
+          message: NOT_AUTHORIZED,
+        },
+        FORBIDDEN
+      )
+    }
 
     const db = await createDb(c.env.DB)
 

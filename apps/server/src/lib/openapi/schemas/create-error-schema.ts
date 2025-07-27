@@ -16,8 +16,6 @@ export default function createErrorSchema<T extends z.ZodType<unknown>>(schema: 
         },
       } as APIErrorResponse)
 
-  console.log('Tree Error:', JSON.stringify(treeError, null, 2))
-
   return z
     .object({
       errors: z

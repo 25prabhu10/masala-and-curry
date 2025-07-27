@@ -10,12 +10,10 @@ export const authKeys = {
 export function getSessionQuery(authClient: AuthClient, queryClient: QueryClient) {
   return queryOptions({
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000)) // Simulate network delay
       const res = await authClient.getSession()
       if (res.error) {
         throw new Error(res.error.message)
       }
-      console.log('I am getSessionQuery', res.data)
 
       if (res.data) {
         queryClient.setQueryData(userKeys.user(res.data.user.id), res.data.user)

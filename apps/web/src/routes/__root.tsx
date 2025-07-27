@@ -1,3 +1,4 @@
+import { getSessionQuery } from '@mac/queries/auth'
 import { Toaster } from '@mac/web-ui/sonner'
 import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet, useRouterState } from '@tanstack/react-router'
@@ -6,7 +7,7 @@ import { lazy, Suspense } from 'react'
 import Header from '@/components/header'
 import { Spinner } from '@/components/spinner'
 import { useTheme } from '@/context/theme-context'
-import type { Session } from '@/lib/auth-client'
+import { authClient, type Session } from '@/lib/auth-client'
 
 const TanStackRouterDevtools = import.meta.env.PROD
   ? () => null
@@ -62,10 +63,16 @@ function RootLayout() {
 type RouterContext = {
   queryClient: QueryClient
   session: Session | undefined | null
-  isAuthLoading: boolean
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: async ({ context }) => {
+    const data = await context.queryClient.fetchQuery(
+      getSessionQuery(authClient, context.queryClient)
+    )
+
+    return { session: data?.session }
+  },
   component: RootLayout,
   pendingComponent: () => (
     <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border-b border-border/40 backdrop-blur-sm">

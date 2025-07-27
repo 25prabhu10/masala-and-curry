@@ -25,7 +25,7 @@ async function signInEmail(params: { email: string; password: string; rememberMe
   const res = await signIn.email(params)
 
   if (res.error && res.error.status >= 500) {
-    throw new Error('An error occurred while signing in')
+    throw new Error(UNEXPECTED_ERROR_DESC)
   }
 
   return res
@@ -63,10 +63,11 @@ export function SignInForm({ callback }: SignInFormProps) {
         try {
           const res = await SignIN.mutateAsync(value)
 
-          if (!res.error) {
+          if (!res.error && res.data) {
             toast.success('Login successful.')
-            queryClient.resetQueries({ queryKey: userKeys.all }, { cancelRefetch: false })
-            router.invalidate()
+            await queryClient.resetQueries({ queryKey: userKeys.all })
+            await router.invalidate()
+
             if (callback) {
               router.history.push(callback)
             } else {
@@ -84,8 +85,12 @@ export function SignInForm({ callback }: SignInFormProps) {
               : { fields: { email: res.error.message } }
           }
           return { form: res.error.message || UNEXPECTED_ERROR_DESC }
-        } catch {
-          toast.error(UNEXPECTED_ERROR_DESC)
+        } catch (error) {
+          if (error instanceof Error) {
+            toast.error(error.message)
+          } else {
+            toast.error(UNEXPECTED_ERROR_DESC)
+          }
         }
       },
     },

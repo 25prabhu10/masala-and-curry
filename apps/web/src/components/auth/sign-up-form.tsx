@@ -33,15 +33,11 @@ async function signUpEmail(params: {
     password: params.password,
   })
 
-  if (!res.error) {
-    return res.data
+  if (res.error && res.error.status >= 500) {
+    throw new Error(UNEXPECTED_ERROR_DESC)
   }
 
-  // if (res.error && res.error.status >= 500) {
-  //   throw new Error(res.error.message)
-  // }
-
-  throw res
+  return res
 }
 
 type SignUpFormProps = {
@@ -55,11 +51,6 @@ export function SignUpForm({ callback }: SignUpFormProps) {
 
   const signUpMutation = useMutation({
     mutationFn: signUpEmail,
-    onError(error, variables, context) {
-      console.error('Error signing up:', error)
-      console.error('Variables:', variables)
-      console.error('Context:', context)
-    },
   })
 
   const form = useAppForm({
@@ -94,29 +85,37 @@ export function SignUpForm({ callback }: SignUpFormProps) {
         try {
           const res = await signUpMutation.mutateAsync(value)
 
-          // if (!res.error) {
-          //   toast.success('Account created successfully! You are now signed in.')
-          //   await queryClient.resetQueries({ queryKey: userKeys.all })
-          //   if (callback) {
-          //     router.history.push(callback)
-          //   } else {
-          //     await navigate({ replace: true, to: '/' })
-          //   }
-          //   return null
-          // }
+          if (!res.error && res.data) {
+            toast.success('Account created successfully! You are now signed in.')
+            await queryClient.resetQueries({ queryKey: userKeys.all })
+            await router.invalidate()
 
-          // if (res.error.status === 400) {
-          //   if (res.error.code === 'VALIDATION_ERROR') {
-          //     return { form: FORM_SUBMISSION_GENERIC_DESC }
-          //   } else if (res.error.code?.includes('EMAIL')) {
-          //     return { fields: { email: res.error.message } }
-          //   } else if (res.error.code?.includes('PASSWORD')) {
-          //     return { fields: { password: res.error.message } }
-          //   }
-          // }
-          // return { form: res.error.message ?? 'Failed to create account' }
-        } catch {
-          return { form: UNEXPECTED_ERROR_DESC }
+            if (callback) {
+              router.history.push(callback)
+            } else {
+              await navigate({ replace: true, to: '/' })
+            }
+            return null
+          }
+
+          toast.error(FORM_SUBMISSION_ERROR_DESC)
+
+          if (res.error.status === 400) {
+            if (res.error.code === 'VALIDATION_ERROR') {
+              return { form: FORM_SUBMISSION_GENERIC_DESC }
+            } else if (res.error.code?.includes('EMAIL')) {
+              return { fields: { email: res.error.message } }
+            } else if (res.error.code?.includes('PASSWORD')) {
+              return { fields: { password: res.error.message } }
+            }
+          }
+          return { form: res.error.message || UNEXPECTED_ERROR_DESC }
+        } catch (error) {
+          if (error instanceof Error) {
+            toast.error(error.message)
+          } else {
+            toast.error(UNEXPECTED_ERROR_DESC)
+          }
         }
       },
     },

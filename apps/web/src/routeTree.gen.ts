@@ -9,70 +9,70 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as NotAuthorizedRouteImport } from './routes/not-authorized'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
+import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
+import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
+import { Route as ProtectedProfileEditRouteImport } from './routes/_protected/profile/edit'
+import { Route as ProtectedProfileIndexRouteImport } from './routes/_protected/profile/index'
+import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as ProtectedRouteImport } from './routes/_protected'
-import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
-import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
-import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
-import { Route as ProtectedProfileIndexRouteImport } from './routes/_protected/profile/index'
-import { Route as ProtectedProfileEditRouteImport } from './routes/_protected/profile/edit'
+import { Route as NotAuthorizedRouteImport } from './routes/not-authorized'
 
 const NotAuthorizedRoute = NotAuthorizedRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/not-authorized',
   path: '/not-authorized',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProtectedRoute = ProtectedRouteImport.update({
-  id: '/_protected',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/admin',
   path: '/admin',
+} as any)
+const ProtectedRouteRoute = ProtectedRouteRouteImport.update({
   getParentRoute: () => rootRouteImport,
+  id: '/_protected',
+} as any)
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  getParentRoute: () => rootRouteImport,
+  id: '/_auth',
 } as any)
 const IndexRoute = IndexRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  getParentRoute: () => AdminRouteRoute,
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
+  getParentRoute: () => AuthRouteRoute,
   id: '/sign-up',
   path: '/sign-up',
-  getParentRoute: () => AuthRoute,
 } as any)
 const AuthSignInRoute = AuthSignInRouteImport.update({
+  getParentRoute: () => AuthRouteRoute,
   id: '/sign-in',
   path: '/sign-in',
-  getParentRoute: () => AuthRoute,
 } as any)
 const ProtectedProfileIndexRoute = ProtectedProfileIndexRouteImport.update({
+  getParentRoute: () => ProtectedRouteRoute,
   id: '/profile/',
   path: '/profile/',
-  getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedProfileEditRoute = ProtectedProfileEditRouteImport.update({
+  getParentRoute: () => ProtectedRouteRoute,
   id: '/profile/edit',
   path: '/profile/edit',
-  getParentRoute: () => ProtectedRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -100,9 +100,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
+  '/_protected': typeof ProtectedRouteRouteWithChildren
   '/admin': typeof AdminRouteRouteWithChildren
-  '/_auth': typeof AuthRouteWithChildren
-  '/_protected': typeof ProtectedRouteWithChildren
   '/about': typeof AboutRoute
   '/not-authorized': typeof NotAuthorizedRoute
   '/_auth/sign-in': typeof AuthSignInRoute
@@ -137,9 +137,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/admin'
     | '/_auth'
     | '/_protected'
+    | '/admin'
     | '/about'
     | '/not-authorized'
     | '/_auth/sign-in'
@@ -151,9 +151,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  ProtectedRouteRoute: typeof ProtectedRouteRouteWithChildren
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
-  AuthRoute: typeof AuthRouteWithChildren
-  ProtectedRoute: typeof ProtectedRouteWithChildren
   AboutRoute: typeof AboutRoute
   NotAuthorizedRoute: typeof NotAuthorizedRoute
 }
@@ -174,25 +174,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected': {
       id: '/_protected'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof ProtectedRouteImport
+      preLoaderRoute: typeof ProtectedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
       id: '/_auth'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteRouteImport
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -214,31 +214,57 @@ declare module '@tanstack/react-router' {
       path: '/sign-up'
       fullPath: '/sign-up'
       preLoaderRoute: typeof AuthSignUpRouteImport
-      parentRoute: typeof AuthRoute
+      parentRoute: typeof AuthRouteRoute
     }
     '/_auth/sign-in': {
       id: '/_auth/sign-in'
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof AuthSignInRouteImport
-      parentRoute: typeof AuthRoute
+      parentRoute: typeof AuthRouteRoute
     }
     '/_protected/profile/': {
       id: '/_protected/profile/'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProtectedProfileIndexRouteImport
-      parentRoute: typeof ProtectedRoute
+      parentRoute: typeof ProtectedRouteRoute
     }
     '/_protected/profile/edit': {
       id: '/_protected/profile/edit'
       path: '/profile/edit'
       fullPath: '/profile/edit'
       preLoaderRoute: typeof ProtectedProfileEditRouteImport
-      parentRoute: typeof ProtectedRoute
+      parentRoute: typeof ProtectedRouteRoute
     }
   }
 }
+
+interface AuthRouteRouteChildren {
+  AuthSignInRoute: typeof AuthSignInRoute
+  AuthSignUpRoute: typeof AuthSignUpRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthSignInRoute: AuthSignInRoute,
+  AuthSignUpRoute: AuthSignUpRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(AuthRouteRouteChildren)
+
+interface ProtectedRouteRouteChildren {
+  ProtectedProfileEditRoute: typeof ProtectedProfileEditRoute
+  ProtectedProfileIndexRoute: typeof ProtectedProfileIndexRoute
+}
+
+const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
+  ProtectedProfileEditRoute: ProtectedProfileEditRoute,
+  ProtectedProfileIndexRoute: ProtectedProfileIndexRoute,
+}
+
+const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
+  ProtectedRouteRouteChildren
+)
 
 interface AdminRouteRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
@@ -248,43 +274,15 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
 }
 
-const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
-  AdminRouteRouteChildren,
-)
-
-interface AuthRouteChildren {
-  AuthSignInRoute: typeof AuthSignInRoute
-  AuthSignUpRoute: typeof AuthSignUpRoute
-}
-
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthSignInRoute: AuthSignInRoute,
-  AuthSignUpRoute: AuthSignUpRoute,
-}
-
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
-
-interface ProtectedRouteChildren {
-  ProtectedProfileEditRoute: typeof ProtectedProfileEditRoute
-  ProtectedProfileIndexRoute: typeof ProtectedProfileIndexRoute
-}
-
-const ProtectedRouteChildren: ProtectedRouteChildren = {
-  ProtectedProfileEditRoute: ProtectedProfileEditRoute,
-  ProtectedProfileIndexRoute: ProtectedProfileIndexRoute,
-}
-
-const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
-  ProtectedRouteChildren,
-)
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(AdminRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AdminRouteRoute: AdminRouteRouteWithChildren,
-  AuthRoute: AuthRouteWithChildren,
-  ProtectedRoute: ProtectedRouteWithChildren,
   AboutRoute: AboutRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
+  IndexRoute: IndexRoute,
   NotAuthorizedRoute: NotAuthorizedRoute,
+  ProtectedRouteRoute: ProtectedRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

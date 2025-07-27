@@ -9,7 +9,7 @@ export function HeaderActions() {
     <div className="ml-auto flex items-center gap-4 lg:gap-6">
       <ModeToggle />
       <div className="h-6 w-px bg-border/60" />
-      <Suspense fallback={<Skeleton className="size-12 rounded-full" />}>
+      <Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
         <UserHeaderActions />
       </Suspense>
     </div>
