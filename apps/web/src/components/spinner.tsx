@@ -24,7 +24,7 @@ export function Spinner({
       }`}
     >
       <LoaderCircle
-        className={`motion-safe:animate-spin text-primary motion-reduce:hidden ${sizeClasses[size]} drop-shadow-sm`}
+        className={`flex animate-spin text-primary motion-reduce:hidden ${sizeClasses[size]} drop-shadow-sm`}
       />
       <div className="hidden motion-reduce:flex items-center gap-2">
         <div className="flex gap-1">

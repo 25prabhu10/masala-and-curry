@@ -41,8 +41,6 @@ export function getUserByIdQuery(id: string, abortController?: AbortController) 
       throw new Error('An error occurred while fetching the user')
     },
     queryKey: userKeys.user(id),
-    refetchInterval: 60 * 1000, // 1 minute
-    staleTime: 60 * 1000, // 1 minutes
   })
 }
 

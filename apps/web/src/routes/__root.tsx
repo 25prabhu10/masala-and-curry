@@ -1,10 +1,11 @@
 import { getSessionQuery } from '@mac/queries/auth'
 import { Toaster } from '@mac/web-ui/sonner'
 import type { QueryClient } from '@tanstack/react-query'
-import { createRootRouteWithContext, Outlet, useRouterState } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 
 import Header from '@/components/header'
+import { RouterLoader } from '@/components/router-loader'
 import { Spinner } from '@/components/spinner'
 import { useTheme } from '@/context/theme-context'
 import { authClient, type Session } from '@/lib/auth-client'
@@ -27,25 +28,12 @@ const ReactQueryDevtools = import.meta.env.PROD
       }
     })
 
-function RouterSpinner() {
-  const isLoading = useRouterState({ select: (s) => s.status === 'pending' })
-  return isLoading ? (
-    <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border-b border-border/40 backdrop-blur-sm">
-      <div className="container flex items-center justify-center py-3 px-4">
-        <div className="flex items-center gap-3">
-          <Spinner show={isLoading} />
-        </div>
-      </div>
-    </div>
-  ) : null
-}
-
 function RootLayout() {
   const { theme } = useTheme()
 
   return (
     <div className="min-h-svh border-2 border-border/60 flex flex-col">
-      <RouterSpinner />
+      <RouterLoader />
       <Header />
       <hr />
       <Outlet />
@@ -75,11 +63,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   },
   component: RootLayout,
   pendingComponent: () => (
-    <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border-b border-border/40 backdrop-blur-sm">
-      <div className="container flex items-center justify-center py-3 px-4">
-        <div className="flex items-center gap-3">
-          <Spinner />
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div className="flex flex-col items-center gap-4">
+        <Spinner />
       </div>
     </div>
   ),

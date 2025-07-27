@@ -1,3 +1,4 @@
+import { authKeys } from '@mac/queries/auth'
 import { getUserByIdQuery, userKeys } from '@mac/queries/user'
 import { Avatar, AvatarFallback, AvatarImage } from '@mac/web-ui/avatar'
 import { Button } from '@mac/web-ui/button'
@@ -37,7 +38,8 @@ export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
           description: 'You have been signed out of your account.',
         })
 
-        await queryClient.resetQueries({ queryKey: userKeys.all })
+        await queryClient.resetQueries({ queryKey: authKeys.all })
+        await queryClient.setQueryData(userKeys.user(user.id), null)
         await router.invalidate()
         await navigate({ to: '/' })
       } catch (error) {
@@ -59,22 +61,14 @@ export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
             variant="outline"
           >
             <Avatar>
-              {isPending ? (
-                <div className="absolute bg-primary flex justify-center items-center h-10 w-10 z-10">
-                  <Loader2 className="motion-safe:animate-spin" />
-                </div>
-              ) : (
-                <>
-                  <AvatarImage alt={user.name} src={''} />
-                  <AvatarFallback className="hover:text-accent">
-                    {getInitials(user.name)}
-                  </AvatarFallback>
-                </>
-              )}
+              <AvatarImage alt={user.name} src={''} />
+              <AvatarFallback className="hover:text-accent">
+                {getInitials(user.name)}
+              </AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-64" forceMount>
+        <DropdownMenuContent align="end" aria-disabled={isPending} className="w-64" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">{user.name}</p>
@@ -83,28 +77,28 @@ export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem asChild disabled={isPending}>
             <Link className="cursor-pointer" to="/profile">
               <User className="mr-2 h-4 w-4" />
               <span>Profile Settings</span>
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem asChild disabled={isPending}>
             <Link className="cursor-pointer" to="/">
               <Clock className="mr-2 h-4 w-4" />
               <span>Order History</span>
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem asChild disabled={isPending}>
             <Link className="cursor-pointer" to="/">
               <Heart className="mr-2 h-4 w-4" />
               <span>Favorite Items</span>
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem asChild disabled={isPending}>
             <Link className="cursor-pointer" to="/">
               <Settings className="mr-2 h-4 w-4" />
               <span>Account Settings</span>
