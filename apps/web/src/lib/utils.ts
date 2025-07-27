@@ -1,5 +1,3 @@
-import type { APIErrorResponse } from '@mac/api-client'
-
 export function getInitials(name: string): string {
   return name
     .split(' ')
@@ -20,17 +18,4 @@ export function formatDate(dateString: string | Date): string {
   } catch {
     return 'Unknown'
   }
-}
-
-export function formatFormErrors(data: APIErrorResponse) {
-  const convertedObject: Record<string, string | string[]> = {}
-
-  for (const key in data.properties) {
-    if (Object.prototype.hasOwnProperty.call(data.properties, key)) {
-      if (data.properties[key] && data.properties[key].errors) {
-        convertedObject[key] = data.properties[key].errors
-      }
-    }
-  }
-  return convertedObject
 }

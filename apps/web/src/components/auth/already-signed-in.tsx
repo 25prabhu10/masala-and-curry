@@ -10,14 +10,12 @@ import {
 import { Link } from '@tanstack/react-router'
 import { CheckCircle, Home, User } from 'lucide-react'
 
-import type { User as UserType } from '@/lib/auth-client'
-
 type AlreadySignedInProps = {
-  user: UserType
+  userId: string
   callback?: string
 }
 
-export function AlreadySignedIn({ user, callback }: AlreadySignedInProps) {
+export function AlreadySignedIn({ userId, callback }: AlreadySignedInProps) {
   return (
     <main className="flex-1 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 p-4 flex flex-col justify-center">
       <div className="container mx-auto px-4">
@@ -37,7 +35,7 @@ export function AlreadySignedIn({ user, callback }: AlreadySignedInProps) {
               <div className="rounded-lg bg-muted/50 p-4 text-center">
                 <User className="mx-auto mb-2 h-6 w-6 text-muted-foreground" />
                 <p className="text-sm text-muted-foreground">
-                  Signed in as: <span className="font-medium text-foreground">{user.name}</span>
+                  Signed in as: <span className="font-medium text-foreground">{userId}</span>
                 </p>
               </div>
             </CardContent>

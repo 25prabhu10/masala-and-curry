@@ -5,9 +5,9 @@ import '@/styles/global.css'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { ThemeProvider } from '@/context/theme-context'
-import queryClient from '@/lib/query-client'
 
-import App from './app'
+import App, { queryClient } from './app'
+import { AuthContextProvider } from './context/auth-context'
 
 const rootElement = document.getElementById('root')
 
@@ -16,9 +16,11 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
+        <AuthContextProvider queryClient={queryClient}>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </AuthContextProvider>
       </QueryClientProvider>
     </StrictMode>
   )

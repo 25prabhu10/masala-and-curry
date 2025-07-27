@@ -20,5 +20,8 @@ export default new QueryClient({
         toast.error((error as { message: string }).message)
       }
     },
+    onSuccess: (data, _variables, _context, mutation) => {
+      console.log('I am called Last')
+    },
   }),
 })

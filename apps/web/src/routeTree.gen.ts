@@ -9,70 +9,70 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
-import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
-import { Route as ProtectedRouteImport } from './routes/_protected'
-import { Route as ProtectedProfileEditRouteImport } from './routes/_protected/profile/edit'
-import { Route as ProtectedProfileIndexRouteImport } from './routes/_protected/profile/index'
+import { Route as NotAuthorizedRouteImport } from './routes/not-authorized'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as ProtectedRouteImport } from './routes/_protected'
+import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as NotAuthorizedRouteImport } from './routes/not-authorized'
+import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
+import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
+import { Route as ProtectedProfileIndexRouteImport } from './routes/_protected/profile/index'
+import { Route as ProtectedProfileEditRouteImport } from './routes/_protected/profile/edit'
 
 const NotAuthorizedRoute = NotAuthorizedRouteImport.update({
-  getParentRoute: () => rootRouteImport,
   id: '/not-authorized',
   path: '/not-authorized',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
-  getParentRoute: () => rootRouteImport,
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedRoute = ProtectedRouteImport.update({
-  getParentRoute: () => rootRouteImport,
   id: '/_protected',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
-  getParentRoute: () => rootRouteImport,
   id: '/_auth',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
-  getParentRoute: () => rootRouteImport,
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
-  getParentRoute: () => rootRouteImport,
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
-  getParentRoute: () => AdminRouteRoute,
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
-  getParentRoute: () => AuthRoute,
   id: '/sign-up',
   path: '/sign-up',
+  getParentRoute: () => AuthRoute,
 } as any)
 const AuthSignInRoute = AuthSignInRouteImport.update({
-  getParentRoute: () => AuthRoute,
   id: '/sign-in',
   path: '/sign-in',
+  getParentRoute: () => AuthRoute,
 } as any)
 const ProtectedProfileIndexRoute = ProtectedProfileIndexRouteImport.update({
-  getParentRoute: () => ProtectedRoute,
   id: '/profile/',
   path: '/profile/',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedProfileEditRoute = ProtectedProfileEditRouteImport.update({
-  getParentRoute: () => ProtectedRoute,
   id: '/profile/edit',
   path: '/profile/edit',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -248,7 +248,9 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
 }
 
-const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(AdminRouteRouteChildren)
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
 
 interface AuthRouteChildren {
   AuthSignInRoute: typeof AuthSignInRoute
@@ -272,15 +274,17 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedProfileIndexRoute: ProtectedProfileIndexRoute,
 }
 
-const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(ProtectedRouteChildren)
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
+  ProtectedRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
-  AboutRoute: AboutRoute,
+  IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
-  IndexRoute: IndexRoute,
-  NotAuthorizedRoute: NotAuthorizedRoute,
   ProtectedRoute: ProtectedRouteWithChildren,
+  AboutRoute: AboutRoute,
+  NotAuthorizedRoute: NotAuthorizedRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

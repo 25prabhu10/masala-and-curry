@@ -1,4 +1,4 @@
-import { allUserKeys } from '@mac/queries/user'
+import { userKeys } from '@mac/queries/user'
 import { FORM_SUBMISSION_ERROR_DESC, UNEXPECTED_ERROR_DESC } from '@mac/resources/general'
 import {
   CONFLICT,
@@ -23,27 +23,31 @@ import { User as UserIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { useAppForm } from '@/hooks/use-form'
-import apiClient from '@/lib/api-client'
-import { formatFormErrors } from '@/lib/utils'
 
 async function updateUserProfile(id: string, data: UpdateUser) {
-  const res = await apiClient.api.v1.users.users[':id'].$post({
-    json: data,
-    param: { id },
-  })
+  // const res = await apiClient.api.v1.users.users[':id'].$post({
+  //   json: data,
+  //   param: { id },
+  // })
 
-  if (res.status === INTERNAL_SERVER_ERROR) {
-    const responseData = await res.json()
-    throw new Error(responseData.message ?? 'An error occurred while updating your profile')
-  }
+  // if (res.status !== OK) {
+  //   // const responseData = await res.json()
+  //   // throw new Error(responseData.message ?? 'An error occurred while updating your profile')
+  //   throw res
+  // }
 
-  return res
+  // if (res.status === INTERNAL_SERVER_ERROR) {
+  // }
+
+  await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate network delay
+
+  return {}
 }
 
 export const Route = createFileRoute('/_protected/profile/edit')({
   component: RouteComponent,
   loader: async ({ context }) => {
-    return { user: context.userSession.user }
+    return { user: context.session }
   },
 })
 
@@ -54,6 +58,27 @@ function RouteComponent() {
 
   const UpdateProfile = useMutation({
     mutationFn: async (data: UpdateUser) => await updateUserProfile(user.id, data),
+    mutationKey: userKeys.user(user.id),
+    onError(error, variables, context) {
+      console.log('Error', error)
+      console.log('variables', variables)
+      console.log('context', context)
+      return error
+    },
+    onSuccess: async (data, variables, context) => {
+      console.log('Data -> ', data)
+      console.log('Var -> ', variables)
+      console.log('CTX -> ', context)
+      console.log('I am called first')
+
+      // if ('message' in data) {
+      //   toast.success(data.message)
+      // } else {
+      //   toast.success('Profile updated successfully')
+      //   await queryClient.resetQueries({ queryKey: allUserKeys })
+      // }
+      return data
+    },
   })
 
   const form = useAppForm({
@@ -63,39 +88,34 @@ function RouteComponent() {
       name: user.name,
       phoneNumber: user.phoneNumber,
     } as UpdateUser,
+    onSubmit: () => {
+      navigate({ to: '/profile' })
+    },
     onSubmitInvalid: () => {
       toast.error(FORM_SUBMISSION_ERROR_DESC)
     },
     validators: {
-      onChange: updateUserValidator,
+      // onChange: updateUserValidator,
       onSubmitAsync: async ({ value }) => {
         try {
           const res = await UpdateProfile.mutateAsync(value)
 
-          if (res.status === OK) {
-            const responseData = await res.json()
+          console.log('In validators: ', res)
 
-            if ('message' in responseData) {
-              toast.success(responseData.message)
-            } else {
-              toast.success('Profile updated successfully')
-              await queryClient.resetQueries({ queryKey: allUserKeys })
-            }
-            navigate({ to: '/profile' })
-            return null
-          } else if (res.status === CONFLICT || res.status === NOT_FOUND) {
-            const responseData = await res.json()
-            return { form: responseData.message }
-          } else if (res.status === UNPROCESSABLE_ENTITY) {
-            const responseErrors = await res.json()
+          // if (res.status === CONFLICT || res.status === NOT_FOUND) {
+          //   const responseData = await res.json()
+          //   return { form: responseData.message }
+          // } else if (res.status === UNPROCESSABLE_ENTITY) {
+          //   const responseErrors = await res.json()
 
-            return {
-              fields: formatFormErrors(responseErrors),
-              form: responseErrors.errors?.join(', '),
-            }
-          }
+          //   return {
+          //     fields: responseErrors,
+          //     form: responseErrors.errors?.join(', '),
+          //   }
+          // }
           return null
         } catch {
+          console.log('Catch')
           return { form: UNEXPECTED_ERROR_DESC }
         }
       },

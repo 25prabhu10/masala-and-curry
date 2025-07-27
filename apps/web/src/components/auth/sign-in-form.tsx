@@ -1,4 +1,4 @@
-import { allUserKeys } from '@mac/queries/user'
+import { userKeys } from '@mac/queries/user'
 import {
   FORM_SUBMISSION_ERROR_DESC,
   FORM_SUBMISSION_GENERIC_DESC,
@@ -25,7 +25,7 @@ async function signInEmail(params: { email: string; password: string; rememberMe
   const res = await signIn.email(params)
 
   if (res.error && res.error.status >= 500) {
-    throw new Error(res.error.message ?? 'An error occurred while signing in')
+    throw new Error('An error occurred while signing in')
   }
 
   return res
@@ -50,9 +50,6 @@ export function SignInForm({ callback }: SignInFormProps) {
       password: '123456798@Abc',
       rememberMe: false,
     },
-    onSubmitInvalid: () => {
-      toast.error(FORM_SUBMISSION_ERROR_DESC)
-    },
     validators: {
       onChange: z.object({
         email: z.email().max(255, `Email must be at most ${255} characters long`),
@@ -68,7 +65,8 @@ export function SignInForm({ callback }: SignInFormProps) {
 
           if (!res.error) {
             toast.success('Login successful.')
-            await queryClient.resetQueries({ queryKey: allUserKeys })
+            queryClient.resetQueries({ queryKey: userKeys.all }, { cancelRefetch: false })
+            router.invalidate()
             if (callback) {
               router.history.push(callback)
             } else {
@@ -78,14 +76,16 @@ export function SignInForm({ callback }: SignInFormProps) {
             return null
           }
 
+          toast.error(FORM_SUBMISSION_ERROR_DESC)
+
           if (res.error.status === 400) {
             return res.error.code === 'VALIDATION_ERROR'
               ? { form: FORM_SUBMISSION_GENERIC_DESC }
               : { fields: { email: res.error.message } }
           }
-          return { form: res.error.message ?? 'Invalid email or password' }
+          return { form: res.error.message || UNEXPECTED_ERROR_DESC }
         } catch {
-          return { form: UNEXPECTED_ERROR_DESC }
+          toast.error(UNEXPECTED_ERROR_DESC)
         }
       },
     },

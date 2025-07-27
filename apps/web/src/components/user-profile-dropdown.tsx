@@ -1,3 +1,4 @@
+import { getUserQuery } from '@mac/queries/user'
 import { Avatar, AvatarFallback, AvatarImage } from '@mac/web-ui/avatar'
 import { Button } from '@mac/web-ui/button'
 import {
@@ -8,20 +9,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@mac/web-ui/dropdown-menu'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate, useRouter } from '@tanstack/react-router'
 import { Clock, Heart, Loader2, LogOut, Settings, User } from 'lucide-react'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
 
-import { signOut, type User as UserType } from '@/lib/auth-client'
+import { type Session, signOut } from '@/lib/auth-client'
 import { getInitials } from '@/lib/utils'
 
 type UserProfileDropdownProps = {
-  user: UserType
+  session: Session
 }
 
-export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
+export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
+  const { data: user } = useSuspenseQuery(getUserQuery(session.userId))
   const [isPending, startTransition] = useTransition()
   const navigate = useNavigate()
   const router = useRouter()
@@ -52,7 +54,7 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
         <DropdownMenuTrigger asChild>
           <Button
             aria-disabled={isPending}
-            className="h-10 w-10 rounded-full"
+            className="size-10 rounded-full"
             disabled={isPending}
             variant="outline"
           >
@@ -63,7 +65,7 @@ export function UserProfileDropdown({ user }: UserProfileDropdownProps) {
                 </div>
               ) : (
                 <>
-                  <AvatarImage alt={user.name} src={user.image ?? ''} />
+                  <AvatarImage alt={user.name} src={''} />
                   <AvatarFallback className="hover:text-accent">
                     {getInitials(user.name)}
                   </AvatarFallback>

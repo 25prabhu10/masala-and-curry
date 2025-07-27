@@ -15,7 +15,8 @@
     "./dropdown-menu": "./src/dropdown-menu.tsx",
     "./input": "./src/input.tsx",
     "./label": "./src/label.tsx",
-    "./sonner": "./src/sonner.tsx"
+    "./sonner": "./src/sonner.tsx",
+    "./skeleton": "./src/skeleton.tsx"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

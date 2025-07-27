@@ -1,16 +1,17 @@
-import { useAuthentication } from '@/lib/auth-client'
+import { Skeleton } from '@mac/web-ui/skeleton'
+import { Suspense } from 'react'
 
-import { AuthButtons } from './auth-buttons'
 import { ModeToggle } from './mode-toggle'
-import { UserProfileDropdown } from './user-profile-dropdown'
+import { UserHeaderActions } from './user-header-actions'
 
 export function HeaderActions() {
-  const { userSession } = useAuthentication()
   return (
     <div className="ml-auto flex items-center gap-4 lg:gap-6">
       <ModeToggle />
       <div className="h-6 w-px bg-border/60" />
-      {userSession ? <UserProfileDropdown user={userSession.user} /> : <AuthButtons />}
+      <Suspense fallback={<Skeleton className="size-12 rounded-full" />}>
+        <UserHeaderActions />
+      </Suspense>
     </div>
   )
 }

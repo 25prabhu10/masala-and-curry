@@ -9,7 +9,7 @@ import { formatDate, getInitials } from '@/lib/utils'
 export const Route = createFileRoute('/_protected/profile/')({
   component: RouteComponent,
   loader: async ({ context }) => {
-    return { user: context.userSession.user }
+    return { user: context.session }
   },
 })
 

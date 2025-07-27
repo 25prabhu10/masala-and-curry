@@ -1,23 +1,37 @@
 import type { AuthClient } from '@mac/auth-client'
-import { queryOptions } from '@tanstack/react-query'
+import { type QueryClient, queryOptions } from '@tanstack/react-query'
 
-import { allUserKeys } from './user.queries'
+import { userKeys } from './user.queries'
 
-export const allAuthKeys = [...allUserKeys, 'auth'] as const
+export const authKeys = {
+  all: [...userKeys.all, 'session'] as const,
+}
 
-export function getSessionQuery(authClient: AuthClient) {
+export function getSessionQuery(authClient: AuthClient, queryClient: QueryClient) {
   return queryOptions({
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000))
-      const session = await authClient.getSession()
-      if (session.error) {
-        throw new Error(session.error.message)
+      await new Promise((resolve) => setTimeout(resolve, 5000)) // Simulate network delay
+      const res = await authClient.getSession()
+      if (res.error) {
+        throw new Error(res.error.message)
       }
-      return session.data
+      console.log('I am getSessionQuery', res.data)
+
+      if (res.data) {
+        queryClient.setQueryData(userKeys.user(res.data.user.id), res.data.user)
+      }
+
+      return res.data
     },
-    queryKey: allAuthKeys,
+    queryKey: authKeys.all,
     refetchInterval: 60 * 1000, // 1 minute
     retry: false,
+    select: (data) => {
+      if (!data) {
+        return null
+      }
+      return data.session
+    },
     staleTime: 60 * 1000, // 1 minutes
   })
 }

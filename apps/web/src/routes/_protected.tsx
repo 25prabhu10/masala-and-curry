@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: async ({ context, location }) => {
-    if (!context.userSession) {
+    if (!context.session) {
       throw redirect({
         search: {
           callback: location.href,
@@ -11,8 +11,6 @@ export const Route = createFileRoute('/_protected')({
         to: '/sign-in',
       })
     }
-
-    return { userSession: context.userSession }
   },
   component: RouteComponent,
 })

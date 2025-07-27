@@ -25,12 +25,11 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@mac/api-client": "workspace:*",
     "@mac/auth-client": "workspace:*",
     "@mac/queries": "workspace:*",
     "@mac/resources": "workspace:*",
     "@mac/validators": "workspace:*",
-    "@tanstack/react-form": "^1.14.2",
+    "@tanstack/react-form": "^1.15.0",
     "@tanstack/react-query": "^5.82.0",
     "@tanstack/react-query-devtools": "^5.82.0",
     "@tanstack/react-router": "^1.129.8",

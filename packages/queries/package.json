@@ -18,11 +18,12 @@
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
   },
   "dependencies": {
+    "@mac/api-client": "workspace:*",
+    "@mac/auth-client": "workspace:*",
     "@mac/validators": "workspace:*",
     "@tanstack/react-query": "^5.82.0"
   },
   "devDependencies": {
-    "@mac/auth-client": "workspace:*",
     "@mac/tsconfig": "workspace:*",
     "oxlint": "catalog:",
     "typescript": "catalog:"

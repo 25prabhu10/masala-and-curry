@@ -4,11 +4,12 @@ import { ArrowRight, Clock, MapPin, Phone, Star } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
   component: Index,
-  loader: ({ context }) => context.userSession,
+  loader: ({ context }) => context.session,
 })
 
 function Index() {
-  const userSession = Route.useLoaderData()
+  const session = Route.useLoaderData()
+  console.log('Index: session:', session)
   return (
     <main className="flex-1">
       <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">
@@ -28,7 +29,7 @@ function Index() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild className="text-lg px-8 py-3" size="lg">
-                  <Link to={userSession ? '/' : '/sign-in'}>
+                  <Link to={session ? '/' : '/sign-in'}>
                     Order Online
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>

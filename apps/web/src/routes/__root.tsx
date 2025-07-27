@@ -1,4 +1,3 @@
-import { getSessionQuery } from '@mac/queries/auth'
 import { Toaster } from '@mac/web-ui/sonner'
 import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet, useRouterState } from '@tanstack/react-router'
@@ -7,27 +6,25 @@ import { lazy, Suspense } from 'react'
 import Header from '@/components/header'
 import { Spinner } from '@/components/spinner'
 import { useTheme } from '@/context/theme-context'
-import { authClient, type UserSession } from '@/lib/auth-client'
+import type { Session } from '@/lib/auth-client'
 
-const TanStackRouterDevtools =
-  process.env.NODE_ENV === 'production'
-    ? () => null
-    : lazy(async () => {
-        const res = await import('@tanstack/react-router-devtools')
-        return {
-          default: res.TanStackRouterDevtools,
-        }
-      })
+const TanStackRouterDevtools = import.meta.env.PROD
+  ? () => null
+  : lazy(async () => {
+      const res = await import('@tanstack/react-router-devtools')
+      return {
+        default: res.TanStackRouterDevtools,
+      }
+    })
 
-const ReactQueryDevtools =
-  process.env.NODE_ENV === 'production'
-    ? () => null
-    : lazy(async () => {
-        const res = await import('@tanstack/react-query-devtools')
-        return {
-          default: res.ReactQueryDevtools,
-        }
-      })
+const ReactQueryDevtools = import.meta.env.PROD
+  ? () => null
+  : lazy(async () => {
+      const res = await import('@tanstack/react-query-devtools')
+      return {
+        default: res.ReactQueryDevtools,
+      }
+    })
 
 function RouterSpinner() {
   const isLoading = useRouterState({ select: (s) => s.status === 'pending' })
@@ -64,14 +61,11 @@ function RootLayout() {
 
 type RouterContext = {
   queryClient: QueryClient
-  userSession: UserSession | null
+  session: Session | undefined | null
+  isAuthLoading: boolean
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  beforeLoad: async ({ context }) => {
-    const userSession = await context.queryClient.fetchQuery(getSessionQuery(authClient))
-    return { userSession }
-  },
   component: RootLayout,
   pendingComponent: () => (
     <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border-b border-border/40 backdrop-blur-sm">
