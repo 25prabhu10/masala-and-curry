@@ -47,7 +47,7 @@ function RouteComponent() {
                   <div className="w-full h-px bg-border" />
 
                   <Button asChild className="w-full" variant="outline">
-                    <Link to="/profile/edit">
+                    <Link from={Route.fullPath} to="/profile/edit">
                       <Edit className="mr-2 h-4 w-4" />
                       Edit Profile
                     </Link>

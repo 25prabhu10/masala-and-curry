@@ -4,7 +4,7 @@ import { ArrowRight, Clock, MapPin, Phone, Star } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
   component: Index,
-  loader: ({ context }) => context.session,
+  loader: ({ context: { session } }) => session,
 })
 
 function Index() {
@@ -28,7 +28,7 @@ function Index() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild className="text-lg px-8 py-3" size="lg">
-                  <Link to={session ? '/' : '/sign-in'}>
+                  <Link from={Route.fullPath} to={session ? '/' : '/sign-in'}>
                     Order Online
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -53,8 +53,13 @@ function Index() {
             <div className="relative">
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className="text-6xl">🍛</div>
-                  <p className="text-muted-foreground">Featured Dish Image</p>
+                  {/* <div className="text-6xl">🍛</div> */}
+                  <img
+                    alt="Featured Dish"
+                    className="w-full h-auto rounded-lg shadow-lg"
+                    src="/images/landing-food.jpg"
+                  />
+                  {/* <p className="text-muted-foreground">Featured Dish Image</p> */}
                 </div>
               </div>
               <div className="absolute -top-4 -right-4 bg-card border border-border rounded-lg p-4 shadow-lg">
@@ -88,10 +93,15 @@ function Index() {
             {featuredDishes.map((dish) => (
               <div
                 className="bg-card rounded-xl shadow-sm border border-border overflow-hidden hover:shadow-lg transition-shadow"
-                key={dish.emoji}
+                key={dish.name}
               >
                 <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                  <span className="text-4xl">{dish.emoji}</span>
+                  {/* <span className="text-4xl">{dish.emoji}</span> */}
+                  <img
+                    alt="Butter Chicken"
+                    className="bg-cover rounded-lg shadow-lg"
+                    src={dish.image}
+                  />
                 </div>
                 <div className="p-6 space-y-3">
                   <h3 className="text-xl font-semibold text-foreground">{dish.name}</h3>
@@ -180,19 +190,19 @@ function Index() {
 const featuredDishes = [
   {
     description: 'Tender chicken in a rich, creamy tomato sauce with aromatic spices',
-    emoji: '🍗',
+    image: '/images/butter-chicken.jpg',
     name: 'Butter Chicken',
     price: '$16.99',
   },
   {
     description: 'Traditional Nepalese dumplings filled with spiced chicken and herbs',
-    emoji: '🥟',
+    image: '/images/chicken-momos.jpg',
     name: 'Chicken Momos',
     price: '$12.99',
   },
   {
     description: 'Fragrant basmati rice layered with tender lamb and saffron',
-    emoji: '🍛',
+    image: '/images/lamb-biryani.jpg',
     name: 'Lamb Biryani',
     price: '$19.99',
   },

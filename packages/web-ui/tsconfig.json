@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "rootDir": ".",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
   "exclude": ["node_modules"],
   "extends": [

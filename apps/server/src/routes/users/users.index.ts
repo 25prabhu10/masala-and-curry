@@ -21,7 +21,7 @@ import { HTTPException } from 'hono/http-exception'
 import createRouter from '@/lib/create-router'
 import { canAccess } from '@/lib/utils'
 
-import * as routes from './users.routes'
+import * as routes from './users.route'
 
 const router = createRouter()
   // Get user by ID

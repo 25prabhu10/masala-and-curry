@@ -2,6 +2,7 @@ import { z } from '@hono/zod-openapi'
 import {
   MAX_PHONE_NUMBER_LENGTH,
   MAX_STRING_LENGTH,
+  MAX_URL_LENGTH,
   MIN_STRING_LENGTH,
 } from '@mac/resources/constants'
 import { maxLengthDesc, minLengthDesc } from '@mac/resources/general'
@@ -12,31 +13,40 @@ import {
   PHONE_INVALID,
 } from '@mac/resources/user'
 import { sql } from 'drizzle-orm'
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createSchemaFactory } from 'drizzle-zod'
+
+import { enumToString } from '../utils'
 
 const { createInsertSchema, createSelectSchema, createUpdateSchema } = createSchemaFactory({
   zodInstance: z,
 })
 
-export const user = sqliteTable('user', {
-  banExpires: integer({ mode: 'timestamp' }),
-  banned: integer({ mode: 'boolean' }),
-  banReason: text({ length: MAX_STRING_LENGTH }),
-  createdAt: integer({ mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
-  email: text({ length: MAX_STRING_LENGTH }).notNull().unique(),
-  emailVerified: integer({ mode: 'boolean' }).notNull().default(false),
-  id: text({ length: MAX_STRING_LENGTH }).primaryKey(),
-  image: text(),
-  name: text({ length: MAX_STRING_LENGTH }).notNull(),
-  phoneNumber: text({ length: MAX_PHONE_NUMBER_LENGTH }).unique(),
-  phoneNumberVerified: integer({ mode: 'boolean' }),
-  role: text({ length: MAX_STRING_LENGTH }),
-  updatedAt: integer({ mode: 'timestamp' })
-    .notNull()
-    .default(sql`(unixepoch())`)
-    .$onUpdate(() => new Date()),
-})
+const roles = ['admin', 'user'] as const
+const rolesStr = enumToString(roles)
+
+export const user = sqliteTable(
+  'user',
+  {
+    banExpires: integer({ mode: 'timestamp' }),
+    banned: integer({ mode: 'boolean' }),
+    banReason: text({ length: MAX_STRING_LENGTH }),
+    createdAt: integer({ mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+    email: text({ length: MAX_STRING_LENGTH }).notNull().unique(),
+    emailVerified: integer({ mode: 'boolean' }).notNull().default(false),
+    id: text({ length: MAX_STRING_LENGTH }).primaryKey(),
+    image: text({ length: MAX_URL_LENGTH }),
+    name: text({ length: MAX_STRING_LENGTH }).notNull(),
+    phoneNumber: text({ length: MAX_PHONE_NUMBER_LENGTH }).unique(),
+    phoneNumberVerified: integer({ mode: 'boolean' }),
+    role: text({ length: MAX_STRING_LENGTH }),
+    updatedAt: integer({ mode: 'timestamp' })
+      .notNull()
+      .default(sql`(unixepoch())`)
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [check('role_check', sql`${table.role} in (${sql.raw(rolesStr)})`)]
+)
 
 export const SelectUserSchema = createSelectSchema(user, {
   banExpires: (schema) =>
@@ -79,9 +89,8 @@ export const SelectUserSchema = createSelectSchema(user, {
       description: "User's unique identifier",
       example: 'user_12345',
     }),
-  // TODO: move to cloud storage
-  image: (schema) =>
-    schema.optional().openapi({
+  image: () =>
+    z.url().optional().openapi({
       description: "User's profile image",
       example: 'https://example.com/image.jpg',
     }),
@@ -112,16 +121,20 @@ export const SelectUserSchema = createSelectSchema(user, {
       example: false,
     }),
   role: () =>
-    z.enum(['admin', 'user']).optional().openapi({
-      description: "User's role in the system (e.g., admin, user)",
-      example: 'user',
-    }),
+    z
+      .enum(roles, `Role must be one of: ${rolesStr}`)
+      .optional()
+      .openapi({
+        description: "User's role in the system (e.g., admin, user)",
+        enum: [...roles],
+        example: 'user',
+      }),
   updatedAt: (schema) =>
     schema.optional().openapi({
       description: "User's last profile update date",
       example: '2023-01-01T00:00:00Z',
     }),
-})
+}).openapi('User')
 
 export const InsertUserSchema = createInsertSchema(user, {
   banExpires: () => SelectUserSchema.shape.banExpires,

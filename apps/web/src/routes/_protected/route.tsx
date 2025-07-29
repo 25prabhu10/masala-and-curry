@@ -3,8 +3,8 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { Suspense } from 'react'
 
 export const Route = createFileRoute('/_protected')({
-  beforeLoad: async ({ context, location }) => {
-    if (!context.session) {
+  beforeLoad: async ({ context: { session }, location }) => {
+    if (!session) {
       throw redirect({
         search: {
           callback: location.href,
@@ -12,13 +12,11 @@ export const Route = createFileRoute('/_protected')({
         to: '/sign-in',
       })
     }
-
-    return { session: context.session }
   },
   component: RouteComponent,
-  loader: ({ context }) => {
-    context.queryClient.ensureQueryData(getUserByIdQuery(context.session.userId))
-    return context.session
+  loader: async ({ context: { queryClient, session } }) => {
+    await queryClient.ensureQueryData(getUserByIdQuery(session.userId))
+    return session
   },
 })
 

@@ -6,7 +6,7 @@ import { AlreadySignedIn } from '@/components/auth/already-signed-in'
 
 export const Route = createFileRoute('/_auth')({
   component: RouteComponent,
-  loader: async ({ context }) => context.session,
+  loader: async ({ context: { session } }) => session,
   validateSearch: z.object({
     callback: z.string().optional(),
   }),

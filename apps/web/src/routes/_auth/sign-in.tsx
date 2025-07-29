@@ -20,6 +20,7 @@ function RouteComponent() {
             Don&apos;t have an account?{' '}
             <Link
               className="text-primary hover:text-primary/80 font-medium transition-colors"
+              from={Route.fullPath}
               search={{ callback }}
               to="/sign-up"
             >

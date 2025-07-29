@@ -31,7 +31,7 @@ function RouteComponent() {
           <CardFooter className="flex flex-col gap-3">
             <div className="grid grid-cols-1 gap-3 w-full">
               <Button asChild className="w-full" variant="outline">
-                <Link to="/">
+                <Link from={Route.fullPath} to="/">
                   <Home className="h-4 w-4 mr-2" />
                   Go Home
                 </Link>
@@ -41,6 +41,7 @@ function RouteComponent() {
             {callback && (
               <Button asChild className="w-full" variant="ghost">
                 <Link
+                  from={Route.fullPath}
                   onClick={(e) => {
                     e.preventDefault()
                     globalThis.history.back()

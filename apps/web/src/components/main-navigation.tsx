@@ -3,11 +3,13 @@ import { Link } from '@tanstack/react-router'
 interface NavigationItem {
   href: string
   label: string
+  roles?: string[]
 }
 
 const navigationItems: NavigationItem[] = [
   { href: '/', label: 'Menu' },
   { href: '/about', label: 'About' },
+  { href: '/admin/dashboard', label: 'Dashboard', roles: ['admin'] },
 ]
 
 export function MainNavigation() {

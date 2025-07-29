@@ -8,15 +8,16 @@
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
-    "./avatar": "./src/avatar.tsx",
-    "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
-    "./checkbox": "./src/checkbox.tsx",
-    "./dropdown-menu": "./src/dropdown-menu.tsx",
-    "./input": "./src/input.tsx",
-    "./label": "./src/label.tsx",
-    "./sonner": "./src/sonner.tsx",
-    "./skeleton": "./src/skeleton.tsx"
+    "./avatar": "./src/ui/avatar.tsx",
+    "./button": "./src/ui/button.tsx",
+    "./card": "./src/ui/card.tsx",
+    "./checkbox": "./src/ui/checkbox.tsx",
+    "./dropdown-menu": "./src/ui/dropdown-menu.tsx",
+    "./input": "./src/ui/input.tsx",
+    "./label": "./src/ui/label.tsx",
+    "./sonner": "./src/ui/sonner.tsx",
+    "./skeleton": "./src/ui/skeleton.tsx",
+    "./sidebar": "./src/ui/sidebar.tsx"
   },
   "scripts": {
     "check-types": "tsc --noEmit",
@@ -26,6 +27,12 @@
     "ui-add": "pnpm dlx shadcn@canary add"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tooltip": "^1.2.7",
+    "class-variance-authority": "^0.7.1",
+    "lucide-react": "^0.532.0",
     "radix-ui": "latest",
     "sonner": "^2.0.6"
   },

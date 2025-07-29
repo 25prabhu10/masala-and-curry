@@ -55,8 +55,13 @@ function About() {
             <div className="relative">
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className="text-6xl">👨‍🍳</div>
-                  <p className="text-muted-foreground">Chef & Founders</p>
+                  {/* <div className="text-6xl">👨‍🍳</div> */}
+                  <img
+                    alt="Chef Rajesh"
+                    className="w-full h-auto rounded-lg shadow-lg"
+                    src="/images/chef.jpg"
+                  />
+                  {/* <p className="text-muted-foreground">Chef & Founders</p> */}
                 </div>
               </div>
             </div>
