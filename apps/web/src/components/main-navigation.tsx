@@ -9,7 +9,7 @@ interface NavigationItem {
 const navigationItems: NavigationItem[] = [
   { href: '/', label: 'Menu' },
   { href: '/about', label: 'About' },
-  { href: '/admin/dashboard', label: 'Dashboard', roles: ['admin'] },
+  { href: '/dashboard/menu', label: 'Dashboard', roles: ['admin'] },
 ]
 
 export function MainNavigation() {

@@ -1,10 +1,11 @@
 import { getUserByIdQuery } from '@mac/queries/user'
-import { SidebarProvider, SidebarTrigger } from '@mac/web-ui/sidebar'
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@mac/web-ui/sidebar'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
-import { AppSidebar } from '@/components/app-sidebar'
+import { DashboardSidebar } from '@/components/dashboard/dashboard-sidebar'
+import { HeaderActions } from '@/components/header-actions'
 
-export const Route = createFileRoute('/admin')({
+export const Route = createFileRoute('/dashboard')({
   beforeLoad: async ({ context: { session, queryClient } }) => {
     if (!session) {
       throw redirect({
@@ -21,18 +22,25 @@ export const Route = createFileRoute('/admin')({
         to: '/not-authorized',
       })
     }
+
+    return { session, user }
   },
   component: RouteComponent,
+  // oxlint-disable-next-line arrow-body-style
+  loader: async ({ context: { session, user } }) => ({ session, user }),
 })
 
 function RouteComponent() {
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <main>
-        <SidebarTrigger />
+      <DashboardSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <HeaderActions />
+        </header>
         <Outlet />
-      </main>
+      </SidebarInset>
     </SidebarProvider>
   )
 }

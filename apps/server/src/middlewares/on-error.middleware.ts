@@ -1,3 +1,5 @@
+import { DrizzleQueryError } from '@mac/db/types'
+import { getDataFailedDesc } from '@mac/resources/general'
 import { INTERNAL_SERVER_ERROR, OK } from '@mac/resources/http-status-codes'
 import type { ErrorHandler } from 'hono'
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
@@ -8,8 +10,8 @@ const onError: ErrorHandler = (err, c) => {
     currentStatus !== OK ? (currentStatus as ContentfulStatusCode) : INTERNAL_SERVER_ERROR
   const env = c.env?.NODE_ENV || process.env?.NODE_ENV
 
-  if (err.name === 'LibsqlError') {
-    err.message = env === 'production' ? '' : err.message
+  if (err instanceof DrizzleQueryError) {
+    err.message = env === 'production' ? getDataFailedDesc('') : err.message
   }
 
   console.error(err)

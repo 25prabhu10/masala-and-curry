@@ -14,7 +14,7 @@ export function TextField({ label, required, className, ...props }: TextFieldPro
     <div className="space-y-2">
       <Label htmlFor={field.name}>
         {label}
-        {required ? <span className="text-xs text-destructive">*</span> : ''}
+        {required ? <span className="text-xs text-destructive"> *</span> : ''}
       </Label>
       <Input
         aria-describedby={`${field.name}-error`}

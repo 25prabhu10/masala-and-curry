@@ -34,9 +34,8 @@ export const SelectAllergenSchema = createSelectSchema(allergen, {
       description: 'Allergen creation timestamp',
       example: '2023-01-01T00:00:00Z',
     }),
-  id: () =>
-    z
-      .nanoid()
+  id: (schema) =>
+    schema
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Allergen ID', NANOID_LENGTH),
       })

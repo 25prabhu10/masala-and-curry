@@ -1,57 +1,51 @@
+import { Button } from '@mac/web-ui/button'
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@mac/web-ui/sidebar'
 import { Link } from '@tanstack/react-router'
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react'
+import { ArrowLeft, Boxes, Hamburger } from 'lucide-react'
 
-// Menu items.
 const items = [
   {
-    icon: Home,
-    title: 'Home',
-    url: '/',
+    icon: Hamburger,
+    title: 'Food Menu',
+    url: '/dashboard/menu',
   },
   {
-    icon: Inbox,
-    title: 'Inbox',
-    url: '/',
-  },
-  {
-    icon: Calendar,
-    title: 'Calendar',
-    url: '/',
-  },
-  {
-    icon: Search,
-    title: 'Search',
-    url: '/',
-  },
-  {
-    icon: Settings,
-    title: 'Settings',
-    url: '/',
+    icon: Boxes,
+    title: 'Categories',
+    url: '/dashboard/categories',
   },
 ]
 
-export function AppSidebar() {
+export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar>
+    <Sidebar {...props}>
+      <SidebarHeader>
+        <Button asChild variant="outline">
+          <Link to="/">
+            <ArrowLeft />
+            Go Home
+          </Link>
+        </Button>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
+                    <Link className="[&.active]:text-primary" to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>

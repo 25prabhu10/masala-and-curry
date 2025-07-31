@@ -94,7 +94,7 @@ export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
           <DropdownMenuItem asChild disabled={isPending}>
             <Link className="cursor-pointer" to="/">
               <Heart className="mr-2 h-4 w-4" />
-              <span>Favorite Items</span>
+              <span>Favourite Items</span>
             </Link>
           </DropdownMenuItem>
 

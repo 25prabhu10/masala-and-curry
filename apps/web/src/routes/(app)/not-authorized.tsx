@@ -4,7 +4,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowLeft, Home, ShieldX } from 'lucide-react'
 import * as z from 'zod'
 
-export const Route = createFileRoute('/not-authorized')({
+export const Route = createFileRoute('/(app)/not-authorized')({
   component: RouteComponent,
   validateSearch: z.object({
     callback: z.string().optional(),

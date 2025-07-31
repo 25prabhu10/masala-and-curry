@@ -73,12 +73,12 @@ export const menuItem = sqliteTable(
 
 export const SelectMenuItemSchema = createSelectSchema(menuItem, {
   basePrice: (schema) =>
-    schema.positive({ message: 'Price must be positive' }).max(MAX_CURRENCY_VALUE).openapi({
+    schema.nonnegative({ message: 'Price must be positive' }).max(MAX_CURRENCY_VALUE).openapi({
       description: 'Base price of the menu item',
       example: 18.99,
     }),
   calories: (schema) =>
-    schema.positive().max(MAX_NUMBER_IN_APP).optional().openapi({
+    schema.nonnegative().max(MAX_NUMBER_IN_APP).optional().openapi({
       description: 'Calories per serving',
       example: 450,
     }),
@@ -113,13 +113,12 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         example: 'Tender chicken pieces in a creamy tomato-based curry sauce',
       }),
   displayOrder: (schema) =>
-    schema.positive().max(MAX_NUMBER_IN_APP).openapi({
+    schema.nonnegative().max(MAX_NUMBER_IN_APP).openapi({
       description: 'Display order within menu items',
       example: 1,
     }),
-  id: () =>
-    z
-      .nanoid()
+  id: (schema) =>
+    schema
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Menu Item ID', NANOID_LENGTH),
       })
@@ -182,15 +181,15 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
       }),
   preparationTime: (schema) =>
     schema
-      .positive({ message: 'Preparation time must be positive' })
+      .nonnegative({ message: 'Preparation time must be positive' })
       .max(MAX_NUMBER_IN_APP)
       .default(15)
       .openapi({
         description: 'Preparation time in minutes',
         example: 25,
       }),
-  spiceLevel: (schema) =>
-    schema.int().min(0).max(5).default(0).optional().openapi({
+  spiceLevel: () =>
+    z.int().min(0).max(5).default(0).optional().openapi({
       description: 'Spice level on a scale of 0-5',
       example: 3,
     }),

@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
     "rootDir": ".",
-    "jsx": "preserve",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+    "jsx": "preserve"
   },
   "exclude": ["node_modules"],
   "extends": [
-    "@mac/tsconfig/react-library.json",
-    "@mac/tsconfig/internal-package.json"
+    "@mac/tsconfig/internal-package.json",
+    "@mac/tsconfig/react-library.json"
   ],
   "include": ["src"]
 }

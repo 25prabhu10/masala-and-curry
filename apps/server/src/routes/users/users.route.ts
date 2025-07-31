@@ -1,90 +1,131 @@
-import { createRoute } from '@hono/zod-openapi'
-import {
-  getDataFailedDesc,
-  getDataSuccessDesc,
-  NOT_AUTHENTICATED,
-  NOT_AUTHORIZED,
-  notFoundDesc,
-  UPDATE_NO_CHANGES,
-  updateDataDesc,
-  updateFailedDesc,
-  updateSuccessDesc,
-  VALIDATION_ERROR_DESC,
-} from '@mac/resources/general'
+import { createDb } from '@mac/db'
+import { checkIfEmailExistsForOtherUser, getUserById, updateUser } from '@mac/db/repository'
 import {
   CONFLICT,
   FORBIDDEN,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
   OK,
-  UNAUTHORIZED,
-  UNPROCESSABLE_ENTITY,
 } from '@mac/resources/http-status-codes'
-import { EMAIL_ALREADY_EXISTS, INVALID_USER_ID } from '@mac/resources/user'
-import { readUserValidator, updateUserValidator } from '@mac/validators/user'
+import { EMAIL_ALREADY_EXISTS } from '@mac/resources/user'
+import { readUserValidator, type UpdateUser } from '@mac/validators/user'
+import { HTTPException } from 'hono/http-exception'
 
-import { jsonContent, jsonContentRequired } from '@/lib/openapi/helpers'
-import {
-  createErrorSchema,
-  createMessageObjectSchema,
-  userIdParamsSchema,
-} from '@/lib/openapi/schemas'
-import { protect } from '@/middlewares'
+import { NOT_AUTHORIZED_RES, UPDATE_NO_CHANGES_RES } from '@/lib/constants'
+import createRouter from '@/lib/create-router'
+import { hasAccess } from '@/lib/utils'
 
-const tags = ['Users']
+import * as routes from './users.openapi'
 
-export const entity: Readonly<string> = 'User'
+const router = createRouter()
+  // Get user by ID
+  .openapi(routes.getUserById, async (c) => {
+    const { id } = c.req.valid('param')
 
-export const getUserById = createRoute({
-  description: 'Get a user by User ID.',
-  method: 'get',
-  middleware: protect,
-  path: '/:id',
-  request: {
-    params: userIdParamsSchema,
-  },
-  responses: {
-    [OK]: jsonContent(readUserValidator, getDataSuccessDesc(entity)),
-    [NOT_FOUND]: jsonContent(createMessageObjectSchema(notFoundDesc(entity)), notFoundDesc(entity)),
-    [UNPROCESSABLE_ENTITY]: jsonContent(createErrorSchema(userIdParamsSchema), INVALID_USER_ID),
-    [INTERNAL_SERVER_ERROR]: jsonContent(
-      createMessageObjectSchema(getDataFailedDesc(entity)),
-      getDataFailedDesc(entity)
-    ),
-    [UNAUTHORIZED]: jsonContent(createMessageObjectSchema(NOT_AUTHENTICATED), NOT_AUTHENTICATED),
-    [FORBIDDEN]: jsonContent(createMessageObjectSchema(NOT_AUTHORIZED), NOT_AUTHORIZED),
-  },
-  summary: 'Get User',
-  tags,
-})
+    // Check if the user is trying to access their own data or if they are an admin
+    if (hasAccess(id, c.var.user)) {
+      return c.json(NOT_AUTHORIZED_RES, FORBIDDEN)
+    }
 
-export const updateUser = createRoute({
-  description: 'Update a user by User ID.',
-  method: 'post',
-  middleware: protect,
-  path: '/:id',
-  request: {
-    body: jsonContentRequired(updateUserValidator, updateDataDesc(entity)),
-    params: userIdParamsSchema,
-  },
-  responses: {
-    [OK]: jsonContent(
-      updateUserValidator.or(createMessageObjectSchema(UPDATE_NO_CHANGES)),
-      updateSuccessDesc(entity)
-    ),
-    [UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(updateUserValidator),
-      VALIDATION_ERROR_DESC
-    ),
-    [NOT_FOUND]: jsonContent(createMessageObjectSchema(notFoundDesc(entity)), notFoundDesc(entity)),
-    [CONFLICT]: jsonContent(createMessageObjectSchema(EMAIL_ALREADY_EXISTS), EMAIL_ALREADY_EXISTS),
-    [INTERNAL_SERVER_ERROR]: jsonContent(
-      createMessageObjectSchema(updateFailedDesc(entity)),
-      updateFailedDesc(entity)
-    ),
-    [UNAUTHORIZED]: jsonContent(createMessageObjectSchema(NOT_AUTHENTICATED), NOT_AUTHENTICATED),
-    [FORBIDDEN]: jsonContent(createMessageObjectSchema(NOT_AUTHORIZED), NOT_AUTHORIZED),
-  },
-  summary: 'Update User',
-  tags,
-})
+    try {
+      const db = await createDb(c.env.DB)
+
+      const queryData = await getUserById(db, id)
+
+      if (!queryData) {
+        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+      }
+
+      const result = await readUserValidator.safeParseAsync(queryData)
+
+      if (!result.success) {
+        throw new HTTPException(INTERNAL_SERVER_ERROR, {
+          message: routes.entityFailedToGetDesc,
+        })
+      }
+
+      return c.json(result.data, OK)
+    } catch (error) {
+      if (error instanceof HTTPException) {
+        throw error
+      }
+      throw new HTTPException(INTERNAL_SERVER_ERROR, {
+        message: routes.entityFailedToGetDesc,
+      })
+    }
+  })
+  // Update user
+  .openapi(routes.updateUser, async (c) => {
+    const { id } = c.req.valid('param')
+    const reqData = c.req.valid('json')
+
+    // Check if the user is trying to access their own data or if they are an admin
+    if (hasAccess(id, c.var.user)) {
+      return c.json(NOT_AUTHORIZED_RES, FORBIDDEN)
+    }
+
+    try {
+      const db = await createDb(c.env.DB)
+
+      // TODO: Check if this is done in middleware
+      const existingUserData = await getUserById(db, id)
+
+      if (!existingUserData) {
+        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+      }
+
+      const dataToUpdate: UpdateUser = {}
+
+      if (reqData.name !== undefined && reqData.name !== existingUserData.name) {
+        // Only add fields to update if they are provided and different from the current value
+        dataToUpdate.name = reqData.name
+      }
+      if (reqData.email !== undefined && reqData.email !== existingUserData.email) {
+        const emailExists = await checkIfEmailExistsForOtherUser(db, reqData.email, id)
+
+        if (emailExists) {
+          return c.json({ message: EMAIL_ALREADY_EXISTS }, CONFLICT)
+        }
+        dataToUpdate.email = reqData.email
+      }
+      if (reqData.image !== undefined && reqData.image !== existingUserData.image) {
+        dataToUpdate.image = reqData.image
+      }
+      if (
+        reqData.phoneNumber !== undefined &&
+        reqData.phoneNumber !== existingUserData.phoneNumber
+      ) {
+        dataToUpdate.phoneNumber = reqData.phoneNumber
+      }
+
+      if (Object.keys(dataToUpdate).length === 0) {
+        return c.json(UPDATE_NO_CHANGES_RES, OK)
+      }
+
+      const result = await updateUser(db, id, dataToUpdate)
+
+      if (result.length === 0) {
+        throw new HTTPException(INTERNAL_SERVER_ERROR, {
+          message: routes.entityUpdateFailedDesc,
+        })
+      }
+
+      const user = await readUserValidator.safeParseAsync(result[0])
+
+      if (!user.success) {
+        throw new HTTPException(INTERNAL_SERVER_ERROR, {
+          message: routes.entityFailedToGetDesc,
+        })
+      }
+      return c.json(user.data, OK)
+    } catch (error) {
+      if (error instanceof HTTPException) {
+        throw error
+      }
+      throw new HTTPException(INTERNAL_SERVER_ERROR, {
+        message: routes.entityFailedToGetDesc,
+      })
+    }
+  })
+
+export default router

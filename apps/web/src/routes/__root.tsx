@@ -4,7 +4,6 @@ import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 
-import Header from '@/components/header'
 import { RouterLoader } from '@/components/router-loader'
 import { Spinner } from '@/components/spinner'
 import { useTheme } from '@/context/theme-context'
@@ -34,8 +33,6 @@ function RootLayout() {
   return (
     <div className="min-h-svh border-2 border-border/60 flex flex-col">
       <RouterLoader />
-      <Header />
-      <hr />
       <Outlet />
       <Toaster richColors theme={theme} />
       <Suspense>

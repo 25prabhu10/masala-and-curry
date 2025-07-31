@@ -21,7 +21,7 @@ export default function PasswordField({ label, required, ...props }: PasswordFie
     <div className="grid gap-2">
       <Label htmlFor={field.name}>
         {label}
-        {required ? <span className="text-xs text-destructive">*</span> : ''}
+        {required ? <span className="text-xs text-destructive"> *</span> : ''}
       </Label>
       <div className="relative">
         <Input

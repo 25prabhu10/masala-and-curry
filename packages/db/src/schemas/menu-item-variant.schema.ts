@@ -51,7 +51,7 @@ export const menuItemVariant = sqliteTable(
 
 export const SelectMenuItemVariantSchema = createSelectSchema(menuItemVariant, {
   calories: (schema) =>
-    schema.positive().max(MAX_NUMBER_IN_APP).optional().openapi({
+    schema.nonnegative().max(MAX_NUMBER_IN_APP).optional().openapi({
       description: 'Calories for this variant',
       example: 650,
     }),
@@ -72,13 +72,12 @@ export const SelectMenuItemVariantSchema = createSelectSchema(menuItemVariant, {
         example: 'Generous portion perfect for sharing',
       }),
   displayOrder: (schema) =>
-    schema.positive().max(MAX_NUMBER_IN_APP).openapi({
+    schema.nonnegative().max(MAX_NUMBER_IN_APP).openapi({
       description: 'Display order for variants',
       example: 2,
     }),
-  id: () =>
-    z
-      .nanoid()
+  id: (schema) =>
+    schema
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Variant ID', NANOID_LENGTH),
       })
@@ -96,9 +95,8 @@ export const SelectMenuItemVariantSchema = createSelectSchema(menuItemVariant, {
       description: 'Whether this is the default variant',
       example: false,
     }),
-  menuItemId: () =>
-    z
-      .nanoid()
+  menuItemId: (schema) =>
+    schema
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Menu Item ID', NANOID_LENGTH),
       })

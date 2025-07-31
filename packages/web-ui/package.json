@@ -12,12 +12,17 @@
     "./button": "./src/ui/button.tsx",
     "./card": "./src/ui/card.tsx",
     "./checkbox": "./src/ui/checkbox.tsx",
+    "./dialog": "./src/ui/dialog.tsx",
     "./dropdown-menu": "./src/ui/dropdown-menu.tsx",
     "./input": "./src/ui/input.tsx",
     "./label": "./src/ui/label.tsx",
-    "./sonner": "./src/ui/sonner.tsx",
+    "./separator": "./src/ui/separator.tsx",
+    "./sheet": "./src/ui/sheet.tsx",
+    "./sidebar": "./src/ui/sidebar.tsx",
     "./skeleton": "./src/ui/skeleton.tsx",
-    "./sidebar": "./src/ui/sidebar.tsx"
+    "./sonner": "./src/ui/sonner.tsx",
+    "./table": "./src/ui/table.tsx",
+    "./tooltip": "./src/ui/tooltip.tsx"
   },
   "scripts": {
     "check-types": "tsc --noEmit",
@@ -32,7 +37,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
     "class-variance-authority": "^0.7.1",
-    "lucide-react": "^0.532.0",
+    "lucide-react": "catalog:ui",
     "radix-ui": "latest",
     "sonner": "^2.0.6"
   },

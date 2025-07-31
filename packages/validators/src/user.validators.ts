@@ -1,5 +1,5 @@
 import { InsertUserSchema, SelectUserSchema } from '@mac/db/schemas'
-import * as z from 'zod'
+import { z } from 'zod'
 
 export const createUserValidator = z.object({
   ...InsertUserSchema.shape,

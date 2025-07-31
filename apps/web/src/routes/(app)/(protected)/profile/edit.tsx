@@ -5,7 +5,7 @@ import {
   UPDATE_SUCCESS_DESC,
 } from '@mac/resources/general'
 import { CONFLICT, UNPROCESSABLE_ENTITY } from '@mac/resources/http-status-codes'
-import type { UpdateUser } from '@mac/validators/user'
+import { type UpdateUser, updateUserValidator } from '@mac/validators/user'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 
 import { useAppForm } from '@/hooks/use-form'
 
-export const Route = createFileRoute('/_protected/profile/edit')({
+export const Route = createFileRoute('/(app)/(protected)/profile/edit')({
   component: RouteComponent,
   loader: ({ context }) => context.session,
 })
@@ -46,7 +46,7 @@ function RouteComponent() {
       toast.error(FORM_SUBMISSION_ERROR_DESC)
     },
     validators: {
-      // onChange: updateUserValidator,
+      onChange: updateUserValidator,
       onSubmitAsync: async ({ value }) => {
         try {
           const res = await UpdateProfile.mutateAsync(value)

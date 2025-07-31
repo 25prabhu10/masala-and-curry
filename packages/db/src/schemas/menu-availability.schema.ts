@@ -50,8 +50,8 @@ export const SelectMenuAvailabilitySchema = createSelectSchema(menuAvailability,
       description: 'Availability creation timestamp',
       example: '2023-01-01T00:00:00Z',
     }),
-  dayOfWeek: (schema) =>
-    schema
+  dayOfWeek: () =>
+    z
       .int()
       .min(0, 'Day of week must be between 0-6')
       .max(6, 'Day of week must be between 0-6')
@@ -64,9 +64,8 @@ export const SelectMenuAvailabilitySchema = createSelectSchema(menuAvailability,
       description: 'End time in HH:MM format (24-hour)',
       example: '11:30',
     }),
-  id: () =>
-    z
-      .nanoid()
+  id: (schema) =>
+    schema
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Menu Availability ID', NANOID_LENGTH),
       })

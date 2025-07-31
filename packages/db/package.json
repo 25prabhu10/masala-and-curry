@@ -22,6 +22,11 @@
       "types": "./dist/schemas/index.d.ts",
       "import": "./src/schemas/index.ts",
       "default": "./src/schemas/index.ts"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./src/types.ts",
+      "default": "./src/types.ts"
     }
   },
   "scripts": {

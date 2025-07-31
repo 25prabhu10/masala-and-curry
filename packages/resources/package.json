@@ -18,6 +18,11 @@
       "import": "./dist/constants.js",
       "default": "./dist/constants.js"
     },
+    "./category": {
+      "types": "./dist/category.d.ts",
+      "import": "./dist/category.js",
+      "default": "./dist/category.js"
+    },
     "./general": {
       "types": "./dist/general.d.ts",
       "import": "./dist/general.js",

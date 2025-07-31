@@ -4,7 +4,7 @@ import * as z from 'zod'
 
 import { AlreadySignedIn } from '@/components/auth/already-signed-in'
 
-export const Route = createFileRoute('/_auth')({
+export const Route = createFileRoute('/(app)/(auth)')({
   component: RouteComponent,
   loader: async ({ context: { session } }) => session,
   validateSearch: z.object({

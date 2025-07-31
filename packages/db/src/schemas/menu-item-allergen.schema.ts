@@ -36,9 +36,8 @@ export const menuItemAllergen = sqliteTable(
 )
 
 export const SelectMenuItemAllergenSchema = createSelectSchema(menuItemAllergen, {
-  allergenId: () =>
-    z
-      .nanoid()
+  allergenId: (schema) =>
+    schema
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Allergen ID', NANOID_LENGTH),
       })
@@ -51,9 +50,8 @@ export const SelectMenuItemAllergenSchema = createSelectSchema(menuItemAllergen,
       description: 'Association creation timestamp',
       example: '2023-01-01T00:00:00Z',
     }),
-  menuItemId: () =>
-    z
-      .nanoid()
+  menuItemId: (schema) =>
+    schema
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Menu item ID', NANOID_LENGTH),
       })

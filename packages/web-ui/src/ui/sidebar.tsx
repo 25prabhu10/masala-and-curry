@@ -1,7 +1,7 @@
 import { cn } from '@mac/tailwind-config/utils'
-import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { PanelLeft } from 'lucide-react'
+import { Slot } from 'radix-ui'
 import * as React from 'react'
 
 import { useIsMobile } from '../hooks/use-mobile'
@@ -105,8 +105,9 @@ const SidebarProvider = React.forwardRef<
     // This makes it easier to style the sidebar with Tailwind classes.
     const state = open ? 'expanded' : 'collapsed'
 
-    const contextValue = React.useMemo<SidebarContextProps>(() => {
-      return {
+    const contextValue = React.useMemo<SidebarContextProps>(
+      // oxlint-disable-next-line arrow-body-style
+      () => ({
         isMobile,
         open,
         openMobile,
@@ -114,15 +115,16 @@ const SidebarProvider = React.forwardRef<
         setOpenMobile,
         state,
         toggleSidebar,
-      }
-    }, [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar])
+      }),
+      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    )
 
     return (
       <SidebarContext.Provider value={contextValue}>
         <TooltipProvider delayDuration={0}>
           <div
             className={cn(
-              'group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar',
+              'group/sidebar-wrapper flex w-full has-[[data-variant=inset]]:bg-sidebar',
               className
             )}
             ref={ref}
@@ -405,7 +407,7 @@ const SidebarGroupLabel = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'div'
+  const Comp = asChild ? Slot.Root : 'div'
 
   return (
     <Comp
@@ -426,7 +428,7 @@ const SidebarGroupAction = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<'button'> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'button'
+  const Comp = asChild ? Slot.Root : 'button'
 
   return (
     <Comp
@@ -523,7 +525,7 @@ const SidebarMenuButton = React.forwardRef<
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : 'button'
+    const Comp = asChild ? Slot.Root : 'button'
     const { isMobile, state } = useSidebar()
 
     const button = (
@@ -569,7 +571,7 @@ const SidebarMenuAction = React.forwardRef<
     showOnHover?: boolean
   }
 >(({ className, asChild = false, showOnHover = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'button'
+  const Comp = asChild ? Slot.Root : 'button'
 
   return (
     <Comp
@@ -673,7 +675,7 @@ const SidebarMenuSubButton = React.forwardRef<
     isActive?: boolean
   }
 >(({ asChild = false, size = 'md', isActive, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'a'
+  const Comp = asChild ? Slot.Root : 'a'
 
   return (
     <Comp

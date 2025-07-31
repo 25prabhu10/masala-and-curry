@@ -1,3 +1,4 @@
+import { Separator } from '@mac/web-ui/separator'
 import { Skeleton } from '@mac/web-ui/skeleton'
 import { Suspense } from 'react'
 
@@ -8,7 +9,7 @@ export function HeaderActions() {
   return (
     <div className="ml-auto flex items-center gap-4 lg:gap-6">
       <ModeToggle />
-      <div className="h-6 w-px bg-border/60" />
+      <Separator className="h-6" orientation="vertical" />
       <Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
         <UserHeaderActions />
       </Suspense>

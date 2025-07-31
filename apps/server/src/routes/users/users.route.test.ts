@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import createApp from '@/lib/create-app'
 
-import router from './users.index'
+import router from './users.route'
 
 describe('users routes', () => {
   const client = testClient(createApp().route('/users', router))

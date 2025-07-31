@@ -16,6 +16,12 @@ export const NOT_AUTHORIZED: string = 'You are not authorized to perform this ac
 
 export const UPDATE_SUCCESS_DESC: string = 'Update successful.'
 
+export const PAGINATION_ERROR_DESC: string = 'Must be a valid position number (e.g. 1, 10)'
+
+export function invalidIdDesc(entity: Readonly<string>): string {
+  return `id should be a valid ${entity} ID`
+}
+
 export function notEmptyDesc(name: Readonly<string>): string {
   return `${name} must not be empty.`
 }
@@ -30,6 +36,26 @@ export function minLengthDesc(name: Readonly<string>, minLength?: Readonly<numbe
 
 export function getDataSuccessDesc(name: Readonly<string>): string {
   return `${name} data retrieved successfully.`
+}
+
+export function createDataDesc(entity: string) {
+  return `${entity} data to create`
+}
+
+export function createDataSuccessDesc(entity: string) {
+  return `${entity} created successfully`
+}
+
+export function createFailedDesc(entity: string) {
+  return `Failed to create ${entity}`
+}
+
+export function deleteSuccessDesc(entity: string) {
+  return `${entity} deleted successfully`
+}
+
+export function deleteFailedDesc(entity: string) {
+  return `Failed to delete ${entity}`
 }
 
 export function getDataFailedDesc(name: Readonly<string>): string {

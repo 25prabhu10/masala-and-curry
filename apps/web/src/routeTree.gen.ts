@@ -9,280 +9,331 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteRouteImport } from './routes/_auth/route'
-import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
-import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
-import { Route as ProtectedProfileEditRouteImport } from './routes/_protected/profile/edit'
-import { Route as ProtectedProfileIndexRouteImport } from './routes/_protected/profile/index'
-import { Route as ProtectedRouteRouteImport } from './routes/_protected/route'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
-import { Route as AdminRouteRouteImport } from './routes/admin/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as NotAuthorizedRouteImport } from './routes/not-authorized'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
+import { Route as appRouteRouteImport } from './routes/(app)/route'
+import { Route as appIndexRouteImport } from './routes/(app)/index'
+import { Route as DashboardMenuRouteImport } from './routes/dashboard/menu'
+import { Route as DashboardCategoriesRouteImport } from './routes/dashboard/categories'
+import { Route as appNotAuthorizedRouteImport } from './routes/(app)/not-authorized'
+import { Route as appAboutRouteImport } from './routes/(app)/about'
+import { Route as appprotectedRouteRouteImport } from './routes/(app)/(protected)/route'
+import { Route as appauthRouteRouteImport } from './routes/(app)/(auth)/route'
+import { Route as appauthSignUpRouteImport } from './routes/(app)/(auth)/sign-up'
+import { Route as appauthSignInRouteImport } from './routes/(app)/(auth)/sign-in'
+import { Route as appprotectedProfileIndexRouteImport } from './routes/(app)/(protected)/profile/index'
+import { Route as appprotectedProfileEditRouteImport } from './routes/(app)/(protected)/profile/edit'
 
-const NotAuthorizedRoute = NotAuthorizedRouteImport.update({
-  getParentRoute: () => rootRouteImport,
-  id: '/not-authorized',
-  path: '/not-authorized',
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  getParentRoute: () => rootRouteImport,
-  id: '/about',
-  path: '/about',
-} as any)
-const AdminRouteRoute = AdminRouteRouteImport.update({
-  getParentRoute: () => rootRouteImport,
-  id: '/admin',
-  path: '/admin',
-} as any)
-const ProtectedRouteRoute = ProtectedRouteRouteImport.update({
-  getParentRoute: () => rootRouteImport,
-  id: '/_protected',
-} as any)
-const AuthRouteRoute = AuthRouteRouteImport.update({
-  getParentRoute: () => rootRouteImport,
-  id: '/_auth',
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  getParentRoute: () => rootRouteImport,
-  id: '/',
-  path: '/',
-} as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
-  getParentRoute: () => AdminRouteRoute,
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthSignUpRoute = AuthSignUpRouteImport.update({
-  getParentRoute: () => AuthRouteRoute,
+const appRouteRoute = appRouteRouteImport.update({
+  id: '/(app)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const appIndexRoute = appIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const DashboardMenuRoute = DashboardMenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardCategoriesRoute = DashboardCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const appNotAuthorizedRoute = appNotAuthorizedRouteImport.update({
+  id: '/not-authorized',
+  path: '/not-authorized',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appAboutRoute = appAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appprotectedRouteRoute = appprotectedRouteRouteImport.update({
+  id: '/(protected)',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appauthRouteRoute = appauthRouteRouteImport.update({
+  id: '/(auth)',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appauthSignUpRoute = appauthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
+  getParentRoute: () => appauthRouteRoute,
 } as any)
-const AuthSignInRoute = AuthSignInRouteImport.update({
-  getParentRoute: () => AuthRouteRoute,
+const appauthSignInRoute = appauthSignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
+  getParentRoute: () => appauthRouteRoute,
 } as any)
-const ProtectedProfileIndexRoute = ProtectedProfileIndexRouteImport.update({
-  getParentRoute: () => ProtectedRouteRoute,
-  id: '/profile/',
-  path: '/profile/',
-} as any)
-const ProtectedProfileEditRoute = ProtectedProfileEditRouteImport.update({
-  getParentRoute: () => ProtectedRouteRoute,
+const appprotectedProfileIndexRoute =
+  appprotectedProfileIndexRouteImport.update({
+    id: '/profile/',
+    path: '/profile/',
+    getParentRoute: () => appprotectedRouteRoute,
+  } as any)
+const appprotectedProfileEditRoute = appprotectedProfileEditRouteImport.update({
   id: '/profile/edit',
   path: '/profile/edit',
+  getParentRoute: () => appprotectedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRouteWithChildren
-  '/about': typeof AboutRoute
-  '/not-authorized': typeof NotAuthorizedRoute
-  '/sign-in': typeof AuthSignInRoute
-  '/sign-up': typeof AuthSignUpRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/profile/edit': typeof ProtectedProfileEditRoute
-  '/profile': typeof ProtectedProfileIndexRoute
+  '/': typeof appIndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/about': typeof appAboutRoute
+  '/not-authorized': typeof appNotAuthorizedRoute
+  '/dashboard/categories': typeof DashboardCategoriesRoute
+  '/dashboard/menu': typeof DashboardMenuRoute
+  '/sign-in': typeof appauthSignInRoute
+  '/sign-up': typeof appauthSignUpRoute
+  '/profile/edit': typeof appprotectedProfileEditRoute
+  '/profile': typeof appprotectedProfileIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRouteWithChildren
-  '/about': typeof AboutRoute
-  '/not-authorized': typeof NotAuthorizedRoute
-  '/sign-in': typeof AuthSignInRoute
-  '/sign-up': typeof AuthSignUpRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/profile/edit': typeof ProtectedProfileEditRoute
-  '/profile': typeof ProtectedProfileIndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/': typeof appIndexRoute
+  '/about': typeof appAboutRoute
+  '/not-authorized': typeof appNotAuthorizedRoute
+  '/dashboard/categories': typeof DashboardCategoriesRoute
+  '/dashboard/menu': typeof DashboardMenuRoute
+  '/sign-in': typeof appauthSignInRoute
+  '/sign-up': typeof appauthSignUpRoute
+  '/profile/edit': typeof appprotectedProfileEditRoute
+  '/profile': typeof appprotectedProfileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteRouteWithChildren
-  '/_protected': typeof ProtectedRouteRouteWithChildren
-  '/admin': typeof AdminRouteRouteWithChildren
-  '/about': typeof AboutRoute
-  '/not-authorized': typeof NotAuthorizedRoute
-  '/_auth/sign-in': typeof AuthSignInRoute
-  '/_auth/sign-up': typeof AuthSignUpRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
-  '/_protected/profile/edit': typeof ProtectedProfileEditRoute
-  '/_protected/profile/': typeof ProtectedProfileIndexRoute
+  '/(app)': typeof appRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/(app)/(auth)': typeof appauthRouteRouteWithChildren
+  '/(app)/(protected)': typeof appprotectedRouteRouteWithChildren
+  '/(app)/about': typeof appAboutRoute
+  '/(app)/not-authorized': typeof appNotAuthorizedRoute
+  '/dashboard/categories': typeof DashboardCategoriesRoute
+  '/dashboard/menu': typeof DashboardMenuRoute
+  '/(app)/': typeof appIndexRoute
+  '/(app)/(auth)/sign-in': typeof appauthSignInRoute
+  '/(app)/(auth)/sign-up': typeof appauthSignUpRoute
+  '/(app)/(protected)/profile/edit': typeof appprotectedProfileEditRoute
+  '/(app)/(protected)/profile/': typeof appprotectedProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
+    | '/dashboard'
     | '/about'
     | '/not-authorized'
+    | '/dashboard/categories'
+    | '/dashboard/menu'
     | '/sign-in'
     | '/sign-up'
-    | '/admin/dashboard'
     | '/profile/edit'
     | '/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/dashboard'
     | '/'
-    | '/admin'
     | '/about'
     | '/not-authorized'
+    | '/dashboard/categories'
+    | '/dashboard/menu'
     | '/sign-in'
     | '/sign-up'
-    | '/admin/dashboard'
     | '/profile/edit'
     | '/profile'
   id:
     | '__root__'
-    | '/'
-    | '/_auth'
-    | '/_protected'
-    | '/admin'
-    | '/about'
-    | '/not-authorized'
-    | '/_auth/sign-in'
-    | '/_auth/sign-up'
-    | '/admin/dashboard'
-    | '/_protected/profile/edit'
-    | '/_protected/profile/'
+    | '/(app)'
+    | '/dashboard'
+    | '/(app)/(auth)'
+    | '/(app)/(protected)'
+    | '/(app)/about'
+    | '/(app)/not-authorized'
+    | '/dashboard/categories'
+    | '/dashboard/menu'
+    | '/(app)/'
+    | '/(app)/(auth)/sign-in'
+    | '/(app)/(auth)/sign-up'
+    | '/(app)/(protected)/profile/edit'
+    | '/(app)/(protected)/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  ProtectedRouteRoute: typeof ProtectedRouteRouteWithChildren
-  AdminRouteRoute: typeof AdminRouteRouteWithChildren
-  AboutRoute: typeof AboutRoute
-  NotAuthorizedRoute: typeof NotAuthorizedRoute
+  appRouteRoute: typeof appRouteRouteWithChildren
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/not-authorized': {
-      id: '/not-authorized'
-      path: '/not-authorized'
-      fullPath: '/not-authorized'
-      preLoaderRoute: typeof NotAuthorizedRouteImport
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_protected': {
-      id: '/_protected'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof ProtectedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/(app)': {
+      id: '/(app)'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof appRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
-      parentRoute: typeof AdminRouteRoute
+    '/(app)/': {
+      id: '/(app)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof appIndexRouteImport
+      parentRoute: typeof appRouteRoute
     }
-    '/_auth/sign-up': {
-      id: '/_auth/sign-up'
+    '/dashboard/menu': {
+      id: '/dashboard/menu'
+      path: '/menu'
+      fullPath: '/dashboard/menu'
+      preLoaderRoute: typeof DashboardMenuRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/categories': {
+      id: '/dashboard/categories'
+      path: '/categories'
+      fullPath: '/dashboard/categories'
+      preLoaderRoute: typeof DashboardCategoriesRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/(app)/not-authorized': {
+      id: '/(app)/not-authorized'
+      path: '/not-authorized'
+      fullPath: '/not-authorized'
+      preLoaderRoute: typeof appNotAuthorizedRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/about': {
+      id: '/(app)/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof appAboutRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/(protected)': {
+      id: '/(app)/(protected)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof appprotectedRouteRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/(auth)': {
+      id: '/(app)/(auth)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof appauthRouteRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/(auth)/sign-up': {
+      id: '/(app)/(auth)/sign-up'
       path: '/sign-up'
       fullPath: '/sign-up'
-      preLoaderRoute: typeof AuthSignUpRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof appauthSignUpRouteImport
+      parentRoute: typeof appauthRouteRoute
     }
-    '/_auth/sign-in': {
-      id: '/_auth/sign-in'
+    '/(app)/(auth)/sign-in': {
+      id: '/(app)/(auth)/sign-in'
       path: '/sign-in'
       fullPath: '/sign-in'
-      preLoaderRoute: typeof AuthSignInRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof appauthSignInRouteImport
+      parentRoute: typeof appauthRouteRoute
     }
-    '/_protected/profile/': {
-      id: '/_protected/profile/'
+    '/(app)/(protected)/profile/': {
+      id: '/(app)/(protected)/profile/'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof ProtectedProfileIndexRouteImport
-      parentRoute: typeof ProtectedRouteRoute
+      preLoaderRoute: typeof appprotectedProfileIndexRouteImport
+      parentRoute: typeof appprotectedRouteRoute
     }
-    '/_protected/profile/edit': {
-      id: '/_protected/profile/edit'
+    '/(app)/(protected)/profile/edit': {
+      id: '/(app)/(protected)/profile/edit'
       path: '/profile/edit'
       fullPath: '/profile/edit'
-      preLoaderRoute: typeof ProtectedProfileEditRouteImport
-      parentRoute: typeof ProtectedRouteRoute
+      preLoaderRoute: typeof appprotectedProfileEditRouteImport
+      parentRoute: typeof appprotectedRouteRoute
     }
   }
 }
 
-interface AuthRouteRouteChildren {
-  AuthSignInRoute: typeof AuthSignInRoute
-  AuthSignUpRoute: typeof AuthSignUpRoute
+interface appauthRouteRouteChildren {
+  appauthSignInRoute: typeof appauthSignInRoute
+  appauthSignUpRoute: typeof appauthSignUpRoute
 }
 
-const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthSignInRoute: AuthSignInRoute,
-  AuthSignUpRoute: AuthSignUpRoute,
+const appauthRouteRouteChildren: appauthRouteRouteChildren = {
+  appauthSignInRoute: appauthSignInRoute,
+  appauthSignUpRoute: appauthSignUpRoute,
 }
 
-const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(AuthRouteRouteChildren)
-
-interface ProtectedRouteRouteChildren {
-  ProtectedProfileEditRoute: typeof ProtectedProfileEditRoute
-  ProtectedProfileIndexRoute: typeof ProtectedProfileIndexRoute
-}
-
-const ProtectedRouteRouteChildren: ProtectedRouteRouteChildren = {
-  ProtectedProfileEditRoute: ProtectedProfileEditRoute,
-  ProtectedProfileIndexRoute: ProtectedProfileIndexRoute,
-}
-
-const ProtectedRouteRouteWithChildren = ProtectedRouteRoute._addFileChildren(
-  ProtectedRouteRouteChildren
+const appauthRouteRouteWithChildren = appauthRouteRoute._addFileChildren(
+  appauthRouteRouteChildren,
 )
 
-interface AdminRouteRouteChildren {
-  AdminDashboardRoute: typeof AdminDashboardRoute
+interface appprotectedRouteRouteChildren {
+  appprotectedProfileEditRoute: typeof appprotectedProfileEditRoute
+  appprotectedProfileIndexRoute: typeof appprotectedProfileIndexRoute
 }
 
-const AdminRouteRouteChildren: AdminRouteRouteChildren = {
-  AdminDashboardRoute: AdminDashboardRoute,
+const appprotectedRouteRouteChildren: appprotectedRouteRouteChildren = {
+  appprotectedProfileEditRoute: appprotectedProfileEditRoute,
+  appprotectedProfileIndexRoute: appprotectedProfileIndexRoute,
 }
 
-const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(AdminRouteRouteChildren)
+const appprotectedRouteRouteWithChildren =
+  appprotectedRouteRoute._addFileChildren(appprotectedRouteRouteChildren)
+
+interface appRouteRouteChildren {
+  appauthRouteRoute: typeof appauthRouteRouteWithChildren
+  appprotectedRouteRoute: typeof appprotectedRouteRouteWithChildren
+  appAboutRoute: typeof appAboutRoute
+  appNotAuthorizedRoute: typeof appNotAuthorizedRoute
+  appIndexRoute: typeof appIndexRoute
+}
+
+const appRouteRouteChildren: appRouteRouteChildren = {
+  appauthRouteRoute: appauthRouteRouteWithChildren,
+  appprotectedRouteRoute: appprotectedRouteRouteWithChildren,
+  appAboutRoute: appAboutRoute,
+  appNotAuthorizedRoute: appNotAuthorizedRoute,
+  appIndexRoute: appIndexRoute,
+}
+
+const appRouteRouteWithChildren = appRouteRoute._addFileChildren(
+  appRouteRouteChildren,
+)
+
+interface DashboardRouteRouteChildren {
+  DashboardCategoriesRoute: typeof DashboardCategoriesRoute
+  DashboardMenuRoute: typeof DashboardMenuRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardCategoriesRoute: DashboardCategoriesRoute,
+  DashboardMenuRoute: DashboardMenuRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
-  AboutRoute: AboutRoute,
-  AdminRouteRoute: AdminRouteRouteWithChildren,
-  AuthRouteRoute: AuthRouteRouteWithChildren,
-  IndexRoute: IndexRoute,
-  NotAuthorizedRoute: NotAuthorizedRoute,
-  ProtectedRouteRoute: ProtectedRouteRouteWithChildren,
+  appRouteRoute: appRouteRouteWithChildren,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

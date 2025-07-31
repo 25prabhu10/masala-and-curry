@@ -32,7 +32,7 @@ export default function CheckboxField({
       />
       <Label htmlFor={field.name}>
         {label}
-        {required ? <span className="text-xs text-destructive">*</span> : ''}
+        {required ? <span className="text-xs text-destructive"> *</span> : ''}
       </Label>
       {showValidations ? <FieldInfo fieldName={field.name} meta={field.state.meta} /> : null}
     </div>

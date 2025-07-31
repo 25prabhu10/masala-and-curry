@@ -3,6 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "dev": {
+      "dependsOn": ["@mac/resources#dev", "@mac/db#dev", "@mac/validators#dev"],
       "persistent": true,
       "interactive": true
     }

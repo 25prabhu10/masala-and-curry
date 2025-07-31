@@ -2,7 +2,7 @@ import { Button } from '@mac/web-ui/button'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowRight, Clock, MapPin, Phone, Star } from 'lucide-react'
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/(app)/')({
   component: Index,
   loader: ({ context: { session } }) => session,
 })

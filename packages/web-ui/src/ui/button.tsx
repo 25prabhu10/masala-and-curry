@@ -1,6 +1,6 @@
 import { cn } from '@mac/tailwind-config/utils'
-import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { Slot } from 'radix-ui'
 import * as React from 'react'
 
 const buttonVariants = cva(
@@ -32,13 +32,12 @@ const buttonVariants = cva(
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
+    const Comp = asChild ? Slot.Root : 'button'
     return (
       <Comp className={cn(buttonVariants({ className, size, variant }))} ref={ref} {...props} />
     )
   }
 )
-
 Button.displayName = 'Button'
 
 export interface ButtonProps

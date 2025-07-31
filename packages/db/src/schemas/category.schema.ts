@@ -56,13 +56,12 @@ export const SelectCategorySchema = createSelectSchema(category, {
         example: 'Delicious starters to begin your meal',
       }),
   displayOrder: (schema) =>
-    schema.positive().max(MAX_NUMBER_IN_APP).openapi({
+    schema.nonnegative().max(MAX_NUMBER_IN_APP).openapi({
       description: 'Display order for category listing',
       example: 1,
     }),
-  id: () =>
-    z
-      .nanoid()
+  id: (schema) =>
+    schema
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Category ID', NANOID_LENGTH),
       })

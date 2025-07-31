@@ -7,5 +7,3 @@ export const EMAIL_ALREADY_EXISTS: string = 'Email already exists.'
 export const EMAIL_VERIFIED_INVALID: string = 'Email verified must be a boolean.'
 
 export const PHONE_INVALID: string = 'Phone number must be a valid US number.'
-
-export const INVALID_USER_ID: string = 'User ID must be a valid string.'

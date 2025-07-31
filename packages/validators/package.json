@@ -22,6 +22,11 @@
       "types": "./dist/session.validators.d.ts",
       "import": "./dist/session.validators.js",
       "default": "./dist/session.validators.js"
+    },
+    "./category": {
+      "types": "./dist/category.validators.d.ts",
+      "import": "./dist/category.validators.js",
+      "default": "./dist/category.validators.js"
     }
   },
   "scripts": {
