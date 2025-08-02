@@ -22,14 +22,11 @@ import {
   UNPROCESSABLE_ENTITY,
 } from '@mac/resources/http-status-codes'
 import { EMAIL_ALREADY_EXISTS } from '@mac/resources/user'
+import { createIdParamsOpenapiSchema } from '@mac/validators/general'
 import { readUserValidator, updateUserValidator } from '@mac/validators/user'
 
 import { jsonContent, jsonContentRequired } from '@/lib/openapi/helpers'
-import {
-  createErrorSchema,
-  createIdParamsOpenapiSchema,
-  createMessageObjectSchema,
-} from '@/lib/openapi/schemas'
+import { createErrorSchema, createMessageObjectSchema } from '@/lib/openapi/schemas'
 import { protect } from '@/middlewares'
 
 const tags = ['Users']

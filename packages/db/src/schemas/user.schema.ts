@@ -22,8 +22,9 @@ const { createInsertSchema, createSelectSchema, createUpdateSchema } = createSch
   zodInstance: z,
 })
 
-const roles = ['admin', 'user'] as const
-const rolesStr = enumToString(roles)
+const roles = z.enum(['admin', 'user'], {
+  error: (issue) => `Role must be one of: ${issue.options}`,
+})
 
 export const user = sqliteTable(
   'user',
@@ -45,7 +46,7 @@ export const user = sqliteTable(
       .default(sql`(unixepoch())`)
       .$onUpdate(() => new Date()),
   },
-  (table) => [check('role_check', sql`${table.role} in (${sql.raw(rolesStr)})`)]
+  (table) => [check('role_check', sql`${table.role} in (${sql.raw(enumToString(roles.options))})`)]
 )
 
 export const SelectUserSchema = createSelectSchema(user, {
@@ -121,14 +122,11 @@ export const SelectUserSchema = createSelectSchema(user, {
       example: false,
     }),
   role: () =>
-    z
-      .enum(roles, `Role must be one of: ${rolesStr}`)
-      .optional()
-      .openapi({
-        description: "User's role in the system (e.g., admin, user)",
-        enum: [...roles],
-        example: 'user',
-      }),
+    roles.optional().openapi({
+      description: "User's role in the system (e.g., admin, user)",
+      enum: roles.options,
+      example: 'user',
+    }),
   updatedAt: (schema) =>
     schema.optional().openapi({
       description: "User's last profile update date",

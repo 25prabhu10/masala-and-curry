@@ -13,11 +13,6 @@
       "import": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./repository": {
-      "types": "./dist/repository/index.d.ts",
-      "import": "./src/repository/index.ts",
-      "default": "./src/repository/index.ts"
-    },
     "./schemas": {
       "types": "./dist/schemas/index.d.ts",
       "import": "./src/schemas/index.ts",
@@ -41,12 +36,11 @@
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@hono/zod-openapi": "1.0.2",
+    "@hono/zod-openapi": "catalog:api",
     "@mac/resources": "workspace:*",
-    "drizzle-orm": "^0.44.3",
+    "drizzle-orm": "catalog:",
     "drizzle-zod": "^0.8.2",
-    "nanoid": "^5.1.5",
-    "zod": "catalog:"
+    "nanoid": "^5.1.5"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
@@ -54,5 +48,5 @@
     "oxlint": "catalog:",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.14.0"
 }

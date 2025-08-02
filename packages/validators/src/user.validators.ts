@@ -1,14 +1,8 @@
+import type { z } from '@hono/zod-openapi'
 import { InsertUserSchema, SelectUserSchema } from '@mac/db/schemas'
-import { z } from 'zod'
 
-export const createUserValidator = z.object({
-  ...InsertUserSchema.shape,
-})
-
-export const readUserValidator = z.object({
-  ...SelectUserSchema.shape,
-})
-
+export const createUserValidator = InsertUserSchema
+export const readUserValidator = SelectUserSchema
 export const updateUserValidator = createUserValidator.partial()
 
 export type User = z.output<typeof readUserValidator>

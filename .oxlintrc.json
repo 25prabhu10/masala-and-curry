@@ -30,7 +30,6 @@
     "getter-return": "error",
     "grouped-accessor-pairs": "error",
     "guard-for-in": "error",
-    "import/exports-last": "error",
     "import/first": "warn",
     "import/no-cycle": "error",
     "import/no-duplicates": "error",

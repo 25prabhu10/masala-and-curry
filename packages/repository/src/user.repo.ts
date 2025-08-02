@@ -1,8 +1,6 @@
+import type { DB } from '@mac/db'
+import { type UpdateUserDB, user } from '@mac/db/schemas'
 import { and, eq, ne } from 'drizzle-orm'
-
-import type { DB } from '../index'
-import { user } from '../schemas'
-import type { UpdateUserDB } from '../schemas/user.schema'
 
 export async function getUserById(db: DB, id: string) {
   return await db.query.user.findFirst({

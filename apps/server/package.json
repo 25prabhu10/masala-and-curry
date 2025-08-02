@@ -23,8 +23,9 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@hono/zod-openapi": "1.0.2",
+    "@hono/zod-openapi": "catalog:api",
     "@mac/db": "workspace:*",
+    "@mac/repository": "workspace:*",
     "@mac/resources": "workspace:*",
     "@mac/validators": "workspace:*",
     "@scalar/hono-api-reference": "^0.9.12",
@@ -39,5 +40,5 @@
     "vitest": "^3.2.4",
     "wrangler": "^4.26.0"
   },
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.14.0"
 }

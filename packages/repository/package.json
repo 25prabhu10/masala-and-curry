@@ -1,0 +1,58 @@
+{
+  "name": "@mac/repository",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Masala and Curry API.",
+  "keywords": [],
+  "license": "GPL-2.0-only",
+  "author": "Prabhu K H",
+  "type": "module",
+  "exports": {
+    "./allergen": {
+      "types": "./dist/allergen.repo.d.ts",
+      "import": "./dist/allergen.repo.js",
+      "default": "./dist/allergen.repo.js"
+    },
+    "./category": {
+      "types": "./dist/category.repo.d.ts",
+      "import": "./dist/category.repo.js",
+      "default": "./dist/category.repo.js"
+    },
+    "./menu-item-variants": {
+      "types": "./dist/menu-item-variants.repo.d.ts",
+      "import": "./dist/menu-item-variants.repo.js",
+      "default": "./dist/menu-item-variants.repo.js"
+    },
+    "./menu-item": {
+      "types": "./dist/menu-item.repo.d.ts",
+      "import": "./dist/menu-item.repo.js",
+      "default": "./dist/menu-item.repo.js"
+    },
+    "./user": {
+      "types": "./dist/user.repo.d.ts",
+      "import": "./dist/user.repo.js",
+      "default": "./dist/user.repo.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "clean": "git clean -xdf dist .cache .turbo node_modules",
+    "dev": "tsc",
+    "lint": "oxlint . --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@hono/zod-openapi": "catalog:api",
+    "@mac/db": "workspace:*",
+    "@mac/resources": "workspace:*",
+    "@mac/validators": "workspace:*",
+    "drizzle-orm": "catalog:"
+  },
+  "devDependencies": {
+    "@mac/tsconfig": "workspace:*",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@10.14.0"
+}

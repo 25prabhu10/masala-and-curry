@@ -13,8 +13,9 @@ const { createInsertSchema, createSelectSchema } = createSchemaFactory({
   zodInstance: z,
 })
 
-const severities = ['contains', 'may_contain', 'processed_in_facility'] as const
-const severitiesStr = enumToString(severities)
+const severities = z.enum(['contains', 'may_contain', 'processed_in_facility'], {
+  error: (issue) => `Severity must be one of: ${issue.options}`,
+})
 
 export const menuItemAllergen = sqliteTable(
   'menu_item_allergen',
@@ -30,7 +31,10 @@ export const menuItemAllergen = sqliteTable(
   },
   (table) => [
     primaryKey({ columns: [table.menuItemId, table.allergenId] }),
-    check('severity_check', sql`${table.severity} in (${sql.raw(severitiesStr)})`),
+    check(
+      'severity_check',
+      sql`${table.severity} in (${sql.raw(enumToString(severities.options))})`
+    ),
     index('idx_menu_item_allergen_allergen_id').on(table.allergenId),
   ]
 )
@@ -60,9 +64,9 @@ export const SelectMenuItemAllergenSchema = createSelectSchema(menuItemAllergen,
         example: 'item_chicken_curry_001',
       }),
   severity: () =>
-    z.enum(severities, `Severity must be one of: ${severitiesStr}`).openapi({
+    severities.openapi({
       description: 'Allergen severity level',
-      enum: [...severities],
+      enum: severities.options,
       example: 'contains',
     }),
 }).openapi('MenuItemAllergen')

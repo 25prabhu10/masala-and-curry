@@ -9,82 +9,81 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
-import { Route as appRouteRouteImport } from './routes/(app)/route'
-import { Route as appIndexRouteImport } from './routes/(app)/index'
-import { Route as DashboardMenuRouteImport } from './routes/dashboard/menu'
-import { Route as DashboardCategoriesRouteImport } from './routes/dashboard/categories'
-import { Route as appNotAuthorizedRouteImport } from './routes/(app)/not-authorized'
-import { Route as appAboutRouteImport } from './routes/(app)/about'
-import { Route as appprotectedRouteRouteImport } from './routes/(app)/(protected)/route'
 import { Route as appauthRouteRouteImport } from './routes/(app)/(auth)/route'
-import { Route as appauthSignUpRouteImport } from './routes/(app)/(auth)/sign-up'
 import { Route as appauthSignInRouteImport } from './routes/(app)/(auth)/sign-in'
-import { Route as appprotectedProfileIndexRouteImport } from './routes/(app)/(protected)/profile/index'
+import { Route as appauthSignUpRouteImport } from './routes/(app)/(auth)/sign-up'
 import { Route as appprotectedProfileEditRouteImport } from './routes/(app)/(protected)/profile/edit'
+import { Route as appprotectedProfileIndexRouteImport } from './routes/(app)/(protected)/profile/index'
+import { Route as appprotectedRouteRouteImport } from './routes/(app)/(protected)/route'
+import { Route as appAboutRouteImport } from './routes/(app)/about'
+import { Route as appIndexRouteImport } from './routes/(app)/index'
+import { Route as appNotAuthorizedRouteImport } from './routes/(app)/not-authorized'
+import { Route as appRouteRouteImport } from './routes/(app)/route'
+import { Route as DashboardCategoriesRouteImport } from './routes/dashboard/categories'
+import { Route as DashboardMenuRouteImport } from './routes/dashboard/menu'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const appRouteRoute = appRouteRouteImport.update({
-  id: '/(app)',
   getParentRoute: () => rootRouteImport,
+  id: '/(app)',
 } as any)
 const appIndexRoute = appIndexRouteImport.update({
+  getParentRoute: () => appRouteRoute,
   id: '/',
   path: '/',
-  getParentRoute: () => appRouteRoute,
 } as any)
 const DashboardMenuRoute = DashboardMenuRouteImport.update({
+  getParentRoute: () => DashboardRouteRoute,
   id: '/menu',
   path: '/menu',
-  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardCategoriesRoute = DashboardCategoriesRouteImport.update({
+  getParentRoute: () => DashboardRouteRoute,
   id: '/categories',
   path: '/categories',
-  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const appNotAuthorizedRoute = appNotAuthorizedRouteImport.update({
+  getParentRoute: () => appRouteRoute,
   id: '/not-authorized',
   path: '/not-authorized',
-  getParentRoute: () => appRouteRoute,
 } as any)
 const appAboutRoute = appAboutRouteImport.update({
+  getParentRoute: () => appRouteRoute,
   id: '/about',
   path: '/about',
-  getParentRoute: () => appRouteRoute,
 } as any)
 const appprotectedRouteRoute = appprotectedRouteRouteImport.update({
-  id: '/(protected)',
   getParentRoute: () => appRouteRoute,
+  id: '/(protected)',
 } as any)
 const appauthRouteRoute = appauthRouteRouteImport.update({
-  id: '/(auth)',
   getParentRoute: () => appRouteRoute,
+  id: '/(auth)',
 } as any)
 const appauthSignUpRoute = appauthSignUpRouteImport.update({
+  getParentRoute: () => appauthRouteRoute,
   id: '/sign-up',
   path: '/sign-up',
-  getParentRoute: () => appauthRouteRoute,
 } as any)
 const appauthSignInRoute = appauthSignInRouteImport.update({
+  getParentRoute: () => appauthRouteRoute,
   id: '/sign-in',
   path: '/sign-in',
-  getParentRoute: () => appauthRouteRoute,
 } as any)
-const appprotectedProfileIndexRoute =
-  appprotectedProfileIndexRouteImport.update({
-    id: '/profile/',
-    path: '/profile/',
-    getParentRoute: () => appprotectedRouteRoute,
-  } as any)
+const appprotectedProfileIndexRoute = appprotectedProfileIndexRouteImport.update({
+  getParentRoute: () => appprotectedRouteRoute,
+  id: '/profile/',
+  path: '/profile/',
+} as any)
 const appprotectedProfileEditRoute = appprotectedProfileEditRouteImport.update({
+  getParentRoute: () => appprotectedRouteRoute,
   id: '/profile/edit',
   path: '/profile/edit',
-  getParentRoute: () => appprotectedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -280,9 +279,7 @@ const appauthRouteRouteChildren: appauthRouteRouteChildren = {
   appauthSignUpRoute: appauthSignUpRoute,
 }
 
-const appauthRouteRouteWithChildren = appauthRouteRoute._addFileChildren(
-  appauthRouteRouteChildren,
-)
+const appauthRouteRouteWithChildren = appauthRouteRoute._addFileChildren(appauthRouteRouteChildren)
 
 interface appprotectedRouteRouteChildren {
   appprotectedProfileEditRoute: typeof appprotectedProfileEditRoute
@@ -294,8 +291,9 @@ const appprotectedRouteRouteChildren: appprotectedRouteRouteChildren = {
   appprotectedProfileIndexRoute: appprotectedProfileIndexRoute,
 }
 
-const appprotectedRouteRouteWithChildren =
-  appprotectedRouteRoute._addFileChildren(appprotectedRouteRouteChildren)
+const appprotectedRouteRouteWithChildren = appprotectedRouteRoute._addFileChildren(
+  appprotectedRouteRouteChildren
+)
 
 interface appRouteRouteChildren {
   appauthRouteRoute: typeof appauthRouteRouteWithChildren
@@ -306,16 +304,14 @@ interface appRouteRouteChildren {
 }
 
 const appRouteRouteChildren: appRouteRouteChildren = {
-  appauthRouteRoute: appauthRouteRouteWithChildren,
-  appprotectedRouteRoute: appprotectedRouteRouteWithChildren,
   appAboutRoute: appAboutRoute,
-  appNotAuthorizedRoute: appNotAuthorizedRoute,
+  appauthRouteRoute: appauthRouteRouteWithChildren,
   appIndexRoute: appIndexRoute,
+  appNotAuthorizedRoute: appNotAuthorizedRoute,
+  appprotectedRouteRoute: appprotectedRouteRouteWithChildren,
 }
 
-const appRouteRouteWithChildren = appRouteRoute._addFileChildren(
-  appRouteRouteChildren,
-)
+const appRouteRouteWithChildren = appRouteRoute._addFileChildren(appRouteRouteChildren)
 
 interface DashboardRouteRouteChildren {
   DashboardCategoriesRoute: typeof DashboardCategoriesRoute
@@ -328,7 +324,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
-  DashboardRouteRouteChildren,
+  DashboardRouteRouteChildren
 )
 
 const rootRouteChildren: RootRouteChildren = {

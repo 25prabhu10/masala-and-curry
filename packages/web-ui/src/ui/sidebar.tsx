@@ -124,7 +124,7 @@ const SidebarProvider = React.forwardRef<
         <TooltipProvider delayDuration={0}>
           <div
             className={cn(
-              'group/sidebar-wrapper flex w-full has-[[data-variant=inset]]:bg-sidebar',
+              'group/sidebar-wrapper flex-1 flex w-full has-[[data-variant=inset]]:bg-sidebar',
               className
             )}
             ref={ref}

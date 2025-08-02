@@ -9,7 +9,6 @@
   "ignorePatterns": ["routeTree.gen.ts"],
   "rules": {
     "react/no-children-prop": "off",
-    "import/exports-last": "off",
     "jsx-a11y/anchor-ambiguous-text": "error",
     "react/button-has-type": "error",
     "react/forbid-elements": "error",

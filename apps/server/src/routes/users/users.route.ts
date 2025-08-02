@@ -1,5 +1,5 @@
 import { createDb } from '@mac/db'
-import { checkIfEmailExistsForOtherUser, getUserById, updateUser } from '@mac/db/repository'
+import { checkIfEmailExistsForOtherUser, getUserById, updateUser } from '@mac/repository/user'
 import {
   CONFLICT,
   FORBIDDEN,

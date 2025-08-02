@@ -31,17 +31,14 @@ import {
 } from '@mac/resources/http-status-codes'
 import {
   createCategoryValidator,
+  getCategoryFiltersValidator,
   readCategoryValidator,
   updateCategoryValidator,
 } from '@mac/validators/category'
+import { createIdParamsOpenapiSchema } from '@mac/validators/general'
 
 import { jsonContent, jsonContentRequired } from '@/lib/openapi/helpers'
-import {
-  createErrorSchema,
-  createIdParamsOpenapiSchema,
-  createMessageObjectSchema,
-  paginationSchema,
-} from '@/lib/openapi/schemas'
+import { createErrorSchema, createMessageObjectSchema } from '@/lib/openapi/schemas'
 import { isAdmin, protect } from '@/middlewares'
 
 const tags = ['Categories']
@@ -51,6 +48,7 @@ export const entity = 'Category' as const
 export const entityNotFoundDesc = notFoundDesc(entity)
 export const entityFailedToGetDesc = getDataFailedDesc(entity)
 export const entityUpdateFailedDesc = updateFailedDesc(entity)
+export const entityCreateFailedDesc = createFailedDesc(entity)
 
 export const categoryIdParamsSchema = createIdParamsOpenapiSchema(entity)
 
@@ -59,11 +57,20 @@ export const getCategories = createRoute({
   method: 'get',
   path: '/',
   request: {
-    query: paginationSchema,
+    query: getCategoryFiltersValidator(),
   },
   responses: {
-    [OK]: jsonContent(z.array(readCategoryValidator), getDataSuccessDesc(entity)),
-    [UNPROCESSABLE_ENTITY]: jsonContent(createErrorSchema(paginationSchema), VALIDATION_ERROR_DESC),
+    [OK]: jsonContent(
+      z.object({
+        result: z.array(readCategoryValidator),
+        rowCount: z.int().nonnegative().optional(),
+      }),
+      getDataSuccessDesc(entity)
+    ),
+    [UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(getCategoryFiltersValidator()),
+      VALIDATION_ERROR_DESC
+    ),
     [INTERNAL_SERVER_ERROR]: jsonContent(
       createMessageObjectSchema(entityFailedToGetDesc),
       entityFailedToGetDesc
@@ -115,8 +122,8 @@ export const createCategory = createRoute({
       VALIDATION_ERROR_DESC
     ),
     [INTERNAL_SERVER_ERROR]: jsonContent(
-      createMessageObjectSchema(createFailedDesc(entity)),
-      createFailedDesc(entity)
+      createMessageObjectSchema(entityCreateFailedDesc),
+      entityCreateFailedDesc
     ),
     [UNAUTHORIZED]: jsonContent(createMessageObjectSchema(NOT_AUTHENTICATED), NOT_AUTHENTICATED),
     [FORBIDDEN]: jsonContent(createMessageObjectSchema(NOT_AUTHORIZED), NOT_AUTHORIZED),

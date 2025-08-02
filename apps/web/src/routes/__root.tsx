@@ -31,7 +31,7 @@ function RootLayout() {
   const { theme } = useTheme()
 
   return (
-    <div className="min-h-svh border-2 border-border/60 flex flex-col">
+    <div className="min-h-svh overflow-auto border-2 border-border/60 flex flex-col">
       <RouterLoader />
       <Outlet />
       <Toaster richColors theme={theme} />

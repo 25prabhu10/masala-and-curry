@@ -1,12 +1,13 @@
 import { createDb } from '@mac/db'
+import { DrizzleQueryError } from '@mac/db/types'
 import {
   createCategory,
   deleteCategory,
   getCategories,
   getCategoryById,
+  getTotalCategoriesCount,
   updateCategory,
-} from '@mac/db/repository'
-import { DrizzleQueryError } from '@mac/db/types'
+} from '@mac/repository/category'
 import {
   CREATED,
   INTERNAL_SERVER_ERROR,
@@ -24,13 +25,20 @@ import * as routes from './categories.openapi'
 
 const router = createRouter()
   .openapi(routes.getCategories, async (c) => {
-    const { page, limit } = c.req.valid('query')
+    const { pageIndex, pageSize, activeOnly, sortBy } = c.req.valid('query')
 
     try {
       const db = await createDb(c.env.DB)
 
-      const categories = await getCategories(db, true, page, limit)
-      return c.json(categories, OK)
+      const categories = await getCategories(db, { activeOnly, pageIndex, pageSize, sortBy })
+      const totalCount = await getTotalCategoriesCount(db, { activeOnly })
+      return c.json(
+        {
+          result: categories,
+          rowCount: totalCount[0]?.rowCount ?? 0,
+        },
+        OK
+      )
     } catch {
       throw new HTTPException(INTERNAL_SERVER_ERROR, {
         message: routes.entityFailedToGetDesc,
@@ -73,23 +81,23 @@ const router = createRouter()
     try {
       const db = await createDb(c.env.DB)
 
-      const result = await createCategory(db, reqData)
+      const queryData = await createCategory(db, reqData)
 
-      if (result.length === 0) {
+      if (queryData.length === 0) {
         throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityUpdateFailedDesc,
+          message: routes.entityCreateFailedDesc,
         })
       }
 
-      const category = await readCategoryValidator.safeParseAsync(result[0])
+      const result = await readCategoryValidator.safeParseAsync(queryData[0])
 
-      if (!category.success) {
+      if (!result.success) {
         throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityUpdateFailedDesc,
+          message: routes.entityCreateFailedDesc,
         })
       }
 
-      return c.json(category.data, CREATED)
+      return c.json(result.data, CREATED)
     } catch (error) {
       if (error instanceof HTTPException || error instanceof DrizzleQueryError) {
         throw error

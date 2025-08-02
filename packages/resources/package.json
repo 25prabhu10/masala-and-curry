@@ -23,6 +23,11 @@
       "import": "./dist/category.js",
       "default": "./dist/category.js"
     },
+    "./menu-item": {
+      "types": "./dist/menu-item.d.ts",
+      "import": "./dist/menu-item.js",
+      "default": "./dist/menu-item.js"
+    },
     "./general": {
       "types": "./dist/general.d.ts",
       "import": "./dist/general.js",
@@ -57,5 +62,5 @@
     "oxlint": "catalog:",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.14.0"
 }

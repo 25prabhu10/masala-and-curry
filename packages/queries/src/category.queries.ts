@@ -6,7 +6,7 @@ import {
   NOT_FOUND,
   UNAUTHORIZED,
 } from '@mac/resources/http-status-codes'
-import type { Category, UpdateCategory } from '@mac/validators/category'
+import type { Category, CategoryFilters, UpdateCategory } from '@mac/validators/category'
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
 
 import apiClient from './api-client'
@@ -15,21 +15,28 @@ export const categoryKeys = {
   all: ['categories'] as const,
   detail: (id: string) => [...categoryKeys.details(), id] as const,
   details: () => [...categoryKeys.all, 'detail'] as const,
-  list: (filters: { page?: number; limit?: number }) => [...categoryKeys.lists(), filters] as const,
+  list: (filters: CategoryFilters) => [...categoryKeys.lists(), filters] as const,
   lists: () => [...categoryKeys.all, 'list'] as const,
 }
 
-export function getCategoriesQuery(
-  options: { page?: number; limit?: number } = {},
-  abortController?: AbortController
-) {
+export function getCategoriesQuery(query: CategoryFilters = {}, abortController?: AbortController) {
   return queryOptions({
     queryFn: async () => {
+      let sortBy: string | undefined = undefined
+
+      if (typeof query.sortBy === 'string') {
+        sortBy = query.sortBy
+      } else if (query.sortBy) {
+        sortBy = JSON.stringify(query.sortBy)
+      }
+
       const res = await apiClient.api.v1.categories.$get(
         {
           query: {
-            limit: options.limit?.toString(),
-            page: options.page?.toString(),
+            activeOnly: query.activeOnly,
+            pageIndex: query.pageIndex,
+            pageSize: query.pageSize,
+            sortBy,
           },
         },
         {
@@ -50,7 +57,7 @@ export function getCategoriesQuery(
 
       throw new Error('An error occurred while fetching categories')
     },
-    queryKey: categoryKeys.list(options),
+    queryKey: categoryKeys.list(query),
   })
 }
 

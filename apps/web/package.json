@@ -36,6 +36,7 @@
     "@tanstack/react-router": "^1.129.8",
     "@tanstack/react-router-devtools": "^1.129.8",
     "@tanstack/react-table": "^8.21.3",
+    "@tanstack/zod-adapter": "^1.130.12",
     "better-auth": "catalog:api",
     "lucide-react": "catalog:ui",
     "react": "catalog:react19",
@@ -57,5 +58,5 @@
     "vite": "^7.0.6",
     "vite-tsconfig-paths": "6.0.0-beta.3"
   },
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.14.0"
 }

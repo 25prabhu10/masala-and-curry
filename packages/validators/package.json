@@ -27,6 +27,16 @@
       "types": "./dist/category.validators.d.ts",
       "import": "./dist/category.validators.js",
       "default": "./dist/category.validators.js"
+    },
+    "./menu-item": {
+      "types": "./dist/menu-item.validators.d.ts",
+      "import": "./dist/menu-item.validators.js",
+      "default": "./dist/menu-item.validators.js"
+    },
+    "./general": {
+      "types": "./dist/general.validators.d.ts",
+      "import": "./dist/general.validators.js",
+      "default": "./dist/general.validators.js"
     }
   },
   "scripts": {
@@ -38,6 +48,7 @@
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
   },
   "dependencies": {
+    "@hono/zod-openapi": "catalog:api",
     "@mac/db": "workspace:*",
     "@mac/resources": "workspace:*",
     "zod": "catalog:"
@@ -47,5 +58,5 @@
     "oxlint": "catalog:",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.14.0"
 }

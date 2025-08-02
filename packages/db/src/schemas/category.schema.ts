@@ -69,8 +69,8 @@ export const SelectCategorySchema = createSelectSchema(category, {
         description: 'Unique category identifier',
         example: 'cat_appetizers_001',
       }),
-  isActive: (schema) =>
-    schema.default(true).openapi({
+  isActive: () =>
+    z.coerce.boolean().default(true).openapi({
       description: 'Whether the category is active and visible',
       example: true,
     }),

@@ -17,6 +17,7 @@
     "./input": "./src/ui/input.tsx",
     "./label": "./src/ui/label.tsx",
     "./separator": "./src/ui/separator.tsx",
+    "./select": "./src/ui/select.tsx",
     "./sheet": "./src/ui/sheet.tsx",
     "./sidebar": "./src/ui/sidebar.tsx",
     "./skeleton": "./src/ui/skeleton.tsx",
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
@@ -53,5 +55,5 @@
   "peerDependencies": {
     "react": "catalog:react19"
   },
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.14.0"
 }

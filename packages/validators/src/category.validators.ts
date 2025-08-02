@@ -1,17 +1,29 @@
-import { InsertCategorySchema, SelectCategorySchema } from '@mac/db/schemas'
-import { z } from 'zod'
+import { z } from '@hono/zod-openapi'
+import { InsertCategorySchema, SelectCategorySchema, UpdateCategorySchema } from '@mac/db/schemas'
 
-export const readCategoryValidator = z.object({
-  ...SelectCategorySchema.shape,
-  createdAt: SelectCategorySchema.shape.createdAt.transform((date) => date.toISOString()),
-  updatedAt: SelectCategorySchema.shape.updatedAt.transform((date) => date.toISOString()),
-})
+import { type ColumnsOf, createSortingValidator, paginationValidator } from './general.validators'
 
-export const createCategoryValidator = z.object({
-  ...InsertCategorySchema.shape,
-})
+export const readCategoryValidator = SelectCategorySchema
+export const createCategoryValidator = InsertCategorySchema
+export const updateCategoryValidator = UpdateCategorySchema
+export type Category = z.infer<typeof readCategoryValidator>
+export type CategoryUI = z.infer<typeof createCategoryValidator>
+export type UpdateCategory = z.infer<typeof updateCategoryValidator>
 
-export const updateCategoryValidator = createCategoryValidator.partial()
+const categorySortableColumns = [
+  'name',
+  'description',
+  'displayOrder',
+] as const satisfies ColumnsOf<Category>
 
-export type Category = z.output<typeof readCategoryValidator>
-export type UpdateCategory = z.input<typeof updateCategoryValidator>
+export function getCategoryFiltersValidator(urlSafe: boolean = false) {
+  return z
+    .object({
+      activeOnly: SelectCategorySchema.shape.isActive,
+      sortBy: createSortingValidator(categorySortableColumns, 'displayOrder,name', urlSafe),
+      ...paginationValidator.shape,
+    })
+    .partial()
+}
+
+export type CategoryFilters = z.output<ReturnType<typeof getCategoryFiltersValidator>>

@@ -89,7 +89,7 @@ function RouteComponent() {
                       <p className="text-sm font-medium text-muted-foreground">Phone Number</p>
                       <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                         <Phone className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">{user.phoneNumber}</span>
+                        <span className="text-foreground">{user.phoneNumber}</span>
                       </div>
                     </div>
 
