@@ -6,13 +6,14 @@
   "workers_dev": true,
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "directory": "public"
+    "directory": "public",
+    "binding": "ASSETS"
   },
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "mac-db",
-      "database_id": "000-000-000-000",
+      "database_name": "mac-prod",
+      "database_id": "e456f3fa-bfda-48dd-b0a1-4fb512e749f9",
       "migrations_dir": "../../packages/db/src/migrations"
     }
   ]

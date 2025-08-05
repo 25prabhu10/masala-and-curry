@@ -10,40 +10,35 @@ import {
 } from '@mac/db/schemas'
 import type { DB } from '@mac/db/types'
 import type { MenuItemFilters } from '@mac/validators/menu-item'
-import { and, eq, getTableColumns, gte, like, lte, type SQL } from 'drizzle-orm'
+import { and, eq, getTableColumns, gte, lte } from 'drizzle-orm'
 
 import { withPagination } from './utils'
 
 export async function getMenuItems(db: DB, filters: MenuItemFilters = {}) {
-  const conditions: SQL[] = []
+  // const conditions: SQL[] = []
 
-  if (filters.categoryId) {
-    conditions.push(eq(menuItem.categoryId, filters.categoryId))
-  }
+  // if (filters.availableOnly) {
+  //   conditions.push(eq(menuItem.isAvailable, true))
+  // }
+  // if (filters.categoryId) {
+  //   conditions.push(eq(menuItem.categoryId, filters.categoryId))
+  // }
+  // if (filters.glutenFree) {
+  //   conditions.push(eq(menuItem.isGlutenFree, true))
+  // }
+  // if (filters.popular) {
+  //   conditions.push(eq(menuItem.isPopular, true))
+  // }
+  // if (filters.vegan) {
+  //   conditions.push(eq(menuItem.isVegan, true))
+  // }
+  // if (filters.vegetarian) {
+  //   conditions.push(eq(menuItem.isVegetarian, true))
+  // }
 
-  if (filters.availableOnly) {
-    conditions.push(eq(menuItem.isAvailable, true))
-  }
-
-  if (filters.popular) {
-    conditions.push(eq(menuItem.isPopular, true))
-  }
-
-  if (filters.vegetarian) {
-    conditions.push(eq(menuItem.isVegetarian, true))
-  }
-
-  if (filters.vegan) {
-    conditions.push(eq(menuItem.isVegan, true))
-  }
-
-  if (filters.glutenFree) {
-    conditions.push(eq(menuItem.isGlutenFree, true))
-  }
-
-  if (filters.search) {
-    conditions.push(like(menuItem.name, `%${filters.search}%`))
-  }
+  // if (filters.search) {
+  //   conditions.push(like(menuItem.name, `%${filters.search}%`))
+  // }
 
   const query = db
     .select({
@@ -56,11 +51,14 @@ export async function getMenuItems(db: DB, filters: MenuItemFilters = {}) {
     })
     .from(menuItem)
     .leftJoin(category, eq(menuItem.categoryId, category.id))
-    .where(conditions.length > 0 ? and(...conditions) : undefined)
+    // .where(conditions.length > 0 ? and(...conditions) : undefined)
     .orderBy(category.displayOrder, menuItem.displayOrder, menuItem.name)
-    .$dynamic()
 
-  return await withPagination(query, filters.pageIndex, filters.pageSize)
+  if (filters.pageIndex || filters.pageSize) {
+    return await withPagination(query.$dynamic(), filters.pageIndex, filters.pageSize)
+  }
+
+  return await query
 }
 
 export async function getMenuItemVariants(db: DB, menuItemId: string) {
@@ -83,7 +81,7 @@ export async function getMenuItemById(
         id: category.id,
         name: category.name,
       },
-      menuItem,
+      ...getTableColumns(menuItem),
     })
     .from(menuItem)
     .leftJoin(category, eq(menuItem.categoryId, category.id))

@@ -2,7 +2,7 @@ import { Button } from '@mac/web-ui/button'
 import { createFileRoute } from '@tanstack/react-router'
 import { Award, Heart, Users, Utensils } from 'lucide-react'
 
-export const Route = createFileRoute('/(app)/about')({
+export const Route = createFileRoute('/about')({
   component: About,
 })
 

@@ -140,8 +140,8 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         description: 'List of ingredients',
         example: 'Chicken, tomatoes, cream, onions, garlic, ginger, spices',
       }),
-  isAvailable: (schema) =>
-    schema.default(true).openapi({
+  isAvailable: () =>
+    z.coerce.boolean().default(true).openapi({
       description: 'Whether the item is currently available',
       example: true,
     }),
@@ -198,7 +198,12 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
       description: 'Last update timestamp',
       example: '2023-01-01T00:00:00Z',
     }),
-}).openapi('MenuItem')
+})
+  .omit({
+    createdAt: true,
+    updatedAt: true,
+  })
+  .openapi('MenuItem')
 
 export const InsertMenuItemSchema = createInsertSchema(menuItem, {
   basePrice: () => SelectMenuItemSchema.shape.basePrice,
@@ -252,5 +257,5 @@ export const UpdateMenuItemSchema = createUpdateSchema(menuItem, {
   })
   .openapi('MenuItemUpdate')
 
-export type InsertMenuItemDB = z.input<typeof InsertMenuItemSchema>
-export type UpdateMenuItemDB = z.input<typeof UpdateMenuItemSchema>
+export type InsertMenuItemDB = z.infer<typeof InsertMenuItemSchema>
+export type UpdateMenuItemDB = z.infer<typeof UpdateMenuItemSchema>

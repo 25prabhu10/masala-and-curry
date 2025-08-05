@@ -32,6 +32,7 @@ const router = createRouter()
 
       const categories = await getCategories(db, { activeOnly, pageIndex, pageSize, sortBy })
       const totalCount = await getTotalCategoriesCount(db, { activeOnly })
+
       return c.json(
         {
           result: categories,

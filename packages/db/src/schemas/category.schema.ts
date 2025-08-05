@@ -88,7 +88,12 @@ export const SelectCategorySchema = createSelectSchema(category, {
       description: 'Last update timestamp',
       example: '2023-01-01T00:00:00Z',
     }),
-}).openapi('Category')
+})
+  .omit({
+    createdAt: true,
+    updatedAt: true,
+  })
+  .openapi('Category')
 
 export const InsertCategorySchema = createInsertSchema(category, {
   description: () => SelectCategorySchema.shape.description,

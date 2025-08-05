@@ -1,7 +1,5 @@
 import { getCategoriesQuery } from '@mac/queries/category'
-import { type CategoryUI, getCategoryFiltersValidator } from '@mac/validators/category'
-import { Skeleton } from '@mac/web-ui/skeleton'
-import { TableCell, TableRow } from '@mac/web-ui/table'
+import { type CreateCategory, getCategoryFiltersValidator } from '@mac/validators/category'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import type { ColumnDef } from '@tanstack/react-table'
@@ -12,7 +10,7 @@ import { DataTableColumnHeader } from '@/components/dashboard/data-table-column-
 import { useFilters } from '@/hooks/use-filters'
 import { sortByToState, stateToSortBy } from '@/lib/utils'
 
-const columnsDef: ColumnDef<CategoryUI>[] = [
+const columnsDef: ColumnDef<CreateCategory>[] = [
   // Selection column
   // {
   //   cell: ({ row }) => (
@@ -101,14 +99,7 @@ export const Route = createFileRoute('/dashboard/categories')({
   },
   component: RouteComponent,
   loader: async ({ context: { queryClient, search } }) => {
-    await queryClient.ensureQueryData(
-      getCategoriesQuery({
-        activeOnly: search.activeOnly,
-        pageIndex: search.pageIndex,
-        pageSize: search.pageSize,
-        sortBy: search.sortBy,
-      })
-    )
+    await queryClient.ensureQueryData(getCategoriesQuery(search))
   },
   validateSearch: getCategoryFiltersValidator(true),
 })
@@ -126,22 +117,22 @@ function RouteComponent() {
   const sortingState = sortByToState(filters.sortBy)
 
   // Define columns
-  const columns = useMemo<ColumnDef<CategoryUI>[]>(() => columnsDef, [])
+  const columns = useMemo<ColumnDef<CreateCategory>[]>(() => columnsDef, [])
 
   // Loading skeleton rows
-  const loadingRows = useMemo(
-    () =>
-      Array.from({ length: 5 }).map((_, index) => (
-        <TableRow key={`loading-${index}`}>
-          {columns.map((_, cellIndex) => (
-            <TableCell key={`loading-cell-${cellIndex}`}>
-              <Skeleton className="h-4 w-full" />
-            </TableCell>
-          ))}
-        </TableRow>
-      )),
-    [columns]
-  )
+  // const loadingRows = useMemo(
+  //   () =>
+  //     Array.from({ length: 5 }).map((_, index) => (
+  //       <TableRow key={`loading-${index}`}>
+  //         {columns.map((_, cellIndex) => (
+  //           <TableCell key={`loading-cell-${cellIndex}`}>
+  //             <Skeleton className="h-4 w-full" />
+  //           </TableCell>
+  //         ))}
+  //       </TableRow>
+  //     )),
+  //   [columns]
+  // )
 
   return (
     <div className="container mx-auto py-10">
@@ -169,7 +160,7 @@ function RouteComponent() {
 }
 
 // Actions dropdown component for each category row
-// function CategoryActionsDropdown({ category }: { category: CategoryUI }) {
+// function CategoryActionsDropdown({ category }: { category: CreateCategory }) {
 //   const queryClient = useQueryClient()
 //   const deleteMutation = useMutation(deleteCategoryMutation())
 
@@ -329,7 +320,7 @@ function RouteComponent() {
 //   category,
 //   children,
 // }: {
-//   category: CategoryUI
+//   category: CreateCategory
 //   children: React.ReactNode
 // }) {
 //   const [open, setOpen] = useState(false)

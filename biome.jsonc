@@ -52,6 +52,7 @@
     "ignoreUnknown": true,
     "experimentalScannerIgnores": [
       "node_modules",
+      "public",
       "dist",
       ".turbo",
       ".cache",

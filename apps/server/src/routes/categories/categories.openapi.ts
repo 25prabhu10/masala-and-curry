@@ -1,4 +1,4 @@
-import { createRoute, z } from '@hono/zod-openapi'
+import { createRoute } from '@hono/zod-openapi'
 import { CATEGORY_ALREADY_EXISTS } from '@mac/resources/category'
 import {
   createDataDesc,
@@ -32,6 +32,7 @@ import {
 import {
   createCategoryValidator,
   getCategoryFiltersValidator,
+  readCategoriesValidator,
   readCategoryValidator,
   updateCategoryValidator,
 } from '@mac/validators/category'
@@ -60,13 +61,7 @@ export const getCategories = createRoute({
     query: getCategoryFiltersValidator(),
   },
   responses: {
-    [OK]: jsonContent(
-      z.object({
-        result: z.array(readCategoryValidator),
-        rowCount: z.int().nonnegative().optional(),
-      }),
-      getDataSuccessDesc(entity)
-    ),
+    [OK]: jsonContent(readCategoriesValidator, getDataSuccessDesc(entity)),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(getCategoryFiltersValidator()),
       VALIDATION_ERROR_DESC

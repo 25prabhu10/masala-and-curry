@@ -3,7 +3,6 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@mac/web-ui/sideb
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 import { DashboardSidebar } from '@/components/dashboard/dashboard-sidebar'
-import { HeaderActions } from '@/components/header-actions'
 
 export const Route = createFileRoute('/dashboard')({
   beforeLoad: async ({ context: { session, queryClient } }) => {
@@ -35,10 +34,9 @@ function RouteComponent() {
     <SidebarProvider>
       <DashboardSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <div className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
-          <HeaderActions />
-        </header>
+        </div>
         <Outlet />
       </SidebarInset>
     </SidebarProvider>

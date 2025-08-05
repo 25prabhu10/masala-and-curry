@@ -3,7 +3,7 @@ import * as schema from '@mac/db/schemas'
 import { TITLE } from '@mac/resources/app'
 import { type BetterAuthOptions, betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin, openAPI, phoneNumber } from 'better-auth/plugins'
+import { admin, phoneNumber } from 'better-auth/plugins'
 
 import { BASE_PATH } from './constants'
 
@@ -32,24 +32,17 @@ const betterAuthOptions = {
       },
     }),
     admin(),
-    openAPI(),
   ],
-
-  // advanced: {
-  //   database: {
-  //     generateId: false, // Disable ID generation by better-auth
-  //   },
-  // },
 
   // https://www.better-auth.com/docs/concepts/session-management#session-caching
   session: {
     cookieCache: {
       enabled: true,
-      maxAge: 60, // 60 seconds
+      maxAge: 5 * 60, // 5 minutes
     },
-    expiresIn: 60, // 60 seconds
-    freshAge: 10, // 10 seconds
-    updateAge: 30, // 30 seconds
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    freshAge: 60 * 60 * 24, // 1 day (the session is fresh if created within the last 1 day)
+    updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
   },
 } satisfies BetterAuthOptions
 

@@ -1,13 +1,21 @@
 import { create } from 'zustand'
 
-import type { User } from '@/lib/auth-client'
-
 interface AppState {
-  user: User | undefined
+  mobileMenuIsOpen: boolean
 }
 
-export const useAppStore = create<AppState>()(() => {
+interface AppStateActions {
+  toggleMobileMenu: () => void
+  closeMobileMenu: () => void
+}
+
+export const useAppStore = create<AppState & AppStateActions>()((set) => {
   return {
-    user: undefined,
+    closeMobileMenu: () => set({ mobileMenuIsOpen: false }),
+    mobileMenuIsOpen: false,
+    toggleMobileMenu: () =>
+      set((state) => {
+        return { mobileMenuIsOpen: !state.mobileMenuIsOpen }
+      }),
   }
 })

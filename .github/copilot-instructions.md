@@ -8,26 +8,73 @@ alwaysApply: true
 
 This is a food delivery application for the restaurant **Masala and Curry** built as a modern monorepo. This app is dedicated to a single restaurant: "Masala and Curry".
 
+### Masala and Curry Restaurant Context
+
+- **Cuisine Type**: Indian/South Asian restaurant
+- **Service Model**: Delivery and takeout only
+- **Operating Hours**: [Define specific hours]
+- **Delivery Areas**: [Define coverage zones]
+- **Menu Categories**: Appetizers, Curries, Biryanis, Breads, Desserts, Beverages
+- **Special Features**: Spice level customization, dietary restrictions support
+
+### Business Rules
+
+- Orders must have minimum value for delivery
+- Spice levels: Mild, Medium, Hot, Extra Hot
+- Dietary tags: Vegetarian, Vegan, Gluten-Free, Dairy-Free
+- No alcohol sales
+- All prices include tax
+
+### Project Structure
+
 The project includes:
 
 - **Web App** (`apps/web`) - Customer-facing React application with TanStack Router
 - **Mobile App** (`apps/mobile`) - Cross-platform React Native app with Expo
 - **API Server** (`apps/server`) - Hono.js backend deployed on Cloudflare Workers
-- **Shared Packages** - UI libraries and tooling for web/mobile platforms
+- **Shared Packages** - UI libraries, API client (Hono js RPC client), Database Schemas (Drizzle ORM), Queries (Tanstack/React query), Repository for data access, validators (Zod), resources such as constants, messages, etc., and tooling for web/mobile platforms
+
+```
+masala-and-curry/
+├── apps/
+│   ├── web/           # Customer-facing React app (TanStack Router)
+│   ├── mobile/        # React Native app with Expo
+│   └── server/        # Hono.js API on Cloudflare Workers
+├── packages/
+│   ├── web-ui/        # Web React components
+│   ├── mobile-ui/     # React Native components
+│   ├── api-client/    # Hono RPC client
+│   ├── database/      # Drizzle schemas
+│   ├── queries/       # TanStack Query hooks
+│   ├── repository/    # Data access layer
+│   ├── validators/    # Zod schemas
+│   ├── resources/     # Constants, messages, utilities
+└── tooling/
+    ├── tailwind-config/ # Shared tailwind css configurations
+    └── typescript/    # TypeScript configurations
+```
 
 ### Tech Stack
 
-- Frontend: React 19, React Native, TypeScript, Tailwind CSS/NativeWind
-- Backend: Hono.js, Cloudflare Workers, D1 Database, Drizzle ORM
-- Build: Turborepo, pnpm workspaces, Vite, Expo
+- Frontend: React 19, React Native, TypeScript, Tailwind CSS/NativeWind, TanStack Router, Expo Router
+- State Management: TanStack Query, Zustand
+- Backend: Hono.js, Cloudflare Workers
+- Database: SQLite (D1 on Cloudflare Workers)
+- ORM: Drizzle ORM
+- API: Hono.js, OpenAPI, Zod for validation
 - Authentication: Better Auth
-- API: OpenAPI/Zod validation
+- Deployment: Cloudflare Workers, D1 Database
+- Build: Turborepo, pnpm workspaces, Vite, Expo
+- Testing: Vitest, React Testing Library, Playwright
 
 ### Key Patterns
 
 - Monorepo with shared UI components (`@mac/web-ui`, `@mac/mobile-ui`)
 - Type-safe API routes with OpenAPI schemas
 - Consistent styling with Tailwind configuration packages
+- Shared business logic in packages like `@mac/repository`, `@mac/queries`, and `@mac/validators`
+- Queries and mutations using TanStack Query for data fetching
+- Zustand for state management in both web and mobile apps
 - Cross-platform mobile development with Expo Router
 
 ### Food Delivery Domain Rules
@@ -49,7 +96,7 @@ The project includes:
 ### API Development (Hono.js/Cloudflare Workers)
 
 - Use Zod schemas for all request/response validation
-- Use [`HttpStatusCodes`](../apps/server/src/lib/constants/http-status-codes.ts) constants
+- Use [`HttpStatusCodes`](../packages/resources/src/http-status-codes.ts) constants
 - Follow OpenAPI specification patterns
 - Use proper Cloudflare Workers patterns (no Node.js APIs)
 
@@ -72,6 +119,8 @@ The project includes:
 #### Web App (`apps/web`)
 
 - Use TanStack Router for routing
+- Use Tailwind CSS for styling
+- Use TanStack Query for data fetching and asynchronous state management
 - Implement proper SEO optimization
 - Use progressive enhancement patterns
 - Follow web accessibility guidelines strictly
@@ -443,21 +492,62 @@ When refactoring large files:
 - Make sure the assertion function, like expect, is placed inside an it() function call.
 - Don't use disabled tests.
 
+### Security and Privacy Guidelines
+
+- Never log customer personal information (addresses, phone numbers)
+- Mask payment information in all logs and error messages
+- Use environment variables for all API keys and secrets
+- Implement rate limiting on all public endpoints
+- Validate and sanitize all user inputs
+- Implement proper CORS policies
+- Follow GDPR guidelines for data handling
+
+### Performance Guidelines
+
+- Implement proper caching for menu items (they change infrequently)
+- Use optimistic updates for cart operations
+- Implement image optimization for food photos
+- Use skeleton loading states for better perceived performance
+- Implement infinite scrolling for order history
+- Cache user preferences and delivery addresses
+
 ## Common Tasks
 
 - `pnpm --filter @mac/mobile exec expo install` - Install dependencies for the mobile app
 - `pnpm add -w` - Add a package to the workspace root
 
-## Example: Error Handling
+## Examples
+
+### Error Handling
+
+- Error responses types:
 
 ```typescript
-// ✅ Good: Comprehensive error handling
+export type APIErrorResponse = {
+  errors?: string[]
+  properties?: Record<
+    string,
+    {
+      errors?: string[]
+      items?: (null | { errors?: string[] })[]
+    }
+  >
+}
+```
+
+```typescript
+// ✅ Good: Comprehensive error handling without exposing internal details
+import { HTTPException } from "hono/http-exception";
+import { INTERNAL_SERVER_ERROR } from "@mac/resources/http-status-codes";
+
 try {
   const result = await fetchData();
-  return { success: true, data: result };
+  return { result: data, rowCount: totalCount };
 } catch (error) {
   console.error("API call failed:", error);
-  return { success: false, error: error.message };
+  throw new HTTPException(INTERNAL_SERVER_ERROR, {
+    message: routes.entityFailedToGetDesc,
+  });
 }
 
 // ❌ Bad: Swallowing errors
@@ -465,6 +555,100 @@ try {
   return await fetchData();
 } catch (e) {
   console.log(e);
+}
+```
+
+- Validation error handling should be done using Zod schemas.
+
+```typescript
+// ✅ Good: Zod schema validation with proper error handling
+import { z } from "zod";
+
+const userSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+});
+
+try {
+  const result = await userSchema.safeParseAsync(req.body);
+  if (!result.success) {
+    // convert Zod error to UI-friendly format (check out `default-hook.ts` file in `@mac/server`)
+    return c.json(convertedObject, UNPROCESSABLE_ENTITY);
+  }
+
+  const userData = result.data;
+  // Proceed with valid userData
+} catch (error) {
+  console.error("Validation failed:", error);
+  if (error instanceof HTTPException) {
+    throw error; // Re-throw expected errors that will be handled by the global error handler `on-error.middleware.ts` in `@mac/server`
+  }
+  // else handle unexpected errors
+  throw new HTTPException(INTERNAL_SERVER_ERROR, {
+    message: routes.entityFailedToGetDesc,
+  });
+}
+
+// ❌ Bad: No validation or error handling
+const userData = req.body; // No validation, could lead to runtime errors
+```
+
+### State Management Patterns
+
+#### Zustand Store Structure
+
+```typescript
+// ✅ Cart store example
+interface CartStore {
+  items: CartItem[];
+  total: number;
+  addItem: (item: MenuItem, quantity: number) => void;
+  removeItem: (itemId: string) => void;
+  updateQuantity: (itemId: string, quantity: number) => void;
+  clearCart: () => void;
+  calculateTotal: () => number;
+}
+
+// ✅ Order tracking store
+interface OrderStore {
+  currentOrder: Order | null;
+  orderHistory: Order[];
+  updateOrderStatus: (orderId: string, status: OrderStatus) => void;
+  trackOrder: (orderId: string) => void;
+}
+```
+
+#### Query Keys Convention
+
+```typescript
+// ✅ Consistent query key structure
+export const queryKeys = {
+  all: ["menu-items"] as const,
+  menuItem: (id: string) => [...queryKeys.all, id] as const,
+  list: (filters: MenuItemFilters) => [...queryKeys.all, filters] as const,
+} as const;
+```
+
+### API Design Standards
+
+#### Resource Naming
+
+- `/api/v1/orders` - POST create order, GET user orders
+- `/api/v1/orders/{id}` - GET specific order, PATCH update order
+- `/api/v1/orders/{id}/status` - PATCH update order status
+
+#### Request/Response Patterns
+
+```typescript
+// ✅ Pagination pattern
+interface PaginatedResponse<T> {
+  result: T[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    hasMore: boolean;
+  };
 }
 ```
 

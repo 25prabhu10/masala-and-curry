@@ -11,7 +11,6 @@ export const paginationValidator = z.object({
       .positive(PAGINATION_ERROR_DESC)
       .max(MAX_NUMBER_IN_APP)
       .optional()
-      .default(1)
       .openapi({ description: 'Page number', example: 1 })
   ),
   pageSize: z.preprocess(
@@ -21,10 +20,11 @@ export const paginationValidator = z.object({
       .positive(PAGINATION_ERROR_DESC)
       .max(MAX_NUMBER_IN_APP)
       .optional()
-      .default(DEFAULT_PAGE_SIZE)
       .openapi({ description: 'Items per page', example: DEFAULT_PAGE_SIZE })
   ),
 })
+
+export const rowCountValidator = z.int().nonnegative()
 
 export const orderByValidator = z.enum(['asc', 'desc'], {
   error: (issue) => `Order must be one of: ${issue.options}`,
@@ -92,7 +92,7 @@ export function createSortingValidator<
     })
     .openapi({
       description: 'Sort by columns',
-      example: 'name,createdAt:desc',
+      example: 'name,id:desc',
     })
 }
 

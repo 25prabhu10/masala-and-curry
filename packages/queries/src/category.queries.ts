@@ -15,9 +15,9 @@ export const categoryKeys = {
   all: ['categories'] as const,
   detail: (id: string) => [...categoryKeys.details(), id] as const,
   details: () => [...categoryKeys.all, 'detail'] as const,
-  list: (filters: CategoryFilters) => [...categoryKeys.lists(), filters] as const,
+  list: (query: CategoryFilters) => [...categoryKeys.lists(), query] as const,
   lists: () => [...categoryKeys.all, 'list'] as const,
-}
+} as const
 
 export function getCategoriesQuery(query: CategoryFilters = {}, abortController?: AbortController) {
   return queryOptions({
@@ -26,16 +26,12 @@ export function getCategoriesQuery(query: CategoryFilters = {}, abortController?
 
       if (typeof query.sortBy === 'string') {
         sortBy = query.sortBy
-      } else if (query.sortBy) {
-        sortBy = JSON.stringify(query.sortBy)
       }
 
       const res = await apiClient.api.v1.categories.$get(
         {
           query: {
-            activeOnly: query.activeOnly,
-            pageIndex: query.pageIndex,
-            pageSize: query.pageSize,
+            ...query,
             sortBy,
           },
         },

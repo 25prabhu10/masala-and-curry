@@ -2,13 +2,11 @@ import { Button } from '@mac/web-ui/button'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowRight, Clock, MapPin, Phone, Star } from 'lucide-react'
 
-export const Route = createFileRoute('/(app)/')({
+export const Route = createFileRoute('/')({
   component: Index,
-  loader: ({ context: { session } }) => session,
 })
 
 function Index() {
-  const session = Route.useLoaderData()
   return (
     <main className="flex-1">
       <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">
@@ -26,17 +24,30 @@ function Index() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild className="text-lg px-8 py-3" size="lg">
-                  <Link from={Route.fullPath} to={session ? '/' : '/sign-in'}>
-                    Order Online
+              <div className="flex flex-col items-center sm:flex-row gap-4">
+                <Button
+                  asChild
+                  className="text-lg px-8 py-3 flex items-center"
+                  size="lg"
+                  type="button"
+                  variant="outline"
+                >
+                  <a aria-label="Call Masala & Curry to place your order" href="tel:+13034841535">
+                    <Phone className="mr-2 h-5 w-5" />
+                    Call (303) 484-1535
+                  </a>
+                </Button>
+                <Button asChild className="text-lg px-8 py-3" size="lg" type="button">
+                  <Link from={Route.fullPath} to="/menu">
+                    View Menu
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button className="text-lg px-8 py-3" size="lg" variant="outline">
-                  View Menu
-                </Button>
               </div>
+              <p className="text-sm text-muted-foreground">
+                We are building our online ordering system. In the meantime, please call us to place
+                your order.
+              </p>
 
               <div className="flex items-center gap-6 pt-4">
                 <div className="flex items-center gap-2">
@@ -45,7 +56,7 @@ function Index() {
                       <Star className="h-5 w-5 fill-primary text-primary" key={`star-${i}`} />
                     ))}
                   </div>
-                  <span className="text-sm text-muted-foreground">4.9/5 • 1,200+ reviews</span>
+                  <span className="text-sm text-muted-foreground">4.3/5 • 100+ reviews</span>
                 </div>
               </div>
             </div>
@@ -108,10 +119,10 @@ function Index() {
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     {dish.description}
                   </p>
-                  <div className="flex items-center justify-between pt-2">
+                  {/* <div className="flex items-center justify-between pt-2">
                     <span className="text-lg font-bold text-primary">{dish.price}</span>
                     <Button size="sm">Add to Cart</Button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
@@ -157,14 +168,14 @@ function Index() {
                 <div className="flex items-start gap-3">
                   <MapPin className="h-5 w-5 text-primary mt-1" />
                   <div>
-                    <p className="font-medium text-foreground">123 Spice Street</p>
-                    <p className="text-muted-foreground">Downtown, NY 10001</p>
+                    <p className="font-medium text-foreground">2796 S Broadway</p>
+                    <p className="text-muted-foreground">Englewood, CO 80113</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <Phone className="h-5 w-5 text-primary" />
-                  <p className="text-foreground">(555) 123-CURRY</p>
+                  <p className="text-foreground">(303) 484-1535</p>
                 </div>
               </div>
             </div>
@@ -192,19 +203,16 @@ const featuredDishes = [
     description: 'Tender chicken in a rich, creamy tomato sauce with aromatic spices',
     image: '/images/butter-chicken.jpg',
     name: 'Butter Chicken',
-    price: '$16.99',
   },
   {
     description: 'Traditional Nepalese dumplings filled with spiced chicken and herbs',
     image: '/images/chicken-momos.jpg',
     name: 'Chicken Momos',
-    price: '$12.99',
   },
   {
     description: 'Fragrant basmati rice layered with tender lamb and saffron',
     image: '/images/lamb-biryani.jpg',
     name: 'Lamb Biryani',
-    price: '$19.99',
   },
 ]
 
@@ -229,8 +237,4 @@ const features = [
   },
 ]
 
-const hours = [
-  { day: 'Monday - Thursday', hours: '11:00 AM - 9:00 PM' },
-  { day: 'Friday - Saturday', hours: '11:00 AM - 10:00 PM' },
-  { day: 'Sunday', hours: '12:00 PM - 9:00 PM' },
-]
+const hours = [{ day: 'All Days', hours: '11:00 AM - 9:30 PM' }]

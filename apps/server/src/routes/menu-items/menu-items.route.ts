@@ -30,7 +30,10 @@ const router = createRouter()
       const db = await createDb(c.env.DB)
       const queryData = await getMenuItems(db, query)
 
-      const result = await readMenuItemsValidator.safeParseAsync(queryData)
+      const result = await readMenuItemsValidator.safeParseAsync({
+        result: queryData,
+        rowCount: queryData.length,
+      })
 
       if (!result.success) {
         throw new HTTPException(INTERNAL_SERVER_ERROR, {

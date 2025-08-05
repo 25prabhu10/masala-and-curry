@@ -1,6 +1,6 @@
 import { category, type InsertCategoryDB, type UpdateCategoryDB } from '@mac/db/schemas'
 import type { DB } from '@mac/db/types'
-import type { CategoryFilters } from '@mac/validators/category'
+import type { Category, CategoryFilters } from '@mac/validators/category'
 import { asc, count, desc, eq } from 'drizzle-orm'
 
 import { withPagination } from './utils'
@@ -12,7 +12,7 @@ export async function getTotalCategoriesCount(db: DB, filters: CategoryFilters) 
     .where(filters.activeOnly ? eq(category.isActive, true) : undefined)
 }
 
-export async function getCategories(db: DB, filters: CategoryFilters) {
+export async function getCategories(db: DB, filters: CategoryFilters): Promise<Category[]> {
   const query = db
     .select()
     .from(category)
@@ -26,20 +26,28 @@ export async function getCategories(db: DB, filters: CategoryFilters) {
     query.orderBy(...orderByColumns)
   }
 
-  return await withPagination(query.$dynamic(), filters.pageIndex, filters.pageSize)
+  if (filters.pageIndex || filters.pageSize) {
+    return await withPagination(query.$dynamic(), filters.pageIndex, filters.pageSize)
+  }
+
+  return await query
 }
 
-export async function getCategoryById(db: DB, id: string) {
+export async function getCategoryById(db: DB, id: string): Promise<Category | undefined> {
   return await db.query.category.findFirst({
     where: eq(category.id, id),
   })
 }
 
-export async function createCategory(db: DB, data: InsertCategoryDB) {
+export async function createCategory(db: DB, data: InsertCategoryDB): Promise<Category[]> {
   return await db.insert(category).values(data).returning()
 }
 
-export async function updateCategory(db: DB, id: string, data: UpdateCategoryDB) {
+export async function updateCategory(
+  db: DB,
+  id: string,
+  data: UpdateCategoryDB
+): Promise<Category[]> {
   return await db.update(category).set(data).where(eq(category.id, id)).returning()
 }
 

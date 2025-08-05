@@ -4,6 +4,7 @@ import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 
+import Header from '@/components/header/header'
 import { RouterLoader } from '@/components/router-loader'
 import { Spinner } from '@/components/spinner'
 import { useTheme } from '@/context/theme-context'
@@ -33,6 +34,8 @@ function RootLayout() {
   return (
     <div className="min-h-svh overflow-auto border-2 border-border/60 flex flex-col">
       <RouterLoader />
+      <Header />
+      <hr />
       <Outlet />
       <Toaster richColors theme={theme} />
       <Suspense>
@@ -52,9 +55,7 @@ type RouterContext = {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async ({ context }) => {
-    const data = await context.queryClient.fetchQuery(
-      getSessionQuery(authClient, context.queryClient)
-    )
+    const data = await context.queryClient.fetchQuery(getSessionQuery(authClient))
 
     return { session: data?.session }
   },

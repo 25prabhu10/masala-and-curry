@@ -8,13 +8,17 @@ export default function createApp() {
 
   // TODO: add secure headers and auth middleware
   app
-    // .use('*', async (c, next) => {
-    //   c.set('authConfig', createAuthConfig(c.env))
-    //   return next()
-    // })
     // .use('/auth/*', authHandler())
     // .use(`${BASE_PATH}/*`, cors())
     // .use(secureHeaders())
+    .use('*', (c, next) => {
+      if (c.req.path.startsWith(BASE_PATH)) {
+        return next()
+      }
+      // SPA redirect to /index.html
+      const requestUrl = new URL(c.req.raw.url)
+      return c.env.ASSETS.fetch(new URL('/index.html', requestUrl.origin))
+    })
     .notFound(notFound)
     .onError(onError)
 

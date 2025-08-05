@@ -10,7 +10,8 @@
   "exports": {
     "./auth": "./src/auth.queries.ts",
     "./category": "./src/category.queries.ts",
-    "./user": "./src/user.queries.ts"
+    "./user": "./src/user.queries.ts",
+    "./menu-item": "./src/menu-item.queries.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",
