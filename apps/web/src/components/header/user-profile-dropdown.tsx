@@ -12,7 +12,7 @@ import {
 } from '@mac/web-ui/dropdown-menu'
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate, useRouter } from '@tanstack/react-router'
-import { Clock, Heart, Loader2, LogOut, Settings, User } from 'lucide-react'
+import { Clock, Heart, LayoutDashboard, Loader2, LogOut, User } from 'lucide-react'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
 
@@ -41,10 +41,10 @@ const navigationItems = [
     to: '/',
   },
   {
-    icon: Settings,
+    icon: LayoutDashboard,
     label: 'Dashboard',
     role: 'admin',
-    to: '/dashboard',
+    to: '/dashboard/menu',
   },
 ] as const satisfies ReadonlyArray<NavigationItem>
 

@@ -5,6 +5,7 @@ import {
   createFailedDesc,
   deleteFailedDesc,
   deleteSuccessDesc,
+  duplicateDataDesc,
   getDataFailedDesc,
   getDataSuccessDesc,
   NOT_AUTHENTICATED,
@@ -27,7 +28,6 @@ import {
   UNAUTHORIZED,
   UNPROCESSABLE_ENTITY,
 } from '@mac/resources/http-status-codes'
-import { MENU_ITEM_ALREADY_EXISTS } from '@mac/resources/menu-item'
 import { createIdParamsOpenapiSchema } from '@mac/validators/general'
 import {
   createMenuItemValidator,
@@ -45,6 +45,7 @@ const tags = ['Menu Items']
 
 export const entity = 'Menu Item' as const
 
+const entityDuplicateDataDesc = duplicateDataDesc(entity)
 export const entityNotFoundDesc = notFoundDesc(entity)
 export const entityFailedToGetDesc = getDataFailedDesc(entity)
 export const entityUpdateFailedDesc = updateFailedDesc(entity)
@@ -108,8 +109,8 @@ export const createMenuItem = createRoute({
   responses: {
     [CREATED]: jsonContent(readMenuItemValidator, createDataSuccessDesc(entity)),
     [CONFLICT]: jsonContent(
-      createMessageObjectSchema(MENU_ITEM_ALREADY_EXISTS),
-      MENU_ITEM_ALREADY_EXISTS
+      createMessageObjectSchema(entityDuplicateDataDesc),
+      entityDuplicateDataDesc
     ),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(createMenuItemValidator),

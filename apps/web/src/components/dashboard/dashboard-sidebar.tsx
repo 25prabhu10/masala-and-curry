@@ -1,4 +1,3 @@
-import { Button } from '@mac/web-ui/button'
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +10,7 @@ import {
   SidebarMenuItem,
 } from '@mac/web-ui/sidebar'
 import { Link } from '@tanstack/react-router'
-import { ArrowLeft, Boxes, Hamburger } from 'lucide-react'
+import { Boxes, Hamburger, LayoutDashboard } from 'lucide-react'
 
 const items = [
   {
@@ -30,12 +29,10 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <Button asChild variant="outline">
-          <Link to="/">
-            <ArrowLeft />
-            Go Home
-          </Link>
-        </Button>
+        <h3 className="flex items-center justify-center space-x-2 text-lg">
+          <LayoutDashboard className="size-5" />
+          <span>Dashboard</span>
+        </h3>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

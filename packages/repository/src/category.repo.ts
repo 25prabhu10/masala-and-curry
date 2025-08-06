@@ -1,11 +1,15 @@
 import { category, type InsertCategoryDB, type UpdateCategoryDB } from '@mac/db/schemas'
 import type { DB } from '@mac/db/types'
 import type { Category, CategoryFilters } from '@mac/validators/category'
+import type { TableRowCount } from '@mac/validators/general'
 import { asc, count, desc, eq } from 'drizzle-orm'
 
 import { withPagination } from './utils'
 
-export async function getTotalCategoriesCount(db: DB, filters: CategoryFilters) {
+export async function getTotalCategoriesCount(
+  db: DB,
+  filters: CategoryFilters
+): Promise<TableRowCount> {
   return await db
     .select({ rowCount: count() })
     .from(category)
@@ -51,6 +55,6 @@ export async function updateCategory(
   return await db.update(category).set(data).where(eq(category.id, id)).returning()
 }
 
-export async function deleteCategory(db: DB, id: string) {
-  return await db.delete(category).where(eq(category.id, id))
+export async function deleteCategory(db: DB, id: string): Promise<void> {
+  await db.delete(category).where(eq(category.id, id))
 }

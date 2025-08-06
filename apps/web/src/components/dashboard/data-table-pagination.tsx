@@ -9,7 +9,7 @@ interface DataTablePaginationProps<TData> {
 
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
   return (
-    <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
+    <div className="w-full pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
       <div className="text-muted-foreground flex-1 text-sm">
         {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.

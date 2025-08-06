@@ -15,7 +15,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "check-types": "tsc --noEmit",
     "clean": "git clean -xdf dist .cache .turbo .wrangler node_modules",
-    "db:migrate": "wrangler d1 migrations apply mac-dev --local",
+    "db:migrate": "wrangler d1 migrations apply mac-prod --local",
     "deploy": "wrangler deploy --minify",
     "dev": "wrangler dev",
     "lint": "oxlint . --tsconfig ./tsconfig.json",

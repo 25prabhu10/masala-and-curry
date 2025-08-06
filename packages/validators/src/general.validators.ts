@@ -25,6 +25,8 @@ export const paginationValidator = z.object({
 })
 
 export const rowCountValidator = z.int().nonnegative()
+export type RowCount = z.infer<typeof rowCountValidator>
+export type TableRowCount = { rowCount: RowCount }[]
 
 export const orderByValidator = z.enum(['asc', 'desc'], {
   error: (issue) => `Order must be one of: ${issue.options}`,

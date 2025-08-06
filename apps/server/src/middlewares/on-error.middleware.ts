@@ -1,5 +1,5 @@
-import { DrizzleQueryError } from '@mac/db/types'
-import { getDataFailedDesc } from '@mac/resources/general'
+import { DrizzleError } from '@mac/db/types'
+import { UNEXPECTED_ERROR_DESC } from '@mac/resources/general'
 import { INTERNAL_SERVER_ERROR, OK } from '@mac/resources/http-status-codes'
 import type { ErrorHandler } from 'hono'
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
@@ -10,15 +10,15 @@ const onError: ErrorHandler = (err, c) => {
     currentStatus !== OK ? (currentStatus as ContentfulStatusCode) : INTERNAL_SERVER_ERROR
   const env = c.env?.NODE_ENV || process.env?.NODE_ENV
 
-  if (err instanceof DrizzleQueryError) {
-    err.message = env === 'production' ? getDataFailedDesc('') : err.message
-  }
-
   console.error(err)
+
+  if (err instanceof DrizzleError) {
+    err.message = env === 'production' ? UNEXPECTED_ERROR_DESC : err.message
+  }
 
   return c.json(
     {
-      message: err.message || 'Could not complete the request, try again later',
+      message: err.message || UNEXPECTED_ERROR_DESC,
       stack: env === 'production' ? undefined : err.stack,
     },
     statusCode

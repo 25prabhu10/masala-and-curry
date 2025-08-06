@@ -1,5 +1,4 @@
 import { createDb } from '@mac/db'
-import { DrizzleQueryError } from '@mac/db/types'
 import {
   createCategory,
   deleteCategory,
@@ -8,18 +7,19 @@ import {
   getTotalCategoriesCount,
   updateCategory,
 } from '@mac/repository/category'
+import { CREATED, NO_CONTENT, OK } from '@mac/resources/http-status-codes'
 import {
-  CREATED,
-  INTERNAL_SERVER_ERROR,
-  NO_CONTENT,
-  NOT_FOUND,
-  OK,
-} from '@mac/resources/http-status-codes'
-import { readCategoryValidator, type UpdateCategory } from '@mac/validators/category'
-import { HTTPException } from 'hono/http-exception'
+  readCategoriesValidator,
+  readCategoriesValidatorWithPagination,
+  readCategoryValidator,
+  type UpdateCategory,
+} from '@mac/validators/category'
 
+import { InternalServerError } from '@/lib/api-errors'
 import { UPDATE_NO_CHANGES_RES } from '@/lib/constants'
 import createRouter from '@/lib/create-router'
+import { handleApiError } from '@/lib/handle-errors'
+import { notFound } from '@/lib/response-helpers'
 
 import * as routes from './categories.openapi'
 
@@ -33,17 +33,19 @@ const router = createRouter()
       const categories = await getCategories(db, { activeOnly, pageIndex, pageSize, sortBy })
       const totalCount = await getTotalCategoriesCount(db, { activeOnly })
 
-      return c.json(
-        {
-          result: categories,
-          rowCount: totalCount[0]?.rowCount ?? 0,
-        },
-        OK
-      )
-    } catch {
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
+      const result = await readCategoriesValidatorWithPagination.safeParseAsync({
+        result: categories,
+        rowCount: totalCount[0]?.rowCount,
       })
+
+      if (!result.success) {
+        throw new InternalServerError(routes.entityFailedToGetDesc)
+      }
+
+      return c.json(result.data, OK)
+    } catch (error) {
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityFailedToGetDesc)
     }
   })
   .openapi(routes.getCategoryById, async (c) => {
@@ -55,25 +57,19 @@ const router = createRouter()
       const queryData = await getCategoryById(db, id)
 
       if (!queryData) {
-        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+        return c.json(...notFound(routes.entity))
       }
 
       const result = await readCategoryValidator.safeParseAsync(queryData)
 
       if (!result.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityFailedToGetDesc,
-        })
+        throw new InternalServerError(routes.entityFailedToGetDesc)
       }
 
       return c.json(result.data, OK)
     } catch (error) {
-      if (error instanceof HTTPException) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityFailedToGetDesc)
     }
   })
   .openapi(routes.createCategory, async (c) => {
@@ -84,28 +80,16 @@ const router = createRouter()
 
       const queryData = await createCategory(db, reqData)
 
-      if (queryData.length === 0) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityCreateFailedDesc,
-        })
-      }
-
       const result = await readCategoryValidator.safeParseAsync(queryData[0])
 
       if (!result.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityCreateFailedDesc,
-        })
+        throw new InternalServerError(routes.entityCreateFailedDesc)
       }
 
       return c.json(result.data, CREATED)
     } catch (error) {
-      if (error instanceof HTTPException || error instanceof DrizzleQueryError) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityCreateFailedDesc)
     }
   })
   .openapi(routes.updateCategory, async (c) => {
@@ -118,7 +102,7 @@ const router = createRouter()
       const existingCategory = await getCategoryById(db, id)
 
       if (!existingCategory) {
-        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+        return c.json(...notFound(routes.entity))
       }
 
       const dataToUpdate: UpdateCategory = {}
@@ -149,28 +133,18 @@ const router = createRouter()
 
       const result = await updateCategory(db, id, dataToUpdate)
 
-      if (result.length === 0) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityUpdateFailedDesc,
-        })
-      }
+      console.error(result)
 
-      const category = await readCategoryValidator.safeParseAsync(result[0])
+      const category = await readCategoriesValidator.safeParseAsync(result)
 
       if (!category.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityUpdateFailedDesc,
-        })
+        throw new InternalServerError(routes.entityUpdateFailedDesc)
       }
 
       return c.json(category.data, OK)
     } catch (error) {
-      if (error instanceof HTTPException || error instanceof DrizzleQueryError) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityUpdateFailedDesc)
     }
   })
   .openapi(routes.deleteCategory, async (c) => {
@@ -182,19 +156,16 @@ const router = createRouter()
       const existingCategory = await getCategoryById(db, id)
 
       if (!existingCategory) {
-        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+        return c.json(...notFound(routes.entity))
       }
 
       await deleteCategory(db, id)
 
       return c.body(null, NO_CONTENT)
     } catch (error) {
-      if (error instanceof HTTPException || error instanceof DrizzleQueryError) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
-      })
+      console.error(error)
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityDeleteFailedDesc)
     }
   })
 

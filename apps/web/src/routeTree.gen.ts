@@ -17,12 +17,16 @@ import { Route as protectedRouteRouteImport } from './routes/(protected)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardMenuRouteImport } from './routes/dashboard/menu'
-import { Route as DashboardCategoriesRouteImport } from './routes/dashboard/categories'
 import { Route as protectedCheckoutRouteImport } from './routes/(protected)/checkout'
 import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
+import { Route as DashboardCategoriesRouteRouteImport } from './routes/dashboard/categories/route'
+import { Route as DashboardCategoriesIndexRouteImport } from './routes/dashboard/categories/index'
 import { Route as protectedProfileIndexRouteImport } from './routes/(protected)/profile/index'
+import { Route as DashboardCategoriesNewRouteImport } from './routes/dashboard/categories/new'
 import { Route as protectedProfileEditRouteImport } from './routes/(protected)/profile/edit'
+import { Route as DashboardCategoriesCategoryIdIndexRouteImport } from './routes/dashboard/categories/$category-id/index'
+import { Route as DashboardCategoriesCategoryIdEditRouteImport } from './routes/dashboard/categories/$category-id/edit'
 
 const NotAuthorizedRoute = NotAuthorizedRouteImport.update({
   id: '/not-authorized',
@@ -62,11 +66,6 @@ const DashboardMenuRoute = DashboardMenuRouteImport.update({
   path: '/menu',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardCategoriesRoute = DashboardCategoriesRouteImport.update({
-  id: '/categories',
-  path: '/categories',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const protectedCheckoutRoute = protectedCheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
@@ -82,16 +81,45 @@ const authSignInRoute = authSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => authRouteRoute,
 } as any)
+const DashboardCategoriesRouteRoute =
+  DashboardCategoriesRouteRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
+const DashboardCategoriesIndexRoute =
+  DashboardCategoriesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DashboardCategoriesRouteRoute,
+  } as any)
 const protectedProfileIndexRoute = protectedProfileIndexRouteImport.update({
   id: '/profile/',
   path: '/profile/',
   getParentRoute: () => protectedRouteRoute,
+} as any)
+const DashboardCategoriesNewRoute = DashboardCategoriesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => DashboardCategoriesRouteRoute,
 } as any)
 const protectedProfileEditRoute = protectedProfileEditRouteImport.update({
   id: '/profile/edit',
   path: '/profile/edit',
   getParentRoute: () => protectedRouteRoute,
 } as any)
+const DashboardCategoriesCategoryIdIndexRoute =
+  DashboardCategoriesCategoryIdIndexRouteImport.update({
+    id: '/$category-id/',
+    path: '/$category-id/',
+    getParentRoute: () => DashboardCategoriesRouteRoute,
+  } as any)
+const DashboardCategoriesCategoryIdEditRoute =
+  DashboardCategoriesCategoryIdEditRouteImport.update({
+    id: '/$category-id/edit',
+    path: '/$category-id/edit',
+    getParentRoute: () => DashboardCategoriesRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof protectedRouteRouteWithChildren
@@ -99,13 +127,17 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/menu': typeof MenuRoute
   '/not-authorized': typeof NotAuthorizedRoute
+  '/dashboard/categories': typeof DashboardCategoriesRouteRouteWithChildren
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
   '/checkout': typeof protectedCheckoutRoute
-  '/dashboard/categories': typeof DashboardCategoriesRoute
   '/dashboard/menu': typeof DashboardMenuRoute
   '/profile/edit': typeof protectedProfileEditRoute
+  '/dashboard/categories/new': typeof DashboardCategoriesNewRoute
   '/profile': typeof protectedProfileIndexRoute
+  '/dashboard/categories/': typeof DashboardCategoriesIndexRoute
+  '/dashboard/categories/$category-id/edit': typeof DashboardCategoriesCategoryIdEditRoute
+  '/dashboard/categories/$category-id': typeof DashboardCategoriesCategoryIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof protectedRouteRouteWithChildren
@@ -116,10 +148,13 @@ export interface FileRoutesByTo {
   '/sign-in': typeof authSignInRoute
   '/sign-up': typeof authSignUpRoute
   '/checkout': typeof protectedCheckoutRoute
-  '/dashboard/categories': typeof DashboardCategoriesRoute
   '/dashboard/menu': typeof DashboardMenuRoute
   '/profile/edit': typeof protectedProfileEditRoute
+  '/dashboard/categories/new': typeof DashboardCategoriesNewRoute
   '/profile': typeof protectedProfileIndexRoute
+  '/dashboard/categories': typeof DashboardCategoriesIndexRoute
+  '/dashboard/categories/$category-id/edit': typeof DashboardCategoriesCategoryIdEditRoute
+  '/dashboard/categories/$category-id': typeof DashboardCategoriesCategoryIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -130,13 +165,17 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/menu': typeof MenuRoute
   '/not-authorized': typeof NotAuthorizedRoute
+  '/dashboard/categories': typeof DashboardCategoriesRouteRouteWithChildren
   '/(auth)/sign-in': typeof authSignInRoute
   '/(auth)/sign-up': typeof authSignUpRoute
   '/(protected)/checkout': typeof protectedCheckoutRoute
-  '/dashboard/categories': typeof DashboardCategoriesRoute
   '/dashboard/menu': typeof DashboardMenuRoute
   '/(protected)/profile/edit': typeof protectedProfileEditRoute
+  '/dashboard/categories/new': typeof DashboardCategoriesNewRoute
   '/(protected)/profile/': typeof protectedProfileIndexRoute
+  '/dashboard/categories/': typeof DashboardCategoriesIndexRoute
+  '/dashboard/categories/$category-id/edit': typeof DashboardCategoriesCategoryIdEditRoute
+  '/dashboard/categories/$category-id/': typeof DashboardCategoriesCategoryIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -146,13 +185,17 @@ export interface FileRouteTypes {
     | '/about'
     | '/menu'
     | '/not-authorized'
+    | '/dashboard/categories'
     | '/sign-in'
     | '/sign-up'
     | '/checkout'
-    | '/dashboard/categories'
     | '/dashboard/menu'
     | '/profile/edit'
+    | '/dashboard/categories/new'
     | '/profile'
+    | '/dashboard/categories/'
+    | '/dashboard/categories/$category-id/edit'
+    | '/dashboard/categories/$category-id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -163,10 +206,13 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/checkout'
-    | '/dashboard/categories'
     | '/dashboard/menu'
     | '/profile/edit'
+    | '/dashboard/categories/new'
     | '/profile'
+    | '/dashboard/categories'
+    | '/dashboard/categories/$category-id/edit'
+    | '/dashboard/categories/$category-id'
   id:
     | '__root__'
     | '/'
@@ -176,13 +222,17 @@ export interface FileRouteTypes {
     | '/about'
     | '/menu'
     | '/not-authorized'
+    | '/dashboard/categories'
     | '/(auth)/sign-in'
     | '/(auth)/sign-up'
     | '/(protected)/checkout'
-    | '/dashboard/categories'
     | '/dashboard/menu'
     | '/(protected)/profile/edit'
+    | '/dashboard/categories/new'
     | '/(protected)/profile/'
+    | '/dashboard/categories/'
+    | '/dashboard/categories/$category-id/edit'
+    | '/dashboard/categories/$category-id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -253,13 +303,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardMenuRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/categories': {
-      id: '/dashboard/categories'
-      path: '/categories'
-      fullPath: '/dashboard/categories'
-      preLoaderRoute: typeof DashboardCategoriesRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/(protected)/checkout': {
       id: '/(protected)/checkout'
       path: '/checkout'
@@ -281,6 +324,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignInRouteImport
       parentRoute: typeof authRouteRoute
     }
+    '/dashboard/categories': {
+      id: '/dashboard/categories'
+      path: '/categories'
+      fullPath: '/dashboard/categories'
+      preLoaderRoute: typeof DashboardCategoriesRouteRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/categories/': {
+      id: '/dashboard/categories/'
+      path: '/'
+      fullPath: '/dashboard/categories/'
+      preLoaderRoute: typeof DashboardCategoriesIndexRouteImport
+      parentRoute: typeof DashboardCategoriesRouteRoute
+    }
     '/(protected)/profile/': {
       id: '/(protected)/profile/'
       path: '/profile'
@@ -288,12 +345,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof protectedProfileIndexRouteImport
       parentRoute: typeof protectedRouteRoute
     }
+    '/dashboard/categories/new': {
+      id: '/dashboard/categories/new'
+      path: '/new'
+      fullPath: '/dashboard/categories/new'
+      preLoaderRoute: typeof DashboardCategoriesNewRouteImport
+      parentRoute: typeof DashboardCategoriesRouteRoute
+    }
     '/(protected)/profile/edit': {
       id: '/(protected)/profile/edit'
       path: '/profile/edit'
       fullPath: '/profile/edit'
       preLoaderRoute: typeof protectedProfileEditRouteImport
       parentRoute: typeof protectedRouteRoute
+    }
+    '/dashboard/categories/$category-id/': {
+      id: '/dashboard/categories/$category-id/'
+      path: '/$category-id'
+      fullPath: '/dashboard/categories/$category-id'
+      preLoaderRoute: typeof DashboardCategoriesCategoryIdIndexRouteImport
+      parentRoute: typeof DashboardCategoriesRouteRoute
+    }
+    '/dashboard/categories/$category-id/edit': {
+      id: '/dashboard/categories/$category-id/edit'
+      path: '/$category-id/edit'
+      fullPath: '/dashboard/categories/$category-id/edit'
+      preLoaderRoute: typeof DashboardCategoriesCategoryIdEditRouteImport
+      parentRoute: typeof DashboardCategoriesRouteRoute
     }
   }
 }
@@ -328,13 +406,35 @@ const protectedRouteRouteWithChildren = protectedRouteRoute._addFileChildren(
   protectedRouteRouteChildren,
 )
 
+interface DashboardCategoriesRouteRouteChildren {
+  DashboardCategoriesNewRoute: typeof DashboardCategoriesNewRoute
+  DashboardCategoriesIndexRoute: typeof DashboardCategoriesIndexRoute
+  DashboardCategoriesCategoryIdEditRoute: typeof DashboardCategoriesCategoryIdEditRoute
+  DashboardCategoriesCategoryIdIndexRoute: typeof DashboardCategoriesCategoryIdIndexRoute
+}
+
+const DashboardCategoriesRouteRouteChildren: DashboardCategoriesRouteRouteChildren =
+  {
+    DashboardCategoriesNewRoute: DashboardCategoriesNewRoute,
+    DashboardCategoriesIndexRoute: DashboardCategoriesIndexRoute,
+    DashboardCategoriesCategoryIdEditRoute:
+      DashboardCategoriesCategoryIdEditRoute,
+    DashboardCategoriesCategoryIdIndexRoute:
+      DashboardCategoriesCategoryIdIndexRoute,
+  }
+
+const DashboardCategoriesRouteRouteWithChildren =
+  DashboardCategoriesRouteRoute._addFileChildren(
+    DashboardCategoriesRouteRouteChildren,
+  )
+
 interface DashboardRouteRouteChildren {
-  DashboardCategoriesRoute: typeof DashboardCategoriesRoute
+  DashboardCategoriesRouteRoute: typeof DashboardCategoriesRouteRouteWithChildren
   DashboardMenuRoute: typeof DashboardMenuRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
-  DashboardCategoriesRoute: DashboardCategoriesRoute,
+  DashboardCategoriesRouteRoute: DashboardCategoriesRouteRouteWithChildren,
   DashboardMenuRoute: DashboardMenuRoute,
 }
 

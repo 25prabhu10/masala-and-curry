@@ -1,39 +1,60 @@
-import { getCategoriesQuery } from '@mac/queries/category'
-import { type CreateCategory, getCategoryFiltersValidator } from '@mac/validators/category'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { deleteCategoryMutation, getCategoriesQuery } from '@mac/queries/category'
+import { type Category, getCategoryFiltersValidator } from '@mac/validators/category'
+import { Button } from '@mac/web-ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
+import { Checkbox } from '@mac/web-ui/checkbox'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@mac/web-ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@mac/web-ui/dropdown-menu'
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import type { ColumnDef } from '@tanstack/react-table'
-import { useMemo } from 'react'
+import { MoreHorizontal, Trash2 } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { toast } from 'sonner'
 
 import { DataTable } from '@/components/dashboard/data-table'
 import { DataTableColumnHeader } from '@/components/dashboard/data-table-column-header'
+import DataTableSkeleton from '@/components/dashboard/data-table-skeleton'
 import { useFilters } from '@/hooks/use-filters'
 import { sortByToState, stateToSortBy } from '@/lib/utils'
 
-const columnsDef: ColumnDef<CreateCategory>[] = [
-  // Selection column
-  // {
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       aria-label="Select row"
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //     />
-  //   ),
-  //   enableHiding: false,
-  //   enableSorting: false,
-  //   header: ({ table }) => (
-  //     <Checkbox
-  //       aria-label="Select all"
-  //       checked={
-  //         table.getIsAllPageRowsSelected() ||
-  //         (table.getIsSomePageRowsSelected() && 'indeterminate')
-  //       }
-  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //     />
-  //   ),
-  //   id: 'select',
-  // },
+const columnsDef: ColumnDef<Category>[] = [
+  {
+    cell: ({ row }) => (
+      <Checkbox
+        aria-label="Select row"
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+      />
+    ),
+    enableHiding: false,
+    enableSorting: false,
+    header: ({ table }) => (
+      <Checkbox
+        aria-label="Select all"
+        checked={
+          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      />
+    ),
+    id: 'select',
+  },
   {
     accessorKey: 'name',
     cell: ({ row }) => <div className="font-medium">{row.getValue('name')}</div>,
@@ -63,7 +84,7 @@ const columnsDef: ColumnDef<CreateCategory>[] = [
       return (
         <div className="flex items-center">
           <div
-            className={`h-2 w-2 rounded-full mr-2 ${isActive ? 'bg-green-500' : 'bg-gray-400'}`}
+            className={`h-2 w-2 rounded-full mr-2 ${isActive ? `bg-green-500` : `bg-gray-400`}`}
           />
           <span className={isActive ? 'text-green-700' : 'text-gray-500'}>
             {isActive ? 'Active' : 'Inactive'}
@@ -75,25 +96,33 @@ const columnsDef: ColumnDef<CreateCategory>[] = [
     header: 'Status',
   },
   {
-    accessorKey: 'createdAt',
     cell: ({ row }) => {
-      const createdAt = new Date(row.getValue('createdAt'))
-      return <div className="text-sm text-muted-foreground">{createdAt.toLocaleDateString()}</div>
+      const category = row.original
+      return (
+        <DeleteCategoryDialog category={category}>
+          <Button className="text-destructive" variant="link">
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete
+          </Button>
+        </DeleteCategoryDialog>
+      )
     },
-    enableSorting: false,
-    header: 'Created',
+    enableHiding: false,
+    header: 'Delete',
+    id: 'delete',
   },
-  // {
-  //   cell: ({ row }) => {
-  //     const category = row.original
-  //     return <CategoryActionsDropdown category={category} />
-  //   },
-  //   enableHiding: false,
-  //   id: 'actions',
-  // },
+  {
+    cell: ({ row }) => {
+      const category = row.original
+      return <CategoryActionsDropdown category={category} />
+    },
+    enableHiding: false,
+    header: 'Actions',
+    id: 'actions',
+  },
 ]
 
-export const Route = createFileRoute('/dashboard/categories')({
+export const Route = createFileRoute('/dashboard/categories/')({
   beforeLoad: ({ search }) => {
     return { search }
   },
@@ -101,6 +130,11 @@ export const Route = createFileRoute('/dashboard/categories')({
   loader: async ({ context: { queryClient, search } }) => {
     await queryClient.ensureQueryData(getCategoriesQuery(search))
   },
+  pendingComponent: () => (
+    <div className="w-full mx-auto p-10">
+      <DataTableSkeleton totalRows={columnsDef.length} />
+    </div>
+  ),
   validateSearch: getCategoryFiltersValidator(true),
 })
 
@@ -116,101 +150,129 @@ function RouteComponent() {
 
   const sortingState = sortByToState(filters.sortBy)
 
-  // Define columns
-  const columns = useMemo<ColumnDef<CreateCategory>[]>(() => columnsDef, [])
-
-  // Loading skeleton rows
-  // const loadingRows = useMemo(
-  //   () =>
-  //     Array.from({ length: 5 }).map((_, index) => (
-  //       <TableRow key={`loading-${index}`}>
-  //         {columns.map((_, cellIndex) => (
-  //           <TableCell key={`loading-cell-${cellIndex}`}>
-  //             <Skeleton className="h-4 w-full" />
-  //           </TableCell>
-  //         ))}
-  //       </TableRow>
-  //     )),
-  //   [columns]
-  // )
+  const columns = useMemo<ColumnDef<Category>[]>(() => columnsDef, [])
 
   return (
-    <div className="container mx-auto py-10">
-      <DataTable
-        columns={columns}
-        data={data?.result ?? []}
-        description="Manage your categories for better organization of menu items."
-        onSortingChange={(updaterOrValue) => {
-          const newSortingState =
-            typeof updaterOrValue === 'function' ? updaterOrValue(sortingState) : updaterOrValue
-          return setFilters({ sortBy: stateToSortBy(newSortingState) })
-        }}
-        pagination={paginationState}
-        paginationOptions={{
-          onPaginationChange: (pagination) => {
-            setFilters(typeof pagination === 'function' ? pagination(paginationState) : pagination)
-          },
-          rowCount: data?.rowCount,
-        }}
-        sorting={sortingState}
-        title="Categories"
-      />
-    </div>
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>Categories</CardTitle>
+            <CardDescription>
+              Manage your categories for better organization of menu items.
+            </CardDescription>
+          </div>
+          <Button>
+            <Link to="/dashboard/categories/new">Add New Category</Link>
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <DataTable
+          columns={columns}
+          data={data?.result ?? []}
+          onSortingChange={(updaterOrValue) => {
+            const newSortingState =
+              typeof updaterOrValue === 'function' ? updaterOrValue(sortingState) : updaterOrValue
+            return setFilters({ sortBy: stateToSortBy(newSortingState) })
+          }}
+          pagination={paginationState}
+          paginationOptions={{
+            onPaginationChange: (pagination) => {
+              setFilters(
+                typeof pagination === 'function' ? pagination(paginationState) : pagination
+              )
+            },
+            rowCount: data?.rowCount,
+          }}
+          sorting={sortingState}
+        />
+      </CardContent>
+    </Card>
   )
 }
 
 // Actions dropdown component for each category row
-// function CategoryActionsDropdown({ category }: { category: CreateCategory }) {
-//   const queryClient = useQueryClient()
-//   const deleteMutation = useMutation(deleteCategoryMutation())
+function CategoryActionsDropdown({ category }: { category: Category }) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button className="h-8 w-8 p-0" variant="ghost">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(category.id)}>
+          Copy ID
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link
+            params={{ 'category-id': category.id }}
+            to="/dashboard/categories/$category-id/edit"
+          >
+            Edit
+          </Link>
+        </DropdownMenuItem>
+        {/* <EditCategoryDialog category={category}>
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          <Edit className="mr-2 h-4 w-4" />
+          Edit category
+          </DropdownMenuItem>
+          </EditCategoryDialog> */}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
-//   const handleDelete = useCallback(async () => {
-//     if (window.confirm(`Are you sure you want to delete "${category.name}"?`)) {
-//       try {
-//         await deleteMutation.mutateAsync(category.id)
-//         toast.success('Category deleted successfully')
-//         // Invalidate and refetch categories
-//         queryClient.invalidateQueries({ queryKey: categoryKeys.all })
-//       } catch (error) {
-//         if (error instanceof Error) {
-//           toast.error(`Failed to delete category: ${error.message}`)
-//         }
-//       }
-//     }
-//   }, [category.id, category.name, deleteMutation, queryClient])
+function DeleteCategoryDialog({
+  category,
+  children,
+}: {
+  category: Category
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(false)
+  const { mutateAsync, isPending } = useMutation(deleteCategoryMutation())
 
-//   return (
-//     <DropdownMenu>
-//       <DropdownMenuTrigger asChild>
-//         <Button className="h-8 w-8 p-0" variant="ghost">
-//           <span className="sr-only">Open menu</span>
-//           <MoreHorizontal className="h-4 w-4" />
-//         </Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent align="end">
-//         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-//         <DropdownMenuItem onClick={() => navigator.clipboard.writeText(category.id)}>
-//           Copy category ID
-//         </DropdownMenuItem>
-//         <DropdownMenuSeparator />
-//         <EditCategoryDialog category={category}>
-//           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-//             <Edit className="mr-2 h-4 w-4" />
-//             Edit category
-//           </DropdownMenuItem>
-//         </EditCategoryDialog>
-//         <DropdownMenuItem
-//           className="text-red-600"
-//           disabled={deleteMutation.isPending}
-//           onClick={handleDelete}
-//         >
-//           <Trash2 className="mr-2 h-4 w-4" />
-//           Delete category
-//         </DropdownMenuItem>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   )
-// }
+  function handleDelete() {
+    mutateAsync(category.id)
+      .catch((error) => {
+        toast.error(`Failed to delete category: ${error instanceof Error ? error.message : ''}`)
+      })
+      .then(() => {
+        toast.success(`Category "${category.name}" deleted successfully`)
+      })
+      .finally(() => {
+        setOpen(false)
+      })
+  }
+
+  return (
+    <Dialog onOpenChange={setOpen} open={open}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete Category</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete the category <strong>{category.name}</strong>? This
+            action cannot be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button onClick={() => setOpen(false)} variant="outline">
+            Cancel
+          </Button>
+          <Button disabled={isPending} onClick={handleDelete} variant="destructive">
+            Delete
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 // Create category dialog component
 // function CreateCategoryDialog() {

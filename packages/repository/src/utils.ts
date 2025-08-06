@@ -5,6 +5,6 @@ export function withPagination<T extends SQLiteSelect>(
   qb: T,
   page: number = 1,
   pageSize: number = DEFAULT_PAGE_SIZE
-) {
+): T {
   return qb.limit(pageSize).offset((page - 1) * pageSize)
 }

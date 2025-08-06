@@ -4,14 +4,14 @@
     "builtin": true
   },
   "plugins": [
-    "unicorn",
-    "typescript",
-    "oxc",
     "eslint",
-    "node",
     "import",
+    "jsdoc",
+    "node",
+    "oxc",
     "promise",
-    "jsdoc"
+    "typescript",
+    "unicorn"
   ],
   "rules": {
     "arrow-body-style": [

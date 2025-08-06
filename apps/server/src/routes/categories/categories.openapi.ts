@@ -1,11 +1,11 @@
 import { createRoute } from '@hono/zod-openapi'
-import { CATEGORY_ALREADY_EXISTS } from '@mac/resources/category'
 import {
   createDataDesc,
   createDataSuccessDesc,
   createFailedDesc,
   deleteFailedDesc,
   deleteSuccessDesc,
+  duplicateDataDesc,
   getDataFailedDesc,
   getDataSuccessDesc,
   invalidIdDesc,
@@ -33,6 +33,7 @@ import {
   createCategoryValidator,
   getCategoryFiltersValidator,
   readCategoriesValidator,
+  readCategoriesValidatorWithPagination,
   readCategoryValidator,
   updateCategoryValidator,
 } from '@mac/validators/category'
@@ -46,10 +47,12 @@ const tags = ['Categories']
 
 export const entity = 'Category' as const
 
-export const entityNotFoundDesc = notFoundDesc(entity)
+const entityNotFoundDesc = notFoundDesc(entity)
+const entityDuplicateDataDesc = duplicateDataDesc(entity)
 export const entityFailedToGetDesc = getDataFailedDesc(entity)
 export const entityUpdateFailedDesc = updateFailedDesc(entity)
 export const entityCreateFailedDesc = createFailedDesc(entity)
+export const entityDeleteFailedDesc = deleteFailedDesc(entity)
 
 export const categoryIdParamsSchema = createIdParamsOpenapiSchema(entity)
 
@@ -61,7 +64,7 @@ export const getCategories = createRoute({
     query: getCategoryFiltersValidator(),
   },
   responses: {
-    [OK]: jsonContent(readCategoriesValidator, getDataSuccessDesc(entity)),
+    [OK]: jsonContent(readCategoriesValidatorWithPagination, getDataSuccessDesc(entity)),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(getCategoryFiltersValidator()),
       VALIDATION_ERROR_DESC
@@ -109,8 +112,8 @@ export const createCategory = createRoute({
   responses: {
     [CREATED]: jsonContent(readCategoryValidator, createDataSuccessDesc(entity)),
     [CONFLICT]: jsonContent(
-      createMessageObjectSchema(CATEGORY_ALREADY_EXISTS),
-      CATEGORY_ALREADY_EXISTS
+      createMessageObjectSchema(entityDuplicateDataDesc),
+      entityDuplicateDataDesc
     ),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(createCategoryValidator),
@@ -138,12 +141,12 @@ export const updateCategory = createRoute({
   },
   responses: {
     [OK]: jsonContent(
-      readCategoryValidator.or(createMessageObjectSchema(UPDATE_NO_CHANGES)),
+      readCategoriesValidator.or(createMessageObjectSchema(UPDATE_NO_CHANGES)),
       updateSuccessDesc(entity)
     ),
     [CONFLICT]: jsonContent(
-      createMessageObjectSchema(CATEGORY_ALREADY_EXISTS),
-      CATEGORY_ALREADY_EXISTS
+      createMessageObjectSchema(entityDuplicateDataDesc),
+      entityDuplicateDataDesc
     ),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(updateCategoryValidator),
@@ -179,8 +182,8 @@ export const deleteCategory = createRoute({
       VALIDATION_ERROR_DESC
     ),
     [INTERNAL_SERVER_ERROR]: jsonContent(
-      createMessageObjectSchema(deleteFailedDesc(entity)),
-      deleteFailedDesc(entity)
+      createMessageObjectSchema(entityDeleteFailedDesc),
+      entityDeleteFailedDesc
     ),
     [UNAUTHORIZED]: jsonContent(createMessageObjectSchema(NOT_AUTHENTICATED), NOT_AUTHENTICATED),
     [FORBIDDEN]: jsonContent(createMessageObjectSchema(NOT_AUTHORIZED), NOT_AUTHORIZED),

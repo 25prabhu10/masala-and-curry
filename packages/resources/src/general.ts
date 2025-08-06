@@ -18,6 +18,10 @@ export const UPDATE_SUCCESS_DESC: string = 'Update successful.'
 
 export const PAGINATION_ERROR_DESC: string = 'Must be a valid position number (e.g. 1, 10)'
 
+export function duplicateDataDesc(entity: string): string {
+  return `${entity} with same data already exists.`
+}
+
 export function invalidIdDesc(entity: Readonly<string>): string {
   return `id should be a valid ${entity} ID`
 }
@@ -38,23 +42,23 @@ export function getDataSuccessDesc(name: Readonly<string>): string {
   return `${name} data retrieved successfully.`
 }
 
-export function createDataDesc(entity: string) {
+export function createDataDesc(entity: string): string {
   return `${entity} data to create`
 }
 
-export function createDataSuccessDesc(entity: string) {
+export function createDataSuccessDesc(entity: string): string {
   return `${entity} created successfully`
 }
 
-export function createFailedDesc(entity: string) {
+export function createFailedDesc(entity: string): string {
   return `Failed to create ${entity}`
 }
 
-export function deleteSuccessDesc(entity: string) {
+export function deleteSuccessDesc(entity: string): string {
   return `${entity} deleted successfully`
 }
 
-export function deleteFailedDesc(entity: string) {
+export function deleteFailedDesc(entity: string): string {
   return `Failed to delete ${entity}`
 }
 

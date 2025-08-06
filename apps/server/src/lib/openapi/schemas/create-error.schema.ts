@@ -5,7 +5,7 @@ import type { APIErrorResponse } from '@/lib/types'
 export default function createErrorSchema<T extends z.ZodType<unknown>>(schema: T) {
   const { error } = schema.safeParse(schema.type === 'array' ? [] : {})
 
-  const treeError = error
+  const exampleError = error
     ? (z.treeifyError(error) as APIErrorResponse)
     : ({
         errors: ['Validation failed'],
@@ -24,8 +24,8 @@ export default function createErrorSchema<T extends z.ZodType<unknown>>(schema: 
         .openapi({
           description: 'Top-level validation errors',
           example:
-            treeError.errors && treeError.errors?.length > 0
-              ? treeError.errors
+            exampleError.errors && exampleError.errors?.length > 0
+              ? exampleError.errors
               : ['Validation failed'],
         }),
       properties: z
@@ -72,7 +72,7 @@ export default function createErrorSchema<T extends z.ZodType<unknown>>(schema: 
         .optional()
         .openapi({
           description: 'Validation errors grouped by field name.',
-          example: treeError.properties,
+          example: exampleError.properties,
         }),
     })
     .openapi({

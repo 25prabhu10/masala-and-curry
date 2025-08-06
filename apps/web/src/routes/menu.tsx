@@ -156,25 +156,22 @@ function RouteComponent() {
             </div>
           )}
 
-          {!isLoading &&
-            menuData?.result.length &&
-            menuItemsPerCategory &&
-            Object.keys(menuItemsPerCategory).length > 0 && (
-              <div className="mb-8">
-                {Object.entries(menuItemsPerCategory).map(([categoryId, items]) => (
-                  <div className="mb-4" key={categoryId}>
-                    <h2 className="text-xl font-semibold mb-2">
-                      {categoriesData?.result.find((cat) => cat.id === categoryId)?.name}
-                    </h2>
-                    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                      {items.map((menuItem) => (
-                        <MenuItemCard key={menuItem.id} menuItem={menuItem} />
-                      ))}
-                    </div>
+          {!isLoading && menuItemsPerCategory && Object.keys(menuItemsPerCategory).length > 0 && (
+            <div className="mb-8">
+              {Object.entries(menuItemsPerCategory).map(([categoryId, items]) => (
+                <div className="mb-4" key={categoryId}>
+                  <h2 className="text-xl font-semibold mb-2">
+                    {categoriesData?.result.find((cat) => cat.id === categoryId)?.name}
+                  </h2>
+                  <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {items.map((menuItem) => (
+                      <MenuItemCard key={menuItem.id} menuItem={menuItem} />
+                    ))}
                   </div>
-                ))}
-              </div>
-            )}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* {!isLoading && menuData?.result.length > 0 && (
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
