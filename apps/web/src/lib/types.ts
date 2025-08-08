@@ -6,3 +6,8 @@ export interface NavigationItem extends LinkProps {
   role?: string
   icon?: LucideIcon
 }
+
+export interface SelectOption {
+  value: string
+  label: string
+}

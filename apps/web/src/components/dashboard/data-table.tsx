@@ -47,6 +47,7 @@ export function DataTable<T extends Record<string, unknown>>({
     onSortingChange,
     state: { pagination, sorting },
     ...paginationOptions,
+    debugTable: true,
     getCoreRowModel: getCoreRowModel(),
     manualFiltering: true,
     manualPagination: true,

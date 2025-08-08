@@ -524,15 +524,15 @@ When refactoring large files:
 
 ```typescript
 export type APIErrorResponse = {
-  errors?: string[]
+  errors?: string[];
   properties?: Record<
     string,
     {
-      errors?: string[]
-      items?: (null | { errors?: string[] })[]
+      errors?: string[];
+      items?: (null | { errors?: string[] })[];
     }
-  >
-}
+  >;
+};
 ```
 
 ```typescript

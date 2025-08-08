@@ -8,4 +8,5 @@ export const MAX_CURRENCY_VALUE = 999_999.99
 export const MIN_CURRENCY_VALUE = -999_999.99
 export const NANOID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz'
 export const NANOID_LENGTH = 30
-export const DEFAULT_PAGE_SIZE = 20
+export const DEFAULT_PAGE_SIZE = 10
+export const DEFAULT_PAGE_INDEX = 0

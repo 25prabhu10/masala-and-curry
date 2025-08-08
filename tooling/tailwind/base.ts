@@ -52,6 +52,10 @@ export default {
           'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+          foreground: 'hsl(var(--success-foreground))',
+        },
       },
     },
   },

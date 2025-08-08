@@ -9,14 +9,13 @@ import {
 } from '@mac/repository/category'
 import { CREATED, NO_CONTENT, OK } from '@mac/resources/http-status-codes'
 import {
-  readCategoriesValidator,
-  readCategoriesValidatorWithPagination,
+  type Category,
+  readCategoriesWithPaginationValidator,
   readCategoryValidator,
-  type UpdateCategory,
+  type UpdateCategoryParsed,
 } from '@mac/validators/category'
 
 import { InternalServerError } from '@/lib/api-errors'
-import { UPDATE_NO_CHANGES_RES } from '@/lib/constants'
 import createRouter from '@/lib/create-router'
 import { handleApiError } from '@/lib/handle-errors'
 import { notFound } from '@/lib/response-helpers'
@@ -33,7 +32,7 @@ const router = createRouter()
       const categories = await getCategories(db, { activeOnly, pageIndex, pageSize, sortBy })
       const totalCount = await getTotalCategoriesCount(db, { activeOnly })
 
-      const result = await readCategoriesValidatorWithPagination.safeParseAsync({
+      const result = await readCategoriesWithPaginationValidator.safeParseAsync({
         result: categories,
         rowCount: totalCount[0]?.rowCount,
       })
@@ -105,7 +104,9 @@ const router = createRouter()
         return c.json(...notFound(routes.entity))
       }
 
-      const dataToUpdate: UpdateCategory = {}
+      const dataToUpdate: UpdateCategoryParsed = {}
+
+      console.error(reqData)
 
       if (reqData.name !== undefined && reqData.name !== existingCategory.name) {
         // Only add fields to update if they are provided and different from the current value
@@ -127,15 +128,20 @@ const router = createRouter()
         dataToUpdate.isActive = reqData.isActive
       }
 
+      let result: Category | undefined
+
       if (Object.keys(dataToUpdate).length === 0) {
-        return c.json(UPDATE_NO_CHANGES_RES, OK)
+        const queryData = await getCategoryById(db, id)
+
+        if (!queryData) {
+          return c.json(...notFound(routes.entity))
+        }
+        result = queryData
+      } else {
+        result = (await updateCategory(db, id, dataToUpdate))[0]
       }
 
-      const result = await updateCategory(db, id, dataToUpdate)
-
-      console.error(result)
-
-      const category = await readCategoriesValidator.safeParseAsync(result)
+      const category = await readCategoryValidator.safeParseAsync(result)
 
       if (!category.success) {
         throw new InternalServerError(routes.entityUpdateFailedDesc)
@@ -143,6 +149,7 @@ const router = createRouter()
 
       return c.json(category.data, OK)
     } catch (error) {
+      console.error(error)
       handleApiError(error, routes.entity)
       throw new InternalServerError(routes.entityUpdateFailedDesc)
     }

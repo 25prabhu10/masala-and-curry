@@ -1,4 +1,6 @@
 import { deleteCategoryMutation, getCategoriesQuery } from '@mac/queries/category'
+import { DEFAULT_PAGE_INDEX } from '@mac/resources/constants'
+import { cn } from '@mac/tailwind-config/utils'
 import { type Category, getCategoryFiltersValidator } from '@mac/validators/category'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
@@ -84,9 +86,12 @@ const columnsDef: ColumnDef<Category>[] = [
       return (
         <div className="flex items-center">
           <div
-            className={`h-2 w-2 rounded-full mr-2 ${isActive ? `bg-green-500` : `bg-gray-400`}`}
+            className={cn(
+              'h-2 w-2 rounded-full mr-2',
+              isActive ? 'bg-success' : 'bg-muted-foreground'
+            )}
           />
-          <span className={isActive ? 'text-green-700' : 'text-gray-500'}>
+          <span className={isActive ? 'text-success' : 'text-muted-foreground'}>
             {isActive ? 'Active' : 'Inactive'}
           </span>
         </div>
@@ -144,8 +149,8 @@ function RouteComponent() {
   const { data } = useSuspenseQuery(getCategoriesQuery(filters))
 
   const paginationState = {
-    pageIndex: filters.pageIndex ?? 0,
-    pageSize: filters.pageSize ?? 10,
+    pageIndex: filters.pageIndex ?? DEFAULT_PAGE_INDEX,
+    pageSize: filters.pageSize ?? data.rowCount,
   }
 
   const sortingState = sortByToState(filters.sortBy)
@@ -162,7 +167,7 @@ function RouteComponent() {
               Manage your categories for better organization of menu items.
             </CardDescription>
           </div>
-          <Button>
+          <Button asChild>
             <Link to="/dashboard/categories/new">Add New Category</Link>
           </Button>
         </div>

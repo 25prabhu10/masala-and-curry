@@ -1,6 +1,5 @@
 import { z } from '@hono/zod-openapi'
-
-import type { APIErrorResponse } from '@/lib/types'
+import type { APIErrorResponse } from '@mac/validators/api-errors'
 
 export default function createErrorSchema<T extends z.ZodType<unknown>>(schema: T) {
   const { error } = schema.safeParse(schema.type === 'array' ? [] : {})

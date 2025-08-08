@@ -1,3 +1,4 @@
+import { cn } from '@mac/tailwind-config/utils'
 import { Checkbox } from '@mac/web-ui/checkbox'
 import { Label } from '@mac/web-ui/label'
 
@@ -13,15 +14,22 @@ type CheckboxFieldProps = React.ComponentProps<typeof Checkbox> & {
 export default function CheckboxField({
   label,
   required,
+  className,
   showValidations = true,
   ...props
 }: CheckboxFieldProps) {
   const field = useFieldContext<boolean>()
+
+  const isInvalid =
+    field.state.meta.isTouched && !field.state.meta.isValid && field.state.meta.errors.length > 0
   return (
     <div className="flex items-center gap-2">
       <Checkbox
         aria-describedby={`${field.name}-error`}
+        aria-invalid={isInvalid}
+        aria-required={required}
         checked={field.state.value}
+        className={cn(className, isInvalid && 'ring-2 ring-destructive')}
         id={field.name}
         name={field.name}
         onCheckedChange={(checked) => {

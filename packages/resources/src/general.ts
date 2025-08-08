@@ -16,10 +16,14 @@ export const NOT_AUTHORIZED: string = 'You are not authorized to perform this ac
 
 export const UPDATE_SUCCESS_DESC: string = 'Update successful.'
 
-export const PAGINATION_ERROR_DESC: string = 'Must be a valid position number (e.g. 1, 10)'
+export const PAGINATION_ERROR_DESC: string = 'Must be a valid position number (e.g. 0, 1, 10)'
 
-export function duplicateDataDesc(entity: string): string {
+export function duplicateDataDesc(entity: Readonly<string>): string {
   return `${entity} with same data already exists.`
+}
+
+export function invalidDesc(entity: Readonly<string>, type: Readonly<string>): string {
+  return `${entity} must be a valid ${type}.`
 }
 
 export function invalidIdDesc(entity: Readonly<string>): string {
@@ -42,23 +46,23 @@ export function getDataSuccessDesc(name: Readonly<string>): string {
   return `${name} data retrieved successfully.`
 }
 
-export function createDataDesc(entity: string): string {
+export function createDataDesc(entity: Readonly<string>): string {
   return `${entity} data to create`
 }
 
-export function createDataSuccessDesc(entity: string): string {
+export function createDataSuccessDesc(entity: Readonly<string>): string {
   return `${entity} created successfully`
 }
 
-export function createFailedDesc(entity: string): string {
+export function createFailedDesc(entity: Readonly<string>): string {
   return `Failed to create ${entity}`
 }
 
-export function deleteSuccessDesc(entity: string): string {
+export function deleteSuccessDesc(entity: Readonly<string>): string {
   return `${entity} deleted successfully`
 }
 
-export function deleteFailedDesc(entity: string): string {
+export function deleteFailedDesc(entity: Readonly<string>): string {
   return `Failed to delete ${entity}`
 }
 

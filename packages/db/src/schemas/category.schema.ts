@@ -5,7 +5,7 @@ import {
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
 } from '@mac/resources/constants'
-import { maxLengthDesc, minLengthDesc } from '@mac/resources/general'
+import { invalidDesc, maxLengthDesc, minLengthDesc } from '@mac/resources/general'
 import { sql } from 'drizzle-orm'
 import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createSchemaFactory } from 'drizzle-zod'
@@ -45,7 +45,8 @@ export const SelectCategorySchema = createSelectSchema(category, {
       example: '2023-01-01T00:00:00Z',
     }),
   description: (schema) =>
-    schema
+    z
+      .string(invalidDesc('Category description', schema.def.type))
       .trim()
       .max(MAX_STRING_LENGTH, {
         message: maxLengthDesc('Category description'),
@@ -69,13 +70,33 @@ export const SelectCategorySchema = createSelectSchema(category, {
         description: 'Unique category identifier',
         example: 'cat_appetizers_001',
       }),
-  isActive: () =>
-    z.coerce.boolean().default(true).openapi({
-      description: 'Whether the category is active and visible',
-      example: true,
-    }),
+  isActive: (schema) =>
+    z
+      .union([
+        schema,
+        z.string(invalidDesc('Category Active', schema.def.type)).transform((val, ctx) => {
+          if (val === 'true') {
+            return true
+          }
+          if (val === 'false') {
+            return false
+          }
+          ctx.addIssue({
+            code: 'custom',
+            message: 'Category Active must be "true" or "false"',
+          })
+          return z.NEVER
+        }),
+      ])
+      .pipe(schema)
+      .default(true)
+      .openapi({
+        description: 'Whether the category is active and visible',
+        example: true,
+      }),
   name: (schema) =>
-    schema
+    z
+      .string(invalidDesc('Category name', schema.def.type))
       .trim()
       .min(MIN_STRING_LENGTH, { message: minLengthDesc('Category name') })
       .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Category name') })
@@ -106,7 +127,7 @@ export const InsertCategorySchema = createInsertSchema(category, {
     id: true,
     updatedAt: true,
   })
-  .openapi('CategoryInsert')
+  .openapi('CategoryCreateOrUpdate')
 
 export const UpdateCategorySchema = createUpdateSchema(category, {
   description: () => SelectCategorySchema.shape.description,
@@ -119,7 +140,7 @@ export const UpdateCategorySchema = createUpdateSchema(category, {
     id: true,
     updatedAt: true,
   })
-  .openapi('CategoryUpdate')
+  .openapi('CategoryCreateOrUpdate')
 
 export type InsertCategoryDB = z.infer<typeof InsertCategorySchema>
 export type UpdateCategoryDB = z.infer<typeof UpdateCategorySchema>

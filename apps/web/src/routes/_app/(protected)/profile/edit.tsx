@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 
 import { useAppForm } from '@/hooks/use-form'
 
-export const Route = createFileRoute('/(protected)/profile/edit')({
+export const Route = createFileRoute('/_app/(protected)/profile/edit')({
   component: RouteComponent,
   loader: ({ context }) => context.session,
 })

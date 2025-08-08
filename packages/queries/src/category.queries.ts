@@ -5,34 +5,47 @@ import {
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
   UNAUTHORIZED,
+  UNPROCESSABLE_ENTITY,
 } from '@mac/resources/http-status-codes'
-import type { Category, CategoryFilters, UpdateCategory } from '@mac/validators/category'
-import { mutationOptions, queryOptions, useQueryClient } from '@tanstack/react-query'
+import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
+import type {
+  Category,
+  CategoryFilters,
+  CreateCategory,
+  UpdateCategoryInput,
+} from '@mac/validators/category'
+import {
+  mutationOptions,
+  type QueryClient,
+  queryOptions,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 import apiClient from './api-client'
 
 export const categoryKeys = {
   all: ['categories'] as const,
-  detail: (id: string) => [...categoryKeys.details(), id] as const,
-  details: () => [...categoryKeys.all, 'detail'] as const,
-  list: (query: CategoryFilters) => [...categoryKeys.all, query] as const,
+  detail: (id: string) => [...categoryKeys.all, 'detail', id] as const,
+  list: (query: CategoryFilters) => [...categoryKeys.lists(), query] as const,
+  lists: () => [...categoryKeys.all, 'list'] as const,
 } as const
 
-export function getCategoriesQuery(query: CategoryFilters = {}, abortController?: AbortController) {
+export function getCategoriesQuery(
+  filters: CategoryFilters = {},
+  abortController?: AbortController
+) {
   return queryOptions({
     queryFn: async () => {
       let sortBy: string | undefined
 
-      await new Promise((resolve) => setTimeout(resolve, 5000))
-
-      if (typeof query.sortBy === 'string') {
-        sortBy = query.sortBy
+      if (typeof filters.sortBy === 'string') {
+        sortBy = filters.sortBy
       }
 
       const res = await apiClient.api.v1.categories.$get(
         {
           query: {
-            ...query,
+            ...filters,
             sortBy,
           },
         },
@@ -54,7 +67,7 @@ export function getCategoriesQuery(query: CategoryFilters = {}, abortController?
 
       throw new Error('An error occurred while fetching categories')
     },
-    queryKey: categoryKeys.list(query),
+    queryKey: categoryKeys.list(filters),
   })
 }
 
@@ -87,9 +100,9 @@ export function getCategoryByIdQuery(id: string, abortController?: AbortControll
   })
 }
 
-export function createCategoryMutation() {
+export function createCategoryMutation(queryClient: QueryClient) {
   return mutationOptions({
-    mutationFn: async (data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>) => {
+    mutationFn: async (data: CreateCategory) => {
       const res = await apiClient.api.v1.categories.$post({
         json: data,
       })
@@ -98,29 +111,35 @@ export function createCategoryMutation() {
         return res.json()
       }
 
-      if (res.status === CONFLICT) {
-        const errorData = await res.json()
-        throw new Error(errorData.message)
+      if (res.status === UNPROCESSABLE_ENTITY) {
+        const data = await res.json()
+
+        throw new FieldErrors(data)
       }
 
-      if (res.status === FORBIDDEN || res.status === UNAUTHORIZED) {
+      if (res.status === CONFLICT) {
         const data = await res.json()
-        throw new Error(data.message)
+        throw new FormErrors(data.message)
       }
 
       if (res.status === INTERNAL_SERVER_ERROR) {
         throw new Error(UNEXPECTED_ERROR_DESC)
       }
 
-      throw new Error('An error occurred while creating the category')
+      const responseData = await res.json()
+      throw new Error(responseData.message)
     },
-    mutationKey: ['categories', 'create'],
+    mutationKey: [...categoryKeys.all, 'create'],
+    onSuccess: (newCategory) => {
+      queryClient.setQueryData(categoryKeys.detail(newCategory.id), newCategory)
+      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() })
+    },
   })
 }
 
-export function updateCategoryMutation(id: string) {
+export function updateCategoryMutation(id: string, queryClient: QueryClient) {
   return mutationOptions({
-    mutationFn: async (data: UpdateCategory) => {
+    mutationFn: async (data: UpdateCategoryInput) => {
       const res = await apiClient.api.v1.categories[':id'].$post({
         json: data,
         param: { id },
@@ -130,23 +149,30 @@ export function updateCategoryMutation(id: string) {
         return res.json()
       }
 
-      if (res.status === CONFLICT) {
-        const errorData = await res.json()
-        throw new Error(errorData.message)
+      if (res.status === UNPROCESSABLE_ENTITY) {
+        const data = await res.json()
+
+        throw new FieldErrors(data)
       }
 
-      if (res.status === FORBIDDEN || res.status === UNAUTHORIZED || res.status === NOT_FOUND) {
+      if (res.status === CONFLICT) {
         const data = await res.json()
-        throw new Error(data.message)
+        throw new FormErrors(data.message)
       }
 
       if (res.status === INTERNAL_SERVER_ERROR) {
         throw new Error(UNEXPECTED_ERROR_DESC)
       }
 
-      throw new Error('An error occurred while updating the category')
+      const responseData = await res.json()
+      throw new Error(responseData.message)
     },
-    mutationKey: ['categories', 'update', id],
+
+    mutationKey: [...categoryKeys.all, 'update', id],
+    onSuccess: (updatedCategory) => {
+      queryClient.setQueryData(categoryKeys.detail(id), updatedCategory)
+      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() })
+    },
   })
 }
 

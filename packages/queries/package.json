@@ -24,7 +24,7 @@
     "@mac/auth-client": "workspace:*",
     "@mac/resources": "workspace:*",
     "@mac/validators": "workspace:*",
-    "@tanstack/react-query": "^5.82.0"
+    "@tanstack/react-query": "catalog:"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",

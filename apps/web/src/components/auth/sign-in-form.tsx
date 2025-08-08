@@ -46,8 +46,8 @@ export function SignInForm({ callback }: SignInFormProps) {
 
   const form = useAppForm({
     defaultValues: {
-      email: 'john@doe.com',
-      password: '123456798@Abc',
+      email: '',
+      password: '',
       rememberMe: false,
     },
     validators: {

@@ -2,7 +2,7 @@ import { getUserByIdQuery } from '@mac/queries/user'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { Suspense } from 'react'
 
-export const Route = createFileRoute('/(protected)')({
+export const Route = createFileRoute('/_app/(protected)')({
   beforeLoad: async ({ context: { session }, location }) => {
     if (!session) {
       throw redirect({

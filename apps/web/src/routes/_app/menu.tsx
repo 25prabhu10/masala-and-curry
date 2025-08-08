@@ -12,7 +12,7 @@ import { MenuLoadingSkeleton } from '@/components/menu/menu-loading-skeleton'
 import { useFilters } from '@/hooks/use-filters'
 import { useCartStore } from '@/stores/cart-store'
 
-export const Route = createFileRoute('/menu')({
+export const Route = createFileRoute('/_app/menu')({
   beforeLoad: ({ search }) => {
     return { search }
   },
@@ -27,7 +27,7 @@ export const Route = createFileRoute('/menu')({
 })
 
 function RouteComponent() {
-  const { filters } = useFilters(Route.fullPath)
+  const { filters } = useFilters(Route.id)
 
   const itemCount = useCartStore((state) => state.itemCount)
   const total = useCartStore((state) => state.total)

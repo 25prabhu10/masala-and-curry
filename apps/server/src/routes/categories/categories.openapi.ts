@@ -12,7 +12,6 @@ import {
   NOT_AUTHENTICATED,
   NOT_AUTHORIZED,
   notFoundDesc,
-  UPDATE_NO_CHANGES,
   updateDataDesc,
   updateFailedDesc,
   updateSuccessDesc,
@@ -32,8 +31,7 @@ import {
 import {
   createCategoryValidator,
   getCategoryFiltersValidator,
-  readCategoriesValidator,
-  readCategoriesValidatorWithPagination,
+  readCategoriesWithPaginationValidator,
   readCategoryValidator,
   updateCategoryValidator,
 } from '@mac/validators/category'
@@ -64,7 +62,7 @@ export const getCategories = createRoute({
     query: getCategoryFiltersValidator(),
   },
   responses: {
-    [OK]: jsonContent(readCategoriesValidatorWithPagination, getDataSuccessDesc(entity)),
+    [OK]: jsonContent(readCategoriesWithPaginationValidator, getDataSuccessDesc(entity)),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(getCategoryFiltersValidator()),
       VALIDATION_ERROR_DESC
@@ -140,10 +138,7 @@ export const updateCategory = createRoute({
     params: categoryIdParamsSchema,
   },
   responses: {
-    [OK]: jsonContent(
-      readCategoriesValidator.or(createMessageObjectSchema(UPDATE_NO_CHANGES)),
-      updateSuccessDesc(entity)
-    ),
+    [OK]: jsonContent(readCategoryValidator, updateSuccessDesc(entity)),
     [CONFLICT]: jsonContent(
       createMessageObjectSchema(entityDuplicateDataDesc),
       entityDuplicateDataDesc

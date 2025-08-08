@@ -12,6 +12,8 @@ type PasswordFieldProps = React.ComponentProps<typeof Input> & { label: React.Re
 export default function PasswordField({ label, required, ...props }: PasswordFieldProps) {
   const field = useFieldContext<string>()
   const [showPassword, setShowPassword] = useState(false)
+  const isInvalid =
+    field.state.meta.isTouched && !field.state.meta.isValid && field.state.meta.errors.length > 0
 
   function togglePasswordVisibility() {
     setShowPassword((prev) => !prev)
@@ -26,6 +28,8 @@ export default function PasswordField({ label, required, ...props }: PasswordFie
       <div className="relative">
         <Input
           aria-describedby={`${field.name}-error`}
+          aria-invalid={isInvalid}
+          aria-required={required}
           autoCapitalize="off"
           autoCorrect="off"
           className="pr-10"

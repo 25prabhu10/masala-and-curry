@@ -8,7 +8,7 @@ import { Calendar, Clock, Edit, Heart, Mail, MapPin, Phone, Star, User } from 'l
 
 import { formatDate, getInitials } from '@/lib/utils'
 
-export const Route = createFileRoute('/(protected)/profile/')({
+export const Route = createFileRoute('/_app/(protected)/profile/')({
   component: RouteComponent,
   loader: ({ context }) => context.session,
 })

@@ -1,5 +1,6 @@
 import { z } from '@hono/zod-openapi'
 import { InsertCategorySchema, SelectCategorySchema, UpdateCategorySchema } from '@mac/db/schemas'
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
 
 import {
   type ColumnsOf,
@@ -9,9 +10,8 @@ import {
 } from './general.validators'
 
 export const readCategoryValidator = SelectCategorySchema
-export const readCategoriesValidator = SelectCategorySchema.array()
-export const readCategoriesValidatorWithPagination = z.object({
-  result: readCategoriesValidator,
+export const readCategoriesWithPaginationValidator = z.object({
+  result: SelectCategorySchema.array(),
   rowCount: rowCountValidator,
 })
 export const createCategoryValidator = InsertCategorySchema
@@ -19,8 +19,10 @@ export const updateCategoryValidator = UpdateCategorySchema
 
 export type Category = z.infer<typeof readCategoryValidator>
 export type CreateCategory = z.infer<typeof createCategoryValidator>
-export type UpdateCategory = z.infer<typeof updateCategoryValidator>
+export type UpdateCategoryInput = z.input<typeof updateCategoryValidator>
+export type UpdateCategoryParsed = z.output<typeof updateCategoryValidator>
 
+// Ensures sorting is limited to valid category columns
 const categorySortableColumns = ['displayOrder', 'name'] as const satisfies ColumnsOf<Category>
 
 export function getCategoryFiltersValidator(urlSafe: boolean = false) {
@@ -32,9 +34,15 @@ export function getCategoryFiltersValidator(urlSafe: boolean = false) {
     })
     .partial()
     .openapi({
-      description: 'Get Categories filters',
+      description: 'Filters that can be applied when getting Categories',
+      example: {
+        activeOnly: true,
+        pageIndex: DEFAULT_PAGE_INDEX,
+        pageSize: DEFAULT_PAGE_SIZE,
+        sortBy: 'displayOrder',
+      },
     })
-    .openapi('CategoriesFilters')
+    .openapi('CategoryFilters')
 }
 
 export type CategoryFilters = z.output<ReturnType<typeof getCategoryFiltersValidator>>

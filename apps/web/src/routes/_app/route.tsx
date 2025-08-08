@@ -1,13 +1,16 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/dashboard/categories')({
+import Header from '@/components/header/header'
+
+export const Route = createFileRoute('/_app')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   return (
-    <section className="container w-full mx-auto p-10">
+    <>
+      <Header />
       <Outlet />
-    </section>
+    </>
   )
 }

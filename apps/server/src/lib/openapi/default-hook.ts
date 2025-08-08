@@ -1,7 +1,6 @@
 import { type Hook, z } from '@hono/zod-openapi'
 import { UNPROCESSABLE_ENTITY } from '@mac/resources/http-status-codes'
-
-import type { APIErrorResponse } from '../types'
+import type { APIErrorResponse } from '@mac/validators/api-errors'
 
 // oxlint-disable-next-line no-explicit-any
 const defaultHook: Hook<any, any, any, any> = (result, c) => {

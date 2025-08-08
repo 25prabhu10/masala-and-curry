@@ -55,10 +55,10 @@ export function SignUpForm({ callback }: SignUpFormProps) {
 
   const form = useAppForm({
     defaultValues: {
-      confirmPassword: '123456798@Abc',
-      email: 'john@doe.com',
-      name: 'John Doe',
-      password: '123456798@Abc',
+      confirmPassword: '',
+      email: '',
+      name: '',
+      password: '',
     },
     onSubmitInvalid: () => {
       toast.error(FORM_SUBMISSION_ERROR_DESC)

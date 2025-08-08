@@ -9,265 +9,243 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as NotAuthorizedRouteImport } from './routes/not-authorized'
-import { Route as MenuRouteImport } from './routes/menu'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
-import { Route as protectedRouteRouteImport } from './routes/(protected)/route'
-import { Route as authRouteRouteImport } from './routes/(auth)/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardMenuRouteImport } from './routes/dashboard/menu'
-import { Route as protectedCheckoutRouteImport } from './routes/(protected)/checkout'
-import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
-import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
-import { Route as DashboardCategoriesRouteRouteImport } from './routes/dashboard/categories/route'
-import { Route as DashboardCategoriesIndexRouteImport } from './routes/dashboard/categories/index'
-import { Route as protectedProfileIndexRouteImport } from './routes/(protected)/profile/index'
-import { Route as DashboardCategoriesNewRouteImport } from './routes/dashboard/categories/new'
-import { Route as protectedProfileEditRouteImport } from './routes/(protected)/profile/edit'
-import { Route as DashboardCategoriesCategoryIdIndexRouteImport } from './routes/dashboard/categories/$category-id/index'
+import { Route as AppauthRouteRouteImport } from './routes/_app/(auth)/route'
+import { Route as AppauthSignInRouteImport } from './routes/_app/(auth)/sign-in'
+import { Route as AppauthSignUpRouteImport } from './routes/_app/(auth)/sign-up'
+import { Route as AppprotectedCheckoutRouteImport } from './routes/_app/(protected)/checkout'
+import { Route as AppprotectedProfileEditRouteImport } from './routes/_app/(protected)/profile/edit'
+import { Route as AppprotectedProfileIndexRouteImport } from './routes/_app/(protected)/profile/index'
+import { Route as AppprotectedRouteRouteImport } from './routes/_app/(protected)/route'
+import { Route as AppAboutRouteImport } from './routes/_app/about'
+import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppMenuRouteImport } from './routes/_app/menu'
+import { Route as AppNotAuthorizedRouteImport } from './routes/_app/not-authorized'
+import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as DashboardCategoriesCategoryIdEditRouteImport } from './routes/dashboard/categories/$category-id/edit'
+import { Route as DashboardCategoriesCategoryIdIndexRouteImport } from './routes/dashboard/categories/$category-id/index'
+import { Route as DashboardCategoriesIndexRouteImport } from './routes/dashboard/categories/index'
+import { Route as DashboardCategoriesNewRouteImport } from './routes/dashboard/categories/new'
+import { Route as DashboardCategoriesRouteRouteImport } from './routes/dashboard/categories/route'
+import { Route as DashboardMenuItemsRouteImport } from './routes/dashboard/menu-items'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 
-const NotAuthorizedRoute = NotAuthorizedRouteImport.update({
-  id: '/not-authorized',
-  path: '/not-authorized',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MenuRoute = MenuRouteImport.update({
-  id: '/menu',
-  path: '/menu',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  getParentRoute: () => rootRouteImport,
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
 } as any)
-const protectedRouteRoute = protectedRouteRouteImport.update({
-  id: '/(protected)',
+const AppRouteRoute = AppRouteRouteImport.update({
   getParentRoute: () => rootRouteImport,
+  id: '/_app',
 } as any)
-const authRouteRoute = authRouteRouteImport.update({
-  id: '/(auth)',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
+const AppIndexRoute = AppIndexRouteImport.update({
+  getParentRoute: () => AppRouteRoute,
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardMenuRoute = DashboardMenuRouteImport.update({
+const DashboardMenuItemsRoute = DashboardMenuItemsRouteImport.update({
+  getParentRoute: () => DashboardRouteRoute,
+  id: '/menu-items',
+  path: '/menu-items',
+} as any)
+const AppNotAuthorizedRoute = AppNotAuthorizedRouteImport.update({
+  getParentRoute: () => AppRouteRoute,
+  id: '/not-authorized',
+  path: '/not-authorized',
+} as any)
+const AppMenuRoute = AppMenuRouteImport.update({
+  getParentRoute: () => AppRouteRoute,
   id: '/menu',
   path: '/menu',
+} as any)
+const AppAboutRoute = AppAboutRouteImport.update({
+  getParentRoute: () => AppRouteRoute,
+  id: '/about',
+  path: '/about',
+} as any)
+const DashboardCategoriesRouteRoute = DashboardCategoriesRouteRouteImport.update({
   getParentRoute: () => DashboardRouteRoute,
+  id: '/categories',
+  path: '/categories',
 } as any)
-const protectedCheckoutRoute = protectedCheckoutRouteImport.update({
-  id: '/checkout',
-  path: '/checkout',
-  getParentRoute: () => protectedRouteRoute,
+const AppprotectedRouteRoute = AppprotectedRouteRouteImport.update({
+  getParentRoute: () => AppRouteRoute,
+  id: '/(protected)',
 } as any)
-const authSignUpRoute = authSignUpRouteImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
-  getParentRoute: () => authRouteRoute,
+const AppauthRouteRoute = AppauthRouteRouteImport.update({
+  getParentRoute: () => AppRouteRoute,
+  id: '/(auth)',
 } as any)
-const authSignInRoute = authSignInRouteImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
-  getParentRoute: () => authRouteRoute,
-} as any)
-const DashboardCategoriesRouteRoute =
-  DashboardCategoriesRouteRouteImport.update({
-    id: '/categories',
-    path: '/categories',
-    getParentRoute: () => DashboardRouteRoute,
-  } as any)
-const DashboardCategoriesIndexRoute =
-  DashboardCategoriesIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => DashboardCategoriesRouteRoute,
-  } as any)
-const protectedProfileIndexRoute = protectedProfileIndexRouteImport.update({
-  id: '/profile/',
-  path: '/profile/',
-  getParentRoute: () => protectedRouteRoute,
+const DashboardCategoriesIndexRoute = DashboardCategoriesIndexRouteImport.update({
+  getParentRoute: () => DashboardCategoriesRouteRoute,
+  id: '/',
+  path: '/',
 } as any)
 const DashboardCategoriesNewRoute = DashboardCategoriesNewRouteImport.update({
+  getParentRoute: () => DashboardCategoriesRouteRoute,
   id: '/new',
   path: '/new',
-  getParentRoute: () => DashboardCategoriesRouteRoute,
 } as any)
-const protectedProfileEditRoute = protectedProfileEditRouteImport.update({
-  id: '/profile/edit',
-  path: '/profile/edit',
-  getParentRoute: () => protectedRouteRoute,
+const AppprotectedCheckoutRoute = AppprotectedCheckoutRouteImport.update({
+  getParentRoute: () => AppprotectedRouteRoute,
+  id: '/checkout',
+  path: '/checkout',
+} as any)
+const AppauthSignUpRoute = AppauthSignUpRouteImport.update({
+  getParentRoute: () => AppauthRouteRoute,
+  id: '/sign-up',
+  path: '/sign-up',
+} as any)
+const AppauthSignInRoute = AppauthSignInRouteImport.update({
+  getParentRoute: () => AppauthRouteRoute,
+  id: '/sign-in',
+  path: '/sign-in',
 } as any)
 const DashboardCategoriesCategoryIdIndexRoute =
   DashboardCategoriesCategoryIdIndexRouteImport.update({
+    getParentRoute: () => DashboardCategoriesRouteRoute,
     id: '/$category-id/',
     path: '/$category-id/',
-    getParentRoute: () => DashboardCategoriesRouteRoute,
   } as any)
-const DashboardCategoriesCategoryIdEditRoute =
-  DashboardCategoriesCategoryIdEditRouteImport.update({
-    id: '/$category-id/edit',
-    path: '/$category-id/edit',
-    getParentRoute: () => DashboardCategoriesRouteRoute,
-  } as any)
+const AppprotectedProfileIndexRoute = AppprotectedProfileIndexRouteImport.update({
+  getParentRoute: () => AppprotectedRouteRoute,
+  id: '/profile/',
+  path: '/profile/',
+} as any)
+const DashboardCategoriesCategoryIdEditRoute = DashboardCategoriesCategoryIdEditRouteImport.update({
+  getParentRoute: () => DashboardCategoriesRouteRoute,
+  id: '/$category-id/edit',
+  path: '/$category-id/edit',
+} as any)
+const AppprotectedProfileEditRoute = AppprotectedProfileEditRouteImport.update({
+  getParentRoute: () => AppprotectedRouteRoute,
+  id: '/profile/edit',
+  path: '/profile/edit',
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof protectedRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/about': typeof AboutRoute
-  '/menu': typeof MenuRoute
-  '/not-authorized': typeof NotAuthorizedRoute
+  '/': typeof AppIndexRoute
   '/dashboard/categories': typeof DashboardCategoriesRouteRouteWithChildren
-  '/sign-in': typeof authSignInRoute
-  '/sign-up': typeof authSignUpRoute
-  '/checkout': typeof protectedCheckoutRoute
-  '/dashboard/menu': typeof DashboardMenuRoute
-  '/profile/edit': typeof protectedProfileEditRoute
+  '/about': typeof AppAboutRoute
+  '/menu': typeof AppMenuRoute
+  '/not-authorized': typeof AppNotAuthorizedRoute
+  '/dashboard/menu-items': typeof DashboardMenuItemsRoute
+  '/sign-in': typeof AppauthSignInRoute
+  '/sign-up': typeof AppauthSignUpRoute
+  '/checkout': typeof AppprotectedCheckoutRoute
   '/dashboard/categories/new': typeof DashboardCategoriesNewRoute
-  '/profile': typeof protectedProfileIndexRoute
   '/dashboard/categories/': typeof DashboardCategoriesIndexRoute
+  '/profile/edit': typeof AppprotectedProfileEditRoute
   '/dashboard/categories/$category-id/edit': typeof DashboardCategoriesCategoryIdEditRoute
+  '/profile': typeof AppprotectedProfileIndexRoute
   '/dashboard/categories/$category-id': typeof DashboardCategoriesCategoryIdIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof protectedRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/about': typeof AboutRoute
-  '/menu': typeof MenuRoute
-  '/not-authorized': typeof NotAuthorizedRoute
-  '/sign-in': typeof authSignInRoute
-  '/sign-up': typeof authSignUpRoute
-  '/checkout': typeof protectedCheckoutRoute
-  '/dashboard/menu': typeof DashboardMenuRoute
-  '/profile/edit': typeof protectedProfileEditRoute
+  '/': typeof AppIndexRoute
+  '/about': typeof AppAboutRoute
+  '/menu': typeof AppMenuRoute
+  '/not-authorized': typeof AppNotAuthorizedRoute
+  '/dashboard/menu-items': typeof DashboardMenuItemsRoute
+  '/sign-in': typeof AppauthSignInRoute
+  '/sign-up': typeof AppauthSignUpRoute
+  '/checkout': typeof AppprotectedCheckoutRoute
   '/dashboard/categories/new': typeof DashboardCategoriesNewRoute
-  '/profile': typeof protectedProfileIndexRoute
   '/dashboard/categories': typeof DashboardCategoriesIndexRoute
+  '/profile/edit': typeof AppprotectedProfileEditRoute
   '/dashboard/categories/$category-id/edit': typeof DashboardCategoriesCategoryIdEditRoute
+  '/profile': typeof AppprotectedProfileIndexRoute
   '/dashboard/categories/$category-id': typeof DashboardCategoriesCategoryIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/(auth)': typeof authRouteRouteWithChildren
-  '/(protected)': typeof protectedRouteRouteWithChildren
+  '/_app': typeof AppRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/about': typeof AboutRoute
-  '/menu': typeof MenuRoute
-  '/not-authorized': typeof NotAuthorizedRoute
+  '/_app/(auth)': typeof AppauthRouteRouteWithChildren
+  '/_app/(protected)': typeof AppprotectedRouteRouteWithChildren
   '/dashboard/categories': typeof DashboardCategoriesRouteRouteWithChildren
-  '/(auth)/sign-in': typeof authSignInRoute
-  '/(auth)/sign-up': typeof authSignUpRoute
-  '/(protected)/checkout': typeof protectedCheckoutRoute
-  '/dashboard/menu': typeof DashboardMenuRoute
-  '/(protected)/profile/edit': typeof protectedProfileEditRoute
+  '/_app/about': typeof AppAboutRoute
+  '/_app/menu': typeof AppMenuRoute
+  '/_app/not-authorized': typeof AppNotAuthorizedRoute
+  '/dashboard/menu-items': typeof DashboardMenuItemsRoute
+  '/_app/': typeof AppIndexRoute
+  '/_app/(auth)/sign-in': typeof AppauthSignInRoute
+  '/_app/(auth)/sign-up': typeof AppauthSignUpRoute
+  '/_app/(protected)/checkout': typeof AppprotectedCheckoutRoute
   '/dashboard/categories/new': typeof DashboardCategoriesNewRoute
-  '/(protected)/profile/': typeof protectedProfileIndexRoute
   '/dashboard/categories/': typeof DashboardCategoriesIndexRoute
+  '/_app/(protected)/profile/edit': typeof AppprotectedProfileEditRoute
   '/dashboard/categories/$category-id/edit': typeof DashboardCategoriesCategoryIdEditRoute
+  '/_app/(protected)/profile/': typeof AppprotectedProfileIndexRoute
   '/dashboard/categories/$category-id/': typeof DashboardCategoriesCategoryIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/dashboard'
+    | '/'
+    | '/dashboard/categories'
     | '/about'
     | '/menu'
     | '/not-authorized'
-    | '/dashboard/categories'
+    | '/dashboard/menu-items'
     | '/sign-in'
     | '/sign-up'
     | '/checkout'
-    | '/dashboard/menu'
-    | '/profile/edit'
     | '/dashboard/categories/new'
-    | '/profile'
     | '/dashboard/categories/'
+    | '/profile/edit'
     | '/dashboard/categories/$category-id/edit'
+    | '/profile'
     | '/dashboard/categories/$category-id'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/dashboard'
+    | '/'
     | '/about'
     | '/menu'
     | '/not-authorized'
+    | '/dashboard/menu-items'
     | '/sign-in'
     | '/sign-up'
     | '/checkout'
-    | '/dashboard/menu'
-    | '/profile/edit'
     | '/dashboard/categories/new'
-    | '/profile'
     | '/dashboard/categories'
+    | '/profile/edit'
     | '/dashboard/categories/$category-id/edit'
+    | '/profile'
     | '/dashboard/categories/$category-id'
   id:
     | '__root__'
-    | '/'
-    | '/(auth)'
-    | '/(protected)'
+    | '/_app'
     | '/dashboard'
-    | '/about'
-    | '/menu'
-    | '/not-authorized'
+    | '/_app/(auth)'
+    | '/_app/(protected)'
     | '/dashboard/categories'
-    | '/(auth)/sign-in'
-    | '/(auth)/sign-up'
-    | '/(protected)/checkout'
-    | '/dashboard/menu'
-    | '/(protected)/profile/edit'
+    | '/_app/about'
+    | '/_app/menu'
+    | '/_app/not-authorized'
+    | '/dashboard/menu-items'
+    | '/_app/'
+    | '/_app/(auth)/sign-in'
+    | '/_app/(auth)/sign-up'
+    | '/_app/(protected)/checkout'
     | '/dashboard/categories/new'
-    | '/(protected)/profile/'
     | '/dashboard/categories/'
+    | '/_app/(protected)/profile/edit'
     | '/dashboard/categories/$category-id/edit'
+    | '/_app/(protected)/profile/'
     | '/dashboard/categories/$category-id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  authRouteRoute: typeof authRouteRouteWithChildren
-  protectedRouteRoute: typeof protectedRouteRouteWithChildren
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
-  AboutRoute: typeof AboutRoute
-  MenuRoute: typeof MenuRoute
-  NotAuthorizedRoute: typeof NotAuthorizedRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/not-authorized': {
-      id: '/not-authorized'
-      path: '/not-authorized'
-      fullPath: '/not-authorized'
-      preLoaderRoute: typeof NotAuthorizedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/menu': {
-      id: '/menu'
-      path: '/menu'
-      fullPath: '/menu'
-      preLoaderRoute: typeof MenuRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -275,54 +253,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(protected)': {
-      id: '/(protected)'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof protectedRouteRouteImport
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(auth)': {
-      id: '/(auth)'
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof authRouteRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/menu': {
-      id: '/dashboard/menu'
-      path: '/menu'
-      fullPath: '/dashboard/menu'
-      preLoaderRoute: typeof DashboardMenuRouteImport
+    '/dashboard/menu-items': {
+      id: '/dashboard/menu-items'
+      path: '/menu-items'
+      fullPath: '/dashboard/menu-items'
+      preLoaderRoute: typeof DashboardMenuItemsRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/(protected)/checkout': {
-      id: '/(protected)/checkout'
-      path: '/checkout'
-      fullPath: '/checkout'
-      preLoaderRoute: typeof protectedCheckoutRouteImport
-      parentRoute: typeof protectedRouteRoute
+    '/_app/not-authorized': {
+      id: '/_app/not-authorized'
+      path: '/not-authorized'
+      fullPath: '/not-authorized'
+      preLoaderRoute: typeof AppNotAuthorizedRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/(auth)/sign-up': {
-      id: '/(auth)/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof authSignUpRouteImport
-      parentRoute: typeof authRouteRoute
+    '/_app/menu': {
+      id: '/_app/menu'
+      path: '/menu'
+      fullPath: '/menu'
+      preLoaderRoute: typeof AppMenuRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/(auth)/sign-in': {
-      id: '/(auth)/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof authSignInRouteImport
-      parentRoute: typeof authRouteRoute
+    '/_app/about': {
+      id: '/_app/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AppAboutRouteImport
+      parentRoute: typeof AppRouteRoute
     }
     '/dashboard/categories': {
       id: '/dashboard/categories'
@@ -331,19 +302,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardCategoriesRouteRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/_app/(protected)': {
+      id: '/_app/(protected)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppprotectedRouteRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/(auth)': {
+      id: '/_app/(auth)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppauthRouteRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/dashboard/categories/': {
       id: '/dashboard/categories/'
       path: '/'
       fullPath: '/dashboard/categories/'
       preLoaderRoute: typeof DashboardCategoriesIndexRouteImport
       parentRoute: typeof DashboardCategoriesRouteRoute
-    }
-    '/(protected)/profile/': {
-      id: '/(protected)/profile/'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof protectedProfileIndexRouteImport
-      parentRoute: typeof protectedRouteRoute
     }
     '/dashboard/categories/new': {
       id: '/dashboard/categories/new'
@@ -352,12 +330,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardCategoriesNewRouteImport
       parentRoute: typeof DashboardCategoriesRouteRoute
     }
-    '/(protected)/profile/edit': {
-      id: '/(protected)/profile/edit'
-      path: '/profile/edit'
-      fullPath: '/profile/edit'
-      preLoaderRoute: typeof protectedProfileEditRouteImport
-      parentRoute: typeof protectedRouteRoute
+    '/_app/(protected)/checkout': {
+      id: '/_app/(protected)/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof AppprotectedCheckoutRouteImport
+      parentRoute: typeof AppprotectedRouteRoute
+    }
+    '/_app/(auth)/sign-up': {
+      id: '/_app/(auth)/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof AppauthSignUpRouteImport
+      parentRoute: typeof AppauthRouteRoute
+    }
+    '/_app/(auth)/sign-in': {
+      id: '/_app/(auth)/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof AppauthSignInRouteImport
+      parentRoute: typeof AppauthRouteRoute
     }
     '/dashboard/categories/$category-id/': {
       id: '/dashboard/categories/$category-id/'
@@ -366,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardCategoriesCategoryIdIndexRouteImport
       parentRoute: typeof DashboardCategoriesRouteRoute
     }
+    '/_app/(protected)/profile/': {
+      id: '/_app/(protected)/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppprotectedProfileIndexRouteImport
+      parentRoute: typeof AppprotectedRouteRoute
+    }
     '/dashboard/categories/$category-id/edit': {
       id: '/dashboard/categories/$category-id/edit'
       path: '/$category-id/edit'
@@ -373,38 +372,63 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardCategoriesCategoryIdEditRouteImport
       parentRoute: typeof DashboardCategoriesRouteRoute
     }
+    '/_app/(protected)/profile/edit': {
+      id: '/_app/(protected)/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof AppprotectedProfileEditRouteImport
+      parentRoute: typeof AppprotectedRouteRoute
+    }
   }
 }
 
-interface authRouteRouteChildren {
-  authSignInRoute: typeof authSignInRoute
-  authSignUpRoute: typeof authSignUpRoute
+interface AppauthRouteRouteChildren {
+  AppauthSignInRoute: typeof AppauthSignInRoute
+  AppauthSignUpRoute: typeof AppauthSignUpRoute
 }
 
-const authRouteRouteChildren: authRouteRouteChildren = {
-  authSignInRoute: authSignInRoute,
-  authSignUpRoute: authSignUpRoute,
+const AppauthRouteRouteChildren: AppauthRouteRouteChildren = {
+  AppauthSignInRoute: AppauthSignInRoute,
+  AppauthSignUpRoute: AppauthSignUpRoute,
 }
 
-const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
-  authRouteRouteChildren,
+const AppauthRouteRouteWithChildren = AppauthRouteRoute._addFileChildren(AppauthRouteRouteChildren)
+
+interface AppprotectedRouteRouteChildren {
+  AppprotectedCheckoutRoute: typeof AppprotectedCheckoutRoute
+  AppprotectedProfileEditRoute: typeof AppprotectedProfileEditRoute
+  AppprotectedProfileIndexRoute: typeof AppprotectedProfileIndexRoute
+}
+
+const AppprotectedRouteRouteChildren: AppprotectedRouteRouteChildren = {
+  AppprotectedCheckoutRoute: AppprotectedCheckoutRoute,
+  AppprotectedProfileEditRoute: AppprotectedProfileEditRoute,
+  AppprotectedProfileIndexRoute: AppprotectedProfileIndexRoute,
+}
+
+const AppprotectedRouteRouteWithChildren = AppprotectedRouteRoute._addFileChildren(
+  AppprotectedRouteRouteChildren
 )
 
-interface protectedRouteRouteChildren {
-  protectedCheckoutRoute: typeof protectedCheckoutRoute
-  protectedProfileEditRoute: typeof protectedProfileEditRoute
-  protectedProfileIndexRoute: typeof protectedProfileIndexRoute
+interface AppRouteRouteChildren {
+  AppauthRouteRoute: typeof AppauthRouteRouteWithChildren
+  AppprotectedRouteRoute: typeof AppprotectedRouteRouteWithChildren
+  AppAboutRoute: typeof AppAboutRoute
+  AppMenuRoute: typeof AppMenuRoute
+  AppNotAuthorizedRoute: typeof AppNotAuthorizedRoute
+  AppIndexRoute: typeof AppIndexRoute
 }
 
-const protectedRouteRouteChildren: protectedRouteRouteChildren = {
-  protectedCheckoutRoute: protectedCheckoutRoute,
-  protectedProfileEditRoute: protectedProfileEditRoute,
-  protectedProfileIndexRoute: protectedProfileIndexRoute,
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppAboutRoute: AppAboutRoute,
+  AppauthRouteRoute: AppauthRouteRouteWithChildren,
+  AppIndexRoute: AppIndexRoute,
+  AppMenuRoute: AppMenuRoute,
+  AppNotAuthorizedRoute: AppNotAuthorizedRoute,
+  AppprotectedRouteRoute: AppprotectedRouteRouteWithChildren,
 }
 
-const protectedRouteRouteWithChildren = protectedRouteRoute._addFileChildren(
-  protectedRouteRouteChildren,
-)
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(AppRouteRouteChildren)
 
 interface DashboardCategoriesRouteRouteChildren {
   DashboardCategoriesNewRoute: typeof DashboardCategoriesNewRoute
@@ -413,43 +437,34 @@ interface DashboardCategoriesRouteRouteChildren {
   DashboardCategoriesCategoryIdIndexRoute: typeof DashboardCategoriesCategoryIdIndexRoute
 }
 
-const DashboardCategoriesRouteRouteChildren: DashboardCategoriesRouteRouteChildren =
-  {
-    DashboardCategoriesNewRoute: DashboardCategoriesNewRoute,
-    DashboardCategoriesIndexRoute: DashboardCategoriesIndexRoute,
-    DashboardCategoriesCategoryIdEditRoute:
-      DashboardCategoriesCategoryIdEditRoute,
-    DashboardCategoriesCategoryIdIndexRoute:
-      DashboardCategoriesCategoryIdIndexRoute,
-  }
+const DashboardCategoriesRouteRouteChildren: DashboardCategoriesRouteRouteChildren = {
+  DashboardCategoriesCategoryIdEditRoute: DashboardCategoriesCategoryIdEditRoute,
+  DashboardCategoriesCategoryIdIndexRoute: DashboardCategoriesCategoryIdIndexRoute,
+  DashboardCategoriesIndexRoute: DashboardCategoriesIndexRoute,
+  DashboardCategoriesNewRoute: DashboardCategoriesNewRoute,
+}
 
-const DashboardCategoriesRouteRouteWithChildren =
-  DashboardCategoriesRouteRoute._addFileChildren(
-    DashboardCategoriesRouteRouteChildren,
-  )
+const DashboardCategoriesRouteRouteWithChildren = DashboardCategoriesRouteRoute._addFileChildren(
+  DashboardCategoriesRouteRouteChildren
+)
 
 interface DashboardRouteRouteChildren {
   DashboardCategoriesRouteRoute: typeof DashboardCategoriesRouteRouteWithChildren
-  DashboardMenuRoute: typeof DashboardMenuRoute
+  DashboardMenuItemsRoute: typeof DashboardMenuItemsRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardCategoriesRouteRoute: DashboardCategoriesRouteRouteWithChildren,
-  DashboardMenuRoute: DashboardMenuRoute,
+  DashboardMenuItemsRoute: DashboardMenuItemsRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
-  DashboardRouteRouteChildren,
+  DashboardRouteRouteChildren
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  authRouteRoute: authRouteRouteWithChildren,
-  protectedRouteRoute: protectedRouteRouteWithChildren,
+  AppRouteRoute: AppRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
-  AboutRoute: AboutRoute,
-  MenuRoute: MenuRoute,
-  NotAuthorizedRoute: NotAuthorizedRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

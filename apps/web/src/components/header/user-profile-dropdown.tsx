@@ -44,7 +44,7 @@ const navigationItems = [
     icon: LayoutDashboard,
     label: 'Dashboard',
     role: 'admin',
-    to: '/dashboard/menu',
+    to: '/dashboard/menu-items',
   },
 ] as const satisfies ReadonlyArray<NavigationItem>
 

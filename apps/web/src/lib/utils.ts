@@ -40,7 +40,7 @@ export function sortByToState(sortBy: CategoryFilters['sortBy'] | undefined) {
   }
 
   return sortBy.split(',').map((item) => {
-    const [id, desc] = item.split(':')
+    const [id, desc] = item.split('.')
     return { desc: desc === 'desc', id: id ?? '' }
   })
 }

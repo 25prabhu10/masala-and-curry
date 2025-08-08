@@ -1,129 +1,71 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script>
-    <script>
-      document.documentElement.classList.toggle(
-        "dark",
-        localStorage.theme === "dark" ||
-          (!("theme" in localStorage) &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches),
-      );
-    </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="manifest"
-      type="application/manifest+json"
-      href="/site.webmanifest"
-    />
 
-    <title>Masala and Curry - Authentic Indian-Nepalese Cuisine</title>
-    <meta
-      name="title"
-      content="Masala and Curry - Authentic Indian-Nepalese Cuisine"
-    />
-    <meta
-      name="description"
-      content="Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste."
-    />
-    <meta
-      name="keywords"
-      content="indian food, nepalese cuisine, curry, masala, restaurant, authentic, traditional"
-    />
+<head>
+  <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script>
+  <script>
+    document.documentElement.classList.toggle(
+      "dark",
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches),
+    );
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" type="application/manifest+json" href="/site.webmanifest" />
 
-    <link
-      rel="preload"
-      href="/fonts/poppins-v23-latin-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/fonts/poppins-v23-latin-700.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+  <title>Masala and Curry - Authentic Indian-Nepalese Cuisine</title>
+  <meta name="title" content="Masala and Curry - Authentic Indian-Nepalese Cuisine" />
+  <meta name="description"
+    content="Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste." />
+  <meta name="keywords" content="indian food, nepalese cuisine, curry, masala, restaurant, authentic, traditional" />
 
-    <!-- TODO: add prod URL -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://localhost:5173/" />
-    <meta
-      property="og:title"
-      content="Masala and Curry - Authentic Indian-Nepalese Cuisine"
-    />
-    <meta
-      property="og:description"
-      content="Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste."
-    />
-    <meta property="og:image" content="/images/icon-512.png" />
+  <link rel="preload" href="/fonts/poppins-v23-latin-regular.woff2" as="font" type="font/woff2"
+    crossorigin="anonymous" />
+  <link rel="preload" href="/fonts/poppins-v23-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="http://localhost:5173/" />
-    <meta
-      property="twitter:title"
-      content="Masala and Curry - Authentic Indian-Nepalese Cuisine"
-    />
-    <meta
-      property="twitter:description"
-      content="Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste."
-    />
-    <meta property="twitter:image" content="/images/icon-512.png" />
+  <!-- TODO: add prod URL -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://localhost:5173/" />
+  <meta property="og:title" content="Masala and Curry - Authentic Indian-Nepalese Cuisine" />
+  <meta property="og:description"
+    content="Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste." />
+  <meta property="og:image" content="/images/icon-512.png" />
 
-    <link rel="shortcut icon" href="/images/favicon.ico" />
-    <link rel="icon" size="32x32" href="/images/favicon.ico" />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      sizes="any"
-      href="/images/favicon.svg"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/images/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/images/favicon-16x16.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="96x96"
-      href="/images/favicon-96x96.png"
-    />
-    <meta name="apple-mobile-web-app-title" content="Masala and Curry" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="http://localhost:5173/" />
+  <meta property="twitter:title" content="Masala and Curry - Authentic Indian-Nepalese Cuisine" />
+  <meta property="twitter:description"
+    content="Experience the rich flavors of authentic Indian and Nepalese cuisine. Traditional recipes, fresh ingredients, and exceptional taste." />
+  <meta property="twitter:image" content="/images/icon-512.png" />
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/images/apple-touch-icon.png"
-    />
-    <link rel="apple-touch-icon" sizes="152x152" href="/images/icon-152.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="/images/icon-144.png" />
-    <link rel="apple-touch-icon" sizes="128x128" href="/images/icon-128.png" />
+  <link rel="shortcut icon" href="/images/favicon.ico" />
+  <link rel="icon" size="32x32" href="/images/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/images/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png" />
+  <meta name="apple-mobile-web-app-title" content="Masala and Curry" />
 
-    <meta name="theme-color" content="#8B4513" />
-    <meta name="msapplication-TileColor" content="#8B4513" />
-    <meta name="msapplication-TileImage" content="/icon-144.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/icon-152.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/icon-144.png" />
+  <link rel="apple-touch-icon" sizes="128x128" href="/images/icon-128.png" />
 
-    <link rel="mask-icon" href="/images/logo.svg" color="#8B4513" />
-  </head>
+  <meta name="theme-color" content="#8B4513" />
+  <meta name="msapplication-TileColor" content="#8B4513" />
+  <meta name="msapplication-TileImage" content="/icon-144.png" />
 
-  <body class="bg-background font-sans text-foreground antialiased">
-    <noscript>
-      <strong
-        >We're sorry but Masala and Curry Application doesn't work properly
-        without JavaScript enabled. Please enable it to continue.</strong
-      >
-    </noscript>
-    <!--[if lt IE 9]>
+  <link rel="mask-icon" href="/images/logo.svg" color="#8B4513" />
+</head>
+
+<body class="bg-background font-sans text-foreground antialiased">
+  <noscript>
+    <strong role="alert" aria-live="assertive">We're sorry but Masala and Curry Application doesn't work properly
+      without JavaScript enabled. Please enable it to continue.</strong>
+  </noscript>
+  <!--[if lt IE 9]>
       <p class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4">
         You are using an <strong>outdated</strong> browser. Please
         <a
@@ -136,7 +78,8 @@
         to improve your experience.
       </p>
     <![endif]-->
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

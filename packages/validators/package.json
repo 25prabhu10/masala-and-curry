@@ -37,6 +37,11 @@
       "types": "./dist/general.validators.d.ts",
       "import": "./dist/general.validators.js",
       "default": "./dist/general.validators.js"
+    },
+    "./api-errors": {
+      "types": "./dist/api-errors.d.ts",
+      "import": "./dist/api-errors.js",
+      "default": "./dist/api-errors.js"
     }
   },
   "scripts": {

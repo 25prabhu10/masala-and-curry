@@ -1,17 +1,22 @@
 import { z } from '@hono/zod-openapi'
-import { DEFAULT_PAGE_SIZE, MAX_NUMBER_IN_APP } from '@mac/resources/constants'
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, MAX_NUMBER_IN_APP } from '@mac/resources/constants'
 import { invalidIdDesc, minLengthDesc, PAGINATION_ERROR_DESC } from '@mac/resources/general'
 import { USER_ID_PARAM } from '@mac/resources/user'
+
+export const rowCountValidator = z.int().nonnegative()
+export type RowCount = z.infer<typeof rowCountValidator>
+export type TableRowCount = { rowCount: RowCount }[]
 
 export const paginationValidator = z.object({
   pageIndex: z.preprocess(
     (val) => (val ? Number(val) : undefined),
     z
       .int(PAGINATION_ERROR_DESC)
-      .positive(PAGINATION_ERROR_DESC)
+      .nonnegative(PAGINATION_ERROR_DESC)
       .max(MAX_NUMBER_IN_APP)
+      .default(DEFAULT_PAGE_INDEX)
       .optional()
-      .openapi({ description: 'Page number', example: 1 })
+      .openapi({ description: 'Page number', example: DEFAULT_PAGE_INDEX })
   ),
   pageSize: z.preprocess(
     (val) => (val ? Number(val) : undefined),
@@ -19,14 +24,11 @@ export const paginationValidator = z.object({
       .int(PAGINATION_ERROR_DESC)
       .positive(PAGINATION_ERROR_DESC)
       .max(MAX_NUMBER_IN_APP)
+      .default(DEFAULT_PAGE_SIZE)
       .optional()
       .openapi({ description: 'Items per page', example: DEFAULT_PAGE_SIZE })
   ),
 })
-
-export const rowCountValidator = z.int().nonnegative()
-export type RowCount = z.infer<typeof rowCountValidator>
-export type TableRowCount = { rowCount: RowCount }[]
 
 export const orderByValidator = z.enum(['asc', 'desc'], {
   error: (issue) => `Order must be one of: ${issue.options}`,
@@ -55,7 +57,7 @@ export function createSortingValidator<
       const parsedData = val
         .split(',')
         .map((sortItem) => {
-          const parts = sortItem.split(':')
+          const parts = sortItem.split('.')
           const column = parts[0]?.trim()
 
           if (
@@ -64,10 +66,9 @@ export function createSortingValidator<
           ) {
             ctx.addIssue({
               code: 'custom',
-              message:
-                'Sort column is invalid. Please use a valid column name or the format `columnName:orderBy`',
+              message: `Invalid column name: '${column}'. Please use a valid column name or the format 'columnName:orderBy'.`,
             })
-            return null
+            return z.NEVER
           }
 
           let direction: OrderBy = 'asc'
@@ -80,13 +81,16 @@ export function createSortingValidator<
             } else {
               ctx.addIssue({
                 code: 'custom',
-                message: `Invalid direction for column '${column}': '${parsedDirection}'. Must be 'asc' or 'desc'.`,
+                message: `Invalid direction for column '${column}'.'${parsedDirection}'. Must be 'asc' or 'desc'.`,
               })
-              return null
+              return z.NEVER
             }
           }
 
-          return urlSafe ? sortItem : { column: column as ColumnUnion, direction }
+          if (urlSafe) {
+            return `${column}.${direction}`
+          }
+          return { column: column as ColumnUnion, direction }
         })
         .filter((item): item is SortingObject<ColumnUnion> => Boolean(item))
 
@@ -94,7 +98,7 @@ export function createSortingValidator<
     })
     .openapi({
       description: 'Sort by columns',
-      example: 'name,id:desc',
+      example: 'name,id.desc',
     })
 }
 
