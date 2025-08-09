@@ -141,5 +141,3 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
     </Card>
   )
 }
-
-export default MenuItemCard

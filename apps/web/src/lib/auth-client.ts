@@ -5,9 +5,6 @@ export const authClient = createNewClient(
   import.meta.env.VITE_AUTH_BASE_PATH
 )
 
-export const { signIn, signOut, signUp, getSession, useSession } = authClient
+export const { signIn, signOut, signUp } = authClient
 
-export type UserSession = typeof authClient.$Infer.Session
-
-export type User = UserSession['user']
-export type Session = UserSession['session']
+export type Session = (typeof authClient.$Infer.Session)['session']

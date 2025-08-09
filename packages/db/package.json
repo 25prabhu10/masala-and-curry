@@ -32,8 +32,7 @@
     "generate": "drizzle-kit generate",
     "lint": "oxlint . --tsconfig ./tsconfig.json",
     "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
-    "migrate": "wrangler d1 migrations apply mac-db --local",
-    "studio": "drizzle-kit studio"
+    "studio": "dotenvx run -- drizzle-kit studio"
   },
   "dependencies": {
     "@hono/zod-openapi": "catalog:api",
@@ -43,7 +42,10 @@
     "nanoid": "^5.1.5"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.48.4",
+    "@libsql/client": "^0.15.10",
     "@mac/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
     "drizzle-kit": "^0.31.4",
     "oxlint": "catalog:",
     "typescript": "catalog:"

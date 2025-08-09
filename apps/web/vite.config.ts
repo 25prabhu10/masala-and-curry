@@ -1,3 +1,4 @@
+import reactScan from '@react-scan/vite-plugin-react-scan'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react-swc'
 // import { visualizer } from 'rollup-plugin-visualizer'
@@ -8,7 +9,7 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     outDir: '../server/public',
-    sourcemap: true,
+    sourcemap: false,
   },
   plugins: [
     tsconfigPaths({
@@ -19,6 +20,7 @@ export default defineConfig({
       target: 'react',
     }),
     react(),
+    reactScan({}),
     // visualizer({
     //   brotliSize: true,
     //   emitFile: true,

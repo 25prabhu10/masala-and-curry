@@ -1,15 +1,13 @@
+import { callbackSearchParam } from '@mac/validators/general'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { Suspense } from 'react'
-import * as z from 'zod'
 
 import { AlreadySignedIn } from '@/components/auth/already-signed-in'
 
 export const Route = createFileRoute('/_app/(auth)')({
   component: RouteComponent,
   loader: async ({ context: { session } }) => session,
-  validateSearch: z.object({
-    callback: z.string().optional(),
-  }),
+  validateSearch: callbackSearchParam,
 })
 
 function RouteComponent() {

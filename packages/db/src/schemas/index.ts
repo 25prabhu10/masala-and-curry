@@ -1,4 +1,4 @@
-export { account } from './account.schema'
+export { account, InsertAccountSchema } from './account.schema'
 export {
   allergen,
   InsertAllergenSchema,

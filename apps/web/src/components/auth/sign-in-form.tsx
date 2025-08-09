@@ -4,6 +4,8 @@ import {
   FORM_SUBMISSION_GENERIC_DESC,
   UNEXPECTED_ERROR_DESC,
 } from '@mac/resources/general'
+import { type SignInSchema, signInValidator } from '@mac/validators/auth'
+import type { CallbackSearchParam } from '@mac/validators/general'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -16,13 +18,16 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import * as z from 'zod'
 
 import { useAppForm } from '@/hooks/use-form'
 import { signIn, signOut } from '@/lib/auth-client'
 
-async function signInEmail(params: { email: string; password: string; rememberMe: boolean }) {
-  const res = await signIn.email(params)
+async function signInEmail(params: SignInSchema) {
+  const res = await signIn.email({
+    email: params.email,
+    password: params.password,
+    rememberMe: params.rememberMe,
+  })
 
   if (res.error && res.error.status >= 500) {
     throw new Error(UNEXPECTED_ERROR_DESC)
@@ -31,11 +36,7 @@ async function signInEmail(params: { email: string; password: string; rememberMe
   return res
 }
 
-type SignInFormProps = {
-  callback?: string
-}
-
-export function SignInForm({ callback }: SignInFormProps) {
+export function SignInForm({ callback }: CallbackSearchParam) {
   const router = useRouter()
   const navigate = useNavigate({ from: '/sign-in' })
   const queryClient = useQueryClient()
@@ -49,16 +50,9 @@ export function SignInForm({ callback }: SignInFormProps) {
       email: '',
       password: '',
       rememberMe: false,
-    },
+    } as SignInSchema,
     validators: {
-      onChange: z.object({
-        email: z.email().max(255, `Email must be at most ${255} characters long`),
-        password: z
-          .string()
-          .min(8, 'Password must be at least 8 characters long')
-          .max(255, `Password must be at most ${255} characters long`),
-        rememberMe: z.boolean(),
-      }),
+      onChange: signInValidator,
       onSubmitAsync: async ({ value }) => {
         try {
           const res = await SignIN.mutateAsync(value)

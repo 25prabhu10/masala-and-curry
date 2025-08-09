@@ -30,6 +30,7 @@ catalogs:
     lucide-react: ^0.533.0
     lucide-react-native: ^0.533.0
     nativewind: ^4.1.23
+    sonner: "^2.0.6"
     tailwind-merge: ^3.3.1
     tailwindcss: ^3.4.17
 
@@ -46,3 +47,5 @@ onlyBuiltDependencies:
 
 overrides:
   "drizzle-zod>zod": ^4.0.14
+  "@react-scan/vite-plugin-react-scan>vite": "^7.0.6"
+  "@react-scan/vite-plugin-react-scan>react-scan": "^0.4.3"

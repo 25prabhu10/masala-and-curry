@@ -24,13 +24,19 @@ import * as routes from './categories.openapi'
 
 const router = createRouter()
   .openapi(routes.getCategories, async (c) => {
-    const { pageIndex, pageSize, activeOnly, sortBy } = c.req.valid('query')
+    const { pageIndex, pageSize, activeOnly, sortBy, search } = c.req.valid('query')
 
     try {
       const db = await createDb(c.env.DB)
 
-      const categories = await getCategories(db, { activeOnly, pageIndex, pageSize, sortBy })
-      const totalCount = await getTotalCategoriesCount(db, { activeOnly })
+      const categories = await getCategories(db, {
+        activeOnly,
+        pageIndex,
+        pageSize,
+        search,
+        sortBy,
+      })
+      const totalCount = await getTotalCategoriesCount(db, { activeOnly, search })
 
       const result = await readCategoriesWithPaginationValidator.safeParseAsync({
         result: categories,

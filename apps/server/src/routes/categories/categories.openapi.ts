@@ -45,14 +45,15 @@ const tags = ['Categories']
 
 export const entity = 'Category' as const
 
+const categoryIdParamsSchema = createIdParamsOpenapiSchema(entity)
+
 const entityNotFoundDesc = notFoundDesc(entity)
 const entityDuplicateDataDesc = duplicateDataDesc(entity)
+
 export const entityFailedToGetDesc = getDataFailedDesc(entity)
 export const entityUpdateFailedDesc = updateFailedDesc(entity)
 export const entityCreateFailedDesc = createFailedDesc(entity)
 export const entityDeleteFailedDesc = deleteFailedDesc(entity)
-
-export const categoryIdParamsSchema = createIdParamsOpenapiSchema(entity)
 
 export const getCategories = createRoute({
   description: 'Get all menu categories with optional pagination.',

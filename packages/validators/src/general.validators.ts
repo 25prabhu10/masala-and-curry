@@ -3,9 +3,16 @@ import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, MAX_NUMBER_IN_APP } from '@mac/r
 import { invalidIdDesc, minLengthDesc, PAGINATION_ERROR_DESC } from '@mac/resources/general'
 import { USER_ID_PARAM } from '@mac/resources/user'
 
+export type { z } from '@hono/zod-openapi'
+
 export const rowCountValidator = z.int().nonnegative()
 export type RowCount = z.infer<typeof rowCountValidator>
 export type TableRowCount = { rowCount: RowCount }[]
+
+export const callbackSearchParam = z.object({
+  callback: z.string().optional(),
+})
+export type CallbackSearchParam = z.infer<typeof callbackSearchParam>
 
 export const paginationValidator = z.object({
   pageIndex: z.preprocess(
@@ -102,6 +109,11 @@ export function createSortingValidator<
     })
 }
 
+export type Pagination = z.infer<typeof paginationValidator>
+export type Filters<T extends Record<string, unknown>> = Partial<
+  T & Pagination & ReturnType<typeof createSortingValidator<T, ColumnsOf<T>>>
+>
+
 export function createIdParamsOpenapiSchema(entity: Readonly<string>) {
   return z
     .object({
@@ -123,8 +135,4 @@ export function createIdParamsOpenapiSchema(entity: Readonly<string>) {
     .openapi(`${entity} ID`)
 }
 
-export type Pagination = z.infer<typeof paginationValidator>
 export type UserIdParams = z.input<ReturnType<typeof createIdParamsOpenapiSchema>>
-export type Filters<T extends Record<string, unknown>> = Partial<
-  T & Pagination & ReturnType<typeof createSortingValidator<T, ColumnsOf<T>>>
->

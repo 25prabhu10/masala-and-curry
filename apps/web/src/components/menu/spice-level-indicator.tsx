@@ -81,5 +81,3 @@ export function SpiceLevelIndicator({
     </div>
   )
 }
-
-export default SpiceLevelIndicator

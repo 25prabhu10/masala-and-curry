@@ -2,9 +2,13 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "mac-server",
   "main": "./src/index.ts",
-  "compatibility_date": "2025-07-09",
+  "compatibility_date": "2025-08-09",
   "workers_dev": true,
   "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "URL": "http://localhost:5173",
+    "ENVIRONMENT": "development"
+  },
   "assets": {
     "directory": "public",
     "binding": "ASSETS"
@@ -12,9 +16,35 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "mac-prod",
+      "database_name": "mac-dev",
       "database_id": "e456f3fa-bfda-48dd-b0a1-4fb512e749f9",
       "migrations_dir": "../../packages/db/src/migrations"
     }
-  ]
+  ],
+  "env": {
+    "production": {
+      "routes": [
+        {
+          "pattern": "themasalaandcurry.com",
+          "custom_domain": true
+        },
+        {
+          "pattern": "www.themasalaandcurry.com",
+          "custom_domain": true
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "mac-prod",
+          "database_id": "e456f3fa-bfda-48dd-b0a1-4fb512e749f9",
+          "migrations_dir": "../../packages/db/src/migrations"
+        }
+      ],
+      "vars": {
+        "URL": "https://themasalaandcurry.com",
+        "ENVIRONMENT": "production"
+      }
+    }
+  }
 }

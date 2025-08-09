@@ -1,14 +1,12 @@
+import { callbackSearchParam } from '@mac/validators/general'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowLeft, Home, ShieldX } from 'lucide-react'
-import * as z from 'zod'
 
 export const Route = createFileRoute('/_app/not-authorized')({
   component: RouteComponent,
-  validateSearch: z.object({
-    callback: z.string().optional(),
-  }),
+  validateSearch: callbackSearchParam,
 })
 
 function RouteComponent() {

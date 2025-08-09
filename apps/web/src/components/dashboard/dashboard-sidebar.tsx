@@ -57,7 +57,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="mb-20">
+      <SidebarFooter>
         <Button asChild size="sm">
           <Link to="/">
             <Home className="h-4 w-4 mr-2" />

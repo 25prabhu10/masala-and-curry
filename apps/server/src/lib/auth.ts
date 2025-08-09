@@ -3,7 +3,7 @@ import * as schema from '@mac/db/schemas'
 import { TITLE } from '@mac/resources/app'
 import { type BetterAuthOptions, betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin, phoneNumber } from 'better-auth/plugins'
+import { admin, openAPI, phoneNumber } from 'better-auth/plugins'
 
 import { BASE_PATH } from './constants'
 
@@ -58,11 +58,15 @@ export const auth = betterAuth({
 export async function authClient(env: CloudflareBindings) {
   return betterAuth({
     ...betterAuthOptions,
-    baseURL: env.AUTH_URL,
+    baseURL: env.URL,
     database: drizzleAdapter(await createDb(env.DB), {
       provider: 'sqlite',
       schema,
     }),
+    plugins:
+      env.ENVIRONMENT === 'development'
+        ? [...betterAuthOptions.plugins, openAPI()]
+        : betterAuthOptions.plugins,
     secret: env.AUTH_SECRET,
   })
 }

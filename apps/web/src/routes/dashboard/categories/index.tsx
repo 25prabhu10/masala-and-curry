@@ -1,7 +1,7 @@
 import { deleteCategoryMutation, getCategoriesQuery } from '@mac/queries/category'
 import { DEFAULT_PAGE_INDEX } from '@mac/resources/constants'
 import { cn } from '@mac/tailwind-config/utils'
-import { type Category, getCategoryFiltersValidator } from '@mac/validators/category'
+import { type Category, getCategoryFiltersValidatorWithCatch } from '@mac/validators/category'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { Checkbox } from '@mac/web-ui/checkbox'
@@ -140,7 +140,7 @@ export const Route = createFileRoute('/dashboard/categories/')({
       <DataTableSkeleton totalRows={columnsDef.length} />
     </div>
   ),
-  validateSearch: getCategoryFiltersValidator(true),
+  validateSearch: getCategoryFiltersValidatorWithCatch(true),
 })
 
 function RouteComponent() {

@@ -4,6 +4,8 @@ import {
   FORM_SUBMISSION_GENERIC_DESC,
   UNEXPECTED_ERROR_DESC,
 } from '@mac/resources/general'
+import { type SignUpSchema, signUpValidator } from '@mac/validators/auth'
+import type { CallbackSearchParam } from '@mac/validators/general'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -16,7 +18,6 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import * as z from 'zod'
 
 import { useAppForm } from '@/hooks/use-form'
 import { signUp } from '@/lib/auth-client'
@@ -40,11 +41,7 @@ async function signUpEmail(params: {
   return res
 }
 
-type SignUpFormProps = {
-  callback?: string
-}
-
-export function SignUpForm({ callback }: SignUpFormProps) {
+export function SignUpForm({ callback }: CallbackSearchParam) {
   const router = useRouter()
   const navigate = useNavigate({ from: '/sign-up' })
   const queryClient = useQueryClient()
@@ -59,28 +56,12 @@ export function SignUpForm({ callback }: SignUpFormProps) {
       email: '',
       name: '',
       password: '',
-    },
+    } as SignUpSchema,
     onSubmitInvalid: () => {
       toast.error(FORM_SUBMISSION_ERROR_DESC)
     },
     validators: {
-      onChange: z
-        .object({
-          confirmPassword: z.string(),
-          email: z.email('Invalid email').max(255, 'Email must be at most 255 characters long'),
-          name: z
-            .string()
-            .min(2, 'Name must be at least 2 characters long')
-            .max(100, 'Name must be at most 100 characters long'),
-          password: z
-            .string()
-            .min(8, 'Password must be at least 8 characters long')
-            .max(255, 'Password must be at most 255 characters long'),
-        })
-        .refine((data) => data.password === data.confirmPassword, {
-          message: 'Passwords do not match',
-          path: ['confirmPassword'],
-        }),
+      onChange: signUpValidator,
       onSubmitAsync: async ({ value }) => {
         try {
           const res = await signUpMutation.mutateAsync(value)

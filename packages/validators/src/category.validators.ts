@@ -1,5 +1,8 @@
 import { z } from '@hono/zod-openapi'
 import { InsertCategorySchema, SelectCategorySchema, UpdateCategorySchema } from '@mac/db/schemas'
+
+// import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
+
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
 
 import {
@@ -29,6 +32,7 @@ export function getCategoryFiltersValidator(urlSafe: boolean = false) {
   return z
     .object({
       activeOnly: SelectCategorySchema.shape.isActive,
+      search: InsertCategorySchema.shape.name,
       sortBy: createSortingValidator(categorySortableColumns, 'displayOrder', urlSafe),
       ...paginationValidator.shape,
     })
@@ -43,6 +47,21 @@ export function getCategoryFiltersValidator(urlSafe: boolean = false) {
       },
     })
     .openapi('CategoryFilters')
+}
+
+// Hono Zod Openapi throws error when `.catch` is used.
+export function getCategoryFiltersValidatorWithCatch(urlSafe: boolean = false) {
+  return z
+    .object({
+      activeOnly: SelectCategorySchema.shape.isActive.catch(true),
+      pageIndex: paginationValidator.shape.pageIndex.catch(DEFAULT_PAGE_INDEX),
+      pageSize: paginationValidator.shape.pageSize.catch(DEFAULT_PAGE_SIZE),
+      search: InsertCategorySchema.shape.name.catch("''"),
+      sortBy: createSortingValidator(categorySortableColumns, 'displayOrder', urlSafe).catch(
+        'displayOrder'
+      ),
+    })
+    .partial()
 }
 
 export type CategoryFilters = z.output<ReturnType<typeof getCategoryFiltersValidator>>

@@ -4,7 +4,6 @@ import {
   type RouteIds,
   useNavigate,
 } from '@tanstack/react-router'
-import type { PaginationState } from '@tanstack/react-table'
 
 import { cleanEmptyParams } from '@/lib/clean-empty-params '
 
@@ -26,5 +25,3 @@ export function useFilters<T extends RouteIds<RegisteredRouter['routeTree']>>(ro
 
   return { filters, resetFilters, setFilters }
 }
-
-export type PaginationParams = PaginationState

@@ -2,7 +2,7 @@ import { category, type InsertCategoryDB, type UpdateCategoryDB } from '@mac/db/
 import type { DB } from '@mac/db/types'
 import type { Category, CategoryFilters } from '@mac/validators/category'
 import type { TableRowCount } from '@mac/validators/general'
-import { asc, count, desc, eq } from 'drizzle-orm'
+import { and, asc, count, desc, eq, like } from 'drizzle-orm'
 
 import { withPagination } from './utils'
 
@@ -10,17 +10,35 @@ export async function getTotalCategoriesCount(
   db: DB,
   filters: CategoryFilters
 ): Promise<TableRowCount> {
+  const conditions = []
+  if (filters.activeOnly) {
+    conditions.push(eq(category.isActive, true))
+  }
+
+  if (filters.search) {
+    conditions.push(like(category.name, `%${filters.search}%`))
+  }
+
   return await db
     .select({ rowCount: count() })
     .from(category)
-    .where(filters.activeOnly ? eq(category.isActive, true) : undefined)
+    .where(conditions.length > 0 ? and(...conditions) : undefined)
 }
 
 export async function getCategories(db: DB, filters: CategoryFilters): Promise<Category[]> {
+  const conditions = []
+  if (filters.activeOnly) {
+    conditions.push(eq(category.isActive, true))
+  }
+
+  if (filters.search) {
+    conditions.push(like(category.name, `%${filters.search}%`))
+  }
+
   const query = db
     .select()
     .from(category)
-    .where(filters.activeOnly ? eq(category.isActive, true) : undefined)
+    .where(conditions.length > 0 ? and(...conditions) : undefined)
 
   if (filters.sortBy && filters.sortBy.length > 0 && typeof filters.sortBy !== 'string') {
     const orderByColumns = filters.sortBy.map(({ column, direction }) => {

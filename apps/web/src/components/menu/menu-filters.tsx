@@ -218,5 +218,3 @@ export function MenuFilters({
     </div>
   )
 }
-
-export default MenuFilters

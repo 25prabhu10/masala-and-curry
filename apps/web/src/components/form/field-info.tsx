@@ -1,6 +1,7 @@
 // oxlint-disable no-nested-ternary
+
+import type { z } from '@mac/validators/general'
 import type { AnyFieldMeta } from '@tanstack/react-form'
-import type { $ZodIssue } from 'zod/v4/core'
 
 interface FieldInfoProps {
   fieldName: string
@@ -12,7 +13,7 @@ export default function FieldInfo({ fieldName, meta }: FieldInfoProps) {
     <div className="min-h-5">
       {meta.isTouched && !meta.isValid && meta.errors.length > 0
         ? typeof meta.errors[0] === 'object'
-          ? meta.errors.map(({ code, message }: $ZodIssue) => (
+          ? meta.errors.map(({ code, message }: z.core.$ZodIssue) => (
               <p
                 className="text-sm font-medium text-destructive"
                 id={`${fieldName}-error`}
