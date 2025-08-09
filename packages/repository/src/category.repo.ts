@@ -2,7 +2,7 @@ import { category, type InsertCategoryDB, type UpdateCategoryDB } from '@mac/db/
 import type { DB } from '@mac/db/types'
 import type { Category, CategoryFilters } from '@mac/validators/category'
 import type { TableRowCount } from '@mac/validators/general'
-import { and, asc, count, desc, eq, like } from 'drizzle-orm'
+import { and, asc, count, desc, eq, like, type SQL } from 'drizzle-orm'
 
 import { withPagination } from './utils'
 
@@ -10,7 +10,7 @@ export async function getTotalCategoriesCount(
   db: DB,
   filters: CategoryFilters
 ): Promise<TableRowCount> {
-  const conditions = []
+  const conditions: SQL[] = []
   if (filters.activeOnly) {
     conditions.push(eq(category.isActive, true))
   }
@@ -26,7 +26,7 @@ export async function getTotalCategoriesCount(
 }
 
 export async function getCategories(db: DB, filters: CategoryFilters): Promise<Category[]> {
-  const conditions = []
+  const conditions: SQL[] = []
   if (filters.activeOnly) {
     conditions.push(eq(category.isActive, true))
   }

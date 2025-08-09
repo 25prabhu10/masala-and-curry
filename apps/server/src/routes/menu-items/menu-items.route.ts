@@ -1,24 +1,19 @@
 import { createDb } from '@mac/db'
-import type { UpdateMenuItemDB } from '@mac/db/schemas'
-import { DrizzleQueryError } from '@mac/db/types'
 import {
   createMenuItem,
   deleteMenuItem,
   getMenuItemById,
   getMenuItems,
+  getTotalMenuItemsCount,
   updateMenuItem,
 } from '@mac/repository/menu-item'
-import {
-  CREATED,
-  INTERNAL_SERVER_ERROR,
-  NO_CONTENT,
-  NOT_FOUND,
-  OK,
-} from '@mac/resources/http-status-codes'
+import { CREATED, NO_CONTENT, OK } from '@mac/resources/http-status-codes'
 import { readMenuItemsValidator, readMenuItemValidator } from '@mac/validators/menu-item'
-import { HTTPException } from 'hono/http-exception'
 
+import { InternalServerError } from '@/lib/api-errors'
 import createRouter from '@/lib/create-router'
+import { handleApiError } from '@/lib/handle-errors'
+import { notFound } from '@/lib/response-helpers'
 
 import * as routes from './menu-items.openapi'
 
@@ -29,25 +24,21 @@ const router = createRouter()
     try {
       const db = await createDb(c.env.DB)
       const queryData = await getMenuItems(db, query)
+      const [totalCount] = await getTotalMenuItemsCount(db, query)
 
       const result = await readMenuItemsValidator.safeParseAsync({
         result: queryData,
-        rowCount: queryData.length,
+        rowCount: totalCount?.rowCount,
       })
 
       if (!result.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityFailedToGetDesc,
-        })
+        throw new InternalServerError(routes.entityFailedToGetDesc)
       }
+
       return c.json(result.data, OK)
     } catch (error) {
-      if (error instanceof HTTPException) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityFailedToGetDesc)
     }
   })
   .openapi(routes.getMenuItemById, async (c) => {
@@ -59,25 +50,19 @@ const router = createRouter()
       const queryData = await getMenuItemById(db, id)
 
       if (!queryData) {
-        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+        return c.json(...notFound(routes.entity))
       }
 
       const result = await readMenuItemValidator.safeParseAsync(queryData)
 
       if (!result.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityFailedToGetDesc,
-        })
+        throw new InternalServerError(routes.entityFailedToGetDesc)
       }
 
       return c.json(result.data, OK)
     } catch (error) {
-      if (error instanceof HTTPException || error instanceof DrizzleQueryError) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityFailedToGetDesc)
     }
   })
   .openapi(routes.createMenuItem, async (c) => {
@@ -88,27 +73,16 @@ const router = createRouter()
 
       const queryData = await createMenuItem(db, reqData)
 
-      if (queryData.length === 0) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: 'Failed to create menu item',
-        })
-      }
-
-      const result = await readMenuItemValidator.safeParseAsync(queryData[0])
+      const result = await readMenuItemValidator.safeParseAsync(queryData)
 
       if (!result.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityFailedToGetDesc,
-        })
+        throw new InternalServerError(routes.entityCreateFailedDesc)
       }
+
       return c.json(result.data, CREATED)
     } catch (error) {
-      if (error instanceof HTTPException || error instanceof DrizzleQueryError) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: 'Failed to create menu item',
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityCreateFailedDesc)
     }
   })
   .openapi(routes.updateMenuItem, async (c) => {
@@ -118,36 +92,24 @@ const router = createRouter()
     try {
       const db = await createDb(c.env.DB)
 
-      // Check if menu item exists
       const existingItem = await getMenuItemById(db, id)
+
       if (!existingItem) {
-        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+        return c.json(...notFound(routes.entity))
       }
 
-      const queryData = await updateMenuItem(db, id, reqData as UpdateMenuItemDB)
+      const result = await updateMenuItem(db, id, reqData)
 
-      if (queryData.length === 0) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityUpdateFailedDesc,
-        })
+      const menuItem = await readMenuItemValidator.safeParseAsync(result)
+
+      if (!menuItem.success) {
+        throw new InternalServerError(routes.entityUpdateFailedDesc)
       }
 
-      const result = await readMenuItemValidator.safeParseAsync(queryData[0])
-
-      if (!result.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityFailedToGetDesc,
-        })
-      }
-
-      return c.json(result.data, OK)
+      return c.json(menuItem.data, OK)
     } catch (error) {
-      if (error instanceof HTTPException || error instanceof DrizzleQueryError) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityUpdateFailedDesc,
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityUpdateFailedDesc)
     }
   })
   .openapi(routes.deleteMenuItem, async (c) => {
@@ -156,21 +118,18 @@ const router = createRouter()
     try {
       const db = await createDb(c.env.DB)
 
-      // Check if menu item exists
       const existingItem = await getMenuItemById(db, id)
+
       if (!existingItem) {
-        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+        return c.json(...notFound(routes.entity))
       }
 
       await deleteMenuItem(db, id)
+
       return c.body(null, NO_CONTENT)
     } catch (error) {
-      if (error instanceof HTTPException || error instanceof DrizzleQueryError) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: 'Failed to delete menu item',
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityDeleteFailedDesc)
     }
   })
 

@@ -6,7 +6,7 @@ import {
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
 } from '@mac/resources/constants'
-import { maxLengthDesc, minLengthDesc } from '@mac/resources/general'
+import { invalidDesc, maxLengthDesc, minLengthDesc } from '@mac/resources/general'
 import { sql } from 'drizzle-orm'
 import {
   check,
@@ -140,43 +140,139 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         description: 'List of ingredients',
         example: 'Chicken, tomatoes, cream, onions, garlic, ginger, spices',
       }),
-  isAvailable: () =>
-    z.coerce.boolean().default(true).openapi({
-      description: 'Whether the item is currently available',
-      example: true,
-    }),
+  isAvailable: (schema) =>
+    z
+      .union([
+        schema,
+        z.string(invalidDesc('Menu Item Available', schema.def.type)).transform((val, ctx) => {
+          if (val === 'true') {
+            return true
+          }
+          if (val === 'false') {
+            return false
+          }
+          ctx.addIssue({
+            code: 'custom',
+            message: 'Menu Item Available must be "true" or "false"',
+          })
+          return z.NEVER
+        }),
+      ])
+      .pipe(schema)
+      .default(true)
+      .openapi({
+        description: 'Whether the item is currently available',
+        example: true,
+      }),
   isGlutenFree: (schema) =>
-    schema.default(false).openapi({
-      description: 'Whether the item is gluten-free',
-      example: true,
-    }),
+    z
+      .union([
+        schema,
+        z.string(invalidDesc('Menu Item Gluten Free', schema.def.type)).transform((val, ctx) => {
+          if (val === 'true') {
+            return true
+          }
+          if (val === 'false') {
+            return false
+          }
+          ctx.addIssue({
+            code: 'custom',
+            message: 'Menu Item Gluten Free must be "true" or "false"',
+          })
+          return z.NEVER
+        }),
+      ])
+      .pipe(schema)
+      .default(false)
+      .openapi({
+        description: 'Whether the item is gluten-free',
+        example: true,
+      }),
   isPopular: (schema) =>
-    schema.default(false).openapi({
-      description: 'Whether the item is marked as popular',
-      example: true,
-    }),
+    z
+      .union([
+        schema,
+        z.string(invalidDesc('Menu Item Popular', schema.def.type)).transform((val, ctx) => {
+          if (val === 'true') {
+            return true
+          }
+          if (val === 'false') {
+            return false
+          }
+          ctx.addIssue({
+            code: 'custom',
+            message: 'Menu Item Popular must be "true" or "false"',
+          })
+          return z.NEVER
+        }),
+      ])
+      .pipe(schema)
+      .default(false)
+      .openapi({
+        description: 'Whether the item is marked as popular',
+        example: true,
+      }),
   isSpicy: (schema) =>
     schema.default(false).openapi({
       description: 'Whether the item is spicy',
       example: true,
     }),
   isVegan: (schema) =>
-    schema.default(false).openapi({
-      description: 'Whether the item is vegan',
-      example: false,
-    }),
-  isVegetarian: (schema) =>
-    schema.default(false).openapi({
-      description: 'Whether the item is vegetarian',
-      example: false,
-    }),
-  name: (schema) =>
-    schema
-      .trim()
-      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Menu item name') })
-      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Menu item name') })
+    z
+      .union([
+        schema,
+        z.string(invalidDesc('Menu Item Vegan', schema.def.type)).transform((val, ctx) => {
+          if (val === 'true') {
+            return true
+          }
+          if (val === 'false') {
+            return false
+          }
+          ctx.addIssue({
+            code: 'custom',
+            message: 'Menu Item Vegan must be "true" or "false"',
+          })
+          return z.NEVER
+        }),
+      ])
+      .pipe(schema)
+      .default(false)
       .openapi({
-        description: 'Menu item name',
+        description: 'Whether the item is vegan',
+        example: false,
+      }),
+  isVegetarian: (schema) =>
+    z
+      .union([
+        schema,
+        z.string(invalidDesc('Menu Item Vegetarian', schema.def.type)).transform((val, ctx) => {
+          if (val === 'true') {
+            return true
+          }
+          if (val === 'false') {
+            return false
+          }
+          ctx.addIssue({
+            code: 'custom',
+            message: 'Menu Item Vegetarian must be "true" or "false"',
+          })
+          return z.NEVER
+        }),
+      ])
+      .pipe(schema)
+      .default(false)
+      .openapi({
+        description: 'Whether the item is vegetarian',
+        example: false,
+      }),
+  name: (schema) =>
+    z
+      .string(invalidDesc('Menu Item name', schema.def.type))
+      .trim()
+      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Menu Item name') })
+      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Menu Item name') })
+      .openapi({
+        description: 'Menu Item name',
         example: 'Chicken Tikka Masala',
       }),
   preparationTime: (schema) =>

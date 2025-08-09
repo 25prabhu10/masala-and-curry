@@ -53,6 +53,8 @@
     "no-constant-binary-expression": "warn",
     "no-constant-condition": "warn",
     "no-continue": "error",
+    "prefer-destructuring": "error",
+    "typescript/explicit-module-boundary-types": "error",
     "no-control-regex": "warn",
     "no-debugger": "warn",
     "no-delete-var": "warn",

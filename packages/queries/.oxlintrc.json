@@ -3,5 +3,8 @@
   "extends": ["../../.oxlintrc.json"],
   "env": {
     "browser": true
+  },
+  "rules": {
+    "explicit-module-boundary-types": "off"
   }
 }

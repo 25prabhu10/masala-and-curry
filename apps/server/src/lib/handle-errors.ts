@@ -3,7 +3,7 @@ import { HTTPException } from 'hono/http-exception'
 
 import { formatDBError } from './response-helpers'
 
-export function handleApiError(error: unknown, entity: string) {
+export function handleApiError(error: unknown, entity: string): void {
   if (error instanceof HTTPException) {
     throw error
   } else if (error instanceof DrizzleQueryError) {

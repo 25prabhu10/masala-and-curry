@@ -36,11 +36,11 @@ const router = createRouter()
         search,
         sortBy,
       })
-      const totalCount = await getTotalCategoriesCount(db, { activeOnly, search })
+      const [totalCount] = await getTotalCategoriesCount(db, { activeOnly, search })
 
       const result = await readCategoriesWithPaginationValidator.safeParseAsync({
         result: categories,
-        rowCount: totalCount[0]?.rowCount,
+        rowCount: totalCount?.rowCount,
       })
 
       if (!result.success) {
@@ -83,9 +83,9 @@ const router = createRouter()
     try {
       const db = await createDb(c.env.DB)
 
-      const queryData = await createCategory(db, reqData)
+      const [queryData] = await createCategory(db, reqData)
 
-      const result = await readCategoryValidator.safeParseAsync(queryData[0])
+      const result = await readCategoryValidator.safeParseAsync(queryData)
 
       if (!result.success) {
         throw new InternalServerError(routes.entityCreateFailedDesc)
@@ -112,8 +112,6 @@ const router = createRouter()
 
       const dataToUpdate: UpdateCategoryParsed = {}
 
-      console.error(reqData)
-
       if (reqData.name !== undefined && reqData.name !== existingCategory.name) {
         // Only add fields to update if they are provided and different from the current value
         dataToUpdate.name = reqData.name
@@ -137,14 +135,9 @@ const router = createRouter()
       let result: Category | undefined
 
       if (Object.keys(dataToUpdate).length === 0) {
-        const queryData = await getCategoryById(db, id)
-
-        if (!queryData) {
-          return c.json(...notFound(routes.entity))
-        }
-        result = queryData
+        result = existingCategory
       } else {
-        result = (await updateCategory(db, id, dataToUpdate))[0]
+        ;[result] = await updateCategory(db, id, dataToUpdate)
       }
 
       const category = await readCategoryValidator.safeParseAsync(result)
@@ -155,7 +148,6 @@ const router = createRouter()
 
       return c.json(category.data, OK)
     } catch (error) {
-      console.error(error)
       handleApiError(error, routes.entity)
       throw new InternalServerError(routes.entityUpdateFailedDesc)
     }
@@ -176,7 +168,6 @@ const router = createRouter()
 
       return c.body(null, NO_CONTENT)
     } catch (error) {
-      console.error(error)
       handleApiError(error, routes.entity)
       throw new InternalServerError(routes.entityDeleteFailedDesc)
     }

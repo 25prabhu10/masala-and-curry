@@ -8,8 +8,6 @@ export const FORM_SUBMISSION_GENERIC_DESC: string = 'Please check your input(s) 
 
 export const UNEXPECTED_ERROR_DESC: string = 'An unexpected error occurred. Please try again.'
 
-export const UPDATE_NO_CHANGES: string = 'No changes made.'
-
 export const NOT_AUTHENTICATED: string = 'You are not authenticated. Please sign-in to continue.'
 
 export const NOT_AUTHORIZED: string = 'You are not authorized to perform this action.'

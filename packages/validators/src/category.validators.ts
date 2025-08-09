@@ -28,40 +28,36 @@ export type UpdateCategoryParsed = z.output<typeof updateCategoryValidator>
 // Ensures sorting is limited to valid category columns
 const categorySortableColumns = ['displayOrder', 'name'] as const satisfies ColumnsOf<Category>
 
-export function getCategoryFiltersValidator(urlSafe: boolean = false) {
-  return z
-    .object({
-      activeOnly: SelectCategorySchema.shape.isActive,
-      search: InsertCategorySchema.shape.name,
-      sortBy: createSortingValidator(categorySortableColumns, 'displayOrder', urlSafe),
-      ...paginationValidator.shape,
-    })
-    .partial()
-    .openapi({
-      description: 'Filters that can be applied when getting Categories',
-      example: {
-        activeOnly: true,
-        pageIndex: DEFAULT_PAGE_INDEX,
-        pageSize: DEFAULT_PAGE_SIZE,
-        sortBy: 'displayOrder',
-      },
-    })
-    .openapi('CategoryFilters')
-}
+export const categoryFiltersValidator = z
+  .object({
+    activeOnly: SelectCategorySchema.shape.isActive,
+    search: InsertCategorySchema.shape.name,
+    sortBy: createSortingValidator(categorySortableColumns, 'displayOrder', false),
+    ...paginationValidator.shape,
+  })
+  .partial()
+  .openapi({
+    description: 'Filters that can be applied when getting Categories',
+    example: {
+      activeOnly: true,
+      pageIndex: DEFAULT_PAGE_INDEX,
+      pageSize: DEFAULT_PAGE_SIZE,
+      sortBy: 'displayOrder',
+    },
+  })
+  .openapi('CategoryFilters')
 
 // Hono Zod Openapi throws error when `.catch` is used.
-export function getCategoryFiltersValidatorWithCatch(urlSafe: boolean = false) {
-  return z
-    .object({
-      activeOnly: SelectCategorySchema.shape.isActive.catch(true),
-      pageIndex: paginationValidator.shape.pageIndex.catch(DEFAULT_PAGE_INDEX),
-      pageSize: paginationValidator.shape.pageSize.catch(DEFAULT_PAGE_SIZE),
-      search: InsertCategorySchema.shape.name.catch("''"),
-      sortBy: createSortingValidator(categorySortableColumns, 'displayOrder', urlSafe).catch(
-        'displayOrder'
-      ),
-    })
-    .partial()
-}
+export const categoryFiltersValidatorWithCatch = z
+  .object({
+    activeOnly: SelectCategorySchema.shape.isActive.catch(true),
+    pageIndex: paginationValidator.shape.pageIndex.catch(DEFAULT_PAGE_INDEX),
+    pageSize: paginationValidator.shape.pageSize.catch(DEFAULT_PAGE_SIZE),
+    search: InsertCategorySchema.shape.name.catch("''"),
+    sortBy: createSortingValidator(categorySortableColumns, 'displayOrder', true).catch(
+      'displayOrder'
+    ),
+  })
+  .partial()
 
-export type CategoryFilters = z.output<ReturnType<typeof getCategoryFiltersValidator>>
+export type CategoryFilters = z.output<typeof categoryFiltersValidator>

@@ -29,8 +29,8 @@ import {
   UNPROCESSABLE_ENTITY,
 } from '@mac/resources/http-status-codes'
 import {
+  categoryFiltersValidator,
   createCategoryValidator,
-  getCategoryFiltersValidator,
   readCategoriesWithPaginationValidator,
   readCategoryValidator,
   updateCategoryValidator,
@@ -56,16 +56,16 @@ export const entityCreateFailedDesc = createFailedDesc(entity)
 export const entityDeleteFailedDesc = deleteFailedDesc(entity)
 
 export const getCategories = createRoute({
-  description: 'Get all menu categories with optional pagination.',
+  description: 'Get all menu categories with optional filtering and pagination.',
   method: 'get',
   path: '/',
   request: {
-    query: getCategoryFiltersValidator(),
+    query: categoryFiltersValidator,
   },
   responses: {
     [OK]: jsonContent(readCategoriesWithPaginationValidator, getDataSuccessDesc(entity)),
     [UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(getCategoryFiltersValidator()),
+      createErrorSchema(categoryFiltersValidator),
       VALIDATION_ERROR_DESC
     ),
     [INTERNAL_SERVER_ERROR]: jsonContent(
@@ -175,7 +175,7 @@ export const deleteCategory = createRoute({
     [NOT_FOUND]: jsonContent(createMessageObjectSchema(entityNotFoundDesc), entityNotFoundDesc),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(categoryIdParamsSchema),
-      VALIDATION_ERROR_DESC
+      invalidIdDesc(entity)
     ),
     [INTERNAL_SERVER_ERROR]: jsonContent(
       createMessageObjectSchema(entityDeleteFailedDesc),

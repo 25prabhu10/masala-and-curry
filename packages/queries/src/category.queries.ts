@@ -36,17 +36,19 @@ export function getCategoriesQuery(
 ) {
   return queryOptions({
     queryFn: async () => {
-      let sortBy: string | undefined
+      const { sortBy, ...restFilters } = filters
 
-      if (typeof filters.sortBy === 'string') {
-        sortBy = filters.sortBy
+      let resolvedSortBy: string | undefined
+
+      if (typeof sortBy === 'string') {
+        resolvedSortBy = sortBy
       }
 
       const res = await apiClient.api.v1.categories.$get(
         {
           query: {
-            ...filters,
-            sortBy,
+            ...restFilters,
+            sortBy: resolvedSortBy,
           },
         },
         {

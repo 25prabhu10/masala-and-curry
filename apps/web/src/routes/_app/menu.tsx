@@ -1,6 +1,6 @@
 import { getCategoriesQuery } from '@mac/queries/category'
 import { getMenuItemsQuery } from '@mac/queries/menu-item'
-import { menuItemFiltersValidator } from '@mac/validators/menu-item'
+import { menuItemFiltersValidatorWithCatch } from '@mac/validators/menu-item'
 import { Button } from '@mac/web-ui/button'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -23,7 +23,7 @@ export const Route = createFileRoute('/_app/menu')({
       queryClient.ensureQueryData(getCategoriesQuery()),
     ])
   },
-  validateSearch: menuItemFiltersValidator,
+  validateSearch: menuItemFiltersValidatorWithCatch,
 })
 
 function RouteComponent() {

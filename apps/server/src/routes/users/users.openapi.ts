@@ -6,7 +6,6 @@ import {
   NOT_AUTHENTICATED,
   NOT_AUTHORIZED,
   notFoundDesc,
-  UPDATE_NO_CHANGES,
   updateDataDesc,
   updateFailedDesc,
   updateSuccessDesc,
@@ -74,10 +73,7 @@ export const updateUser = createRoute({
     params: userIdParamsSchema,
   },
   responses: {
-    [OK]: jsonContent(
-      updateUserValidator.or(createMessageObjectSchema(UPDATE_NO_CHANGES)),
-      updateSuccessDesc(entity)
-    ),
+    [OK]: jsonContent(updateUserValidator, updateSuccessDesc(entity)),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(updateUserValidator),
       VALIDATION_ERROR_DESC

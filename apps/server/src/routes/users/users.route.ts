@@ -11,7 +11,7 @@ import { EMAIL_ALREADY_EXISTS } from '@mac/resources/user'
 import { readUserValidator, type UpdateUser } from '@mac/validators/user'
 import { HTTPException } from 'hono/http-exception'
 
-import { NOT_AUTHORIZED_RES, UPDATE_NO_CHANGES_RES } from '@/lib/constants'
+import { NOT_AUTHORIZED_RES } from '@/lib/constants'
 import createRouter from '@/lib/create-router'
 import { hasAccess } from '@/lib/utils'
 
@@ -96,10 +96,6 @@ const router = createRouter()
         reqData.phoneNumber !== existingUserData.phoneNumber
       ) {
         dataToUpdate.phoneNumber = reqData.phoneNumber
-      }
-
-      if (Object.keys(dataToUpdate).length === 0) {
-        return c.json(UPDATE_NO_CHANGES_RES, OK)
       }
 
       const result = await updateUser(db, id, dataToUpdate)

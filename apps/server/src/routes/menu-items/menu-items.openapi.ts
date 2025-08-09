@@ -8,10 +8,10 @@ import {
   duplicateDataDesc,
   getDataFailedDesc,
   getDataSuccessDesc,
+  invalidIdDesc,
   NOT_AUTHENTICATED,
   NOT_AUTHORIZED,
   notFoundDesc,
-  UPDATE_NO_CHANGES,
   updateDataDesc,
   updateFailedDesc,
   updateSuccessDesc,
@@ -45,16 +45,18 @@ const tags = ['Menu Items']
 
 export const entity = 'Menu Item' as const
 
+const menuItemIdParamsSchema = createIdParamsOpenapiSchema(entity)
+
 const entityDuplicateDataDesc = duplicateDataDesc(entity)
-export const entityNotFoundDesc = notFoundDesc(entity)
+const entityNotFoundDesc = notFoundDesc(entity)
+
 export const entityFailedToGetDesc = getDataFailedDesc(entity)
 export const entityUpdateFailedDesc = updateFailedDesc(entity)
 export const entityCreateFailedDesc = createFailedDesc(entity)
-
-export const menuItemIdParamsSchema = createIdParamsOpenapiSchema(entity)
+export const entityDeleteFailedDesc = deleteFailedDesc(entity)
 
 export const getMenuItems = createRoute({
-  description: 'Get menu items with filtering, search, and pagination.',
+  description: 'Get all menu items with filtering, search, and pagination.',
   method: 'get',
   path: '/',
   request: {
@@ -87,7 +89,7 @@ export const getMenuItemById = createRoute({
     [NOT_FOUND]: jsonContent(createMessageObjectSchema(entityNotFoundDesc), entityNotFoundDesc),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(menuItemIdParamsSchema),
-      VALIDATION_ERROR_DESC
+      invalidIdDesc(entity)
     ),
     [INTERNAL_SERVER_ERROR]: jsonContent(
       createMessageObjectSchema(entityFailedToGetDesc),
@@ -137,9 +139,10 @@ export const updateMenuItem = createRoute({
     params: menuItemIdParamsSchema,
   },
   responses: {
-    [OK]: jsonContent(
-      readMenuItemValidator.or(createMessageObjectSchema(UPDATE_NO_CHANGES)),
-      updateSuccessDesc(entity)
+    [OK]: jsonContent(readMenuItemValidator, updateSuccessDesc(entity)),
+    [CONFLICT]: jsonContent(
+      createMessageObjectSchema(entityDuplicateDataDesc),
+      entityDuplicateDataDesc
     ),
     [NOT_FOUND]: jsonContent(createMessageObjectSchema(entityNotFoundDesc), entityNotFoundDesc),
     [UNPROCESSABLE_ENTITY]: jsonContent(
@@ -172,11 +175,11 @@ export const deleteMenuItem = createRoute({
     [NOT_FOUND]: jsonContent(createMessageObjectSchema(entityNotFoundDesc), entityNotFoundDesc),
     [UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(menuItemIdParamsSchema),
-      VALIDATION_ERROR_DESC
+      invalidIdDesc(entity)
     ),
     [INTERNAL_SERVER_ERROR]: jsonContent(
-      createMessageObjectSchema(deleteFailedDesc(entity)),
-      deleteFailedDesc(entity)
+      createMessageObjectSchema(entityDeleteFailedDesc),
+      entityDeleteFailedDesc
     ),
     [UNAUTHORIZED]: jsonContent(createMessageObjectSchema(NOT_AUTHENTICATED), NOT_AUTHENTICATED),
     [FORBIDDEN]: jsonContent(createMessageObjectSchema(NOT_AUTHORIZED), NOT_AUTHORIZED),
