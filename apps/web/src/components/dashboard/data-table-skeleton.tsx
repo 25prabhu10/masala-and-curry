@@ -3,10 +3,10 @@ import { Skeleton } from '@mac/web-ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@mac/web-ui/table'
 
 type DataTableSkeletonProps = {
-  totalRows: number
+  totalColumns: number
 }
 
-export default function DataTableSkeleton({ totalRows }: DataTableSkeletonProps) {
+export default function DataTableSkeleton({ totalColumns }: DataTableSkeletonProps) {
   return (
     <Card>
       <CardHeader>
@@ -16,7 +16,7 @@ export default function DataTableSkeleton({ totalRows }: DataTableSkeletonProps)
         <Table className="rounded-md border">
           <TableHeader>
             <TableRow>
-              {Array.from({ length: totalRows }).map((_, cellIndex) => (
+              {Array.from({ length: totalColumns }).map((_, cellIndex) => (
                 <TableHead key={`loading-cell-${cellIndex}`}>
                   <Skeleton className="h-4 w-full" />
                 </TableHead>
@@ -26,7 +26,7 @@ export default function DataTableSkeleton({ totalRows }: DataTableSkeletonProps)
           <TableBody>
             {Array.from({ length: 5 }).map((_, index) => (
               <TableRow key={`loading-${index}`}>
-                {Array.from({ length: totalRows }).map((_, cellIndex) => (
+                {Array.from({ length: totalColumns }).map((_, cellIndex) => (
                   <TableCell key={`loading-cell-${cellIndex}`}>
                     <Skeleton className="h-4 w-full" />
                   </TableCell>

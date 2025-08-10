@@ -1,29 +1,23 @@
 import { createDb } from '@mac/db'
 import { checkIfEmailExistsForOtherUser, getUserById, updateUser } from '@mac/repository/user'
-import {
-  CONFLICT,
-  FORBIDDEN,
-  INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
-  OK,
-} from '@mac/resources/http-status-codes'
+import { CONFLICT, FORBIDDEN, OK } from '@mac/resources/http-status-codes'
 import { EMAIL_ALREADY_EXISTS } from '@mac/resources/user'
-import { readUserValidator, type UpdateUser } from '@mac/validators/user'
-import { HTTPException } from 'hono/http-exception'
+import { readUserValidator, type UpdateUser, type User } from '@mac/validators/user'
 
+import { InternalServerError } from '@/lib/api-errors'
 import { NOT_AUTHORIZED_RES } from '@/lib/constants'
 import createRouter from '@/lib/create-router'
+import { handleApiError } from '@/lib/handle-errors'
+import { notFound } from '@/lib/response-helpers'
 import { hasAccess } from '@/lib/utils'
 
 import * as routes from './users.openapi'
 
 const router = createRouter()
-  // Get user by ID
   .openapi(routes.getUserById, async (c) => {
     const { id } = c.req.valid('param')
 
-    // Check if the user is trying to access their own data or if they are an admin
-    if (hasAccess(id, c.var.user)) {
+    if (!hasAccess(id, c.var.user)) {
       return c.json(NOT_AUTHORIZED_RES, FORBIDDEN)
     }
 
@@ -33,25 +27,19 @@ const router = createRouter()
       const queryData = await getUserById(db, id)
 
       if (!queryData) {
-        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+        return c.json(...notFound(routes.entity))
       }
 
       const result = await readUserValidator.safeParseAsync(queryData)
 
       if (!result.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityFailedToGetDesc,
-        })
+        throw new InternalServerError(routes.entityFailedToGetDesc)
       }
 
       return c.json(result.data, OK)
     } catch (error) {
-      if (error instanceof HTTPException) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityFailedToGetDesc)
     }
   })
   // Update user
@@ -59,19 +47,17 @@ const router = createRouter()
     const { id } = c.req.valid('param')
     const reqData = c.req.valid('json')
 
-    // Check if the user is trying to access their own data or if they are an admin
-    if (hasAccess(id, c.var.user)) {
+    if (!hasAccess(id, c.var.user)) {
       return c.json(NOT_AUTHORIZED_RES, FORBIDDEN)
     }
 
     try {
       const db = await createDb(c.env.DB)
 
-      // TODO: Check if this is done in middleware
       const existingUserData = await getUserById(db, id)
 
       if (!existingUserData) {
-        return c.json({ message: routes.entityNotFoundDesc }, NOT_FOUND)
+        return c.json(...notFound(routes.entity))
       }
 
       const dataToUpdate: UpdateUser = {}
@@ -98,29 +84,23 @@ const router = createRouter()
         dataToUpdate.phoneNumber = reqData.phoneNumber
       }
 
-      const result = await updateUser(db, id, dataToUpdate)
+      let result: User | undefined
 
-      if (result.length === 0) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityUpdateFailedDesc,
-        })
+      if (Object.keys(dataToUpdate).length === 0) {
+        result = existingUserData as User
+      } else {
+        ;[result] = (await updateUser(db, id, dataToUpdate)) as User[]
       }
 
-      const user = await readUserValidator.safeParseAsync(result[0])
+      const user = await readUserValidator.safeParseAsync(result)
 
       if (!user.success) {
-        throw new HTTPException(INTERNAL_SERVER_ERROR, {
-          message: routes.entityFailedToGetDesc,
-        })
+        throw new InternalServerError(routes.entityUpdateFailedDesc)
       }
       return c.json(user.data, OK)
     } catch (error) {
-      if (error instanceof HTTPException) {
-        throw error
-      }
-      throw new HTTPException(INTERNAL_SERVER_ERROR, {
-        message: routes.entityFailedToGetDesc,
-      })
+      handleApiError(error, routes.entity)
+      throw new InternalServerError(routes.entityUpdateFailedDesc)
     }
   })
 

@@ -84,6 +84,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
     }),
   categoryId: (schema) =>
     schema
+      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Category ID', MIN_STRING_LENGTH) })
       .max(NANOID_LENGTH, {
         message: maxLengthDesc('Category ID', NANOID_LENGTH),
       })

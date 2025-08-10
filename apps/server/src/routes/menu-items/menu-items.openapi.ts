@@ -131,7 +131,7 @@ export const createMenuItem = createRoute({
 
 export const updateMenuItem = createRoute({
   description: 'Update a menu item by ID.',
-  method: 'put',
+  method: 'post',
   middleware: [protect, isAdmin],
   path: '/:id',
   request: {

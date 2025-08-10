@@ -132,7 +132,12 @@ export const SelectUserSchema = createSelectSchema(user, {
       description: "User's last profile update date",
       example: '2023-01-01T00:00:00Z',
     }),
-}).openapi('User')
+})
+  .omit({
+    createdAt: true,
+    updatedAt: true,
+  })
+  .openapi('User')
 
 export const InsertUserSchema = createInsertSchema(user, {
   banExpires: () => SelectUserSchema.shape.banExpires,
@@ -161,6 +166,7 @@ export const UpdateUserSchema = createUpdateSchema(user, {
   name: () => SelectUserSchema.shape.name,
   phoneNumber: () => SelectUserSchema.shape.phoneNumber,
   phoneNumberVerified: () => SelectUserSchema.shape.phoneNumberVerified,
+  role: () => SelectUserSchema.shape.role,
 }).omit({
   createdAt: true,
   id: true,

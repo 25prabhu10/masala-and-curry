@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@mac/web-ui/dropdown-menu'
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import type { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal, Trash2 } from 'lucide-react'
@@ -38,28 +38,33 @@ import { sortByToState, stateToSortBy } from '@/lib/utils'
 const columnsDef: ColumnDef<Category>[] = [
   {
     cell: ({ row }) => (
-      <Checkbox
-        aria-label="Select row"
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-      />
+      <div className="flex items-center mr-1">
+        <Checkbox
+          aria-label="Select row"
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+        />
+      </div>
     ),
     enableHiding: false,
     enableSorting: false,
     header: ({ table }) => (
-      <Checkbox
-        aria-label="Select all"
-        checked={
-          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-      />
+      <div className="flex items-center mr-1">
+        <Checkbox
+          aria-label="Select all"
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        />
+      </div>
     ),
     id: 'select',
   },
   {
     accessorKey: 'name',
-    cell: ({ row }) => <div className="font-medium">{row.getValue('name')}</div>,
+    cell: ({ row }) => <div className="font-medium ml-2">{row.getValue('name')}</div>,
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
   },
   {
@@ -137,7 +142,7 @@ export const Route = createFileRoute('/dashboard/categories/')({
   },
   pendingComponent: () => (
     <div className="w-full mx-auto p-10">
-      <DataTableSkeleton totalRows={columnsDef.length} />
+      <DataTableSkeleton totalColumns={columnsDef.length} />
     </div>
   ),
   validateSearch: categoryFiltersValidatorWithCatch,
@@ -159,8 +164,8 @@ function RouteComponent() {
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
+      <CardHeader className="gap-4">
+        <div className="flex flex-wrap gap-4 items-center justify-between">
           <div>
             <CardTitle>Categories</CardTitle>
             <CardDescription>
@@ -168,7 +173,7 @@ function RouteComponent() {
             </CardDescription>
           </div>
           <Button asChild>
-            <Link to="/dashboard/categories/new">Add New Category</Link>
+            <Link to="/dashboard/categories/new">Add new category</Link>
           </Button>
         </div>
       </CardHeader>
@@ -221,12 +226,6 @@ function CategoryActionsDropdown({ category }: { category: Category }) {
             Edit
           </Link>
         </DropdownMenuItem>
-        {/* <EditCategoryDialog category={category}>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          <Edit className="mr-2 h-4 w-4" />
-          Edit category
-          </DropdownMenuItem>
-          </EditCategoryDialog> */}
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -240,7 +239,8 @@ function DeleteCategoryDialog({
   children: React.ReactNode
 }) {
   const [open, setOpen] = useState(false)
-  const { mutateAsync, isPending } = useMutation(deleteCategoryMutation())
+  const queryClient = useQueryClient()
+  const { mutateAsync, isPending } = useMutation(deleteCategoryMutation(queryClient))
 
   function handleDelete() {
     mutateAsync(category.id)
@@ -250,9 +250,7 @@ function DeleteCategoryDialog({
       .then(() => {
         toast.success(`Category "${category.name}" deleted successfully`)
       })
-      .finally(() => {
-        setOpen(false)
-      })
+      .finally(() => setOpen(false))
   }
 
   return (

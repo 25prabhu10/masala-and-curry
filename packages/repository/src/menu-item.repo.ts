@@ -2,7 +2,7 @@ import { category, type InsertMenuItemDB, menuItem, type UpdateMenuItemDB } from
 import type { DB } from '@mac/db/types'
 import type { TableRowCount } from '@mac/validators/general'
 import type { MenuItem, MenuItemFilters } from '@mac/validators/menu-item'
-import { and, count, eq, getTableColumns, like, type SQL } from 'drizzle-orm'
+import { and, asc, count, desc, eq, getTableColumns, like, type SQL } from 'drizzle-orm'
 
 import { withPagination } from './utils'
 
@@ -79,7 +79,15 @@ export async function getMenuItems(db: DB, filters: MenuItemFilters): Promise<Me
     .from(menuItem)
     .leftJoin(category, eq(menuItem.categoryId, category.id))
     .where(conditions.length > 0 ? and(...conditions) : undefined)
-    .orderBy(category.displayOrder, menuItem.displayOrder, menuItem.name)
+
+  if (filters.sortBy && filters.sortBy.length > 0 && typeof filters.sortBy !== 'string') {
+    const orderByColumns = filters.sortBy.map(({ column, direction }) => {
+      const columnRef = menuItem[column]
+      return direction === 'desc' ? desc(columnRef) : asc(columnRef)
+    })
+
+    query.orderBy(...orderByColumns)
+  }
 
   if (filters.pageIndex || filters.pageSize) {
     return await withPagination(query.$dynamic(), filters.pageIndex, filters.pageSize)

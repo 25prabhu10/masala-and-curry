@@ -64,7 +64,7 @@ export function UserProfileDropdown({ session }: UserProfileDropdownProps) {
         })
 
         await queryClient.resetQueries({ queryKey: authKeys.all })
-        await queryClient.setQueryData(userKeys.user(user.id), null)
+        await queryClient.setQueryData(userKeys.detail(user.id), null)
         await router.invalidate()
         await navigate({ to: '/' })
       } catch (error) {

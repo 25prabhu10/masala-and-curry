@@ -23,6 +23,7 @@
     "react/no-danger": "error",
     "react/no-this-in-sfc": "warn",
     "react/rules-of-hooks": "error",
+    "explicit-module-boundary-types": "off",
     "react/no-unknown-property": "warn",
     "react/no-unescaped-entities": "error",
     "react/jsx-no-useless-fragment": "error",

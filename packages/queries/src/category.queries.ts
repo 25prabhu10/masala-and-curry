@@ -14,12 +14,7 @@ import type {
   CreateCategory,
   UpdateCategoryInput,
 } from '@mac/validators/category'
-import {
-  mutationOptions,
-  type QueryClient,
-  queryOptions,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { mutationOptions, type QueryClient, queryOptions } from '@tanstack/react-query'
 
 import apiClient from './api-client'
 
@@ -102,12 +97,22 @@ export function getCategoryByIdQuery(id: string, abortController?: AbortControll
   })
 }
 
-export function createCategoryMutation(queryClient: QueryClient) {
+export function createCategoryMutation(
+  queryClient: QueryClient,
+  abortController?: AbortController
+) {
   return mutationOptions({
     mutationFn: async (data: CreateCategory) => {
-      const res = await apiClient.api.v1.categories.$post({
-        json: data,
-      })
+      const res = await apiClient.api.v1.categories.$post(
+        {
+          json: data,
+        },
+        {
+          init: {
+            signal: abortController?.signal,
+          },
+        }
+      )
 
       if (res.ok) {
         return res.json()
@@ -139,13 +144,24 @@ export function createCategoryMutation(queryClient: QueryClient) {
   })
 }
 
-export function updateCategoryMutation(id: string, queryClient: QueryClient) {
+export function updateCategoryMutation(
+  id: string,
+  queryClient: QueryClient,
+  abortController?: AbortController
+) {
   return mutationOptions({
     mutationFn: async (data: UpdateCategoryInput) => {
-      const res = await apiClient.api.v1.categories[':id'].$post({
-        json: data,
-        param: { id },
-      })
+      const res = await apiClient.api.v1.categories[':id'].$post(
+        {
+          json: data,
+          param: { id },
+        },
+        {
+          init: {
+            signal: abortController?.signal,
+          },
+        }
+      )
 
       if (res.ok) {
         return res.json()
@@ -169,7 +185,6 @@ export function updateCategoryMutation(id: string, queryClient: QueryClient) {
       const responseData = await res.json()
       throw new Error(responseData.message)
     },
-
     mutationKey: [...categoryKeys.all, 'update', id],
     onSuccess: (updatedCategory) => {
       queryClient.setQueryData(categoryKeys.detail(id), updatedCategory)
@@ -178,13 +193,22 @@ export function updateCategoryMutation(id: string, queryClient: QueryClient) {
   })
 }
 
-export function deleteCategoryMutation() {
-  const queryClient = useQueryClient()
+export function deleteCategoryMutation(
+  queryClient: QueryClient,
+  abortController?: AbortController
+) {
   return mutationOptions({
     mutationFn: async (id: string) => {
-      const res = await apiClient.api.v1.categories[':id'].$delete({
-        param: { id },
-      })
+      const res = await apiClient.api.v1.categories[':id'].$delete(
+        {
+          param: { id },
+        },
+        {
+          init: {
+            signal: abortController?.signal,
+          },
+        }
+      )
 
       if (res.ok) {
         return null

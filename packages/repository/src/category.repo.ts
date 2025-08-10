@@ -27,6 +27,7 @@ export async function getTotalCategoriesCount(
 
 export async function getCategories(db: DB, filters: CategoryFilters): Promise<Category[]> {
   const conditions: SQL[] = []
+
   if (filters.activeOnly) {
     conditions.push(eq(category.isActive, true))
   }

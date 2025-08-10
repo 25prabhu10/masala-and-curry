@@ -50,7 +50,7 @@ export const categoryFiltersValidator = z
 // Hono Zod Openapi throws error when `.catch` is used.
 export const categoryFiltersValidatorWithCatch = z
   .object({
-    activeOnly: SelectCategorySchema.shape.isActive.catch(true),
+    activeOnly: SelectCategorySchema.shape.isActive.unwrap().catch(true),
     pageIndex: paginationValidator.shape.pageIndex.catch(DEFAULT_PAGE_INDEX),
     pageSize: paginationValidator.shape.pageSize.catch(DEFAULT_PAGE_SIZE),
     search: InsertCategorySchema.shape.name.catch("''"),

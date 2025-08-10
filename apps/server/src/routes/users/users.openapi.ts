@@ -32,10 +32,12 @@ const tags = ['Users']
 
 export const entity = 'User' as const
 
-export const userIdParamsSchema = createIdParamsOpenapiSchema(entity)
+const userIdParamsSchema = createIdParamsOpenapiSchema(entity)
+
+const entityNotFoundDesc = notFoundDesc(entity)
+
 export const entityFailedToGetDesc = getDataFailedDesc(entity)
 export const entityUpdateFailedDesc = updateFailedDesc(entity)
-export const entityNotFoundDesc = notFoundDesc(entity)
 
 export const getUserById = createRoute({
   description: 'Get a user by User ID.',

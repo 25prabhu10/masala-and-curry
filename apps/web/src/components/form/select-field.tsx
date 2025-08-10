@@ -12,6 +12,9 @@ type SelectFieldProps = React.ComponentProps<typeof SelectTrigger> & {
   label: React.ReactNode
   required?: boolean
   showValidations?: boolean
+  all?: boolean
+  allLabel?: string
+  allValue?: string
 }
 
 export default function SelectField({
@@ -19,6 +22,8 @@ export default function SelectField({
   options,
   className,
   required,
+  all,
+  allLabel,
   showValidations = true,
   ...props
 }: SelectFieldProps) {
@@ -39,7 +44,8 @@ export default function SelectField({
         aria-describedby={`${field.name}-error`}
         aria-invalid={isInvalid}
         aria-required={required}
-        onValueChange={field.handleChange}
+        onValueChange={(value) => field.handleChange(value ?? null)}
+        required
         value={value}
       >
         <SelectTrigger
@@ -51,6 +57,7 @@ export default function SelectField({
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
         <SelectContent>
+          {all ? <SelectItem value="_null">{allLabel ?? 'All'}</SelectItem> : null}
           {options.map((option) => (
             <SelectItem
               aria-selected={field.state.value === option.value}

@@ -31,10 +31,10 @@ export function stateToSortBy(sorting: SortingState | undefined): string {
     return ''
   }
 
-  return sorting.map((sort) => `${sort.id}:${sort.desc ? 'desc' : 'asc'}` as const).join(',')
+  return sorting.map((sort) => `${sort.id}.${sort.desc ? 'desc' : 'asc'}` as const).join(',')
 }
 
-export function sortByToState(sortBy: CategoryFilters['sortBy'] | undefined) {
+export function sortByToState(sortBy: CategoryFilters['sortBy'] | undefined): SortingState {
   if (!sortBy || typeof sortBy !== 'string') {
     return []
   }
@@ -43,4 +43,15 @@ export function sortByToState(sortBy: CategoryFilters['sortBy'] | undefined) {
     const [id, desc] = item.split('.')
     return { desc: desc === 'desc', id: id ?? '' }
   })
+}
+
+export function formatCurrencyUSD(value: number | null | undefined): string {
+  if (value == null || Number.isNaN(value)) {
+    return '$0.00'
+  }
+  try {
+    return new Intl.NumberFormat('en-US', { currency: 'USD', style: 'currency' }).format(value)
+  } catch {
+    return `$${Number(value).toFixed(2)}`
+  }
 }

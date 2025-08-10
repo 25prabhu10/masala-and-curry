@@ -1,8 +1,11 @@
 import { getUserByIdQuery } from '@mac/queries/user'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@mac/web-ui/sidebar'
+import { Skeleton } from '@mac/web-ui/skeleton'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { Suspense } from 'react'
 
 import { DashboardSidebar } from '@/components/dashboard/dashboard-sidebar'
+import { UserProfileDropdown } from '@/components/header/user-profile-dropdown'
 
 export const Route = createFileRoute('/dashboard')({
   beforeLoad: async ({ context: { session, queryClient } }) => {
@@ -30,12 +33,17 @@ export const Route = createFileRoute('/dashboard')({
 })
 
 function RouteComponent() {
+  const { session } = Route.useLoaderData()
+
   return (
     <SidebarProvider>
       <DashboardSidebar />
       <SidebarInset>
-        <div className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <div className="flex justify-between h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
+          <Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
+            <UserProfileDropdown session={session} />
+          </Suspense>
         </div>
         <Outlet />
       </SidebarInset>

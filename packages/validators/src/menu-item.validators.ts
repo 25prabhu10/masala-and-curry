@@ -33,21 +33,21 @@ export const updateMenuItemValidator = UpdateMenuItemSchema
 
 export type MenuItem = z.output<typeof readMenuItemValidator>
 export type CreateMenuItem = z.infer<typeof createMenuItemValidator>
-export type UpdateMenuItem = z.infer<typeof updateMenuItemValidator>
+export type UpdateMenuItemInput = z.input<typeof updateMenuItemValidator>
 
 const menuItemSortableColumns = ['displayOrder', 'name'] as const satisfies ColumnsOf<MenuItem>
 
 // TODO: add max and min price
 export const menuItemFiltersValidator = z
   .object({
-    availableOnly: readMenuItemValidator.shape.isAvailable,
+    availableOnly: readMenuItemValidator.shape.isAvailable.unwrap(),
     categoryId: SelectCategorySchema.shape.id,
-    glutenFree: readMenuItemValidator.shape.isGlutenFree,
-    popular: readMenuItemValidator.shape.isPopular,
+    glutenFree: readMenuItemValidator.shape.isGlutenFree.unwrap(),
+    popular: readMenuItemValidator.shape.isPopular.unwrap(),
     search: InsertMenuItemSchema.shape.name,
     sortBy: createSortingValidator(menuItemSortableColumns, 'displayOrder', false),
-    vegan: readMenuItemValidator.shape.isVegan,
-    vegetarian: readMenuItemValidator.shape.isVegetarian,
+    vegan: readMenuItemValidator.shape.isVegan.unwrap(),
+    vegetarian: readMenuItemValidator.shape.isVegetarian.unwrap(),
     ...paginationValidator.shape,
   })
   .partial()
@@ -70,17 +70,20 @@ export const menuItemFiltersValidator = z
 
 export const menuItemFiltersValidatorWithCatch = z
   .object({
-    availableOnly: readMenuItemValidator.shape.isAvailable.catch(true),
-    categoryId: SelectCategorySchema.shape.id.catch(''),
-    glutenFree: readMenuItemValidator.shape.isGlutenFree.catch(false),
+    availableOnly: readMenuItemValidator.shape.isAvailable.unwrap().catch(true),
+    categoryId: SelectCategorySchema.shape.id
+      .catch('')
+      .transform((value) => (value === '_null' ? '' : value)),
+    glutenFree: readMenuItemValidator.shape.isGlutenFree.unwrap().catch(false),
     pageIndex: paginationValidator.shape.pageIndex.catch(DEFAULT_PAGE_INDEX),
     pageSize: paginationValidator.shape.pageSize.catch(DEFAULT_PAGE_SIZE),
-    popular: readMenuItemValidator.shape.isPopular.catch(false),
+    popular: readMenuItemValidator.shape.isPopular.unwrap().catch(false),
+    search: InsertMenuItemSchema.shape.name.catch("''"),
     sortBy: createSortingValidator(menuItemSortableColumns, 'displayOrder', true).catch(
       'displayOrder'
     ),
-    vegan: readMenuItemValidator.shape.isVegan.catch(false),
-    vegetarian: readMenuItemValidator.shape.isVegetarian.catch(false),
+    vegan: readMenuItemValidator.shape.isVegan.unwrap().catch(false),
+    vegetarian: readMenuItemValidator.shape.isVegetarian.unwrap().catch(false),
   })
   .partial()
 

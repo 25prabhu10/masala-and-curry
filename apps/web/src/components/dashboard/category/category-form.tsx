@@ -1,7 +1,13 @@
 import { createCategoryMutation, updateCategoryMutation } from '@mac/queries/category'
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
-import type { Category, CreateCategory, UpdateCategoryInput } from '@mac/validators/category'
+import {
+  type Category,
+  type CreateCategory,
+  createCategoryValidator,
+  type UpdateCategoryInput,
+  updateCategoryValidator,
+} from '@mac/validators/category'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -43,14 +49,9 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
   const updateMutation = useMutation(updateCategoryMutation(data.id, queryClient))
 
   const form = useAppForm({
-    defaultValues: {
-      description: data.description,
-      displayOrder: data.displayOrder,
-      isActive: data.isActive,
-      name: data.name,
-    } as CreateCategory | UpdateCategoryInput,
+    defaultValues: data as CreateCategory | UpdateCategoryInput,
     validators: {
-      //   onChange: isNew ? createCategoryValidator : updateCategoryValidator,
+      onChange: isNew ? createCategoryValidator : updateCategoryValidator,
       onSubmitAsync: async ({ value }) => {
         try {
           if (isNew) {
@@ -85,6 +86,7 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
       </CardHeader>
       <CardContent>
         <form
+          className="space-y-2"
           onSubmit={(e) => {
             e.preventDefault()
             e.stopPropagation()

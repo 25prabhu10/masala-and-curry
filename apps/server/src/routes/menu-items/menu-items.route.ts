@@ -22,6 +22,7 @@ const router = createRouter()
     const query = c.req.valid('query')
 
     try {
+      console.error('Filters', JSON.stringify(query, null, 2))
       const db = await createDb(c.env.DB)
       const queryData = await getMenuItems(db, query)
       const [totalCount] = await getTotalMenuItemsCount(db, query)
@@ -70,6 +71,8 @@ const router = createRouter()
 
     try {
       const db = await createDb(c.env.DB)
+
+      console.error('Created Menu Item', JSON.stringify(reqData, null, 2))
 
       const queryData = await createMenuItem(db, reqData)
 
