@@ -4,9 +4,9 @@ import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Calendar, Clock, Edit, Heart, Mail, MapPin, Phone, Star, User } from 'lucide-react'
+import { Clock, Edit, Heart, Mail, MapPin, Phone, Star, User } from 'lucide-react'
 
-import { formatDate, getInitials } from '@/lib/utils'
+import { getInitials } from '@/lib/utils'
 
 export const Route = createFileRoute('/_app/(protected)/profile/')({
   component: RouteComponent,
@@ -90,14 +90,6 @@ function RouteComponent() {
                       <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                         <Phone className="h-4 w-4 text-muted-foreground" />
                         <span className="text-foreground">{user.phoneNumber}</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium text-muted-foreground">Account Created</p>
-                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-foreground">{formatDate(user.createdAt)}</span>
                       </div>
                     </div>
                   </div>

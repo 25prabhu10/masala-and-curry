@@ -16,6 +16,8 @@ export const UPDATE_SUCCESS_DESC: string = 'Update successful.'
 
 export const PAGINATION_ERROR_DESC: string = 'Must be a valid position number (e.g. 0, 1, 10)'
 
+export const INVALID_URL_DESC: string = 'Must be a valid URL.'
+
 export function duplicateDataDesc(entity: Readonly<string>): string {
   return `${entity} with same data already exists.`
 }
@@ -82,4 +84,28 @@ export function updateFailedDesc(name: Readonly<string>): string {
 
 export function notFoundDesc(name: Readonly<string>): string {
   return `${name} not found.`
+}
+
+export function uploadFileDesc(name: Readonly<string>): string {
+  return `${name} file to be uploaded.`
+}
+
+export function uploadFileSuccessDesc(name: Readonly<string>): string {
+  return `${name} file uploaded successfully.`
+}
+
+export function uploadFileFailedDesc(name: Readonly<string>): string {
+  return `Failed to upload ${name} file. Please try again later.`
+}
+
+export function fileMinSizeDesc(name: Readonly<string>, minSize: Readonly<number>): string {
+  return `${name} file must be at least ${minSize} MB.`
+}
+
+export function fileMaxSizeDesc(name: Readonly<string>, maxSize: Readonly<number>): string {
+  return `${name} file must be at most ${maxSize} MB.`
+}
+
+export function invalidFileDesc(name: Readonly<string>): string {
+  return `The file must be a valid ${name} file.`
 }

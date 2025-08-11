@@ -21,6 +21,12 @@
       "migrations_dir": "../../packages/db/src/migrations"
     }
   ],
+  "r2_buckets": [
+    {
+      "binding": "mac_bucket",
+      "bucket_name": "mac-dev"
+    }
+  ],
   "env": {
     "production": {
       "routes": [
@@ -39,6 +45,12 @@
           "database_name": "mac-prod",
           "database_id": "e456f3fa-bfda-48dd-b0a1-4fb512e749f9",
           "migrations_dir": "../../packages/db/src/migrations"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "bucket_name": "mac-bucket",
+          "binding": "mac_bucket"
         }
       ],
       "vars": {

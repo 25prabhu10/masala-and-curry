@@ -39,7 +39,7 @@
     "@mac/resources": "workspace:*",
     "drizzle-orm": "catalog:",
     "drizzle-zod": "^0.8.2",
-    "nanoid": "^5.1.5"
+    "nanoid": "catalog:"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.48.4",

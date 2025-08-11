@@ -1,8 +1,5 @@
 import { z } from '@hono/zod-openapi'
 import { InsertCategorySchema, SelectCategorySchema, UpdateCategorySchema } from '@mac/db/schemas'
-
-// import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
-
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
 
 import {

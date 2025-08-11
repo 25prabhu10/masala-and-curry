@@ -13,7 +13,7 @@ export default defineConfig({
       workers: {
         isolatedStorage: false,
         wrangler: {
-          configPath: './wrangler.toml',
+          configPath: './wrangler.jsonc',
         },
       },
     },

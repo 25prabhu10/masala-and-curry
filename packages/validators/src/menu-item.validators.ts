@@ -13,6 +13,7 @@ import {
   paginationValidator,
   rowCountValidator,
 } from './general.validators'
+import { uploadImageSchema } from './image.validators'
 
 export const readMenuItemValidator = z.object({
   ...SelectMenuItemSchema.shape,
@@ -31,11 +32,25 @@ export const readMenuItemsValidator = z.object({
 export const createMenuItemValidator = InsertMenuItemSchema
 export const updateMenuItemValidator = UpdateMenuItemSchema
 
-export type MenuItem = z.output<typeof readMenuItemValidator>
-export type CreateMenuItem = z.infer<typeof createMenuItemValidator>
-export type UpdateMenuItemInput = z.input<typeof updateMenuItemValidator>
+export const createMenuItemWithImageValidator = z.object({
+  ...InsertMenuItemSchema.shape,
+  file: uploadImageSchema.shape.file.optional(),
+})
 
-const menuItemSortableColumns = ['displayOrder', 'name'] as const satisfies ColumnsOf<MenuItem>
+export const updateMenuItemWithImageValidator = z.object({
+  ...UpdateMenuItemSchema.shape,
+  file: uploadImageSchema.shape.file.optional(),
+})
+
+export type MenuItem = z.output<typeof readMenuItemValidator>
+export type CreateMenuItem = z.infer<typeof createMenuItemWithImageValidator>
+export type UpdateMenuItemInput = z.input<typeof updateMenuItemWithImageValidator>
+
+const menuItemSortableColumns = [
+  'displayOrder',
+  'name',
+  'isPopular',
+] as const satisfies ColumnsOf<MenuItem>
 
 // TODO: add max and min price
 export const menuItemFiltersValidator = z

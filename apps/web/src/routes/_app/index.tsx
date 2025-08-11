@@ -1,12 +1,30 @@
+import { getMenuItemsQuery } from '@mac/queries/menu-item'
 import { Button } from '@mac/web-ui/button'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowRight, Clock, MapPin, Phone, Star } from 'lucide-react'
 
+import ImageUI from '@/components/image-ui'
+import { getImageURL } from '@/lib/utils'
+
+const queryOptions = {
+  availableOnly: true,
+  pageSize: 3,
+  sortBy: 'isPopular',
+}
+
 export const Route = createFileRoute('/_app/')({
   component: Index,
+  loader: async ({ context: { queryClient } }) => {
+    await queryClient.ensureQueryData(getMenuItemsQuery(queryOptions))
+  },
 })
 
 function Index() {
+  const {
+    data: { result: featuredDishes },
+  } = useSuspenseQuery(getMenuItemsQuery(queryOptions))
+
   return (
     <main className="flex-1">
       <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-20 lg:py-32">
@@ -64,13 +82,11 @@ function Index() {
             <div className="relative">
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  {/* <div className="text-6xl">🍛</div> */}
                   <img
                     alt="Featured Dish"
                     className="w-full h-auto rounded-lg shadow-lg"
                     src="/images/landing-food.jpg"
                   />
-                  {/* <p className="text-muted-foreground">Featured Dish Image</p> */}
                 </div>
               </div>
               <div className="absolute -top-4 -right-4 bg-card border border-border rounded-lg p-4 shadow-lg">
@@ -107,12 +123,7 @@ function Index() {
                 key={dish.name}
               >
                 <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                  {/* <span className="text-4xl">{dish.emoji}</span> */}
-                  <img
-                    alt="Butter Chicken"
-                    className="bg-cover rounded-lg shadow-lg"
-                    src={dish.image}
-                  />
+                  <ImageUI alt={dish.name} url={getImageURL(dish.image)} />
                 </div>
                 <div className="p-6 space-y-3">
                   <h3 className="text-xl font-semibold text-foreground">{dish.name}</h3>
@@ -197,24 +208,6 @@ function Index() {
     </main>
   )
 }
-
-const featuredDishes = [
-  {
-    description: 'Tender chicken in a rich, creamy tomato sauce with aromatic spices',
-    image: '/images/butter-chicken.jpg',
-    name: 'Butter Chicken',
-  },
-  {
-    description: 'Traditional Nepalese dumplings filled with spiced chicken and herbs',
-    image: '/images/chicken-momos.jpg',
-    name: 'Chicken Momos',
-  },
-  {
-    description: 'Fragrant basmati rice layered with tender lamb and saffron',
-    image: '/images/lamb-biryani.jpg',
-    name: 'Lamb Biryani',
-  },
-]
 
 const features = [
   {

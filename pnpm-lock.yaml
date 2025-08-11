@@ -28,6 +28,9 @@ catalogs:
     drizzle-orm:
       specifier: ^0.44.4
       version: 0.44.4
+    nanoid:
+      specifier: ^5.1.5
+      version: 5.1.5
     oxlint:
       specifier: 1.10.0
       version: 1.10.0
@@ -219,6 +222,9 @@ importers:
       hono:
         specifier: catalog:api
         version: 4.9.0
+      nanoid:
+        specifier: 'catalog:'
+        version: 5.1.5
     devDependencies:
       '@mac/tsconfig':
         specifier: workspace:*
@@ -386,7 +392,7 @@ importers:
         specifier: ^0.8.2
         version: 0.8.3(drizzle-orm@0.44.4(@libsql/client@0.15.10)(kysely@0.28.4))(zod@4.0.16)
       nanoid:
-        specifier: ^5.1.5
+        specifier: 'catalog:'
         version: 5.1.5
     devDependencies:
       '@dotenvx/dotenvx':

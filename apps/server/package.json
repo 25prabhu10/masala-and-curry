@@ -30,7 +30,8 @@
     "@mac/validators": "workspace:*",
     "@scalar/hono-api-reference": "^0.9.12",
     "better-auth": "catalog:api",
-    "hono": "catalog:api"
+    "hono": "catalog:api",
+    "nanoid": "catalog:"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",

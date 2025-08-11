@@ -2,6 +2,7 @@ import { authClient } from '@/lib/auth'
 import createApp from '@/lib/create-app'
 
 import categories from './categories/categories.route'
+import images from './images/images.route'
 import index from './index.route'
 import menuItems from './menu-items/menu-items.route'
 import users from './users/users.route'
@@ -15,6 +16,7 @@ const routes = app
   .route('/users', users)
   .route('/categories', categories)
   .route('/menu-items', menuItems)
+  .route('/images', images)
 
 export type APIRoutes = typeof routes
 

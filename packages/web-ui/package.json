@@ -9,6 +9,7 @@
   "type": "module",
   "exports": {
     "./avatar": "./src/ui/avatar.tsx",
+    "./aspect-ratio": "./src/ui/aspect-ratio.tsx",
     "./badge": "./src/ui/badge.tsx",
     "./button": "./src/ui/button.tsx",
     "./card": "./src/ui/card.tsx",

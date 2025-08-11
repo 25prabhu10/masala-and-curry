@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/
 import { Clock, ShoppingCart, Star } from 'lucide-react'
 import { useState } from 'react'
 
+import { formatCurrencyUSD } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
 
 import { DietaryTags } from './dietary-tags'
@@ -26,13 +27,6 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
   function handleAddToCart() {
     addItem(menuItem, undefined, quantity)
     setQuantity(1)
-  }
-
-  function formatPrice(price: number, currency = 'USD') {
-    return new Intl.NumberFormat('en-US', {
-      currency,
-      style: 'currency',
-    }).format(price)
   }
 
   function formatPrepTime(minutes: number) {
@@ -68,7 +62,7 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
 
           <div className="text-right flex-shrink-0">
             <div className="text-xl font-bold text-primary">
-              {formatPrice(menuItem.basePrice, menuItem.currency)}
+              {formatCurrencyUSD(menuItem.basePrice, menuItem.currency)}
             </div>
             {!menuItem.isAvailable && (
               <div className="text-xs text-destructive font-medium mt-1">Unavailable</div>

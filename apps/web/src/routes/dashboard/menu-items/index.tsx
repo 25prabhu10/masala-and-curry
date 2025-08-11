@@ -177,9 +177,7 @@ function RouteComponent() {
   const { filters, setFilters } = useFilters(Route.fullPath)
 
   const { data } = useSuspenseQuery(getMenuItemsQuery(filters))
-  const { data: categories } = useSuspenseQuery(
-    getCategoriesQuery({ activeOnly: true, pageSize: 100 })
-  )
+  const { data: categoriesData } = useSuspenseQuery(getCategoriesQuery({ activeOnly: true }))
 
   const paginationState = {
     pageIndex: filters.pageIndex ?? DEFAULT_PAGE_INDEX,
@@ -241,7 +239,7 @@ function RouteComponent() {
                   all={true}
                   className="h-12"
                   label="Category"
-                  options={categories.result.map((category) => {
+                  options={categoriesData.result.map((category) => {
                     return {
                       label: category.name,
                       value: category.id,

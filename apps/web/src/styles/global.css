@@ -1,3 +1,19 @@
+@font-face {
+  font-display: optional;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/poppins-v23-latin-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: optional;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/poppins-v23-latin-700.woff2") format("woff2");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -76,22 +92,6 @@
     --sidebar-accent-foreground: 42 21% 89%;
     --sidebar-border: 24 24% 18%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  @font-face {
-    font-display: optional;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 400;
-    src: url("/fonts/poppins-v23-latin-regular.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-display: optional;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    src: url("/fonts/poppins-v23-latin-700.woff2") format("woff2");
   }
 
   * {

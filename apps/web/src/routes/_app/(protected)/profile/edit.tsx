@@ -1,10 +1,5 @@
-import { getUserByIdQuery, updateUserQuery, userKeys } from '@mac/queries/user'
-import {
-  FORM_SUBMISSION_ERROR_DESC,
-  UNEXPECTED_ERROR_DESC,
-  UPDATE_SUCCESS_DESC,
-} from '@mac/resources/general'
-import { CONFLICT, UNPROCESSABLE_ENTITY } from '@mac/resources/http-status-codes'
+import { getUserByIdQuery, updateUserQuery } from '@mac/queries/user'
+import { FORM_SUBMISSION_ERROR_DESC, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { type UpdateUser, updateUserValidator } from '@mac/validators/user'
 import { Button } from '@mac/web-ui/button'
 import {
@@ -33,7 +28,7 @@ function RouteComponent() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const UpdateProfile = useMutation(updateUserQuery(user.id))
+  const UpdateProfile = useMutation(updateUserQuery(user.id, queryClient))
 
   const form = useAppForm({
     defaultValues: {
@@ -48,37 +43,13 @@ function RouteComponent() {
     validators: {
       onChange: updateUserValidator,
       onSubmitAsync: async ({ value }) => {
-        try {
-          const res = await UpdateProfile.mutateAsync(value)
+        await UpdateProfile.mutateAsync(value)
 
-          if (res.ok) {
-            toast.success(UPDATE_SUCCESS_DESC)
-            await queryClient.invalidateQueries({ queryKey: userKeys.user(user.id) })
-            await navigate({ to: '/profile' })
+        toast.success(UPDATE_SUCCESS_DESC)
+        // await queryClient.invalidateQueries({ queryKey: userKeys.user(user.id) })
+        await navigate({ to: '/profile' })
 
-            return null
-          }
-
-          if (res.status === CONFLICT) {
-            const responseData = await res.json()
-            return { form: responseData.message }
-          } else if (res.status === UNPROCESSABLE_ENTITY) {
-            const responseErrors = await res.json()
-
-            return {
-              fields: responseErrors,
-              form: responseErrors.errors?.join(', '),
-            }
-          }
-
-          return null
-        } catch (error) {
-          if (error instanceof Error) {
-            toast.error(error.message)
-          } else {
-            toast.error(UNEXPECTED_ERROR_DESC)
-          }
-        }
+        return null
       },
     },
   })

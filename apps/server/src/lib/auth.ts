@@ -55,6 +55,7 @@ export const auth = betterAuth({
   }),
 })
 
+// oxlint-disable-next-line explicit-module-boundary-types
 export async function authClient(env: CloudflareBindings) {
   return betterAuth({
     ...betterAuthOptions,

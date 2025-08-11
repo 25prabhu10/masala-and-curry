@@ -15,6 +15,11 @@ import createRouter from '@/lib/create-router'
 import { handleApiError } from '@/lib/handle-errors'
 import { notFound } from '@/lib/response-helpers'
 
+import {
+  deleteAllUnderPrefix,
+  generateAndPersistVariants,
+  parseKeysFromPublicUrl,
+} from '../images/utils/variants'
 import * as routes from './menu-items.openapi'
 
 const router = createRouter()
@@ -82,6 +87,20 @@ const router = createRouter()
         throw new InternalServerError(routes.entityCreateFailedDesc)
       }
 
+      // Fire-and-forget variant generation if image provided
+      if (reqData.image) {
+        const parsed = parseKeysFromPublicUrl(reqData.image)
+        if (parsed.originalKey && parsed.imageKey) {
+          generateAndPersistVariants(
+            c.env as CloudflareBindings,
+            parsed.originalKey,
+            parsed.imageKey
+          ).catch((error: unknown) => {
+            console.error('Variant generation failed:', error)
+          })
+        }
+      }
+
       return c.json(result.data, CREATED)
     } catch (error) {
       handleApiError(error, routes.entity)
@@ -109,6 +128,26 @@ const router = createRouter()
         throw new InternalServerError(routes.entityUpdateFailedDesc)
       }
 
+      // If image changed, cleanup old and generate new variants
+      const oldUrl = existingItem.image
+      const newUrl = (reqData as { image?: string }).image
+      if (newUrl && newUrl !== oldUrl) {
+        const oldParsed = oldUrl ? parseKeysFromPublicUrl(oldUrl) : null
+        const newParsed = parseKeysFromPublicUrl(newUrl)
+        if (oldParsed?.folderPrefix) {
+          deleteAllUnderPrefix(c.env as CloudflareBindings, oldParsed.folderPrefix).catch(
+            (error: unknown) => console.error('Image cleanup failed:', error)
+          )
+        }
+        if (newParsed.originalKey && newParsed.imageKey) {
+          generateAndPersistVariants(
+            c.env as CloudflareBindings,
+            newParsed.originalKey,
+            newParsed.imageKey
+          ).catch((error: unknown) => console.error('Variant generation failed:', error))
+        }
+      }
+
       return c.json(menuItem.data, OK)
     } catch (error) {
       handleApiError(error, routes.entity)
@@ -128,6 +167,14 @@ const router = createRouter()
       }
 
       await deleteMenuItem(db, id)
+
+      // Cleanup any images under the item's folder
+      if (existingItem.image) {
+        const parsed = parseKeysFromPublicUrl(existingItem.image)
+        if (parsed.folderPrefix) {
+          await deleteAllUnderPrefix(c.env as CloudflareBindings, parsed.folderPrefix)
+        }
+      }
 
       return c.body(null, NO_CONTENT)
     } catch (error) {

@@ -9,6 +9,7 @@ import { notFound, onError } from '@/middlewares'
 import { BASE_PATH } from './constants'
 import createRouter from './create-router'
 
+// oxlint-disable-next-line explicit-module-boundary-types
 export default function createApp() {
   const app = createRouter()
 

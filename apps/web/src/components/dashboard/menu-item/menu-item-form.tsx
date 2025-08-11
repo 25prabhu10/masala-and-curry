@@ -1,4 +1,5 @@
 import { getCategoriesQuery } from '@mac/queries/category'
+import { uploadImageMutation } from '@mac/queries/image'
 import { createMenuItemMutation, updateMenuItemMutation } from '@mac/queries/menu-item'
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
@@ -11,6 +12,7 @@ import {
 } from '@mac/validators/menu-item'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
+import { useStore } from '@tanstack/react-form'
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useMemo } from 'react'
@@ -49,6 +51,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
 
   const createMutation = useMutation(createMenuItemMutation(queryClient))
   const updateMutation = useMutation(updateMenuItemMutation(data.id, queryClient))
+  const uploadImgMutation = useMutation(uploadImageMutation())
 
   const categoriesQuery = useSuspenseQuery(getCategoriesQuery({ activeOnly: true }))
   const categoryOptions: SelectOption[] = useMemo(() => {
@@ -64,11 +67,24 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
       onChange: isNew ? createMenuItemValidator : updateMenuItemValidator,
       onSubmitAsync: async ({ value }) => {
         try {
+          let payload = value as CreateMenuItem | UpdateMenuItemInput
+
+          // If a new image file is selected, upload it first and set the image URL
+          if (form.state.values.file) {
+            const response = await uploadImgMutation.mutateAsync(form.state.values.file)
+
+            if (!response.url) {
+              throw new Error('Failed to upload image')
+            }
+
+            payload = { ...(value as CreateMenuItem | UpdateMenuItemInput), image: response.url }
+          }
+
           if (isNew) {
-            await createMutation.mutateAsync(value as CreateMenuItem)
+            await createMutation.mutateAsync(payload as CreateMenuItem)
             toast.success(createDataSuccessDesc((value as CreateMenuItem).name ?? 'Menu Item'))
           } else {
-            await updateMutation.mutateAsync(value as UpdateMenuItemInput)
+            await updateMutation.mutateAsync(payload as UpdateMenuItemInput)
             toast.success(UPDATE_SUCCESS_DESC)
           }
           navigate({ to: '/dashboard/menu-items' })
@@ -85,6 +101,15 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
       },
     },
   })
+
+  const imageUrl = useStore(form.store, (state) => state.values.image)
+
+  const fullImageUrl = useMemo(() => {
+    if (!imageUrl) {
+      return undefined
+    }
+    return `${window.location.origin}${import.meta.env.VITE_BASE_PATH}/images/${imageUrl}`
+  }, [imageUrl])
 
   return (
     <Card>
@@ -179,7 +204,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="col-span-2 flex flex-wrap gap-4">
               <form.AppField
                 children={(field) => <field.CheckboxField label="Vegetarian" />}
                 name="isVegetarian"
@@ -198,6 +223,18 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
               />
             </div>
           </div>
+
+          <form.AppField
+            children={(field) => (
+              <field.FileField
+                className="h-12"
+                label="Image"
+                title="Upload an image file"
+                url={fullImageUrl}
+              />
+            )}
+            name="file"
+          />
 
           <form.AppForm>
             <form.FormErrors />

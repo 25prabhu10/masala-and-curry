@@ -4,37 +4,21 @@ globs: "**/*.{ts,tsx,js,jsx}"
 alwaysApply: true
 ---
 
-# Project Context
+# Masala and Curry — Copilot Coding Agent Onboarding
 
-This is a food delivery application for the restaurant **Masala and Curry** built as a modern monorepo. This app is dedicated to a single restaurant: "Masala and Curry".
+Purpose: Help an automated coding agent work efficiently in this monorepo, avoid build/test failures, and minimize search. Trust this document first; only explore if something here is missing or provably incorrect.
 
-### Masala and Curry Restaurant Context
+## What this repo is
 
-- **Cuisine Type**: Indian/South Asian restaurant
-- **Service Model**: Delivery and takeout only
-- **Operating Hours**: [Define specific hours]
-- **Delivery Areas**: [Define coverage zones]
-- **Menu Categories**: Appetizers, Curries, Biryanis, Breads, Desserts, Beverages
-- **Special Features**: Spice level customization, dietary restrictions support
+- A pnpm + Turborepo monorepo.
+- Apps:
+  - Web (React 19 + Vite): `apps/web`
+  - Mobile (React Native + Expo): `apps/mobile`
+  - API Server (Hono on Cloudflare Workers): `apps/server`
+- Shared packages: UI libraries, data access, validators, queries, API client, and shared configs under `packages/*` and `tooling/*`.
+  - UI libraries, API client (Hono js RPC client), Database Schemas (Drizzle ORM), Queries (Tanstack/React query), Repository for data access, validators (Zod), resources such as constants, messages, etc., and tooling for web/mobile platforms
 
-### Business Rules
-
-- Orders must have minimum value for delivery
-- Spice levels: Mild, Medium, Hot, Extra Hot
-- Dietary tags: Vegetarian, Vegan, Gluten-Free, Dairy-Free
-- No alcohol sales
-- All prices include tax
-
-### Project Structure
-
-The project includes:
-
-- **Web App** (`apps/web`) - Customer-facing React application with TanStack Router
-- **Mobile App** (`apps/mobile`) - Cross-platform React Native app with Expo
-- **API Server** (`apps/server`) - Hono.js backend deployed on Cloudflare Workers
-- **Shared Packages** - UI libraries, API client (Hono js RPC client), Database Schemas (Drizzle ORM), Queries (Tanstack/React query), Repository for data access, validators (Zod), resources such as constants, messages, etc., and tooling for web/mobile platforms
-
-```
+```text
 masala-and-curry/
 ├── apps/
 │   ├── web/           # Customer-facing React app (TanStack Router)
@@ -54,18 +38,165 @@ masala-and-curry/
     └── typescript/    # TypeScript configurations
 ```
 
-### Tech Stack
+### Tech, tooling, versions, and conventions
 
-- Frontend: React 19, React Native, TypeScript, Tailwind CSS/NativeWind, TanStack Router, Expo Router
-- State Management: TanStack Query, Zustand
-- Backend: Hono.js, Cloudflare Workers
-- Database: SQLite (D1 on Cloudflare Workers)
-- ORM: Drizzle ORM
-- API: Hono.js, OpenAPI, Zod for validation
-- Authentication: Better Auth
-- Deployment: Cloudflare Workers, D1 Database
-- Build: Turborepo, pnpm workspaces, Vite, Expo
-- Testing: Vitest, React Testing Library, Playwright
+- Node: >= 22.17.0 (required). pnpm: >= 10.12.4 (repo pins pnpm 10.14.0). Always use pnpm at the repo root.
+- Workspace manager: pnpm workspaces (`pnpm-workspace.yaml`). Task runner/caching: Turborepo (`turbo.json`).
+- Linting: Oxlint (JavaScript/TypeScript). Formatting: Biome (via `ultracite` preset) + lefthook pre-commit.
+- TypeScript project refs via shared presets (`tooling/typescript/*`). Tailwind configs in `tooling/tailwind/*`.
+- Server runtime: Cloudflare Workers via Wrangler (`apps/server/wrangler.jsonc`). Local DB: Cloudflare D1. S3 Bucket: Cloudflare R2.
+
+### Repository layout (high signal paths)
+
+- Root:
+  - `package.json` (root scripts, engines, postinstall), `turbo.json`, `pnpm-workspace.yaml`, `biome.jsonc`, `lefthook.yml`, `knip.ts`.
+  - No CI workflows are present under `.github/workflows` at the time of writing; rely on local checks below.
+- Apps:
+  - Web: `apps/web` (Vite config, Tailwind, routes in `src/routes`).
+  - Mobile: `apps/mobile` (Expo 53, NativeWind; Android/iOS projects present under `android/` etc.).
+  - Server: `apps/server` (Hono app `src/app.ts`, worker entry `src/index.ts`, routes `src/routes`, Wrangler `wrangler.jsonc`).
+- Packages (selected):
+  - `@mac/web-ui`, `@mac/mobile-ui` (design systems), `@mac/db` (Drizzle ORM + D1 migrations), `@mac/repository`, `@mac/validators`, `@mac/queries`, `@mac/api-client`, `@mac/resources`.
+- Tooling: `tooling/typescript/*` tsconfig bases, `tooling/tailwind/*` shared Tailwind configs.
+
+## Build, run, test, lint — do these steps in this order
+
+Prereqs (once per machine):
+
+- Ensure Node 22.17+ and pnpm 10.14+. On fresh machines, enable Corepack and install pnpm 10.14.
+
+  ```powershell
+  corepack enable
+  corepack prepare pnpm@10.14.0 --activate
+  pnpm -v
+  node -v
+  ```
+
+- For server development/tests: install and login Wrangler (Cloudflare) if you need D1 access.
+- For mobile: install Expo tooling and Android/iOS SDKs if you plan to run native apps.
+
+1. Install dependencies (always from repo root)
+
+   ```powershell
+   pnpm install
+   ```
+
+   Notes:
+   - The root postinstall runs a workspace lint via `pnpm dlx sherif@latest`. Offline networks can cause this to fail; if so, re-run later with internet or run `pnpm lint`/`pnpm check-types` manually.
+
+2. Lint and format
+
+   ```powershell
+   pnpm lint               # Oxlint across workspaces via turbo
+   pnpm lint:fix           # Autofix where possible
+   pnpm format             # Biome formatting via ultracite
+   ```
+
+   Git hooks:
+   - Pre-commit hook (lefthook) formats staged files. If hooks do not run, install them: `pnpm dlx lefthook install` (once).
+
+3. Type-check
+
+   ```powershell
+   pnpm check-types        # turbo run check-types across the monorepo
+   ```
+
+4. Build everything
+
+   ```powershell
+   pnpm build              # turbo run build
+   ```
+
+   Details:
+   - Web build: `apps/web` runs `tsc -b && vite build` → outputs to `apps/web/dist`.
+   - Server build: `apps/server` runs `wrangler deploy --dry-run --outdir dist` → bundles worker to `apps/server/dist` without deploying.
+   - Package builds (where defined) use `tsc` to `dist/`.
+
+5. Run dev servers (choose what you need)
+
+   ```powershell
+   pnpm dev                            # turbo watch dev for all
+   pnpm --filter @mac/web dev          # Web at http://localhost:5173
+   pnpm --filter @mac/server dev       # API (Wrangler) at http://localhost:8787
+   pnpm --filter @mac/mobile web       # Expo web dev server
+   pnpm --filter @mac/mobile android   # Android only (requires SDK/emulator)
+   pnpm --filter @mac/mobile ios       # iOS only (macOS)
+   ```
+
+6. Tests
+
+   ```powershell
+   pnpm --filter @mac/server test      # Vitest (server only)
+   ```
+
+7. Clean (when caches get in the way)
+
+   ```powershell
+   pnpm clean               # git clean of node_modules/.turbo at root
+   pnpm clean:ws            # turbo run clean in all packages
+   ```
+
+Timing guidance (varies by machine):
+
+- Fresh `pnpm install`: typically a few minutes; requires network for all workspace deps and dlx tools.
+- `pnpm build`: web ~<1–2 min, server dry-run bundle ~<1 min, packages fast; turbo caches subsequent runs.
+
+## Server and database specifics (Cloudflare Workers + D1)
+
+- Local dev: `pnpm --filter @mac/server dev` uses `apps/server/wrangler.jsonc` (compatibility_date and flags set, assets bound, D1 binding `DB`).
+- Migrations directory: `packages/db/src/migrations` (as referenced in wrangler config).
+- Apply local migrations (requires Wrangler):
+
+```powershell
+pnpm --filter @mac/server db:migrate
+```
+
+- Generate migrations / DB studio live in `@mac/db`:
+
+```powershell
+pnpm --filter @mac/db generate
+pnpm --filter @mac/db studio
+```
+
+Pitfall: The server README shows `pnpm db:generate` / `pnpm db:studio` at app level, but those scripts are defined in `@mac/db`. Use the `--filter @mac/db` form above or run from `packages/db`.
+
+## Mobile specifics (Expo)
+
+- Dev: `pnpm --filter @mac/mobile web` (web) or `pnpm android` / `pnpm --filter @mac/mobile ios`.
+- Postinstall builds NativeWind CSS cache. If you run with `--ignore-scripts`, re-run mobile’s postinstall step manually:
+
+```powershell
+pnpm --filter @mac/mobile run postinstall
+```
+
+- Android/iOS builds require platform SDKs. They’re optional if you don’t need to run native apps.
+
+## Final notes for agents
+
+- Prefer root-level scripts and filtered workspace scripts over ad-hoc commands.
+- Use pnpm with filters: `pnpm --filter <workspace> <script>` for app/package-specific actions.
+- Trust these instructions. Only search the codebase when something here is incomplete or fails in practice, and record any corrections back into this file if you’re allowed to update docs.
+
+## Project Context
+
+This is a food delivery application for the restaurant **Masala and Curry** built as a modern monorepo. This app is dedicated to a single restaurant: "Masala and Curry".
+
+### Masala and Curry Restaurant Context
+
+- **Cuisine Type**: Indian/South Asian restaurant
+- **Service Model**: Delivery and takeout only
+- **Operating Hours**: [Define specific hours]
+- **Delivery Areas**: [Define coverage zones]
+- **Menu Categories**: Appetizers, Curries, Biryanis, Breads, Desserts, Beverages
+- **Special Features**: Spice level customization, dietary restrictions support
+
+### Business Rules
+
+- Orders must have minimum value for delivery
+- Spice levels: Mild, Medium, Hot, Extra Hot
+- Dietary tags: Vegetarian, Vegan, Gluten-Free, Dairy-Free
+- No alcohol sales
+- All prices do not include tax
 
 ### Key Patterns
 
@@ -347,7 +478,6 @@ When refactoring large files:
 - Don't use useless undefined.
 - Make sure getters and setters for the same property are next to each other in class and object definitions.
 - Make sure object literals are declared consistently (defaults to explicit definitions).
-- Use static Response methods instead of new Response() constructor when possible.
 - Make sure switch-case statements are exhaustive.
 - Make sure the `preconnect` attribute is used when using Google Fonts.
 - Use `Array#{indexOf,lastIndexOf}()` instead of `Array#{findIndex,findLastIndex}()` when looking for the index of an item.
@@ -376,10 +506,8 @@ When refactoring large files:
 - Don't use user-defined types.
 - Use `as const` instead of literal types and type annotations.
 - Use either `T[]` or `Array<T>` consistently.
-- Initialize each enum member value explicitly.
 - Use `export type` for types.
 - Use `import type` for types.
-- Make sure all enum members are literal values.
 - Don't use TypeScript const enum.
 - Don't declare empty interfaces.
 - Don't let variables evolve into any type through reassignments.
@@ -388,7 +516,6 @@ When refactoring large files:
 - Don't use implicit any type on variable declarations.
 - Don't merge interfaces and classes unsafely.
 - Don't use overload signatures that aren't next to each other.
-- Use the namespace keyword instead of the module keyword to declare TypeScript namespaces.
 
 ### Style and Consistency
 
@@ -478,13 +605,6 @@ When refactoring large files:
 - Make sure to use the digits argument with Number#toFixed().
 - Make sure to use the "use strict" directive in script files.
 
-### Next.js Specific Rules
-
-- Don't use `<img>` elements in Next.js projects.
-- Don't use `<head>` elements in Next.js projects.
-- Don't import next/document outside of pages/\_document.jsx in Next.js projects.
-- Don't use the next/head module in pages/\_document.js on Next.js projects.
-
 ### Testing Best Practices
 
 - Don't use export or module.exports in test files.
@@ -510,185 +630,6 @@ When refactoring large files:
 - Use skeleton loading states for better perceived performance
 - Implement infinite scrolling for order history
 - Cache user preferences and delivery addresses
-
-## Common Tasks
-
-- `pnpm --filter @mac/mobile exec expo install` - Install dependencies for the mobile app
-- `pnpm add -w` - Add a package to the workspace root
-
-## Examples
-
-### Error Handling
-
-- Error responses types:
-
-```typescript
-export type APIErrorResponse = {
-  errors?: string[];
-  properties?: Record<
-    string,
-    {
-      errors?: string[];
-      items?: (null | { errors?: string[] })[];
-    }
-  >;
-};
-```
-
-```typescript
-// ✅ Good: Comprehensive error handling without exposing internal details
-import { HTTPException } from "hono/http-exception";
-import { INTERNAL_SERVER_ERROR } from "@mac/resources/http-status-codes";
-
-try {
-  const result = await fetchData();
-  return { result: data, rowCount: totalCount };
-} catch (error) {
-  console.error("API call failed:", error);
-  throw new HTTPException(INTERNAL_SERVER_ERROR, {
-    message: routes.entityFailedToGetDesc,
-  });
-}
-
-// ❌ Bad: Swallowing errors
-try {
-  return await fetchData();
-} catch (e) {
-  console.log(e);
-}
-```
-
-- Validation error handling should be done using Zod schemas.
-
-```typescript
-// ✅ Good: Zod schema validation with proper error handling
-import { z } from "zod";
-
-const userSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-});
-
-try {
-  const result = await userSchema.safeParseAsync(req.body);
-  if (!result.success) {
-    // convert Zod error to UI-friendly format (check out `default-hook.ts` file in `@mac/server`)
-    return c.json(convertedObject, UNPROCESSABLE_ENTITY);
-  }
-
-  const userData = result.data;
-  // Proceed with valid userData
-} catch (error) {
-  console.error("Validation failed:", error);
-  if (error instanceof HTTPException) {
-    throw error; // Re-throw expected errors that will be handled by the global error handler `on-error.middleware.ts` in `@mac/server`
-  }
-  // else handle unexpected errors
-  throw new HTTPException(INTERNAL_SERVER_ERROR, {
-    message: routes.entityFailedToGetDesc,
-  });
-}
-
-// ❌ Bad: No validation or error handling
-const userData = req.body; // No validation, could lead to runtime errors
-```
-
-### State Management Patterns
-
-#### Zustand Store Structure
-
-```typescript
-// ✅ Cart store example
-interface CartStore {
-  items: CartItem[];
-  total: number;
-  addItem: (item: MenuItem, quantity: number) => void;
-  removeItem: (itemId: string) => void;
-  updateQuantity: (itemId: string, quantity: number) => void;
-  clearCart: () => void;
-  calculateTotal: () => number;
-}
-
-// ✅ Order tracking store
-interface OrderStore {
-  currentOrder: Order | null;
-  orderHistory: Order[];
-  updateOrderStatus: (orderId: string, status: OrderStatus) => void;
-  trackOrder: (orderId: string) => void;
-}
-```
-
-#### Query Keys Convention
-
-```typescript
-// ✅ Consistent query key structure
-export const queryKeys = {
-  all: ["menu-items"] as const,
-  menuItem: (id: string) => [...queryKeys.all, id] as const,
-  list: (filters: MenuItemFilters) => [...queryKeys.all, filters] as const,
-} as const;
-```
-
-### API Design Standards
-
-#### Resource Naming
-
-- `/api/v1/orders` - POST create order, GET user orders
-- `/api/v1/orders/{id}` - GET specific order, PATCH update order
-- `/api/v1/orders/{id}/status` - PATCH update order status
-
-#### Request/Response Patterns
-
-```typescript
-// ✅ Pagination pattern
-interface PaginatedResponse<T> {
-  result: T[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    hasMore: boolean;
-  };
-}
-```
-
-## Food Delivery Examples
-
-### Menu Item Validation
-
-```typescript
-// ✅ Good: Comprehensive menu item validation
-const menuItemSchema = z.object({
-  name: z.string().min(1).max(100),
-  description: z.string().max(500),
-  price: z.number().nonnegative(),
-  allergens: z.array(z.enum(["nuts", "dairy", "gluten"])),
-  availability: z.boolean(),
-  category: z.enum(["appetizer", "main", "dessert", "beverage"]),
-});
-
-// ❌ Bad: Missing validation
-const menuItem = { name: req.body.name, price: req.body.price };
-```
-
-### Order State Management
-
-```typescript
-// ✅ Good: Clear order state transitions
-const orderStates = [
-  "pending",
-  "confirmed",
-  "preparing",
-  "ready",
-  "delivered",
-] as const;
-type OrderState = (typeof orderStates)[number];
-
-// ❌ Bad: Magic strings
-if (order.status === "processing") {
-  /* unclear state */
-}
-```
 
 ### Architecture Decisions
 

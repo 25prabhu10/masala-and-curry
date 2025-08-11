@@ -127,8 +127,8 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         description: 'Unique menu item identifier',
         example: 'item_chicken_curry_001',
       }),
-  image: () =>
-    z.url().optional().openapi({
+  image: (schema) =>
+    schema.trim().optional().openapi({
       description: 'Menu item image URL',
       example: 'https://example.com/chicken-tikka-masala.jpg',
     }),

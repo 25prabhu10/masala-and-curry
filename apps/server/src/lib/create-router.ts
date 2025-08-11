@@ -11,6 +11,7 @@ export type AppOpenAPI = {
   }
 }
 
+// oxlint-disable-next-line explicit-module-boundary-types
 export default function createRouter() {
   return new OpenAPIHono<AppOpenAPI>({
     defaultHook,

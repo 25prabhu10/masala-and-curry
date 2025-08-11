@@ -1,6 +1,6 @@
 import { getCategoriesQuery } from '@mac/queries/category'
 import { getMenuItemsQuery } from '@mac/queries/menu-item'
-import { menuItemFiltersValidatorWithCatch } from '@mac/validators/menu-item'
+import { type MenuItemFilters, menuItemFiltersValidatorWithCatch } from '@mac/validators/menu-item'
 import { Button } from '@mac/web-ui/button'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -10,6 +10,8 @@ import { useMemo } from 'react'
 import { MenuItemCard } from '@/components/menu/menu-item-card'
 import { MenuLoadingSkeleton } from '@/components/menu/menu-loading-skeleton'
 import { useFilters } from '@/hooks/use-filters'
+import { useAppForm } from '@/hooks/use-form'
+import { formatCurrencyUSD } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
 
 export const Route = createFileRoute('/_app/menu')({
@@ -20,14 +22,15 @@ export const Route = createFileRoute('/_app/menu')({
   loader: async ({ context: { queryClient, search } }) => {
     await Promise.all([
       queryClient.ensureQueryData(getMenuItemsQuery(search)),
-      queryClient.ensureQueryData(getCategoriesQuery()),
+      queryClient.ensureQueryData(getCategoriesQuery({ activeOnly: true })),
     ])
   },
+  pendingComponent: MenuLoadingSkeleton,
   validateSearch: menuItemFiltersValidatorWithCatch,
 })
 
 function RouteComponent() {
-  const { filters } = useFilters(Route.id)
+  const { filters, setFilters } = useFilters(Route.id)
 
   const itemCount = useCartStore((state) => state.itemCount)
   const total = useCartStore((state) => state.total)
@@ -39,31 +42,38 @@ function RouteComponent() {
   } = useSuspenseQuery(getMenuItemsQuery(filters))
 
   const { data: categoriesData, isLoading: isCategoriesLoading } = useSuspenseQuery(
-    getCategoriesQuery()
+    getCategoriesQuery({ activeOnly: true })
   )
 
-  function formatPrice(price: number) {
-    return new Intl.NumberFormat('en-US', {
-      currency: 'USD',
-      style: 'currency',
-    }).format(price)
-  }
-
   const isLoading = isMenuLoading || isCategoriesLoading
-  // const menuItems = menuData?.result ?? []
-  // const categories = categoriesData?.result ?? []
 
   const menuItemsPerCategory = useMemo(
     () =>
       categoriesData?.result.reduce(
         (acc, category) => {
-          acc[category.id] = menuData?.result.filter((item) => item.categoryId === category.id)
+          const filteredItems = menuData?.result.filter((item) => item.categoryId === category.id)
+          if (filteredItems.length > 0) {
+            acc[category.id] = filteredItems
+          }
           return acc
         },
         {} as Record<string, (typeof menuData)['result']>
       ),
     [categoriesData?.result, menuData?.result]
   )
+
+  const form = useAppForm({
+    defaultValues: {
+      categoryId: filters.categoryId,
+      search: filters.search,
+    } as MenuItemFilters,
+    onSubmit: ({ value }) => {
+      setFilters({
+        categoryId: value.categoryId,
+        search: value.search,
+      })
+    },
+  })
 
   return (
     <main className="flex-1 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10">
@@ -75,6 +85,54 @@ function RouteComponent() {
             prices include tax.
           </p>
         </div>
+        <form
+          className="space-y-2 my-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            form.handleSubmit()
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+            <form.AppField
+              children={(field) => (
+                <field.TextField
+                  className="h-12"
+                  label="Name"
+                  placeholder="Search by menu item"
+                  title="Search by name of menu item"
+                  type="search"
+                />
+              )}
+              name="search"
+            />
+            <form.AppField
+              children={(field) => (
+                <field.SelectField
+                  all={true}
+                  className="h-12"
+                  label="Category"
+                  options={categoriesData.result.map((category) => {
+                    return {
+                      label: category.name,
+                      value: category.id,
+                    }
+                  })}
+                  title="Select a category"
+                />
+              )}
+              name="categoryId"
+            />
+            <form.AppForm>
+              <form.SubmitButton className="h-12" label="Search" />
+            </form.AppForm>
+          </div>
+          <div className="flex flex-col gap-4">
+            <form.AppForm>
+              <form.FormErrors />
+            </form.AppForm>
+          </div>
+        </form>
 
         {itemCount > 0 && (
           <div className="bg-primary/10 rounded-lg p-4 mb-6 flex flex-col lg:flex-row gap-2 items-center justify-between">
@@ -82,7 +140,7 @@ function RouteComponent() {
               <div className="text-sm text-muted-foreground">
                 Cart: {itemCount} item{itemCount !== 1 ? 's' : ''}
               </div>
-              <div className="text-lg font-semibold">{formatPrice(total)}</div>
+              <div className="text-lg font-semibold">{formatCurrencyUSD(total)}</div>
             </div>
             {/* <div className="text-sm text-muted-foreground">Continue shopping or go to checkout</div> */}
             {/* <Button asChild>

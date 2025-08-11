@@ -1,4 +1,4 @@
-import type { CategoryFilters } from '@mac/validators/category'
+import type { SortingObject } from '@mac/validators/general'
 import type { SortingState } from '@tanstack/react-table'
 
 export function getInitials(name: string): string {
@@ -34,7 +34,9 @@ export function stateToSortBy(sorting: SortingState | undefined): string {
   return sorting.map((sort) => `${sort.id}.${sort.desc ? 'desc' : 'asc'}` as const).join(',')
 }
 
-export function sortByToState(sortBy: CategoryFilters['sortBy'] | undefined): SortingState {
+export function sortByToState<TColumns extends string>(
+  sortBy: SortingObject<TColumns>[] | string | undefined
+): SortingState {
   if (!sortBy || typeof sortBy !== 'string') {
     return []
   }
@@ -45,13 +47,19 @@ export function sortByToState(sortBy: CategoryFilters['sortBy'] | undefined): So
   })
 }
 
-export function formatCurrencyUSD(value: number | null | undefined): string {
+export function formatCurrencyUSD(value: number | null | undefined, currency = 'USD'): string {
   if (value == null || Number.isNaN(value)) {
     return '$0.00'
   }
   try {
-    return new Intl.NumberFormat('en-US', { currency: 'USD', style: 'currency' }).format(value)
+    return new Intl.NumberFormat('en-US', { currency, style: 'currency' }).format(value)
   } catch {
     return `$${Number(value).toFixed(2)}`
   }
+}
+
+export function getImageURL(path?: string | null): string | undefined {
+  return path
+    ? `${window.location.origin}${import.meta.env.VITE_BASE_PATH}/images/${path}`
+    : undefined
 }

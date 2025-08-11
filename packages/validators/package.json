@@ -38,6 +38,11 @@
       "import": "./dist/general.validators.js",
       "default": "./dist/general.validators.js"
     },
+    "./image": {
+      "types": "./dist/image.validators.d.ts",
+      "import": "./dist/image.validators.js",
+      "default": "./dist/image.validators.js"
+    },
     "./api-errors": {
       "types": "./dist/api-errors.d.ts",
       "import": "./dist/api-errors.js",
