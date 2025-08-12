@@ -4,8 +4,11 @@ import {
   getMenuItemsQuery,
   updateMenuItemMutation,
 } from '@mac/queries/menu-item'
-import { DEFAULT_PAGE_INDEX } from '@mac/resources/constants'
-import { type MenuItem, menuItemFiltersValidatorWithCatch } from '@mac/validators/menu-item'
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
+import {
+  type MenuItem,
+  menuItemFiltersValidatorWithCatchAndPagination,
+} from '@mac/validators/menu-item'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { Checkbox } from '@mac/web-ui/checkbox'
@@ -37,7 +40,6 @@ import { DataTable } from '@/components/dashboard/data-table'
 import { DataTableColumnHeader } from '@/components/dashboard/data-table-column-header'
 import DataTableSkeleton from '@/components/dashboard/data-table-skeleton'
 import { useFilters } from '@/hooks/use-filters'
-import { useAppForm } from '@/hooks/use-form'
 import { formatCurrencyUSD, sortByToState, stateToSortBy } from '@/lib/utils'
 
 const columnsDef: ColumnDef<MenuItem>[] = [
@@ -170,36 +172,22 @@ export const Route = createFileRoute('/dashboard/menu-items/')({
       <DataTableSkeleton totalColumns={columnsDef.length} />
     </div>
   ),
-  validateSearch: menuItemFiltersValidatorWithCatch,
+  validateSearch: menuItemFiltersValidatorWithCatchAndPagination,
 })
 
 function RouteComponent() {
   const { filters, setFilters } = useFilters(Route.fullPath)
 
   const { data } = useSuspenseQuery(getMenuItemsQuery(filters))
-  const { data: categoriesData } = useSuspenseQuery(getCategoriesQuery({ activeOnly: true }))
 
   const paginationState = {
     pageIndex: filters.pageIndex ?? DEFAULT_PAGE_INDEX,
-    pageSize: filters.pageSize ?? data.rowCount,
+    pageSize: filters.pageSize ?? DEFAULT_PAGE_SIZE,
   }
 
   const sortingState = sortByToState(filters.sortBy)
 
   const columns = useMemo<ColumnDef<MenuItem>[]>(() => columnsDef, [])
-
-  const form = useAppForm({
-    defaultValues: {
-      categoryId: filters.categoryId ?? '',
-      search: filters.search ?? '',
-    },
-    onSubmit: ({ value }) => {
-      setFilters({
-        categoryId: value.categoryId || undefined,
-        search: value.search || undefined,
-      })
-    },
-  })
 
   return (
     <Card>
@@ -213,53 +201,6 @@ function RouteComponent() {
             <Link to="/dashboard/menu-items/new">Add new menu-item</Link>
           </Button>
         </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            form.handleSubmit()
-          }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-            <form.AppField
-              children={(field) => (
-                <field.TextField
-                  className="h-12"
-                  label="Name"
-                  placeholder="Search by menu item"
-                  title="Search by name of menu item"
-                  type="search"
-                />
-              )}
-              name="search"
-            />
-            <form.AppField
-              children={(field) => (
-                <field.SelectField
-                  all={true}
-                  className="h-12"
-                  label="Category"
-                  options={categoriesData.result.map((category) => {
-                    return {
-                      label: category.name,
-                      value: category.id,
-                    }
-                  })}
-                  title="Select a category"
-                />
-              )}
-              name="categoryId"
-            />
-          </div>
-          <div className="flex flex-col gap-4">
-            <form.AppForm>
-              <form.FormErrors />
-            </form.AppForm>
-            <form.AppForm>
-              <form.SubmitButton className="max-w-xs h-12" label="Search" />
-            </form.AppForm>
-          </div>
-        </form>
       </CardHeader>
       <CardContent>
         <DataTable

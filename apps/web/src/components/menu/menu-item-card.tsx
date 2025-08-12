@@ -39,7 +39,12 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
   }
 
   return (
-    <Card className={cn('group transition-all duration-200 hover:shadow-lg', className)}>
+    <Card
+      className={cn(
+        'group motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:shadow-lg',
+        className
+      )}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">

@@ -50,7 +50,7 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
-    "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitejs/plugin-react-swc": "^4.0.0",
     "oxlint": "catalog:",
     "react-scan": "^0.4.3",
     "rollup-plugin-visualizer": "^6.0.3",

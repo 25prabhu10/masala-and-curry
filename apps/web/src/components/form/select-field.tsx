@@ -41,14 +41,13 @@ export default function SelectField({
         {required ? <span className="text-xs text-destructive"> *</span> : ''}
       </Label>
       <Select
-        aria-describedby={`${field.name}-error`}
-        aria-invalid={isInvalid}
         aria-required={required}
         onValueChange={(value) => field.handleChange(value ?? null)}
-        required
         value={value}
       >
         <SelectTrigger
+          aria-describedby={`${field.name}-error`}
+          aria-invalid={isInvalid}
           aria-label={typeof label === 'string' ? label : undefined}
           className={cn(className, isInvalid && 'ring-2 ring-destructive')}
           id={field.name}
@@ -56,7 +55,7 @@ export default function SelectField({
         >
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent id={`${field.name}-select`}>
           {all ? <SelectItem value="_null">{allLabel ?? 'All'}</SelectItem> : null}
           {options.map((option) => (
             <SelectItem

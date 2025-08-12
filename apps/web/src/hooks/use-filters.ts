@@ -5,7 +5,7 @@ import {
   useNavigate,
 } from '@tanstack/react-router'
 
-import { cleanEmptyParams } from '@/lib/clean-empty-params '
+import { cleanEmptyParams } from '@/lib/clean-empty-params'
 
 export function useFilters<T extends RouteIds<RegisteredRouter['routeTree']>>(routeId: T) {
   const routeApi = getRouteApi<T>(routeId)

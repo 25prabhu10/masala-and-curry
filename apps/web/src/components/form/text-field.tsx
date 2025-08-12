@@ -5,17 +5,26 @@ import { Label } from '@mac/web-ui/label'
 import FieldInfo from '@/components/form/field-info'
 import { useFieldContext } from '@/context/form-context'
 
-type TextFieldProps = React.ComponentProps<typeof Input> & { label: React.ReactNode }
+type TextFieldProps = React.ComponentProps<typeof Input> & {
+  label: React.ReactNode
+  srOnlyLabel?: boolean
+}
 
-export function TextField({ label, required, className, ...props }: TextFieldProps) {
+export function TextField({
+  label,
+  required,
+  className,
+  srOnlyLabel = false,
+  ...props
+}: TextFieldProps) {
   const field = useFieldContext<string | number>()
 
   const isInvalid =
     field.state.meta.isTouched && !field.state.meta.isValid && field.state.meta.errors.length > 0
 
   return (
-    <div className="space-y-2">
-      <Label htmlFor={field.name}>
+    <div className={cn(!srOnlyLabel && 'space-y-2')}>
+      <Label className={cn(srOnlyLabel && 'sr-only')} htmlFor={field.name}>
         {label}
         {required ? <span className="text-xs text-destructive"> *</span> : ''}
       </Label>

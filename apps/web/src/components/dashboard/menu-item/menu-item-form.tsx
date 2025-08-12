@@ -14,7 +14,7 @@ import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { useStore } from '@tanstack/react-form'
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 
@@ -46,7 +46,6 @@ const defaultValues: MenuItem = {
 }
 
 export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFormProps) {
-  const navigate = useNavigate()
   const queryClient = useQueryClient()
 
   const createMutation = useMutation(createMenuItemMutation(queryClient))
@@ -87,7 +86,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
             await updateMutation.mutateAsync(payload as UpdateMenuItemInput)
             toast.success(UPDATE_SUCCESS_DESC)
           }
-          navigate({ to: '/dashboard/menu-items' })
+          globalThis.history.back()
         } catch (error) {
           if (error instanceof FieldErrors || error instanceof FormErrors) {
             toast.error(error.message)
@@ -243,7 +242,12 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
           <div className="grid grid-cols-2 gap-4 max-w-xl">
             <form.AppForm>
               <Button asChild className="h-12" variant="outline">
-                <Link to="/dashboard/menu-items">Cancel</Link>
+                <Link
+                  search={{ pageIndex: undefined, pageSize: undefined }}
+                  to="/dashboard/menu-items"
+                >
+                  Cancel
+                </Link>
               </Button>
               <form.SubmitButton className="h-12" label="Save" />
             </form.AppForm>

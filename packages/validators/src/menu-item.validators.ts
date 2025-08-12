@@ -90,8 +90,6 @@ export const menuItemFiltersValidatorWithCatch = z
       .catch('')
       .transform((value) => (value === '_null' ? '' : value)),
     glutenFree: readMenuItemValidator.shape.isGlutenFree.unwrap().catch(false),
-    pageIndex: paginationValidator.shape.pageIndex.catch(DEFAULT_PAGE_INDEX),
-    pageSize: paginationValidator.shape.pageSize.catch(DEFAULT_PAGE_SIZE),
     popular: readMenuItemValidator.shape.isPopular.unwrap().catch(false),
     search: InsertMenuItemSchema.shape.name.catch("''"),
     sortBy: createSortingValidator(menuItemSortableColumns, 'displayOrder', true).catch(
@@ -101,5 +99,11 @@ export const menuItemFiltersValidatorWithCatch = z
     vegetarian: readMenuItemValidator.shape.isVegetarian.unwrap().catch(false),
   })
   .partial()
+
+export const menuItemFiltersValidatorWithCatchAndPagination = z.object({
+  ...menuItemFiltersValidatorWithCatch.shape,
+  pageIndex: paginationValidator.shape.pageIndex.catch(DEFAULT_PAGE_INDEX),
+  pageSize: paginationValidator.shape.pageSize.catch(DEFAULT_PAGE_SIZE),
+})
 
 export type MenuItemFilters = z.infer<typeof menuItemFiltersValidator>

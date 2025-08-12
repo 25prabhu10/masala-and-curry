@@ -4,13 +4,12 @@ packages:
   - tooling/*
 
 catalog:
-  "@biomejs/biome": 2.1.2
   "@tanstack/react-query": "^5.84.1"
   "@types/node": ^24.1.0
   nanoid: "^5.1.5"
   drizzle-orm: ^0.44.4
-  oxlint: 1.10.0
-  typescript: 5.8.3
+  oxlint: 1.11.1
+  typescript: 5.9.2
   zod: ^4.0.14
 
 catalogs:
@@ -28,8 +27,8 @@ catalogs:
     react-native: 0.79.5
   ui:
     class-variance-authority: ^0.7.1
-    lucide-react: ^0.533.0
-    lucide-react-native: ^0.533.0
+    lucide-react: ^0.539.0
+    lucide-react-native: ^0.539.0
     nativewind: ^4.1.23
     sonner: "^2.0.6"
     tailwind-merge: ^3.3.1
