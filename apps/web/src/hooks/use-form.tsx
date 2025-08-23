@@ -9,7 +9,7 @@ import { SubmitButton } from '@/components/form/submit-button'
 import { TextField } from '@/components/form/text-field'
 import { fieldContext, formContext } from '@/context/form-context'
 
-export const { useAppForm, withForm } = createFormHook({
+export const { useAppForm } = createFormHook({
   fieldComponents: {
     CheckboxField,
     FileField,

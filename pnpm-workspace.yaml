@@ -4,7 +4,7 @@ packages:
   - tooling/*
 
 catalog:
-  "@tanstack/react-query": "^5.85.3"
+  "@tanstack/react-query": "^5.85.5"
   "@types/node": ^24.1.0
   nanoid: "^5.1.5"
   drizzle-orm: ^0.44.4
@@ -15,8 +15,8 @@ catalog:
 catalogs:
   api:
     "@hono/zod-openapi": ^1.1.0
-    better-auth: ^1.3.4
-    hono: ^4.8.9
+    better-auth: ^1.3.7
+    hono: ^4.9.4
   mobile:
     react-native-svg: 15.11.2
   react19:

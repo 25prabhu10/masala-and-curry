@@ -134,7 +134,12 @@ export const SelectMenuItemVariantSchema = createSelectSchema(menuItemVariant, {
       description: 'Last update timestamp',
       example: '2023-01-01T00:00:00Z',
     }),
-}).openapi('MenuItemVariant')
+})
+  .omit({
+    createdAt: true,
+    updatedAt: true,
+  })
+  .openapi('MenuItemVariant')
 
 export const InsertMenuItemVariantSchema = createInsertSchema(menuItemVariant, {
   calories: () => SelectMenuItemVariantSchema.shape.calories,
@@ -149,10 +154,9 @@ export const InsertMenuItemVariantSchema = createInsertSchema(menuItemVariant, {
 })
   .omit({
     createdAt: true,
-    id: true,
     updatedAt: true,
   })
-  .openapi('MenuItemVariantInsert')
+  .openapi('MenuItemVariantCreate')
 
 export const UpdateMenuItemVariantSchema = createUpdateSchema(menuItemVariant, {
   calories: () => SelectMenuItemVariantSchema.shape.calories,
@@ -167,7 +171,6 @@ export const UpdateMenuItemVariantSchema = createUpdateSchema(menuItemVariant, {
 })
   .omit({
     createdAt: true,
-    id: true,
     updatedAt: true,
   })
   .openapi('MenuItemVariantUpdate')

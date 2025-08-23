@@ -28,7 +28,7 @@
     "@mac/repository": "workspace:*",
     "@mac/resources": "workspace:*",
     "@mac/validators": "workspace:*",
-    "@scalar/hono-api-reference": "^0.9.12",
+    "@scalar/hono-api-reference": "^0.9.15",
     "better-auth": "catalog:api",
     "hono": "catalog:api",
     "nanoid": "catalog:"

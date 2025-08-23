@@ -5,12 +5,13 @@ import { MAX_CURRENCY_VALUE, MIN_CURRENCY_VALUE, NUMBER_STEPS } from '@mac/resou
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
 import {
-  type CreateMenuItem,
-  createMenuItemValidator,
+  type CreateMenuItemInput,
+  createMenuItemWithImageValidator,
   type MenuItem,
   type UpdateMenuItemInput,
-  updateMenuItemValidator,
+  updateMenuItemWithImageValidator,
 } from '@mac/validators/menu-item'
+import type { MenuItemVariant } from '@mac/validators/menu-item-variant'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { useStore } from '@tanstack/react-form'
@@ -43,6 +44,20 @@ const defaultValues: MenuItem = {
   name: '',
   preparationTime: 15,
   spiceLevel: 0,
+  variants: [],
+}
+
+const defaultVariant: MenuItemVariant = {
+  calories: undefined,
+  description: '',
+  displayOrder: 0,
+  id: '',
+  isAvailable: true,
+  isDefault: false,
+  menuItemId: '',
+  name: '',
+  priceModifier: 0,
+  servingSize: '',
 }
 
 const spiceLevels = [
@@ -74,12 +89,12 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
   }, [categoriesQuery.data])
 
   const form = useAppForm({
-    defaultValues: data as CreateMenuItem | UpdateMenuItemInput,
+    defaultValues: data as CreateMenuItemInput | UpdateMenuItemInput,
     validators: {
-      onChange: isNew ? createMenuItemValidator : updateMenuItemValidator,
+      onChange: isNew ? createMenuItemWithImageValidator : updateMenuItemWithImageValidator,
       onSubmitAsync: async ({ value }) => {
         try {
-          let payload = value as CreateMenuItem | UpdateMenuItemInput
+          let payload = value as CreateMenuItemInput | UpdateMenuItemInput
 
           // If a new image file is selected, upload it first and set the image URL
           if (form.state.values.file) {
@@ -89,16 +104,20 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
               throw new Error('Failed to upload image')
             }
 
-            payload = { ...(value as CreateMenuItem | UpdateMenuItemInput), image: response.url }
+            payload = {
+              ...(value as CreateMenuItemInput | UpdateMenuItemInput),
+              image: response.url,
+            }
           }
 
           if (isNew) {
-            await createMutation.mutateAsync(payload as CreateMenuItem)
-            toast.success(createDataSuccessDesc((value as CreateMenuItem).name ?? 'Menu Item'))
+            await createMutation.mutateAsync(payload as CreateMenuItemInput)
+            toast.success(createDataSuccessDesc((value as CreateMenuItemInput).name ?? 'Menu Item'))
           } else {
             await updateMutation.mutateAsync(payload as UpdateMenuItemInput)
             toast.success(UPDATE_SUCCESS_DESC)
           }
+
           globalThis.history.back()
         } catch (error) {
           if (error instanceof FieldErrors || error instanceof FormErrors) {
@@ -247,6 +266,97 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
               />
             )}
             name="file"
+          />
+          <form.Field
+            children={(field) => (
+              <div className="space-y-4">
+                <div className="flex flex-col space-y-1.5">
+                  <h3 className="font-semibold leading-none tracking-tight">Variants</h3>
+                  <p className="text-sm text-muted-foreground">Add and manage menu item variants</p>
+                </div>
+                <div className="space-y-4">
+                  {field.state.value && field.state.value.length > 0 ? (
+                    field.state.value.map((variant, i) => (
+                      <Card key={`${variant.id}-${variant._tempId}`}>
+                        <CardHeader>
+                          <CardTitle>Variant: {i + 1}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+                            <form.AppField
+                              children={(subField) => (
+                                <subField.TextField
+                                  className="h-12"
+                                  label="Variant Name"
+                                  required
+                                  title="Menu variant name"
+                                  type="text"
+                                />
+                              )}
+                              name={`variants[${i}].name`}
+                            />
+                            <form.AppField
+                              children={(subField) => (
+                                <subField.TextField
+                                  className="h-12"
+                                  label="Variant Description"
+                                  title="Short Menu variant description"
+                                  type="text"
+                                />
+                              )}
+                              name={`variants[${i}].description`}
+                            />
+                            <form.AppField
+                              children={(subField) => (
+                                <subField.TextField
+                                  className="h-12"
+                                  inputMode="decimal"
+                                  label="Variant Additional Price (USD)"
+                                  max={MAX_CURRENCY_VALUE}
+                                  min={MIN_CURRENCY_VALUE}
+                                  required
+                                  step={NUMBER_STEPS}
+                                  title="Menu variant additional price"
+                                  type="number"
+                                />
+                              )}
+                              name={`variants[${i}].priceModifier`}
+                            />
+                            <form.AppField
+                              children={(subField) => (
+                                <subField.TextField
+                                  className="h-12"
+                                  label="Display Order"
+                                  min={0}
+                                  title="Display Order"
+                                  type="number"
+                                />
+                              )}
+                              name={`variants[${i}].displayOrder`}
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <p className="text-xs text-muted-foreground">No variants added.</p>
+                  )}
+
+                  <Button
+                    className="h-12"
+                    onClick={() =>
+                      field.pushValue({ ...defaultVariant, _tempId: crypto.randomUUID() })
+                    }
+                    type="button"
+                    variant="outline"
+                  >
+                    Add variant
+                  </Button>
+                </div>
+              </div>
+            )}
+            mode="array"
+            name="variants"
           />
 
           <form.AppForm>

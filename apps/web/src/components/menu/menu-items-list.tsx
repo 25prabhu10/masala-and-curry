@@ -46,8 +46,8 @@ export default function MenuItemsList({
     </div>
   ) : (
     <div className="text-center py-12">
-      <div className="text-lg font-medium mb-2">No menu items found</div>
-      <div className="text-muted-foreground">Try adjusting your filters or search terms.</div>
+      <p className="text-lg font-medium mb-2">No menu items found</p>
+      <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
     </div>
   )
 }

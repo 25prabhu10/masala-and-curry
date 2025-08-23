@@ -14,6 +14,11 @@ import {
   rowCountValidator,
 } from './general.validators'
 import { uploadImageSchema } from './image.validators'
+import {
+  createMenuItemVariantValidator,
+  readMenuItemVariantValidator,
+  updateMenuItemVariantValidator,
+} from './menu-item-variant.validators'
 
 export const readMenuItemValidator = z.object({
   ...SelectMenuItemSchema.shape,
@@ -24,26 +29,35 @@ export const readMenuItemValidator = z.object({
       name: SelectCategorySchema.shape.name,
     })
     .nullable(),
+  variants: z.array(readMenuItemVariantValidator).optional(),
 })
 export const readMenuItemsValidator = z.object({
   result: readMenuItemValidator.array(),
   rowCount: rowCountValidator,
 })
-export const createMenuItemValidator = InsertMenuItemSchema
-export const updateMenuItemValidator = UpdateMenuItemSchema
+export const createMenuItemValidator = z.object({
+  ...InsertMenuItemSchema.shape,
+  variants: z.array(createMenuItemVariantValidator).optional(),
+})
+export const updateMenuItemValidator = z.object({
+  ...UpdateMenuItemSchema.shape,
+  variants: z.array(updateMenuItemVariantValidator).optional(),
+})
 
 export const createMenuItemWithImageValidator = z.object({
-  ...InsertMenuItemSchema.shape,
+  ...createMenuItemValidator.shape,
   file: uploadImageSchema.shape.file.optional(),
 })
 
 export const updateMenuItemWithImageValidator = z.object({
-  ...UpdateMenuItemSchema.shape,
+  ...updateMenuItemValidator.shape,
   file: uploadImageSchema.shape.file.optional(),
 })
 
 export type MenuItem = z.output<typeof readMenuItemValidator>
-export type CreateMenuItem = z.infer<typeof createMenuItemWithImageValidator>
+export type CreateMenuItem = z.infer<typeof createMenuItemValidator>
+export type CreateMenuItemInput = z.infer<typeof createMenuItemWithImageValidator>
+export type UpdateMenuItem = z.output<typeof updateMenuItemValidator>
 export type UpdateMenuItemInput = z.input<typeof updateMenuItemWithImageValidator>
 
 const menuItemSortableColumns = [

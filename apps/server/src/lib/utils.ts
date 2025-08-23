@@ -7,7 +7,7 @@ export function hasAccess(id: string, user: User | null): boolean {
   return id === user?.id || !!user?.role?.includes('admin')
 }
 
-export function generatePublicId(): string {
+function generatePublicId(): string {
   const customNanoid = customAlphabet(NANOID_ALPHABET, NANOID_LENGTH)
   return customNanoid()
 }

@@ -127,7 +127,7 @@ export const InsertCategorySchema = createInsertSchema(category, {
     id: true,
     updatedAt: true,
   })
-  .openapi('CategoryCreateOrUpdate')
+  .openapi('CategoryCreate')
 
 export const UpdateCategorySchema = createUpdateSchema(category, {
   description: () => SelectCategorySchema.shape.description,
@@ -140,7 +140,7 @@ export const UpdateCategorySchema = createUpdateSchema(category, {
     id: true,
     updatedAt: true,
   })
-  .openapi('CategoryCreateOrUpdate')
+  .openapi('CategoryUpdate')
 
 export type InsertCategoryDB = z.infer<typeof InsertCategorySchema>
 export type UpdateCategoryDB = z.infer<typeof UpdateCategorySchema>

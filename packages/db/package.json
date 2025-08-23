@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.49.0",
-    "@libsql/client": "^0.15.10",
+    "@libsql/client": "^0.15.12",
     "@mac/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "drizzle-kit": "^0.31.4",

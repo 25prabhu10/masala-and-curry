@@ -73,7 +73,7 @@ export const InsertAllergenSchema = createInsertSchema(allergen, {
     id: true,
     updatedAt: true,
   })
-  .openapi('AllergenInsert')
+  .openapi('AllergenCreate')
 
 export const UpdateAllergenSchema = createUpdateSchema(allergen, {
   isActive: () => SelectAllergenSchema.shape.isActive,

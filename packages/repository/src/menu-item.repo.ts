@@ -1,9 +1,19 @@
-import { category, type InsertMenuItemDB, menuItem, type UpdateMenuItemDB } from '@mac/db/schemas'
+import { category, menuItem } from '@mac/db/schemas'
 import type { DB } from '@mac/db/types'
 import type { TableRowCount } from '@mac/validators/general'
-import type { MenuItem, MenuItemFilters } from '@mac/validators/menu-item'
+import type {
+  CreateMenuItem,
+  MenuItem,
+  MenuItemFilters,
+  UpdateMenuItem,
+} from '@mac/validators/menu-item'
 import { and, asc, count, desc, eq, getTableColumns, like, type SQL } from 'drizzle-orm'
 
+import {
+  createMenuItemVariants,
+  getMenuItemVariants,
+  updateMenuItemVariant,
+} from './menu-item-variants.repo'
 import { withPagination } from './utils'
 
 export async function getTotalMenuItemsCount(
@@ -98,8 +108,8 @@ export async function getMenuItems(db: DB, filters: MenuItemFilters): Promise<Me
 
 export async function getMenuItemById(
   db: DB,
-  id: string
-  // includeVariants = false,
+  id: string,
+  includeVariants: boolean = true
   // includeAllergens = false
 ): Promise<MenuItem | undefined> {
   const [item] = await db
@@ -116,24 +126,32 @@ export async function getMenuItemById(
     .where(eq(menuItem.id, id))
     .limit(1)
 
-  // const result = {
-  //   ...item[0],
-  //   allergens: includeAllergens ? await getMenuItemAllergens(db, id) : undefined,
-  //   variants: includeVariants ? await getMenuItemVariants(db, id) : undefined,
-  // }
+  if (item && includeVariants) {
+    return {
+      ...item,
+      // allergens: includeAllergens ? await getMenuItemAllergens(db, id) : undefined,
+      variants: includeVariants ? await getMenuItemVariants(db, id) : undefined,
+    }
+  }
 
   return item
 }
 
-export async function createMenuItem(
-  db: DB,
-  data: InsertMenuItemDB
-): Promise<MenuItem | undefined> {
+export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<MenuItem | undefined> {
   const [result] = await db.insert(menuItem).values(data).returning({
     id: menuItem.id,
   })
 
   if (result) {
+    if (data.variants) {
+      // oxlint-disable-next-line arrow-body-style
+      const variants = data.variants.map((variant) => ({
+        ...variant,
+        menuItemId: result.id,
+      }))
+      await createMenuItemVariants(db, variants)
+    }
+
     return getMenuItemById(db, result.id)
   }
 
@@ -143,13 +161,21 @@ export async function createMenuItem(
 export async function updateMenuItem(
   db: DB,
   id: string,
-  data: UpdateMenuItemDB
+  data: UpdateMenuItem
 ): Promise<MenuItem | undefined> {
   const [result] = await db.update(menuItem).set(data).where(eq(menuItem.id, id)).returning({
     id: menuItem.id,
   })
 
   if (result) {
+    if (data.variants) {
+      const allVariantPromises = data.variants.map((variant) =>
+        updateMenuItemVariant(db, variant.id ?? '', variant)
+      )
+
+      await Promise.all(allVariantPromises)
+    }
+
     return getMenuItemById(db, result.id)
   }
 
@@ -159,14 +185,6 @@ export async function updateMenuItem(
 export async function deleteMenuItem(db: DB, id: string): Promise<void> {
   await db.delete(menuItem).where(eq(menuItem.id, id))
 }
-
-// export async function getMenuItemVariants(db: DB, menuItemId: string) {
-//   return await db
-//     .select()
-//     .from(menuItemVariant)
-//     .where(eq(menuItemVariant.menuItemId, menuItemId))
-//     .orderBy(menuItemVariant.displayOrder, menuItemVariant.name)
-// }
 
 // export async function getMenuItemAllergens(db: DB, menuItemId: string) {
 //   return await db

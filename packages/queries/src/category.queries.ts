@@ -225,7 +225,7 @@ export function deleteCategoryMutation(
 
       throw new Error('An error occurred while deleting the category')
     },
-    mutationKey: ['categories', 'delete'],
+    mutationKey: [...categoryKeys.all, 'delete'],
     onError: (_, __, context) => {
       if (context?.previousCategories) {
         queryClient.setQueryData<Category[]>(categoryKeys.all, context.previousCategories)

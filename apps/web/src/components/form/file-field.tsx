@@ -8,7 +8,7 @@ import { useFieldContext } from '@/context/form-context'
 
 import FieldInfo from './field-info'
 
-export type FileFieldProps = React.ComponentProps<typeof Input> & {
+type FileFieldProps = React.ComponentProps<typeof Input> & {
   label: React.ReactNode
   url?: string | null
 }

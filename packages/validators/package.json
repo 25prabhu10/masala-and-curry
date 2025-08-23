@@ -33,6 +33,11 @@
       "import": "./dist/menu-item.validators.js",
       "default": "./dist/menu-item.validators.js"
     },
+    "./menu-item-variant": {
+      "types": "./dist/menu-item-variant.validators.d.ts",
+      "import": "./dist/menu-item-variant.validators.js",
+      "default": "./dist/menu-item-variant.validators.js"
+    },
     "./general": {
       "types": "./dist/general.validators.d.ts",
       "import": "./dist/general.validators.js",

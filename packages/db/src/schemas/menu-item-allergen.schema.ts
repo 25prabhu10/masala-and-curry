@@ -79,7 +79,7 @@ export const InsertMenuItemAllergenSchema = createInsertSchema(menuItemAllergen,
   .omit({
     createdAt: true,
   })
-  .openapi('MenuItemAllergenInsert')
+  .openapi('MenuItemAllergenCreate')
 
 export const UpdateMenuItemAllergenSchema = createSelectSchema(menuItemAllergen, {
   severity: () => SelectMenuItemAllergenSchema.shape.severity,

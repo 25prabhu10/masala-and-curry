@@ -9,7 +9,7 @@ import {
 } from '@mac/resources/http-status-codes'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
 import type {
-  CreateMenuItem,
+  CreateMenuItemInput,
   MenuItem,
   MenuItemFilters,
   UpdateMenuItemInput,
@@ -102,7 +102,7 @@ export function createMenuItemMutation(
   abortController?: AbortController
 ) {
   return mutationOptions({
-    mutationFn: async (data: CreateMenuItem) => {
+    mutationFn: async (data: CreateMenuItemInput) => {
       const res = await apiClient.api.v1['menu-items'].$post(
         {
           json: data,

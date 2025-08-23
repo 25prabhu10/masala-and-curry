@@ -115,7 +115,7 @@ export const InsertMenuAvailabilitySchema = createInsertSchema(menuAvailability,
     message: 'End time must be after start time',
     path: ['endTime'],
   })
-  .openapi('MenuAvailabilityInsert')
+  .openapi('MenuAvailabilityCreate')
 
 export const UpdateMenuAvailabilitySchema = createUpdateSchema(menuAvailability, {
   dayOfWeek: () => SelectMenuAvailabilitySchema.shape.dayOfWeek,

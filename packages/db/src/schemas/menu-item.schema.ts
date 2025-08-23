@@ -325,7 +325,7 @@ export const InsertMenuItemSchema = createInsertSchema(menuItem, {
     id: true,
     updatedAt: true,
   })
-  .openapi('MenuItemInsert')
+  .openapi('MenuItemCreate')
 
 export const UpdateMenuItemSchema = createUpdateSchema(menuItem, {
   basePrice: () => SelectMenuItemSchema.shape.basePrice,
