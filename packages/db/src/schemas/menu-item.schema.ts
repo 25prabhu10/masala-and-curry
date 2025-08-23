@@ -3,6 +3,7 @@ import {
   MAX_CURRENCY_VALUE,
   MAX_NUMBER_IN_APP,
   MAX_STRING_LENGTH,
+  MIN_CURRENCY_VALUE,
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
 } from '@mac/resources/constants'
@@ -46,12 +47,11 @@ export const menuItem = sqliteTable(
     isAvailable: integer({ mode: 'boolean' }).notNull().default(true),
     isGlutenFree: integer({ mode: 'boolean' }).notNull().default(false),
     isPopular: integer({ mode: 'boolean' }).notNull().default(false),
-    isSpicy: integer({ mode: 'boolean' }).notNull().default(false),
     isVegan: integer({ mode: 'boolean' }).notNull().default(false),
     isVegetarian: integer({ mode: 'boolean' }).notNull().default(false),
     name: text({ length: MAX_STRING_LENGTH }).notNull(),
-    preparationTime: integer({ mode: 'number' }).notNull().default(15), // in minutes
-    spiceLevel: integer({ mode: 'number' }).default(0), // 0-5 scale
+    preparationTime: integer({ mode: 'number' }).notNull().default(15),
+    spiceLevel: integer({ mode: 'number' }).default(0),
     updatedAt: integer({ mode: 'timestamp' })
       .notNull()
       .default(sql`(unixepoch())`)
@@ -73,10 +73,15 @@ export const menuItem = sqliteTable(
 
 export const SelectMenuItemSchema = createSelectSchema(menuItem, {
   basePrice: (schema) =>
-    schema.nonnegative({ message: 'Price must be positive' }).max(MAX_CURRENCY_VALUE).openapi({
-      description: 'Base price of the menu item',
-      example: 18.99,
-    }),
+    schema
+      .nonnegative({ message: 'Price must be positive' })
+      .min(MIN_CURRENCY_VALUE)
+      .max(MAX_CURRENCY_VALUE)
+      .transform((num) => Math.round((num + Number.EPSILON) * 100) / 100)
+      .openapi({
+        description: 'Base price of the menu item',
+        example: 18.99,
+      }),
   calories: (schema) =>
     schema.nonnegative().max(MAX_NUMBER_IN_APP).optional().openapi({
       description: 'Calories per serving',
@@ -213,11 +218,6 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         description: 'Whether the item is marked as popular',
         example: true,
       }),
-  isSpicy: (schema) =>
-    schema.default(false).openapi({
-      description: 'Whether the item is spicy',
-      example: true,
-    }),
   isVegan: (schema) =>
     z
       .union([
@@ -286,7 +286,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         example: 25,
       }),
   spiceLevel: () =>
-    z.int().min(0).max(5).default(0).optional().openapi({
+    z.coerce.number().int().min(0).max(5).default(0).optional().openapi({
       description: 'Spice level on a scale of 0-5',
       example: 3,
     }),
@@ -314,7 +314,6 @@ export const InsertMenuItemSchema = createInsertSchema(menuItem, {
   isAvailable: () => SelectMenuItemSchema.shape.isAvailable,
   isGlutenFree: () => SelectMenuItemSchema.shape.isGlutenFree,
   isPopular: () => SelectMenuItemSchema.shape.isPopular,
-  isSpicy: () => SelectMenuItemSchema.shape.isSpicy,
   isVegan: () => SelectMenuItemSchema.shape.isVegan,
   isVegetarian: () => SelectMenuItemSchema.shape.isVegetarian,
   name: () => SelectMenuItemSchema.shape.name,
@@ -340,7 +339,6 @@ export const UpdateMenuItemSchema = createUpdateSchema(menuItem, {
   isAvailable: () => SelectMenuItemSchema.shape.isAvailable,
   isGlutenFree: () => SelectMenuItemSchema.shape.isGlutenFree,
   isPopular: () => SelectMenuItemSchema.shape.isPopular,
-  isSpicy: () => SelectMenuItemSchema.shape.isSpicy,
   isVegan: () => SelectMenuItemSchema.shape.isVegan,
   isVegetarian: () => SelectMenuItemSchema.shape.isVegetarian,
   name: () => SelectMenuItemSchema.shape.name,

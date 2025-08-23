@@ -52,7 +52,12 @@ export function formatCurrencyUSD(value: number | null | undefined, currency = '
     return '$0.00'
   }
   try {
-    return new Intl.NumberFormat('en-US', { currency, style: 'currency' }).format(value)
+    return new Intl.NumberFormat('en-US', {
+      currency,
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+      style: 'currency',
+    }).format(value)
   } catch {
     return `$${Number(value).toFixed(2)}`
   }

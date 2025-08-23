@@ -6,8 +6,9 @@ export const MIN_PASSWORD_LENGTH = 8
 export const MIN_STRING_LENGTH = 1
 export const MAX_PHONE_NUMBER_LENGTH = 12
 
+export const MIN_CURRENCY_VALUE = 0.01
 export const MAX_CURRENCY_VALUE = 999_999.99
-export const MIN_CURRENCY_VALUE = -999_999.99
+export const NUMBER_STEPS = 0.01
 
 export const NANOID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz'
 export const NANOID_LENGTH = 30

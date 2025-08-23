@@ -64,9 +64,6 @@ export const imageURLValidator = z
       .openapi({
         description: 'The URL of the image',
         example: 'menu-items/abcd123/image.webp',
-        param: {
-          name: 'url',
-        },
         required: ['url'],
       }),
   })
@@ -74,7 +71,12 @@ export const imageURLValidator = z
     description: 'Image URL parameters',
   })
 
-export const imageKeyValidator = z.object({
-  filename: imageURLValidator.shape.url,
-  key: imageURLValidator.shape.url,
-})
+export const imageKeyValidator = z
+  .object({
+    filename: imageURLValidator.shape.url,
+    key: imageURLValidator.shape.url,
+  })
+  .openapi({
+    description: 'Image key parameters',
+  })
+  .openapi('URL')

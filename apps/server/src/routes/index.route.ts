@@ -135,8 +135,6 @@ const router = createRouter()
           ])
           .returning()
 
-        // const categoryItems = await db.select().from(category).all()
-
         // Insert Allergens
         const allergenItems = await db
           .insert(allergen)
@@ -151,8 +149,6 @@ const router = createRouter()
             { isActive: true, name: 'Sulfites' },
           ])
           .returning()
-
-        //const allergenItems = await db.select().from(allergen).all()
 
         const drinksId = categoryItems.find((c) => c.name === 'Drinks')?.id || ''
         const appetizersId = categoryItems.find((c) => c.name === 'Appetizers')?.id || ''
@@ -179,7 +175,6 @@ const router = createRouter()
               ingredients: 'Black tea, lemon, sugar',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
               isVegan: true,
               isVegetarian: true,
               name: 'Indian Lemon Tea',
@@ -196,7 +191,6 @@ const router = createRouter()
               ingredients: 'Black tea, milk, cardamom, cinnamon, ginger, cloves',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
               isVegan: false,
               isVegetarian: true,
               name: 'Indian Masala Tea',
@@ -213,7 +207,6 @@ const router = createRouter()
               ingredients: 'Mango, yogurt, cardamom, sugar',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
               isVegan: false,
               isVegetarian: true,
               name: 'Mango Lassi',
@@ -230,7 +223,7 @@ const router = createRouter()
               ingredients: 'Rooh Afza, yogurt, cardamom, sugar',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Rose Lassi',
@@ -247,7 +240,7 @@ const router = createRouter()
               ingredients: 'Yogurt, black salt, cumin powder, mint',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Salt Lassi',
@@ -270,7 +263,7 @@ const router = createRouter()
               ingredients: 'Carbonated beverages',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Soft Drinks',
@@ -287,7 +280,7 @@ const router = createRouter()
               ingredients: 'Potatoes, green peas, onions, cumin, coriander, pastry',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Vegetable Samosa',
@@ -304,7 +297,7 @@ const router = createRouter()
               ingredients: 'Onions, chickpea flour, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Onion Bhaji',
@@ -322,7 +315,7 @@ const router = createRouter()
               ingredients: 'Mixed vegetables, chickpea flour, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Vegetable Pakodas',
@@ -339,7 +332,7 @@ const router = createRouter()
               ingredients: 'Cauliflower, garlic, ginger, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Lasoni Gobi',
@@ -362,7 +355,7 @@ const router = createRouter()
               ingredients: 'Mushrooms, soy sauce, garlic, ginger, bell peppers',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Mushroom Manchurian',
@@ -379,7 +372,7 @@ const router = createRouter()
               ingredients: 'Samosa, yogurt, chutney, onions, tomatoes, pomegranate',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Samosa Chaat',
@@ -397,7 +390,7 @@ const router = createRouter()
               ingredients: 'Puri, potatoes, tamarind water, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Panipuri',
@@ -415,7 +408,7 @@ const router = createRouter()
               ingredients: 'Puffed rice, potatoes, chutneys, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Chatpat',
@@ -433,7 +426,7 @@ const router = createRouter()
               ingredients: 'Potato patties, yogurt, chutneys, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Aloo Tikki Chaat',
@@ -452,12 +445,12 @@ const router = createRouter()
               categoryId: appetizersId,
               currency: 'USD',
               description:
-                'Juicy chicken bites coated in spiced chickpea batter ΓÇö crispy, golden, and full of flavor',
+                'Juicy chicken bites coated in spiced chickpea batter - crispy, golden, and full of flavor',
               displayOrder: 10,
               ingredients: 'Chicken, chickpea flour, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Pakodas',
@@ -470,12 +463,12 @@ const router = createRouter()
               categoryId: appetizersId,
               currency: 'USD',
               description:
-                'Tender shrimp dipped in a seasoned chickpea batter ΓÇö crisp, spiced, and irresistibly savory',
+                'Tender shrimp dipped in a seasoned chickpea batter - crisp, spiced, and irresistibly savory',
               displayOrder: 11,
               ingredients: 'Shrimp, chickpea flour, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Shrimp Pakodas',
@@ -488,12 +481,12 @@ const router = createRouter()
               categoryId: appetizersId,
               currency: 'USD',
               description:
-                'Crispy chicken wings tossed in bold Indian spices ΓÇö smoky, tangy, and full of kick',
+                'Crispy chicken wings tossed in bold Indian spices - smoky, tangy, and full of kick',
               displayOrder: 12,
               ingredients: 'Chicken wings, Indian spices, yogurt marinade',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Masala Wings',
@@ -510,7 +503,7 @@ const router = createRouter()
               ingredients: 'Samosa, pakodas, aloo tikki, chutneys',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Appetizers Basket',
@@ -523,12 +516,12 @@ const router = createRouter()
               categoryId: soupsId,
               currency: 'USD',
               description:
-                'Comforting lentil broth simmered with spices and herbs ΓÇö light, warm, and nourishing',
+                'Comforting lentil broth simmered with spices and herbs - light, warm, and nourishing',
               displayOrder: 1,
               ingredients: 'Lentils, turmeric, cumin, ginger, garlic',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Daal Soup',
@@ -547,12 +540,12 @@ const router = createRouter()
               categoryId: soupsId,
               currency: 'USD',
               description:
-                'Creamy tomato blend with garlic and herbs ΓÇö smooth, tangy, and soul-warming',
+                'Creamy tomato blend with garlic and herbs - smooth, tangy, and soul-warming',
               displayOrder: 2,
               ingredients: 'Tomatoes, cream, garlic, herbs',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Tomato Soup',
@@ -565,12 +558,12 @@ const router = createRouter()
               categoryId: soupsId,
               currency: 'USD',
               description:
-                'Hearty chicken and lentil broth with aromatic spices ΓÇö warm, comforting, and deliciously mild',
+                'Hearty chicken and lentil broth with aromatic spices - warm, comforting, and deliciously mild',
               displayOrder: 3,
               ingredients: 'Chicken, lentils, coconut milk, curry spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Mulligatawny Soup',
@@ -589,12 +582,12 @@ const router = createRouter()
               categoryId: soupsId,
               currency: 'USD',
               description:
-                'Smooth coconut broth simmered with fresh vegetables and mild spices ΓÇö creamy, comforting, and gently aromatic',
+                'Smooth coconut broth simmered with fresh vegetables and mild spices - creamy, comforting, and gently aromatic',
               displayOrder: 4,
               ingredients: 'Coconut milk, mixed vegetables, mild spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Vegi-Coconut Soup',
@@ -607,12 +600,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Spiced potatoes and cauliflower simmered in fragrant turmeric and cumin ΓÇö comforting and flavorful',
+                'Spiced potatoes and cauliflower simmered in fragrant turmeric and cumin - comforting and flavorful',
               displayOrder: 1,
               ingredients: 'Potatoes, cauliflower, turmeric, cumin, coriander',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Aloo Gobi',
@@ -625,12 +618,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Tender potatoes and green peas cooked in a savory tomato gravy ΓÇö classic, hearty, and mild',
+                'Tender potatoes and green peas cooked in a savory tomato gravy - classic, hearty, and mild',
               displayOrder: 2,
               ingredients: 'Potatoes, green peas, tomatoes, onions, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Aloo Matar',
@@ -643,12 +636,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Smoky roasted eggplant mashed with onions and spices ΓÇö rich, earthy, and satisfying',
+                'Smoky roasted eggplant mashed with onions and spices - rich, earthy, and satisfying',
               displayOrder: 3,
               ingredients: 'Eggplant, onions, tomatoes, ginger, garlic, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Baingan Bharta',
@@ -661,12 +654,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Soft paneer and potato dumplings in a creamy, spiced tomato gravy ΓÇö indulgent and comforting',
+                'Soft paneer and potato dumplings in a creamy, spiced tomato gravy - indulgent and comforting',
               displayOrder: 4,
               ingredients: 'Paneer, potatoes, cashews, cream, tomatoes, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Malai Kofta',
@@ -685,12 +678,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Slow-cooked black lentils in a buttery, spiced tomato sauce ΓÇö rich, hearty, and protein-packed',
+                'Slow-cooked black lentils in a buttery, spiced tomato sauce - rich, hearty, and protein-packed',
               displayOrder: 5,
               ingredients: 'Black lentils, kidney beans, butter, cream, tomatoes, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Dal Makhani',
@@ -703,12 +696,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Yellow lentils tempered with garlic, cumin, and mustard seeds ΓÇö simple, flavorful, and warming',
+                'Yellow lentils tempered with garlic, cumin, and mustard seeds - simple, flavorful, and warming',
               displayOrder: 6,
               ingredients: 'Yellow lentils, garlic, cumin, mustard seeds, turmeric',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Dal Tadka',
@@ -721,12 +714,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Crispy okra saut├⌐ed with aromatic spices ΓÇö crunchy, savory, and perfectly spiced',
+                'Crispy okra sautéed with aromatic spices - crunchy, savory, and perfectly spiced',
               displayOrder: 7,
               ingredients: 'Okra, onions, tomatoes, coriander, turmeric',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Bhindi Masala',
@@ -739,12 +732,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Soft paneer cubes and green peas in a mild, creamy tomato sauce ΓÇö comforting and rich',
+                'Soft paneer cubes and green peas in a mild, creamy tomato sauce - comforting and rich',
               displayOrder: 8,
               ingredients: 'Paneer, green peas, tomatoes, cream, mild spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Matar Paneer',
@@ -757,12 +750,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Paneer cubes in a luxurious creamy gravy with cashews and mild spices ΓÇö rich, smooth, and elegant',
+                'Paneer cubes in a luxurious creamy gravy with cashews and mild spices - rich, smooth, and elegant',
               displayOrder: 9,
               ingredients: 'Paneer, cashews, cream, mild spices, saffron',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Shahi Paneer',
@@ -785,7 +778,7 @@ const router = createRouter()
               ingredients: 'Paneer, spinach, onions, ginger, garlic, cream',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Saag Paneer',
@@ -798,12 +791,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Chickpeas cooked with onions, tomatoes, and warming spices ΓÇö hearty and full of flavor',
+                'Chickpeas cooked with onions, tomatoes, and warming spices - hearty and full of flavor',
               displayOrder: 11,
               ingredients: 'Chickpeas, tomatoes, onions, ginger, garlic, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Chana Masala',
@@ -816,12 +809,12 @@ const router = createRouter()
               categoryId: vegId,
               currency: 'USD',
               description:
-                'Paneer cubes in a velvety tomato butter sauce ΓÇö creamy, mild, flavorful and crowd-pleasing',
+                'Paneer cubes in a velvety tomato butter sauce - creamy, mild, flavorful and crowd-pleasing',
               displayOrder: 12,
               ingredients: 'Paneer, tomatoes, cream, butter, cashews, garam masala',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Paneer Makhani',
@@ -839,7 +832,7 @@ const router = createRouter()
               ingredients: 'Chicken, tomatoes, cream, butter, cashews, garam masala',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Butter Chicken',
@@ -852,12 +845,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Char-grilled chicken simmered in a creamy, spiced tomato sauceΓÇörich, smoky, and full of flavor',
+                'Char-grilled chicken simmered in a creamy, spiced tomato sauce-rich, smoky, and full of flavor',
               displayOrder: 2,
               ingredients: 'Chicken tikka, tomatoes, onions, cream, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Tikka Masala',
@@ -880,7 +873,7 @@ const router = createRouter()
               ingredients: 'Chicken, spinach, onions, ginger, garlic, cream',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Saag',
@@ -893,12 +886,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Rich, creamy curry made with chicken simmered in yogurt, cream, and aromatic spices ΓÇö smooth and indulgent',
+                'Rich, creamy curry made with chicken simmered in yogurt, cream, and aromatic spices - smooth and indulgent',
               displayOrder: 4,
               ingredients: 'Chicken, yogurt, cashews, almonds, coconut, mild spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Korma',
@@ -911,12 +904,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Tangy, spicy curry with marinated chicken cooked slow in a vinegar and chili sauce ΓÇö bold, fiery, and flavorful',
+                'Tangy, spicy curry with marinated chicken cooked slow in a vinegar and chili sauce - bold, fiery, and flavorful',
               displayOrder: 5,
               ingredients: 'Chicken, vinegar, red chilies, garlic, ginger, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Vindaloo',
@@ -929,12 +922,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Spicy, smoky curry with chicken cooked in a traditional wok ΓÇö bold and flavorful',
+                'Spicy, smoky curry with chicken cooked in a traditional wok - bold and flavorful',
               displayOrder: 6,
               ingredients: 'Chicken, bell peppers, onions, tomatoes, kadai spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Kadai',
@@ -947,12 +940,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Stir-fried chicken tossed with bell peppers and bold spices ΓÇö tangy, spicy, and vibrant',
+                'Stir-fried chicken tossed with bell peppers and bold spices - tangy, spicy, and vibrant',
               displayOrder: 7,
               ingredients: 'Chicken, bell peppers, onions, tomatoes, jalfrezi spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Jalfrezi',
@@ -971,12 +964,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Classic spiced gravy with tender chicken ΓÇö savory, aromatic, and full of flavor',
+                'Classic spiced gravy with tender chicken - savory, aromatic, and full of flavor',
               displayOrder: 8,
               ingredients: 'Chicken, onions, tomatoes, ginger, garlic, curry spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Curry',
@@ -995,12 +988,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Creamy coconut-based curry with tender chicken ΓÇö mild, aromatic, and comforting',
+                'Creamy coconut-based curry with tender chicken - mild, aromatic, and comforting',
               displayOrder: 9,
               ingredients: 'Chicken, coconut milk, curry leaves, mild spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Coconut Curry',
@@ -1013,12 +1006,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Slow-cooked chicken in a rich, spiced tomato and yogurt gravy ΓÇö bold, hearty, and deeply aromatic',
+                'Slow-cooked chicken in a rich, spiced tomato and yogurt gravy - bold, hearty, and deeply aromatic',
               displayOrder: 10,
               ingredients: 'Chicken, yogurt, tomatoes, Kashmiri spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Rogan Josh',
@@ -1036,7 +1029,7 @@ const router = createRouter()
               ingredients: 'Chicken, tomatoes, tamarind, jaggery, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Pathia',
@@ -1049,12 +1042,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'A royal-style chicken dish slow-cooked in a rich, spiced gravyΓÇöflavorful, aromatic, and indulgent',
+                'A royal-style chicken dish slow-cooked in a rich, spiced gravy-flavorful, aromatic, and indulgent',
               displayOrder: 12,
               ingredients: 'Chicken, royal spices, rich gravy, aromatics',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Shehshan',
@@ -1072,7 +1065,7 @@ const router = createRouter()
               ingredients: 'Chicken, honey, garlic, ginger, soy sauce',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Honey Chicken',
@@ -1091,12 +1084,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Tender lamb in a velvety tomato butter sauce ΓÇö creamy, mild, flavorful and crowd-pleasing',
+                'Tender lamb in a velvety tomato butter sauce - creamy, mild, flavorful and crowd-pleasing',
               displayOrder: 14,
               ingredients: 'Lamb, tomatoes, cream, butter, cashews, garam masala',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Lamb Makhani',
@@ -1109,12 +1102,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Classic spiced gravy with tender lamb ΓÇö savory, aromatic, and full of flavor',
+                'Classic spiced gravy with tender lamb - savory, aromatic, and full of flavor',
               displayOrder: 15,
               ingredients: 'Lamb, onions, tomatoes, ginger, garlic, curry spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Lamb Curry',
@@ -1127,12 +1120,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Slow-cooked lamb in a rich, spiced tomato and yogurt gravy ΓÇö bold, hearty, and deeply aromatic',
+                'Slow-cooked lamb in a rich, spiced tomato and yogurt gravy - bold, hearty, and deeply aromatic',
               displayOrder: 16,
               ingredients: 'Lamb, yogurt, fennel, ginger, Kashmiri red chili, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Lamb Rogan Josh',
@@ -1145,12 +1138,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Tender shrimp in a velvety tomato butter sauce ΓÇö creamy, mild, flavorful and crowd-pleasing',
+                'Tender shrimp in a velvety tomato butter sauce - creamy, mild, flavorful and crowd-pleasing',
               displayOrder: 17,
               ingredients: 'Shrimp, tomatoes, cream, butter, cashews, garam masala',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Shrimp Makhani',
@@ -1163,12 +1156,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Classic spiced gravy with tender shrimp ΓÇö savory, aromatic, and full of flavor',
+                'Classic spiced gravy with tender shrimp - savory, aromatic, and full of flavor',
               displayOrder: 18,
               ingredients: 'Shrimp, onions, tomatoes, ginger, garlic, curry spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Shrimp Curry',
@@ -1187,12 +1180,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Tender salmon in a velvety tomato butter sauce ΓÇö creamy, mild, flavorful and crowd-pleasing',
+                'Tender salmon in a velvety tomato butter sauce - creamy, mild, flavorful and crowd-pleasing',
               displayOrder: 19,
               ingredients: 'Salmon, tomatoes, cream, butter, cashews, garam masala',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Salmon Makhani',
@@ -1205,12 +1198,12 @@ const router = createRouter()
               categoryId: nonVegId,
               currency: 'USD',
               description:
-                'Salmon fillets cooked in a rich, spiced tomato-based curry ΓÇö flavorful and elegant',
+                'Salmon fillets cooked in a rich, spiced tomato-based curry - flavorful and elegant',
               displayOrder: 20,
               ingredients: 'Salmon, tomatoes, onions, curry spices, herbs',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Salmon Masala',
@@ -1223,12 +1216,12 @@ const router = createRouter()
               categoryId: breadsId,
               currency: 'USD',
               description:
-                'Soft tandoor-baked flatbread brushed with butter ΓÇö warm, fluffy, and comforting',
+                'Soft tandoor-baked flatbread brushed with butter - warm, fluffy, and comforting',
               displayOrder: 1,
               ingredients: 'Flour, yogurt, baking powder, butter',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Butter Naan',
@@ -1240,13 +1233,12 @@ const router = createRouter()
               calories: 220,
               categoryId: breadsId,
               currency: 'USD',
-              description:
-                'Classic naan topped with garlic and herbs ΓÇö aromatic, soft, and savory',
+              description: 'Classic naan topped with garlic and herbs - aromatic, soft, and savory',
               displayOrder: 2,
               ingredients: 'Flour, yogurt, garlic, cilantro, butter',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Garlic Naan',
@@ -1259,12 +1251,12 @@ const router = createRouter()
               categoryId: breadsId,
               currency: 'USD',
               description:
-                'Naan stuffed with melted cheese and garlic ΓÇö rich, gooey, and flavorful',
+                'Naan stuffed with melted cheese and garlic - rich, gooey, and flavorful',
               displayOrder: 3,
               ingredients: 'Flour, yogurt, cheese, garlic, herbs',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Garlic Cheese Naan',
@@ -1282,13 +1274,12 @@ const router = createRouter()
               calories: 250,
               categoryId: breadsId,
               currency: 'USD',
-              description:
-                'Soft naan filled with sweet coconut ΓÇö lightly crisp, nutty, and unique',
+              description: 'Soft naan filled with sweet coconut - lightly crisp, nutty, and unique',
               displayOrder: 4,
               ingredients: 'Flour, yogurt, coconut, sugar',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Coconut Naan',
@@ -1300,15 +1291,15 @@ const router = createRouter()
               calories: 300,
               categoryId: breadsId,
               currency: 'USD',
-              description: 'Stuffed with cheese and spicy jalape├▒os ΓÇö melty, bold, and fiery',
+              description: 'Stuffed with cheese and spicy jalapenos - melty, bold, and fiery',
               displayOrder: 5,
-              ingredients: 'Flour, cheese, jalape├▒os, herbs',
+              ingredients: 'Flour, cheese, jalapenos, herbs',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
-              name: 'Cheese and Jalape├▒o Naan',
+              name: 'Cheese and Jalapeno Naan',
               preparationTime: 12,
               spiceLevel: 3,
             },
@@ -1318,12 +1309,12 @@ const router = createRouter()
               categoryId: breadsId,
               currency: 'USD',
               description:
-                'Leavened bread stuffed with spiced onions ΓÇö soft, savory, and satisfying',
+                'Leavened bread stuffed with spiced onions - soft, savory, and satisfying',
               displayOrder: 6,
               ingredients: 'Flour, onions, spices, yogurt',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Onion Kulcha',
@@ -1335,12 +1326,12 @@ const router = createRouter()
               calories: 260,
               categoryId: breadsId,
               currency: 'USD',
-              description: 'Naan filled with sweet dates ΓÇö soft, warm, and mildly sweet',
+              description: 'Naan filled with sweet dates - soft, warm, and mildly sweet',
               displayOrder: 7,
               ingredients: 'Flour, dates, sugar, butter',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Dates Naan',
@@ -1352,12 +1343,12 @@ const router = createRouter()
               calories: 280,
               categoryId: breadsId,
               currency: 'USD',
-              description: 'Stuffed with melty cheese ΓÇö soft, rich, and comforting',
+              description: 'Stuffed with melty cheese - soft, rich, and comforting',
               displayOrder: 8,
               ingredients: 'Flour, mozzarella cheese, herbs',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Cheese Naan',
@@ -1376,12 +1367,12 @@ const router = createRouter()
               categoryId: breadsId,
               currency: 'USD',
               description:
-                'Whole wheat flatbread cooked in the tandoor ΓÇö rustic, light, and earthy',
+                'Whole wheat flatbread cooked in the tandoor - rustic, light, and earthy',
               displayOrder: 9,
               ingredients: 'Whole wheat flour, water, salt',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Roti',
@@ -1399,12 +1390,12 @@ const router = createRouter()
               calories: 250,
               categoryId: breadsId,
               currency: 'USD',
-              description: 'Flaky layered flatbread ΓÇö buttery, crisp, and golden',
+              description: 'Flaky layered flatbread - buttery, crisp, and golden',
               displayOrder: 10,
               ingredients: 'Whole wheat flour, ghee, salt',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Plain Paratha',
@@ -1417,12 +1408,12 @@ const router = createRouter()
               categoryId: breadsId,
               currency: 'USD',
               description:
-                'Paratha stuffed with spiced mashed potatoes ΓÇö hearty, warm, and flavorful',
+                'Paratha stuffed with spiced mashed potatoes - hearty, warm, and flavorful',
               displayOrder: 11,
               ingredients: 'Whole wheat flour, potatoes, spices, ghee',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Aloo Paratha',
@@ -1441,12 +1432,12 @@ const router = createRouter()
               categoryId: breadsId,
               currency: 'USD',
               description:
-                'A mix of butter, garlic, and cheese naan ΓÇö perfect for sharing and pairing',
+                'A mix of butter, garlic, and cheese naan - perfect for sharing and pairing',
               displayOrder: 12,
               ingredients: 'Butter naan, garlic naan, cheese naan',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Breads Basket',
@@ -1459,12 +1450,12 @@ const router = createRouter()
               categoryId: riceBiryaniId,
               currency: 'USD',
               description:
-                'Fragrant basmati rice with toasted cumin seeds ΓÇö light, earthy, and flavorful',
+                'Fragrant basmati rice with toasted cumin seeds - light, earthy, and flavorful',
               displayOrder: 1,
               ingredients: 'Basmati rice, cumin seeds, ghee, salt',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Jeera Rice',
@@ -1477,12 +1468,12 @@ const router = createRouter()
               categoryId: riceBiryaniId,
               currency: 'USD',
               description:
-                'Stir-fried basmati rice with chicken ΓÇö savory, aromatic, and satisfying',
+                'Stir-fried basmati rice with chicken - savory, aromatic, and satisfying',
               displayOrder: 2,
               ingredients: 'Basmati rice, chicken, eggs, vegetables, soy sauce',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Fried Rice',
@@ -1494,12 +1485,12 @@ const router = createRouter()
               calories: 350,
               categoryId: riceBiryaniId,
               currency: 'USD',
-              description: 'Stir-fried basmati rice with eggs ΓÇö savory, aromatic, and satisfying',
+              description: 'Stir-fried basmati rice with eggs - savory, aromatic, and satisfying',
               displayOrder: 3,
               ingredients: 'Basmati rice, eggs, vegetables, soy sauce',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Egg Fried Rice',
@@ -1511,13 +1502,12 @@ const router = createRouter()
               calories: 380,
               categoryId: riceBiryaniId,
               currency: 'USD',
-              description:
-                'Stir-fried basmati rice with shrimp ΓÇö savory, aromatic, and satisfying',
+              description: 'Stir-fried basmati rice with shrimp - savory, aromatic, and satisfying',
               displayOrder: 4,
               ingredients: 'Basmati rice, shrimp, vegetables, soy sauce',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Shrimp Fried Rice',
@@ -1536,12 +1526,12 @@ const router = createRouter()
               categoryId: riceBiryaniId,
               currency: 'USD',
               description:
-                'Aromatic basmati rice layered with spiced vegetables ΓÇö rich, fragrant, and full of flavor',
+                'Aromatic basmati rice layered with spiced vegetables - rich, fragrant, and full of flavor',
               displayOrder: 5,
               ingredients: 'Basmati rice, mixed vegetables, saffron, biryani spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Veg Biryani',
@@ -1554,12 +1544,12 @@ const router = createRouter()
               categoryId: riceBiryaniId,
               currency: 'USD',
               description:
-                'Aromatic basmati rice layered with spiced chicken ΓÇö rich, fragrant, and full of flavor',
+                'Aromatic basmati rice layered with spiced chicken - rich, fragrant, and full of flavor',
               displayOrder: 6,
               ingredients: 'Basmati rice, chicken, yogurt, saffron, biryani spices, fried onions',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Biryani',
@@ -1572,12 +1562,12 @@ const router = createRouter()
               categoryId: riceBiryaniId,
               currency: 'USD',
               description:
-                'Aromatic basmati rice layered with spiced shrimp ΓÇö rich, fragrant, and full of flavor',
+                'Aromatic basmati rice layered with spiced shrimp - rich, fragrant, and full of flavor',
               displayOrder: 7,
               ingredients: 'Basmati rice, shrimp, saffron, biryani spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Shrimp Biryani',
@@ -1590,12 +1580,12 @@ const router = createRouter()
               categoryId: riceBiryaniId,
               currency: 'USD',
               description:
-                'Aromatic basmati rice layered with spiced lamb ΓÇö rich, fragrant, and full of flavor',
+                'Aromatic basmati rice layered with spiced lamb - rich, fragrant, and full of flavor',
               displayOrder: 8,
               ingredients: 'Basmati rice, lamb, yogurt, saffron, whole spices, mint',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Lamb Biryani',
@@ -1608,12 +1598,12 @@ const router = createRouter()
               categoryId: riceBiryaniId,
               currency: 'USD',
               description:
-                'Aromatic basmati rice layered with spiced paneer ΓÇö rich, fragrant, and full of flavor',
+                'Aromatic basmati rice layered with spiced paneer - rich, fragrant, and full of flavor',
               displayOrder: 9,
               ingredients: 'Basmati rice, paneer, saffron, biryani spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Paneer Biryani',
@@ -1637,7 +1627,7 @@ const router = createRouter()
               ingredients: 'Chicken with bone, yogurt, tandoori spices, garam masala',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Tandoori (with bone)',
@@ -1655,7 +1645,7 @@ const router = createRouter()
               ingredients: 'Salmon, yogurt, tandoori spices, herbs',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Salmon Tandoori',
@@ -1673,7 +1663,7 @@ const router = createRouter()
               ingredients: 'Shrimp, yogurt, tandoori spices, herbs',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Shrimp Tandoori',
@@ -1691,7 +1681,7 @@ const router = createRouter()
               ingredients: 'Tofu, yogurt, tandoori spices, herbs',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Tofu Tandoori',
@@ -1709,7 +1699,7 @@ const router = createRouter()
               ingredients: 'Paneer, yogurt, tandoori spices, herbs',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Paneer Tandoori',
@@ -1728,12 +1718,12 @@ const router = createRouter()
               categoryId: tandoorId,
               currency: 'USD',
               description:
-                'Boneless chicken pieces marinated with aromatic spices and grilled to perfection ΓÇö juicy, spicy, and charred',
+                'Boneless chicken pieces marinated with aromatic spices and grilled to perfection - juicy, spicy, and charred',
               displayOrder: 6,
               ingredients: 'Chicken breast, yogurt, tandoori masala, garlic, ginger',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Tikka Kabab (boneless)',
@@ -1746,12 +1736,12 @@ const router = createRouter()
               categoryId: tandoorId,
               currency: 'USD',
               description:
-                'Boneless chicken pieces marinated with aromatic spices and grilled to perfection ΓÇö juicy, spicy, and charred',
+                'Boneless chicken pieces marinated with aromatic spices and grilled to perfection - juicy, spicy, and charred',
               displayOrder: 7,
               ingredients: 'Chicken, cream, mild spices, herbs',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Malai Kabab',
@@ -1768,7 +1758,7 @@ const router = createRouter()
               ingredients: 'Tofu, yogurt, spices, herbs',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Tofu Kabab',
@@ -1785,7 +1775,7 @@ const router = createRouter()
               ingredients: 'Paneer, yogurt, spices, herbs',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Paneer Kabab',
@@ -1802,7 +1792,7 @@ const router = createRouter()
               ingredients: 'Goat meat, onions, tomatoes, bay leaves, whole spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Goat Curry',
@@ -1825,7 +1815,7 @@ const router = createRouter()
               ingredients: 'Lamb, vinegar, red chilies, garlic, ginger, Portuguese spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Lamb Vindaloo',
@@ -1838,12 +1828,12 @@ const router = createRouter()
               categoryId: nepaliId,
               currency: 'USD',
               description:
-                'Hand-wrapped Nepali dumplings filled with seasoned chicken ΓÇö served with special tomato chutney',
+                'Hand-wrapped Nepali dumplings filled with seasoned chicken - served with special tomato chutney',
               displayOrder: 1,
               ingredients: 'Chicken, flour wrapper, onions, garlic, ginger, cilantro',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken MoMo (10 pcs)',
@@ -1856,12 +1846,12 @@ const router = createRouter()
               categoryId: nepaliId,
               currency: 'USD',
               description:
-                'Hand-wrapped Nepali dumplings filled with seasoned vegetables ΓÇö served with special tomato chutney',
+                'Hand-wrapped Nepali dumplings filled with seasoned vegetables - served with special tomato chutney',
               displayOrder: 2,
               ingredients: 'Mixed vegetables, flour wrapper, herbs, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Veg MoMo (10 pcs)',
@@ -1874,12 +1864,12 @@ const router = createRouter()
               categoryId: nepaliId,
               currency: 'USD',
               description:
-                'Stir-fried noodles with chicken and vegetables ΓÇö Nepali style comfort food',
+                'Stir-fried noodles with chicken and vegetables - Nepali style comfort food',
               displayOrder: 3,
               ingredients: 'Noodles, chicken, cabbage, carrots, soy sauce, spices',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Chowmein',
@@ -1891,12 +1881,12 @@ const router = createRouter()
               calories: 380,
               categoryId: nepaliId,
               currency: 'USD',
-              description: 'Stir-fried noodles with vegetables ΓÇö Nepali style comfort food',
+              description: 'Stir-fried noodles with vegetables - Nepali style comfort food',
               displayOrder: 4,
               ingredients: 'Noodles, mixed vegetables, soy sauce, spices',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Veg Chowmein',
@@ -1915,12 +1905,12 @@ const router = createRouter()
               categoryId: nepaliId,
               currency: 'USD',
               description:
-                'Crispy chicken pieces tossed in sweet and spicy sauce ΓÇö Indo-Chinese fusion',
+                'Crispy chicken pieces tossed in sweet and spicy sauce - Indo-Chinese fusion',
               displayOrder: 5,
               ingredients: 'Chicken, bell peppers, onions, chilli sauce, soy sauce',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Chilli',
@@ -1933,12 +1923,12 @@ const router = createRouter()
               categoryId: nepaliId,
               currency: 'USD',
               description:
-                'Crispy chicken pieces tossed in sweet and spicy sauce ΓÇö Indo-Chinese fusion',
+                'Crispy chicken pieces tossed in sweet and spicy sauce - Indo-Chinese fusion',
               displayOrder: 6,
               ingredients: 'Chicken, peppers, onions, chilli sauce',
               isAvailable: true,
               isPopular: false,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chilli Chicken',
@@ -1955,7 +1945,7 @@ const router = createRouter()
               ingredients: 'Chicken, traditional Nepali spices, herbs',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: false,
               isVegetarian: false,
               name: 'Chicken Sekuwa',
@@ -1973,7 +1963,7 @@ const router = createRouter()
               ingredients: 'Lentils, rice, mixed vegetables, pickles, papad',
               isAvailable: true,
               isPopular: true,
-              isSpicy: true,
+
               isVegan: true,
               isVegetarian: true,
               name: 'Dal Bhat Thali',
@@ -1986,12 +1976,12 @@ const router = createRouter()
               categoryId: dessertsId,
               currency: 'USD',
               description:
-                'Traditional Indian ice cream infused with sweet mango ΓÇö creamy, rich, and refreshing',
+                'Traditional Indian ice cream infused with sweet mango - creamy, rich, and refreshing',
               displayOrder: 1,
               ingredients: 'Mango, milk, cream, sugar, cardamom',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Mango Kulfi',
@@ -2009,12 +1999,12 @@ const router = createRouter()
               calories: 160,
               categoryId: dessertsId,
               currency: 'USD',
-              description: 'Traditional Indian ice cream ΓÇö creamy, rich, and refreshing',
+              description: 'Traditional Indian ice cream - creamy, rich, and refreshing',
               displayOrder: 2,
               ingredients: 'Milk, cream, sugar, cardamom, pistachios',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Kulfi',
@@ -2027,12 +2017,12 @@ const router = createRouter()
               categoryId: dessertsId,
               currency: 'USD',
               description:
-                'Soft cheese dumplings in sweetened milk ΓÇö delicate, creamy, and aromatic',
+                'Soft cheese dumplings in sweetened milk - delicate, creamy, and aromatic',
               displayOrder: 3,
               ingredients: 'Paneer, milk, sugar, cardamom, pistachios',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Rasmalai (2 pcs)',
@@ -2045,12 +2035,12 @@ const router = createRouter()
               categoryId: dessertsId,
               currency: 'USD',
               description:
-                'Golden fried dough balls soaked in rose-scented syrup ΓÇö sweet, soft, and indulgent',
+                'Golden fried dough balls soaked in rose-scented syrup - sweet, soft, and indulgent',
               displayOrder: 4,
               ingredients: 'Milk powder, flour, sugar syrup, rose water, cardamom',
               isAvailable: true,
               isPopular: true,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Gulab Jamun (2 pcs)',
@@ -2063,12 +2053,12 @@ const router = createRouter()
               categoryId: dessertsId,
               currency: 'USD',
               description:
-                'Creamy rice pudding with cardamom and nuts ΓÇö comfort dessert at its finest',
+                'Creamy rice pudding with cardamom and nuts - comfort dessert at its finest',
               displayOrder: 5,
               ingredients: 'Rice, milk, sugar, cardamom, almonds, raisins',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Kheer',
@@ -2081,12 +2071,12 @@ const router = createRouter()
               categoryId: dessertsId,
               currency: 'USD',
               description:
-                'Warm carrot pudding with ghee and nuts ΓÇö rich, comforting, and aromatic',
+                'Warm carrot pudding with ghee and nuts - rich, comforting, and aromatic',
               displayOrder: 6,
               ingredients: 'Carrots, milk, ghee, sugar, cardamom, nuts',
               isAvailable: true,
               isPopular: false,
-              isSpicy: false,
+
               isVegan: false,
               isVegetarian: true,
               name: 'Gajar Halwa',

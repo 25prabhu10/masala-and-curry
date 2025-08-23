@@ -40,7 +40,7 @@ masala-and-curry/
 
 ### Tech, tooling, versions, and conventions
 
-- Node: >= 22.17.0 (required). pnpm: >= 10.12.4 (repo pins pnpm 10.14.0). Always use pnpm at the repo root.
+- Node: >= 22.17.0 (required). pnpm: >= 10.12.4 (repo pins pnpm 10.15.0). Always use pnpm at the repo root.
 - Workspace manager: pnpm workspaces (`pnpm-workspace.yaml`). Task runner/caching: Turborepo (`turbo.json`).
 - Linting: Oxlint (JavaScript/TypeScript). Formatting: Biome (via `ultracite` preset) + lefthook pre-commit.
 - TypeScript project refs via shared presets (`tooling/typescript/*`). Tailwind configs in `tooling/tailwind/*`.
@@ -63,11 +63,11 @@ masala-and-curry/
 
 Prereqs (once per machine):
 
-- Ensure Node 22.17+ and pnpm 10.14+. On fresh machines, enable Corepack and install pnpm 10.14.
+- Ensure Node 22.17+ and pnpm 10.15+. On fresh machines, enable Corepack and install pnpm 10.15.
 
   ```powershell
   corepack enable
-  corepack prepare pnpm@10.14.0 --activate
+  corepack prepare pnpm@10.15.0 --activate
   pnpm -v
   node -v
   ```

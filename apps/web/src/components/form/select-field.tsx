@@ -14,7 +14,6 @@ type SelectFieldProps = React.ComponentProps<typeof SelectTrigger> & {
   showValidations?: boolean
   all?: boolean
   allLabel?: string
-  allValue?: string
 }
 
 export default function SelectField({
@@ -32,7 +31,7 @@ export default function SelectField({
     field.state.meta.isTouched && !field.state.meta.isValid && field.state.meta.errors.length > 0
 
   const value =
-    typeof field.state.value === 'boolean' ? String(field.state.value) : field.state.value
+    typeof field.state.value !== 'string' ? String(field.state.value) : field.state.value
 
   return (
     <div className="space-y-2">
@@ -62,7 +61,7 @@ export default function SelectField({
               aria-selected={field.state.value === option.value}
               key={option.value}
               role="option"
-              value={option.value}
+              value={typeof option.value !== 'string' ? String(option.value) : option.value}
             >
               {option.label}
             </SelectItem>

@@ -1,6 +1,7 @@
 import { getCategoriesQuery } from '@mac/queries/category'
 import { uploadImageMutation } from '@mac/queries/image'
 import { createMenuItemMutation, updateMenuItemMutation } from '@mac/queries/menu-item'
+import { MAX_CURRENCY_VALUE, MIN_CURRENCY_VALUE, NUMBER_STEPS } from '@mac/resources/constants'
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
 import {
@@ -37,13 +38,25 @@ const defaultValues: MenuItem = {
   isAvailable: true,
   isGlutenFree: false,
   isPopular: false,
-  isSpicy: false,
   isVegan: false,
   isVegetarian: false,
   name: '',
   preparationTime: 15,
   spiceLevel: 0,
 }
+
+const spiceLevels = [
+  { description: 'No detectable heat', label: 'Not Spicy', value: 0 },
+  { description: 'Slight warmth, palatable for most', label: 'Mild', value: 1 },
+  { description: 'Noticeable heat, builds slightly', label: 'Medium', value: 2 },
+  { description: 'Strong heat, mouth-watering', label: 'Spicy', value: 3 },
+  { description: 'Intense heat, for chili enthusiasts', label: 'Very Spicy', value: 4 },
+  {
+    description: 'Extreme heat, proceed with caution',
+    label: 'Extremely Spicy',
+    value: 5,
+  },
+]
 
 export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFormProps) {
   const queryClient = useQueryClient()
@@ -155,9 +168,12 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
               children={(field) => (
                 <field.TextField
                   className="h-12"
+                  inputMode="decimal"
                   label="Price (USD)"
-                  min={0}
+                  max={MAX_CURRENCY_VALUE}
+                  min={MIN_CURRENCY_VALUE}
                   required
+                  step={NUMBER_STEPS}
                   title="Base price"
                   type="number"
                 />
@@ -189,20 +205,18 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
               )}
               name="categoryId"
             />
-            <div className="flex flex-col gap-2">
-              <label className="text-sm" htmlFor="spiceLevel">
-                Spice Level (0-5)
-              </label>
-              <input
-                id="spiceLevel"
-                max={5}
-                min={0}
-                onChange={(e) => form.setFieldValue('spiceLevel', Number(e.currentTarget.value))}
-                type="range"
-                value={(form.state.values as unknown as { spiceLevel?: number }).spiceLevel ?? 0}
-              />
-            </div>
-
+            <form.AppField
+              children={(field) => (
+                <field.SelectField
+                  className="h-12"
+                  label="Spice Level"
+                  options={spiceLevels}
+                  required
+                  title="Select spice level"
+                />
+              )}
+              name="spiceLevel"
+            />
             <div className="col-span-2 flex flex-wrap gap-4">
               <form.AppField
                 children={(field) => <field.CheckboxField label="Vegetarian" />}
