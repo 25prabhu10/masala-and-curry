@@ -1,4 +1,4 @@
-export const MAX_NUMBER_IN_APP = 1000
+export const MAX_NUMBER_IN_APP = 10_000
 
 export const MAX_STRING_LENGTH = 255
 export const MAX_URL_LENGTH = 2048

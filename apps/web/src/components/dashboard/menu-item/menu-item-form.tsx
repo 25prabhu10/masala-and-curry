@@ -214,6 +214,44 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
             />
             <form.AppField
               children={(field) => (
+                <field.TextField
+                  className="h-12"
+                  inputMode="numeric"
+                  label="Calories"
+                  min={0}
+                  title="Calories per serving"
+                  type="number"
+                />
+              )}
+              name="calories"
+            />
+            <form.AppField
+              children={(field) => (
+                <field.TextField
+                  className="h-12"
+                  inputMode="numeric"
+                  label="Preparation Time (min)"
+                  min={1}
+                  required
+                  title="Preparation time in minutes"
+                  type="number"
+                />
+              )}
+              name="preparationTime"
+            />
+            <form.AppField
+              children={(field) => (
+                <field.TextField
+                  className="h-12"
+                  label="Ingredients"
+                  title="List of ingredients"
+                  type="text"
+                />
+              )}
+              name="ingredients"
+            />
+            <form.AppField
+              children={(field) => (
                 <field.SelectField
                   className="h-12"
                   label="Category"
@@ -333,6 +371,22 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                                 />
                               )}
                               name={`variants[${i}].displayOrder`}
+                            />
+                            <form.AppField
+                              children={(subField) => (
+                                <subField.TextField
+                                  className="h-12"
+                                  label="Calories"
+                                  min={0}
+                                  title="Calories per serving"
+                                  type="number"
+                                />
+                              )}
+                              name={`variants[${i}].calories`}
+                            />
+                            <form.AppField
+                              children={(subField) => <subField.CheckboxField label="Default" />}
+                              name={`variants[${i}].isDefault`}
                             />
                           </div>
                         </CardContent>
