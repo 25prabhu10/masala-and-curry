@@ -22,7 +22,7 @@ export default function MenuTotalSelection() {
                   Checkout
                 </Link>
               </Button> */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm text-muted-foreground">
             We are building our online ordering system. In the meantime, please call us to place
             your order.

@@ -10,6 +10,9 @@ export interface CartItem {
   customizations?: {
     spiceLevel?: number
     specialInstructions?: string
+    variantId?: string
+    variantName?: string
+    variantPriceModifier?: number
   }
 }
 
@@ -47,12 +50,10 @@ export const useCartStore = create<CartStore>()(
             let newItems: CartItem[]
 
             if (existingItemIndex !== -1) {
-              // Update existing item quantity
               newItems = state.items.map((item, index) =>
                 index === existingItemIndex ? { ...item, quantity: item.quantity + quantity } : item
               )
             } else {
-              // Add new item
               const newItem: CartItem = {
                 addedAt: new Date(),
                 customizations,
@@ -153,7 +154,11 @@ export const useCartStore = create<CartStore>()(
 
 // Helper functions
 function calculateTotalForItems(items: CartItem[]): number {
-  return items.reduce((total, item) => total + item.menuItem.basePrice * item.quantity, 0)
+  return items.reduce((total, item) => {
+    const variantExtra = item.customizations?.variantPriceModifier ?? 0
+    const unitPrice = item.menuItem.basePrice + variantExtra
+    return total + unitPrice * item.quantity
+  }, 0)
 }
 
 function calculateItemCountForItems(items: CartItem[]): number {

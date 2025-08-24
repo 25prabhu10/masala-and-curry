@@ -17,7 +17,6 @@ import { uploadImageSchema } from './image.validators'
 import {
   createMenuItemVariantValidator,
   readMenuItemVariantValidator,
-  updateMenuItemVariantValidator,
 } from './menu-item-variant.validators'
 
 export const readMenuItemValidator = z.object({
@@ -41,7 +40,7 @@ export const createMenuItemValidator = z.object({
 })
 export const updateMenuItemValidator = z.object({
   ...UpdateMenuItemSchema.shape,
-  variants: z.array(updateMenuItemVariantValidator).optional(),
+  variants: z.array(createMenuItemVariantValidator).optional(),
 })
 
 export const createMenuItemWithImageValidator = z.object({

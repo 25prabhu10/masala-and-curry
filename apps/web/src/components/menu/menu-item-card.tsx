@@ -1,15 +1,22 @@
 import { cn } from '@mac/tailwind-config/utils'
 import type { MenuItem } from '@mac/validators/menu-item'
 import { Button } from '@mac/web-ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@mac/web-ui/card'
 import { Clock, ShoppingCart, Star } from 'lucide-react'
 import { useState } from 'react'
 
-import { formatCurrencyUSD } from '@/lib/utils'
+import { formatCurrencyUSD, formatPrepTime } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
 
 import { DietaryTags } from './dietary-tags'
-import { QuantitySelector } from './quantity-selector'
+import { MenuItemAddDialog } from './menu-item-add-dialog'
 import { SpiceLevelIndicator } from './spice-level-indicator'
 
 interface MenuItemCardProps {
@@ -18,30 +25,14 @@ interface MenuItemCardProps {
 }
 
 export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
-  const [quantity, setQuantity] = useState(1)
-  const addItem = useCartStore((state) => state.addItem)
   const getItemQuantity = useCartStore((state) => state.getItemQuantity)
-
   const currentCartQuantity = getItemQuantity(menuItem.id)
-
-  function handleAddToCart() {
-    addItem(menuItem, undefined, quantity)
-    setQuantity(1)
-  }
-
-  function formatPrepTime(minutes: number) {
-    if (minutes < 60) {
-      return `${minutes} min`
-    }
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
-  }
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   return (
     <Card
       className={cn(
-        'group motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:shadow-lg',
+        'flex flex-col justify-between group motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:shadow-lg',
         className
       )}
     >
@@ -96,8 +87,7 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
           )}
         </div>
       </CardHeader>
-
-      <CardContent className="pt-0">
+      <CardContent>
         {menuItem.ingredients && (
           <div className="mb-4">
             <h4 className="text-sm font-medium text-muted-foreground mb-1">Ingredients</h4>
@@ -112,31 +102,26 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
             </span>
           </div>
         )}
-
-        <div className="flex items-center justify-between gap-3 pt-3 border-t">
-          <div className="flex items-center gap-3">
-            <QuantitySelector
-              disabled={!menuItem.isAvailable}
-              onChange={setQuantity}
-              value={quantity}
-            />
-
-            {currentCartQuantity > 0 && (
-              <span className="text-sm text-muted-foreground">{currentCartQuantity} in cart</span>
-            )}
-          </div>
-
+      </CardContent>
+      <CardFooter>
+        <div className="w-full flex items-center justify-between gap-3 pt-3 border-t">
+          {currentCartQuantity > 0 ? (
+            <span className="text-sm text-muted-foreground">{currentCartQuantity} in cart</span>
+          ) : (
+            <span className="text-sm text-muted-foreground">&nbsp;</span>
+          )}
           <Button
-            className="flex items-center gap-2 min-w-[120px]"
+            className="flex items-center gap-2 min-w-[140px]"
             disabled={!menuItem.isAvailable}
-            onClick={handleAddToCart}
+            onClick={() => setDialogOpen(true)}
             size="sm"
           >
             <ShoppingCart className="h-4 w-4" />
-            Add to Cart
+            {menuItem.variants?.length ? 'Choose Options' : 'Add to Cart'}
           </Button>
+          <MenuItemAddDialog menuItem={menuItem} onOpenChange={setDialogOpen} open={dialogOpen} />
         </div>
-      </CardContent>
+      </CardFooter>
     </Card>
   )
 }

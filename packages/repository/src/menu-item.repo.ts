@@ -100,10 +100,30 @@ export async function getMenuItems(db: DB, filters: MenuItemFilters): Promise<Me
   }
 
   if (filters.pageIndex || filters.pageSize) {
-    return await withPagination(query.$dynamic(), filters.pageIndex, filters.pageSize)
+    const paginatedData = await withPagination(
+      query.$dynamic(),
+      filters.pageIndex,
+      filters.pageSize
+    )
+
+    return await Promise.all(
+      // oxlint-disable-next-line arrow-body-style
+      paginatedData.map(async (item) => ({
+        ...item,
+        variants: await getMenuItemVariants(db, item.id),
+      }))
+    )
   }
 
-  return await query
+  const queryData = await query.all()
+
+  return await Promise.all(
+    // oxlint-disable-next-line arrow-body-style
+    queryData.map(async (item) => ({
+      ...item,
+      variants: await getMenuItemVariants(db, item.id),
+    }))
+  )
 }
 
 export async function getMenuItemById(
@@ -149,6 +169,7 @@ export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<Menu
         ...variant,
         menuItemId: result.id,
       }))
+
       await createMenuItemVariants(db, variants)
     }
 
@@ -168,12 +189,27 @@ export async function updateMenuItem(
   })
 
   if (result) {
-    if (data.variants) {
-      const allVariantPromises = data.variants.map((variant) =>
-        updateMenuItemVariant(db, variant.id ?? '', variant)
+    if (data.variants && data.variants.length > 0) {
+      const existingVariants = data.variants.filter(
+        (v): v is typeof v & { id: string } => typeof v.id === 'string' && v.id.length > 0
       )
+      const newVariants = data.variants.filter((v) => !v.id)
 
-      await Promise.all(allVariantPromises)
+      if (existingVariants.length > 0) {
+        const updatePromises = existingVariants.map((variant) =>
+          updateMenuItemVariant(db, variant.id, variant)
+        )
+        await Promise.all(updatePromises)
+      }
+
+      if (newVariants.length > 0) {
+        // oxlint-disable-next-line arrow-body-style
+        const createPayload = newVariants.map((variant) => ({
+          ...variant,
+          menuItemId: id,
+        }))
+        await createMenuItemVariants(db, createPayload)
+      }
     }
 
     return getMenuItemById(db, result.id)
