@@ -158,15 +158,19 @@ export async function getMenuItemById(
 }
 
 export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<MenuItem | undefined> {
-  const [result] = await db.insert(menuItem).values(data).returning({
-    id: menuItem.id,
-  })
+  const [result] = await db
+    .insert({ ...menuItem, id: undefined })
+    .values(data)
+    .returning({
+      id: menuItem.id,
+    })
 
   if (result) {
     if (data.variants) {
       // oxlint-disable-next-line arrow-body-style
       const variants = data.variants.map((variant) => ({
         ...variant,
+        id: undefined,
         menuItemId: result.id,
       }))
 
@@ -191,7 +195,7 @@ export async function updateMenuItem(
   if (result) {
     if (data.variants && data.variants.length > 0) {
       const existingVariants = data.variants.filter(
-        (v): v is typeof v & { id: string } => typeof v.id === 'string' && v.id.length > 0
+        (v): v is typeof v & { id: string } => typeof v.id === 'string' && v.id.trim() !== ''
       )
       const newVariants = data.variants.filter((v) => !v.id)
 
@@ -206,6 +210,7 @@ export async function updateMenuItem(
         // oxlint-disable-next-line arrow-body-style
         const createPayload = newVariants.map((variant) => ({
           ...variant,
+          id: undefined,
           menuItemId: id,
         }))
         await createMenuItemVariants(db, createPayload)

@@ -42,7 +42,7 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
             <div className="flex items-center gap-2 mb-1">
               <CardTitle className="text-lg font-semibold leading-tight">{menuItem.name}</CardTitle>
               {menuItem.isPopular && (
-                <div className="flex items-center gap-1 px-2 py-1 bg-yellow-50 text-yellow-700 rounded-full">
+                <div className="flex items-center gap-1 px-2 py-1 bg-accent text-accent-foreground rounded-full">
                   <Star className="h-3 w-3 fill-current" />
                   <span className="text-xs font-medium">Popular</span>
                 </div>
@@ -117,7 +117,7 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
             size="sm"
           >
             <ShoppingCart className="h-4 w-4" />
-            {menuItem.variants?.length ? 'Choose Options' : 'Add to Cart'}
+            {menuItem.variants?.length ? 'Select Options' : 'Add to Cart'}
           </Button>
           <MenuItemAddDialog menuItem={menuItem} onOpenChange={setDialogOpen} open={dialogOpen} />
         </div>

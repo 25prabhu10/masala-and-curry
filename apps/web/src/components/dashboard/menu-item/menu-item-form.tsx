@@ -1,6 +1,7 @@
 import { getCategoriesQuery } from '@mac/queries/category'
 import { uploadImageMutation } from '@mac/queries/image'
 import { createMenuItemMutation, updateMenuItemMutation } from '@mac/queries/menu-item'
+import { deleteMenuItemVariantMutation } from '@mac/queries/menu-item-variant'
 import { MAX_CURRENCY_VALUE, MIN_CURRENCY_VALUE, NUMBER_STEPS } from '@mac/resources/constants'
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
@@ -13,7 +14,14 @@ import {
 } from '@mac/validators/menu-item'
 import type { MenuItemVariant } from '@mac/validators/menu-item-variant'
 import { Button } from '@mac/web-ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@mac/web-ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@mac/web-ui/card'
 import { useStore } from '@tanstack/react-form'
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
@@ -27,7 +35,7 @@ type MenuItemFormProps = { data?: MenuItem; isNew?: boolean }
 
 const defaultValues: MenuItem = {
   basePrice: 0,
-  calories: undefined,
+  calories: 0,
   category: null,
   categoryId: '',
   currency: 'USD',
@@ -48,7 +56,7 @@ const defaultValues: MenuItem = {
 }
 
 const defaultVariant: MenuItemVariant = {
-  calories: undefined,
+  calories: 0,
   description: '',
   displayOrder: 0,
   id: '',
@@ -79,6 +87,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
   const createMutation = useMutation(createMenuItemMutation(queryClient))
   const updateMutation = useMutation(updateMenuItemMutation(data.id, queryClient))
   const uploadImgMutation = useMutation(uploadImageMutation())
+  const deleteVariantMutation = useMutation(deleteMenuItemVariantMutation(queryClient))
 
   const categoriesQuery = useSuspenseQuery(getCategoriesQuery({ activeOnly: true }))
   const categoryOptions: SelectOption[] = useMemo(() => {
@@ -159,7 +168,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
             form.handleSubmit()
           }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+          <div className="grid grid-flow-dense md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
             <form.AppField
               children={(field) => (
                 <field.TextField
@@ -390,6 +399,28 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                             />
                           </div>
                         </CardContent>
+                        <CardFooter>
+                          <Button
+                            className="h-12"
+                            onClick={async () => {
+                              try {
+                                if (variant.id) {
+                                  await deleteVariantMutation.mutateAsync(variant.id)
+                                }
+                              } catch (error) {
+                                if (error instanceof Error) {
+                                  toast.error(error.message)
+                                }
+                              } finally {
+                                field.removeValue(i)
+                              }
+                            }}
+                            type="button"
+                            variant="destructive"
+                          >
+                            Remove variant
+                          </Button>
+                        </CardFooter>
                       </Card>
                     ))
                   ) : (
@@ -399,7 +430,10 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                   <Button
                     className="h-12"
                     onClick={() =>
-                      field.pushValue({ ...defaultVariant, _tempId: crypto.randomUUID() })
+                      field.pushValue({
+                        ...defaultVariant,
+                        _tempId: crypto.randomUUID(),
+                      })
                     }
                     type="button"
                     variant="outline"

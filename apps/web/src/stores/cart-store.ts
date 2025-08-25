@@ -10,9 +10,16 @@ export interface CartItem {
   customizations?: {
     spiceLevel?: number
     specialInstructions?: string
+    // Legacy single variant fields (kept for backward compatibility + migration)
     variantId?: string
     variantName?: string
     variantPriceModifier?: number
+    // New multi-variant support
+    variants?: {
+      id: string
+      name: string
+      priceModifier?: number
+    }[]
   }
 }
 
@@ -41,10 +48,18 @@ export const useCartStore = create<CartStore>()(
       return {
         addItem: (menuItem, customizations, quantity = 1) => {
           set((state) => {
+            // Normalize variants order for deterministic equality
+            let normalized = customizations
+            if (customizations?.variants) {
+              normalized = {
+                ...customizations,
+                variants: [...customizations.variants].sort((a, b) => a.id.localeCompare(b.id)),
+              }
+            }
             const existingItemIndex = state.items.findIndex(
               (item) =>
                 item.menuItem.id === menuItem.id &&
-                JSON.stringify(item.customizations) === JSON.stringify(customizations)
+                JSON.stringify(item.customizations) === JSON.stringify(normalized)
             )
 
             let newItems: CartItem[]
@@ -56,7 +71,7 @@ export const useCartStore = create<CartStore>()(
             } else {
               const newItem: CartItem = {
                 addedAt: new Date(),
-                customizations,
+                customizations: normalized,
                 id: `${menuItem.id}-${Date.now()}`,
                 menuItem,
                 quantity,
@@ -146,8 +161,39 @@ export const useCartStore = create<CartStore>()(
       }
     }),
     {
+      migrate: (persistedState: unknown, version) => {
+        const state = persistedState as { items?: CartItem[] } | undefined
+        if (version === 1 && state?.items) {
+          state.items = state.items.map((item: CartItem) => {
+            if (
+              item.customizations &&
+              !item.customizations.variants &&
+              (item.customizations.variantId || item.customizations.variantName)
+            ) {
+              const { variantId, variantName, variantPriceModifier } = item.customizations
+              return {
+                ...item,
+                customizations: {
+                  ...item.customizations,
+                  variants: variantId
+                    ? [
+                        {
+                          id: variantId,
+                          name: variantName || variantId,
+                          priceModifier: variantPriceModifier,
+                        },
+                      ]
+                    : [],
+                },
+              }
+            }
+            return item
+          })
+        }
+        return state
+      },
       name: 'masala-curry-cart',
-      version: 1,
+      version: 2,
     }
   )
 )
@@ -155,8 +201,11 @@ export const useCartStore = create<CartStore>()(
 // Helper functions
 function calculateTotalForItems(items: CartItem[]): number {
   return items.reduce((total, item) => {
-    const variantExtra = item.customizations?.variantPriceModifier ?? 0
-    const unitPrice = item.menuItem.basePrice + variantExtra
+    const extras = item.customizations?.variants?.map((v) => v.priceModifier || 0) || []
+    if (!extras.length && item.customizations?.variantPriceModifier) {
+      extras.push(item.customizations.variantPriceModifier)
+    }
+    const unitPrice = item.menuItem.basePrice + extras.reduce((s, x) => s + x, 0)
     return total + unitPrice * item.quantity
   }, 0)
 }

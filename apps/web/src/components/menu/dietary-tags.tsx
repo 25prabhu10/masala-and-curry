@@ -1,10 +1,10 @@
 import { cn } from '@mac/tailwind-config/utils'
 import { Badge } from '@mac/web-ui/badge'
-import { Leaf, Shield, WheatOff } from 'lucide-react'
+import { Leaf, type LucideIcon, Shield, WheatOff } from 'lucide-react'
 
 interface DietaryTag {
   label: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: LucideIcon
   variant: 'default' | 'secondary' | 'destructive' | 'outline'
   bgColor: string
 }
@@ -59,7 +59,6 @@ export function DietaryTags({
 }: DietaryTagsProps) {
   const activeTags: (keyof typeof DIETARY_TAGS)[] = []
 
-  // Add tags based on boolean flags
   if (isVegan) {
     activeTags.push('vegan')
   } else if (isVegetarian) {
@@ -115,7 +114,6 @@ export function DietaryTags({
           </Badge>
         )
       })}
-
       {remainingCount > 0 && (
         <Badge
           className={cn(

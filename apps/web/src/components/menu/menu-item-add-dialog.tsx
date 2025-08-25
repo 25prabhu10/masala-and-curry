@@ -27,21 +27,28 @@ export function MenuItemAddDialog({ menuItem, open, onOpenChange }: MenuItemAddD
   const addItem = useCartStore((s) => s.addItem)
 
   const hasVariants = (menuItem.variants?.length ?? 0) > 0
-  const defaultVariant = menuItem.variants?.find((v) => v.isDefault) || menuItem.variants?.[0]
-  const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(defaultVariant?.id)
+  const defaultVariants = (menuItem.variants || []).filter((v) => v.isDefault)
+  const [selectedVariantIds, setSelectedVariantIds] = useState<string[]>(
+    defaultVariants.map((v) => v.id)
+  )
   const [quantity, setQuantity] = useState(1)
 
   function handleAdd() {
-    const variant: MenuItemVariant | undefined = menuItem.variants?.find(
-      (v) => v.id === selectedVariantId
-    )
+    const variants: MenuItemVariant[] =
+      menuItem.variants?.filter((v) => selectedVariantIds.includes(v.id)) || []
     addItem(
       menuItem,
-      {
-        variantId: variant?.id,
-        variantName: variant?.name,
-        variantPriceModifier: variant?.priceModifier,
-      },
+      variants.length
+        ? {
+            variants: variants.map((v) => {
+              return {
+                id: v.id,
+                name: v.name,
+                priceModifier: v.priceModifier,
+              }
+            }),
+          }
+        : undefined,
       quantity
     )
     setQuantity(1)
@@ -49,9 +56,12 @@ export function MenuItemAddDialog({ menuItem, open, onOpenChange }: MenuItemAddD
   }
 
   const unitPrice = (() => {
-    const variant = menuItem.variants?.find((v) => v.id === selectedVariantId)
-    const modifier = variant?.priceModifier ?? 0
-    return menuItem.basePrice + modifier
+    const modifiers =
+      menuItem.variants
+        ?.filter((v) => selectedVariantIds.includes(v.id))
+        .map((v) => v.priceModifier || 0) || []
+    const modifierSum = modifiers.reduce((s, x) => s + x, 0)
+    return menuItem.basePrice + modifierSum
   })()
 
   return (
@@ -66,43 +76,41 @@ export function MenuItemAddDialog({ menuItem, open, onOpenChange }: MenuItemAddD
         <div className="space-y-4">
           {hasVariants && (
             <div>
-              <h4 className="text-sm font-medium mb-2">Variants</h4>
+              <h4 className="text-sm font-medium mb-2">Variants (select any)</h4>
               <div className="max-h-60 pr-2 overflow-y-auto">
                 <div className="space-y-2">
                   {menuItem.variants?.map((variant) => {
-                    const price = menuItem.basePrice + (variant.priceModifier || 0)
+                    const price = variant.priceModifier ?? 0
+                    const checked = selectedVariantIds.includes(variant.id)
                     return (
                       <label
                         className={cn(
                           'flex items-start gap-3 rounded-md border p-3 cursor-pointer transition-colors',
-                          selectedVariantId === variant.id
-                            ? 'border-primary bg-primary/5'
-                            : 'hover:border-primary/50'
+                          checked ? 'border-primary bg-primary/5' : 'hover:border-primary/50'
                         )}
                         htmlFor={variant.id}
                         key={variant.id}
-                        onClick={() => {
-                          setSelectedVariantId(variant.id)
-                        }}
                       >
                         <input
-                          checked={selectedVariantId === variant.id}
+                          checked={checked}
                           className="mt-1 h-4 w-4 border-primary text-primary focus:ring-primary"
                           id={variant.id}
-                          name="variant"
+                          name="variants"
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            if (e.target.checked) {
-                              setSelectedVariantId(variant.id)
-                            }
+                            setSelectedVariantIds((prev) =>
+                              e.target.checked
+                                ? [...prev, variant.id]
+                                : prev.filter((id) => id !== variant.id)
+                            )
                           }}
-                          type="radio"
+                          type="checkbox"
                           value={variant.id}
                         />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
                             <p className="text-sm font-medium leading-none">{variant.name}</p>
                             <span className="text-sm font-semibold">
-                              {formatCurrencyUSD(price, menuItem.currency)}
+                              {`+ ${formatCurrencyUSD(price, menuItem.currency)}`}
                             </span>
                           </div>
                           {variant.description && (
