@@ -10,7 +10,7 @@ export default function ImageUI({ url, ratio = 16 / 9, ...props }: ImageUIProps)
     <AspectRatio className="border border-dashed rounded" ratio={ratio}>
       <img
         alt="Preview"
-        className="h-full w-full rounded object-cover dark:brightness-[0.7]"
+        className="h-full w-full rounded object-cover"
         {...(url ? { src: url } : {})}
         {...props}
       />

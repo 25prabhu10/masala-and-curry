@@ -1,5 +1,6 @@
 import { env } from 'cloudflare:workers'
 import { cors } from 'hono/cors'
+import { csrf } from 'hono/csrf'
 import { requestId } from 'hono/request-id'
 import { secureHeaders } from 'hono/secure-headers'
 
@@ -61,6 +62,7 @@ export default function createApp() {
           origin: env.URL,
         })
       )
+      .use(csrf({ origin: env.URL }))
   }
 
   app.notFound(notFound).onError(onError)
