@@ -1,6 +1,5 @@
 import { env } from 'cloudflare:workers'
 import { cors } from 'hono/cors'
-import { csrf } from 'hono/csrf'
 import { requestId } from 'hono/request-id'
 import { secureHeaders } from 'hono/secure-headers'
 
@@ -13,7 +12,14 @@ import createRouter from './create-router'
 export default function createApp() {
   const app = createRouter()
 
-  app.use(requestId())
+  app.use(requestId()).use('*', (c, next) => {
+    if (c.req.path.startsWith(BASE_PATH)) {
+      return next()
+    }
+    // SPA redirect to /index.html
+    const requestUrl = new URL(c.req.raw.url)
+    return c.env.ASSETS.fetch(new URL('/index.html', requestUrl.origin))
+  })
 
   if (env.ENVIRONMENT !== 'development') {
     app
@@ -55,7 +61,6 @@ export default function createApp() {
           origin: env.URL,
         })
       )
-      .use(csrf({ origin: env.URL }))
   }
 
   app.notFound(notFound).onError(onError)
