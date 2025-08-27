@@ -2212,11 +2212,10 @@ const router = createRouter()
           },
           {
             calories: 450,
-            description:
-              'Creamy coconut-based curry with tender chicken - mild, aromatic, and comforting',
+            description: 'Bone-in goat meat in spicy traditional curry',
             displayOrder: 2,
             menuItemId: menuItems.find((m) => m.name === 'Chicken Curry')?.id || '',
-            name: 'Coconut',
+            name: 'Goat',
             priceModifier: 2,
           },
           {
@@ -2228,41 +2227,24 @@ const router = createRouter()
             name: 'Shrimp',
             priceModifier: 2,
           },
-          {
-            calories: 450,
-            description: 'Bone-in goat meat in spicy traditional curry',
-            displayOrder: 3,
-            menuItemId: menuItems.find((m) => m.name === 'Chicken Curry')?.id || '',
-            name: 'Goat',
-            priceModifier: 2,
-          },
         ])
         await db.insert(menuItemVariant).values([
+          {
+            calories: 380,
+            description:
+              'Classic spiced gravy with tender chicken - savory, aromatic, and full of flavor',
+            displayOrder: 1,
+            menuItemId: menuItems.find((m) => m.name === 'Shrimp Curry')?.id || '',
+            name: 'Chicken',
+            priceModifier: 2,
+          },
           {
             calories: 500,
             description:
               'Classic spiced gravy with tender lamb - savory, aromatic, and full of flavor',
-            displayOrder: 1,
-            menuItemId: menuItems.find((m) => m.name === 'Shrimp Curry')?.id || '',
-            name: 'Lamb',
-            priceModifier: 2,
-          },
-          {
-            calories: 450,
-            description:
-              'Creamy coconut-based curry with tender chicken - mild, aromatic, and comforting',
             displayOrder: 2,
             menuItemId: menuItems.find((m) => m.name === 'Shrimp Curry')?.id || '',
-            name: 'Coconut',
-            priceModifier: 2,
-          },
-          {
-            calories: 450,
-            description:
-              'Classic spiced gravy with tender shrimp - savory, aromatic, and full of flavor',
-            displayOrder: 3,
-            menuItemId: menuItems.find((m) => m.name === 'Shrimp Curry')?.id || '',
-            name: 'Shrimp',
+            name: 'Lamb',
             priceModifier: 2,
           },
           {
@@ -2276,21 +2258,20 @@ const router = createRouter()
         ])
         await db.insert(menuItemVariant).values([
           {
-            calories: 500,
-            description:
-              'Classic spiced gravy with tender lamb - savory, aromatic, and full of flavor',
+            calories: 450,
+            description: 'Bone-in goat meat in spicy traditional curry',
             displayOrder: 1,
             menuItemId: menuItems.find((m) => m.name === 'Lamb Curry')?.id || '',
-            name: 'Lamb',
+            name: 'Goat',
             priceModifier: 2,
           },
           {
-            calories: 450,
+            calories: 380,
             description:
-              'Creamy coconut-based curry with tender chicken - mild, aromatic, and comforting',
+              'Classic spiced gravy with tender chicken - savory, aromatic, and full of flavor',
             displayOrder: 2,
             menuItemId: menuItems.find((m) => m.name === 'Lamb Curry')?.id || '',
-            name: 'Coconut',
+            name: 'Chicken',
             priceModifier: 2,
           },
           {
@@ -2300,14 +2281,6 @@ const router = createRouter()
             displayOrder: 3,
             menuItemId: menuItems.find((m) => m.name === 'Lamb Curry')?.id || '',
             name: 'Shrimp',
-            priceModifier: 2,
-          },
-          {
-            calories: 450,
-            description: 'Bone-in goat meat in spicy traditional curry',
-            displayOrder: 3,
-            menuItemId: menuItems.find((m) => m.name === 'Lamb Curry')?.id || '',
-            name: 'Goat',
             priceModifier: 2,
           },
         ])
@@ -2323,11 +2296,10 @@ const router = createRouter()
           },
           {
             calories: 450,
-            description:
-              'Creamy coconut-based curry with tender chicken - mild, aromatic, and comforting',
+            description: 'Bone-in goat meat in spicy traditional curry',
             displayOrder: 2,
             menuItemId: menuItems.find((m) => m.name === 'Chicken Coconut Curry')?.id || '',
-            name: 'Coconut',
+            name: 'Goat',
             priceModifier: 2,
           },
           {
@@ -2337,14 +2309,6 @@ const router = createRouter()
             displayOrder: 3,
             menuItemId: menuItems.find((m) => m.name === 'Chicken Coconut Curry')?.id || '',
             name: 'Shrimp',
-            priceModifier: 2,
-          },
-          {
-            calories: 450,
-            description: 'Bone-in goat meat in spicy traditional curry',
-            displayOrder: 3,
-            menuItemId: menuItems.find((m) => m.name === 'Chicken Coconut Curry')?.id || '',
-            name: 'Goat',
             priceModifier: 2,
           },
         ])
@@ -2359,12 +2323,12 @@ const router = createRouter()
             priceModifier: 2,
           },
           {
-            calories: 450,
+            calories: 380,
             description:
-              'Creamy coconut-based curry with tender chicken - mild, aromatic, and comforting',
+              'Classic spiced gravy with tender chicken - savory, aromatic, and full of flavor',
             displayOrder: 2,
             menuItemId: menuItems.find((m) => m.name === 'Goat Curry')?.id || '',
-            name: 'Coconut',
+            name: 'Chicken',
             priceModifier: 2,
           },
           {
@@ -2374,14 +2338,6 @@ const router = createRouter()
             displayOrder: 3,
             menuItemId: menuItems.find((m) => m.name === 'Goat Curry')?.id || '',
             name: 'Shrimp',
-            priceModifier: 2,
-          },
-          {
-            calories: 450,
-            description: 'Bone-in goat meat in spicy traditional curry',
-            displayOrder: 3,
-            menuItemId: menuItems.find((m) => m.name === 'Goat Curry')?.id || '',
-            name: 'Goat',
             priceModifier: 2,
           },
         ])
