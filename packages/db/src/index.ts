@@ -6,7 +6,6 @@ import * as schema from './schemas'
 export async function createDb<TClient extends AnyD1Database = AnyD1Database>(db: TClient) {
   return drizzle(db, {
     casing: 'snake_case',
-    logger: true,
     schema,
   })
 }

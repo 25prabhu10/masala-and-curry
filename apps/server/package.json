@@ -28,7 +28,7 @@
     "@mac/repository": "workspace:*",
     "@mac/resources": "workspace:*",
     "@mac/validators": "workspace:*",
-    "@scalar/hono-api-reference": "^0.9.15",
+    "@scalar/hono-api-reference": "^0.9.16",
     "better-auth": "catalog:api",
     "hono": "catalog:api",
     "nanoid": "catalog:"
@@ -39,7 +39,7 @@
     "oxlint": "catalog:",
     "typescript": "catalog:",
     "vitest": "^3.2.4",
-    "wrangler": "^4.32.0"
+    "wrangler": "^4.33.0"
   },
   "packageManager": "pnpm@10.15.0"
 }

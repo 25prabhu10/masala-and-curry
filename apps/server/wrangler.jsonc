@@ -9,6 +9,10 @@
     "URL": "http://localhost:5173",
     "ENVIRONMENT": "development"
   },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
   "assets": {
     "directory": "public",
     "binding": "ASSETS"
