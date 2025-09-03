@@ -17,10 +17,11 @@ import {
 } from '@mac/web-ui/card'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useRouter } from '@tanstack/react-router'
+import { useCallback } from 'react'
 import { toast } from 'sonner'
 
 import { useAppForm } from '@/hooks/use-form'
-import { signUp } from '@/lib/auth-client'
+import { signIn, signUp } from '@/lib/auth-client'
 
 async function signUpEmail(params: {
   name: string
@@ -49,6 +50,26 @@ export function SignUpForm({ callback }: CallbackSearchParam) {
   const signUpMutation = useMutation({
     mutationFn: signUpEmail,
   })
+
+  const handleGoogleSignIn = useCallback(async () => {
+    const res = await signIn.social({
+      callbackURL: callback || '/',
+      provider: 'google',
+    })
+
+    if (res.error) {
+      toast.error(res.error.message)
+    } else {
+      toast.success('Login successful.')
+      await queryClient.resetQueries({ queryKey: userKeys.all })
+      await router.invalidate()
+      if (callback) {
+        router.history.push(callback)
+      } else {
+        await navigate({ replace: true, to: '/' })
+      }
+    }
+  }, [callback, navigate, queryClient, router])
 
   const form = useAppForm({
     defaultValues: {
@@ -189,7 +210,7 @@ export function SignUpForm({ callback }: CallbackSearchParam) {
           </div>
         </div>
         <div className="w-full grid grid-cols-1 gap-3">
-          <Button className="h-12" type="button" variant="outline">
+          <Button className="h-12" onClick={handleGoogleSignIn} type="button" variant="outline">
             <svg
               height="1em"
               preserveAspectRatio="xMidYMid"
