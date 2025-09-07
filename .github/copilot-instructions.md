@@ -67,7 +67,7 @@ Prereqs (once per machine):
 
   ```powershell
   corepack enable
-  corepack prepare pnpm@10.15.0 --activate
+  corepack prepare pnpm@latest --activate
   pnpm -v
   node -v
   ```

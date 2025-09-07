@@ -93,10 +93,6 @@ export function MenuFilters({ categories, filters, setFilters, resetFilters }: M
               <h4 className="text-sm">Quick Filters</h4>
               <div className="space-y-2">
                 <form.AppField
-                  children={(field) => <field.CheckboxField label="Available only" />}
-                  name="availableOnly"
-                />
-                <form.AppField
                   children={(field) => <field.CheckboxField label="Popular items" />}
                   name="popular"
                 />

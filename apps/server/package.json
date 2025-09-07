@@ -39,7 +39,7 @@
     "oxlint": "catalog:",
     "typescript": "catalog:",
     "vitest": "^3.2.4",
-    "wrangler": "^4.33.0"
+    "wrangler": "^4.34.0"
   },
-  "packageManager": "pnpm@10.15.0"
+  "packageManager": "pnpm@10.15.1"
 }

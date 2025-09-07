@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "assist": {
     "actions": {
       "recommended": true,
@@ -30,7 +30,8 @@
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",
-    "lineWidth": 100
+    "lineWidth": 100,
+    "includes": ["**", "!worker-configuration.d.ts", "!routeTree.gen.ts"]
   },
   "javascript": {
     "formatter": {

@@ -2,8 +2,9 @@
   "$schema": "https://ui.shadcn.com/schema.json",
   "aliases": {
     "components": "src",
-    "ui": "src/ui",
+    "hooks": "src/hooks",
     "lib": "@mac/tailwind-config",
+    "ui": "src/ui",
     "utils": "@mac/tailwind-config/utils"
   },
   "iconLibrary": "lucide",
@@ -12,9 +13,8 @@
   "tailwind": {
     "baseColor": "zinc",
     "config": "../../tooling/tailwind/web.ts",
-    "css": "unused.css",
-    "cssVariables": true,
-    "prefix": ""
+    "css": "../../apps/web/src/styles/global.css",
+    "cssVariables": true
   },
   "tsx": true
 }

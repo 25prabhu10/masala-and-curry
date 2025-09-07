@@ -43,12 +43,12 @@
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.49.0",
-    "@libsql/client": "^0.15.12",
+    "@libsql/client": "^0.15.14",
     "@mac/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "drizzle-kit": "^0.31.4",
     "oxlint": "catalog:",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.15.0"
+  "packageManager": "pnpm@10.15.1"
 }

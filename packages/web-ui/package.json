@@ -8,18 +8,19 @@
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
-    "./avatar": "./src/ui/avatar.tsx",
     "./aspect-ratio": "./src/ui/aspect-ratio.tsx",
+    "./avatar": "./src/ui/avatar.tsx",
     "./badge": "./src/ui/badge.tsx",
     "./button": "./src/ui/button.tsx",
     "./card": "./src/ui/card.tsx",
     "./checkbox": "./src/ui/checkbox.tsx",
     "./dialog": "./src/ui/dialog.tsx",
+    "./drawer": "./src/ui/drawer.tsx",
     "./dropdown-menu": "./src/ui/dropdown-menu.tsx",
     "./input": "./src/ui/input.tsx",
     "./label": "./src/ui/label.tsx",
-    "./separator": "./src/ui/separator.tsx",
     "./select": "./src/ui/select.tsx",
+    "./separator": "./src/ui/separator.tsx",
     "./sheet": "./src/ui/sheet.tsx",
     "./sidebar": "./src/ui/sidebar.tsx",
     "./skeleton": "./src/ui/skeleton.tsx",
@@ -35,10 +36,12 @@
     "ui-add": "pnpm dlx shadcn@canary add"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "catalog:ui",
     "radix-ui": "latest",
-    "sonner": "catalog:ui"
+    "sonner": "catalog:ui",
+    "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@mac/tailwind-config": "workspace:*",
@@ -52,5 +55,5 @@
   "peerDependencies": {
     "react": "catalog:react19"
   },
-  "packageManager": "pnpm@10.15.0"
+  "packageManager": "pnpm@10.15.1"
 }

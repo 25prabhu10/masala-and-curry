@@ -10,13 +10,12 @@ import {
   CardTitle,
 } from '@mac/web-ui/card'
 import { Clock, ShoppingCart, Star } from 'lucide-react'
-import { useState } from 'react'
 
 import { formatCurrencyUSD, formatPrepTime } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
 
 import { DietaryTags } from './dietary-tags'
-import { MenuItemAddDialog } from './menu-item-add-dialog'
+import { MenuItemAddDrawer } from './menu-item-add-drawer'
 import { SpiceLevelIndicator } from './spice-level-indicator'
 
 interface MenuItemCardProps {
@@ -27,7 +26,6 @@ interface MenuItemCardProps {
 export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
   const getItemQuantity = useCartStore((state) => state.getItemQuantity)
   const currentCartQuantity = getItemQuantity(menuItem.id)
-  const [dialogOpen, setDialogOpen] = useState(false)
 
   return (
     <Card
@@ -110,16 +108,19 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
           ) : (
             <span className="text-sm text-muted-foreground">&nbsp;</span>
           )}
-          <Button
-            className="flex items-center gap-2 min-w-[140px]"
-            disabled={!menuItem.isAvailable}
-            onClick={() => setDialogOpen(true)}
-            size="sm"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            {menuItem.variants?.length ? 'Select Options' : 'Add to Cart'}
-          </Button>
-          <MenuItemAddDialog menuItem={menuItem} onOpenChange={setDialogOpen} open={dialogOpen} />
+          <MenuItemAddDrawer
+            closeButton={
+              <Button
+                className="flex items-center gap-2 min-w-[140px]"
+                disabled={!menuItem.isAvailable}
+                size="sm"
+              >
+                <ShoppingCart className="h-4 w-4" />
+                {menuItem.variants?.length ? 'Select Options' : 'Add to Cart'}
+              </Button>
+            }
+            menuItem={menuItem}
+          />
         </div>
       </CardFooter>
     </Card>
