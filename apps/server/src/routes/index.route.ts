@@ -2208,7 +2208,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 1,
+              maxSelect: 5,
               menuItemId: menuItems.find((m) => m.name === 'Chicken Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',
@@ -2218,7 +2218,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 1,
+              maxSelect: 5,
               menuItemId: menuItems.find((m) => m.name === 'Chicken Coconut Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',
@@ -2228,7 +2228,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 1,
+              maxSelect: 5,
               menuItemId: menuItems.find((m) => m.name === 'Shrimp Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',
@@ -2238,7 +2238,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 1,
+              maxSelect: 5,
               menuItemId: menuItems.find((m) => m.name === 'Lamb Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',
@@ -2248,7 +2248,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 1,
+              maxSelect: 5,
               menuItemId: menuItems.find((m) => m.name === 'Goat Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',

@@ -164,7 +164,7 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                         )}
                       </h4>
                       <div className="max-h-80 pr-2 overflow-y-auto">
-                        {!isSingle ? (
+                        {isSingle ? (
                           <div className="space-y-2">
                             <RadioGroup
                               onValueChange={(value) => {

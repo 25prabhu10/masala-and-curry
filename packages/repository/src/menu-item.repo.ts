@@ -122,12 +122,9 @@ export async function getMenuItemById(db: DB, id: string): Promise<MenuItem | un
 }
 
 export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<MenuItem | undefined> {
-  const [result] = await db
-    .insert({ ...menuItem, id: undefined })
-    .values(data)
-    .returning({
-      id: menuItem.id,
-    })
+  const [result] = await db.insert(menuItem).values(data).returning({
+    id: menuItem.id,
+  })
 
   if (result && data.optionGroups && data.optionGroups.length > 0) {
     const newOptionGroups = data.optionGroups.map((g) => ({
@@ -135,16 +132,15 @@ export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<Menu
       menuItemId: result.id,
     }))
 
-    const createdGroups = await db
-      .insert({ ...menuOptionGroup, id: undefined })
-      .values(newOptionGroups)
-      .returning({
-        id: menuOptionGroup.id,
-      })
+    const createdGroups = await db.insert(menuOptionGroup).values(newOptionGroups).returning({
+      id: menuOptionGroup.id,
+      name: menuOptionGroup.name,
+    })
 
     await Promise.all(
       createdGroups.map((g) => {
-        const group = newOptionGroups.find((grp) => grp.name === g.id)
+        const group = newOptionGroups.find((grp) => grp.name === g.name)
+        console.error('createdGroups', group)
         if (group?.options && group.options.length > 0) {
           return db.insert(menuOption).values(
             group.options.map((o) => ({
@@ -228,7 +224,7 @@ export async function updateMenuItem(
 
       if (newOptionGroups.length > 0) {
         const createdGroups = await db
-          .insert({ ...menuOptionGroup, id: undefined })
+          .insert(menuOptionGroup)
           .values(
             newOptionGroups.map((g) => ({
               ...g,
