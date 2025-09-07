@@ -230,8 +230,12 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                                       setSelectedOptions((prev) => {
                                         const prevSelected = prev[group.id] || []
                                         if (nextChecked === true) {
-                                          if (prevSelected.includes(opt.id)) {return prev}
-                                          if (prevSelected.length >= group.maxSelect) {return prev}
+                                          if (prevSelected.includes(opt.id)) {
+                                            return prev
+                                          }
+                                          if (prevSelected.length >= group.maxSelect) {
+                                            return prev
+                                          }
                                           return { ...prev, [group.id]: [...prevSelected, opt.id] }
                                         }
                                         return {

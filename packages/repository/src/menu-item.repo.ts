@@ -122,44 +122,40 @@ export async function getMenuItemById(db: DB, id: string): Promise<MenuItem | un
 }
 
 export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<MenuItem | undefined> {
-  const result = await db.transaction(async (tx) => {
-    const [newMenuItem] = await tx
-      .insert({ ...menuItem, id: undefined })
-      .values(data)
+  const [result] = await db
+    .insert({ ...menuItem, id: undefined })
+    .values(data)
+    .returning({
+      id: menuItem.id,
+    })
+
+  if (result && data.optionGroups && data.optionGroups.length > 0) {
+    const newOptionGroups = data.optionGroups.map((g) => ({
+      ...g,
+      menuItemId: result.id,
+    }))
+
+    const createdGroups = await db
+      .insert({ ...menuOptionGroup, id: undefined })
+      .values(newOptionGroups)
       .returning({
-        id: menuItem.id,
+        id: menuOptionGroup.id,
       })
 
-    if (newMenuItem && data.optionGroups && data.optionGroups.length > 0) {
-      const newOptionGroups = data.optionGroups.map((g) => ({
-        ...g,
-        menuItemId: newMenuItem.id,
-      }))
-
-      const createdGroups = await tx
-        .insert({ ...menuOptionGroup, id: undefined })
-        .values(newOptionGroups)
-        .returning({
-          id: menuOptionGroup.id,
-        })
-
-      await Promise.all(
-        createdGroups.map((g) => {
-          const group = newOptionGroups.find((grp) => grp.name === g.id)
-          if (group?.options && group.options.length > 0) {
-            return tx.insert(menuOption).values(
-              group.options.map((o) => ({
-                ...o,
-                groupId: g.id,
-              }))
-            )
-          }
-        })
-      )
-    }
-
-    return newMenuItem
-  })
+    await Promise.all(
+      createdGroups.map((g) => {
+        const group = newOptionGroups.find((grp) => grp.name === g.id)
+        if (group?.options && group.options.length > 0) {
+          return db.insert(menuOption).values(
+            group.options.map((o) => ({
+              ...o,
+              groupId: g.id,
+            }))
+          )
+        }
+      })
+    )
+  }
 
   if (result) {
     return getMenuItemById(db, result.id)

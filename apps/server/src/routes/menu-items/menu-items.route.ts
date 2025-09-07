@@ -75,7 +75,6 @@ const router = createRouter()
 
     try {
       const db = await createDb(c.env.DB)
-
       const queryData = await createMenuItem(db, reqData)
 
       const result = await readMenuItemValidator.safeParseAsync(queryData)
@@ -100,6 +99,8 @@ const router = createRouter()
 
       return c.json(result.data, CREATED)
     } catch (error) {
+      console.error('newMenuItem', error)
+
       handleApiError(error, routes.entity)
       throw new InternalServerError(routes.entityCreateFailedDesc)
     }

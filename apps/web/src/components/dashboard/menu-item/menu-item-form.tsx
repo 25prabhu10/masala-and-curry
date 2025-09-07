@@ -1,8 +1,12 @@
 import { getCategoriesQuery } from '@mac/queries/category'
 import { uploadImageMutation } from '@mac/queries/image'
 import { createMenuItemMutation, updateMenuItemMutation } from '@mac/queries/menu-item'
-import { deleteMenuItemVariantMutation } from '@mac/queries/menu-item-variant'
-import { MAX_CURRENCY_VALUE, MIN_CURRENCY_VALUE, NUMBER_STEPS } from '@mac/resources/constants'
+import {
+  MAX_CURRENCY_VALUE,
+  MAX_NUMBER_IN_APP,
+  MIN_CURRENCY_VALUE,
+  NUMBER_STEPS,
+} from '@mac/resources/constants'
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
 import {
@@ -12,7 +16,6 @@ import {
   type UpdateMenuItemInput,
   updateMenuItemWithImageValidator,
 } from '@mac/validators/menu-item'
-import type { MenuItemVariant } from '@mac/validators/menu-item-variant'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -33,6 +36,14 @@ import type { SelectOption } from '@/lib/types'
 
 type MenuItemFormProps = { data?: MenuItem; isNew?: boolean }
 
+// Narrow types for nested fields (no 'any')
+type OGCreate = NonNullable<CreateMenuItemInput['optionGroups']>[number]
+type OGUpdate = NonNullable<UpdateMenuItemInput['optionGroups']>[number]
+type OptionGroupField = OGCreate | OGUpdate
+type OptCreate = NonNullable<OGCreate['options']>[number]
+type OptUpdate = NonNullable<OGUpdate['options']>[number]
+type OptionField = OptCreate | OptUpdate
+
 const defaultValues: MenuItem = {
   basePrice: 0,
   calories: 0,
@@ -50,36 +61,36 @@ const defaultValues: MenuItem = {
   isVegan: false,
   isVegetarian: false,
   name: '',
+  optionGroups: [],
   preparationTime: 15,
-  spiceLevel: 0,
-  variants: [],
 }
 
-const defaultVariant: MenuItemVariant = {
-  calories: 0,
-  description: '',
+const selectionTypeOptions = [
+  { label: 'Single', value: 'single' },
+  { label: 'Multiple', value: 'multiple' },
+]
+
+const defaultOptionGroup: OptionGroupField = {
   displayOrder: 0,
-  id: '',
+  isAvailable: true,
+  maxSelect: 1,
+  minSelect: 0,
+  name: '',
+  options: [] as OptionField[],
+  required: false,
+  selectionType: 'single' as const,
+}
+
+const defaultOption: OptionField = {
+  caloriesModifier: 0,
+  displayOrder: 0,
   isAvailable: true,
   isDefault: false,
-  menuItemId: '',
   name: '',
   priceModifier: 0,
-  servingSize: '',
 }
 
-const spiceLevels = [
-  { description: 'No detectable heat', label: 'Not Spicy', value: 0 },
-  { description: 'Slight warmth, palatable for most', label: 'Mild', value: 1 },
-  { description: 'Noticeable heat, builds slightly', label: 'Medium', value: 2 },
-  { description: 'Strong heat, mouth-watering', label: 'Spicy', value: 3 },
-  { description: 'Intense heat, for chili enthusiasts', label: 'Very Spicy', value: 4 },
-  {
-    description: 'Extreme heat, proceed with caution',
-    label: 'Extremely Spicy',
-    value: 5,
-  },
-]
+// spice level is not part of the current schema; removed from form
 
 export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFormProps) {
   const queryClient = useQueryClient()
@@ -87,14 +98,11 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
   const createMutation = useMutation(createMenuItemMutation(queryClient))
   const updateMutation = useMutation(updateMenuItemMutation(data.id, queryClient))
   const uploadImgMutation = useMutation(uploadImageMutation())
-  const deleteVariantMutation = useMutation(deleteMenuItemVariantMutation(queryClient))
 
   const categoriesQuery = useSuspenseQuery(getCategoriesQuery({ activeOnly: true }))
   const categoryOptions: SelectOption[] = useMemo(() => {
     const list = categoriesQuery.data?.result ?? []
-    return list.map((c) => {
-      return { label: c.name, value: c.id }
-    })
+    return list.map((c) => ({ label: c.name, value: c.id }))
   }, [categoriesQuery.data])
 
   const form = useAppForm({
@@ -271,18 +279,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
               )}
               name="categoryId"
             />
-            <form.AppField
-              children={(field) => (
-                <field.SelectField
-                  className="h-12"
-                  label="Spice Level"
-                  options={spiceLevels}
-                  required
-                  title="Select spice level"
-                />
-              )}
-              name="spiceLevel"
-            />
+            {/* Spice level removed per schema */}
             <div className="col-span-2 flex flex-wrap gap-4">
               <form.AppField
                 children={(field) => <field.CheckboxField label="Vegetarian" />}
@@ -315,136 +312,231 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
             name="file"
           />
           <form.Field
-            children={(field) => (
+            children={(groupsField) => (
               <div className="space-y-4">
                 <div className="flex flex-col space-y-1.5">
-                  <h3 className="font-semibold leading-none tracking-tight">Variants</h3>
-                  <p className="text-sm text-muted-foreground">Add and manage menu item variants</p>
+                  <h3 className="font-semibold leading-none tracking-tight">Option Groups</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Add groups like Size, Extras, etc., and their options
+                  </p>
                 </div>
+
                 <div className="space-y-4">
-                  {field.state.value && field.state.value.length > 0 ? (
-                    field.state.value.map((variant, i) => (
-                      <Card key={`${variant.id}-${variant._tempId}`}>
+                  {Array.isArray(groupsField.state.value) && groupsField.state.value.length > 0 ? (
+                    groupsField.state.value.map((group: any, i: number) => (
+                      <Card key={`${group.id ?? 'new'}-${i}`}>
                         <CardHeader>
-                          <CardTitle>Variant: {i + 1}</CardTitle>
+                          <CardTitle>Group: {group.name || `#${i + 1}`}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
                             <form.AppField
-                              children={(subField) => (
-                                <subField.TextField
+                              children={(f) => (
+                                <f.TextField className="h-12" label="Group Name" required />
+                              )}
+                              name={`optionGroups[${i}].name`}
+                            />
+                            <form.AppField
+                              children={(f) => (
+                                <f.SelectField
                                   className="h-12"
-                                  label="Variant Name"
+                                  label="Selection Type"
+                                  options={selectionTypeOptions}
                                   required
-                                  title="Menu variant name"
-                                  type="text"
                                 />
                               )}
-                              name={`variants[${i}].name`}
+                              name={`optionGroups[${i}].selectionType`}
                             />
                             <form.AppField
-                              children={(subField) => (
-                                <subField.TextField
-                                  className="h-12"
-                                  label="Variant Description"
-                                  title="Short Menu variant description"
-                                  type="text"
-                                />
-                              )}
-                              name={`variants[${i}].description`}
+                              children={(f) => <f.CheckboxField label="Required" />}
+                              name={`optionGroups[${i}].required`}
                             />
                             <form.AppField
-                              children={(subField) => (
-                                <subField.TextField
-                                  className="h-12"
-                                  inputMode="decimal"
-                                  label="Variant Additional Price (USD)"
-                                  max={MAX_CURRENCY_VALUE}
-                                  min={MIN_CURRENCY_VALUE}
-                                  required
-                                  step={NUMBER_STEPS}
-                                  title="Menu variant additional price"
-                                  type="number"
-                                />
-                              )}
-                              name={`variants[${i}].priceModifier`}
+                              children={(f) => <f.CheckboxField label="Available" />}
+                              name={`optionGroups[${i}].isAvailable`}
                             />
                             <form.AppField
-                              children={(subField) => (
-                                <subField.TextField
+                              children={(f) => (
+                                <f.TextField
                                   className="h-12"
                                   label="Display Order"
+                                  max={MAX_NUMBER_IN_APP}
                                   min={0}
-                                  title="Display Order"
                                   type="number"
                                 />
                               )}
-                              name={`variants[${i}].displayOrder`}
+                              name={`optionGroups[${i}].displayOrder`}
                             />
                             <form.AppField
-                              children={(subField) => (
-                                <subField.TextField
+                              children={(f) => (
+                                <f.TextField
                                   className="h-12"
-                                  label="Calories"
+                                  label="Min Select"
+                                  max={MAX_NUMBER_IN_APP}
                                   min={0}
-                                  title="Calories per serving"
                                   type="number"
                                 />
                               )}
-                              name={`variants[${i}].calories`}
+                              name={`optionGroups[${i}].minSelect`}
                             />
                             <form.AppField
-                              children={(subField) => <subField.CheckboxField label="Default" />}
-                              name={`variants[${i}].isDefault`}
+                              children={(f) => (
+                                <f.TextField
+                                  className="h-12"
+                                  label="Max Select"
+                                  max={MAX_NUMBER_IN_APP}
+                                  min={1}
+                                  type="number"
+                                />
+                              )}
+                              name={`optionGroups[${i}].maxSelect`}
+                            />
+                          </div>
+
+                          {/* Options within this group */}
+                          <div className="mt-6 space-y-4">
+                            <h4 className="font-medium">Options</h4>
+                            <form.Field
+                              children={(optionsField) => (
+                                <div className="space-y-4">
+                                  {Array.isArray(optionsField.state.value) &&
+                                  optionsField.state.value.length > 0 ? (
+                                    optionsField.state.value.map((opt: any, j: number) => (
+                                      <Card key={`${opt.id ?? 'new'}-${opt._tempId ?? j}`}>
+                                        <CardContent className="pt-6">
+                                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+                                            <form.AppField
+                                              children={(ff) => (
+                                                <ff.TextField
+                                                  className="h-12"
+                                                  label="Name"
+                                                  required
+                                                />
+                                              )}
+                                              name={`optionGroups[${i}].options[${j}].name`}
+                                            />
+                                            <form.AppField
+                                              children={(ff) => (
+                                                <ff.TextField
+                                                  className="h-12"
+                                                  inputMode="decimal"
+                                                  label="Additional Price (USD)"
+                                                  max={MAX_CURRENCY_VALUE}
+                                                  min={MIN_CURRENCY_VALUE}
+                                                  step={NUMBER_STEPS}
+                                                  type="number"
+                                                />
+                                              )}
+                                              name={`optionGroups[${i}].options[${j}].priceModifier`}
+                                            />
+                                            <form.AppField
+                                              children={(ff) => (
+                                                <ff.TextField
+                                                  className="h-12"
+                                                  label="Calories Modifier"
+                                                  max={MAX_NUMBER_IN_APP}
+                                                  min={-MAX_NUMBER_IN_APP}
+                                                  type="number"
+                                                />
+                                              )}
+                                              name={`optionGroups[${i}].options[${j}].caloriesModifier`}
+                                            />
+                                            <form.AppField
+                                              children={(ff) => (
+                                                <ff.TextField
+                                                  className="h-12"
+                                                  label="Display Order"
+                                                  max={MAX_NUMBER_IN_APP}
+                                                  min={0}
+                                                  type="number"
+                                                />
+                                              )}
+                                              name={`optionGroups[${i}].options[${j}].displayOrder`}
+                                            />
+                                            <form.AppField
+                                              children={(ff) => (
+                                                <ff.CheckboxField label="Default" />
+                                              )}
+                                              name={`optionGroups[${i}].options[${j}].isDefault`}
+                                            />
+                                            <form.AppField
+                                              children={(ff) => (
+                                                <ff.CheckboxField label="Available" />
+                                              )}
+                                              name={`optionGroups[${i}].options[${j}].isAvailable`}
+                                            />
+                                          </div>
+                                        </CardContent>
+                                        <CardFooter>
+                                          <Button
+                                            className="h-12"
+                                            onClick={() => optionsField.removeValue(j)}
+                                            type="button"
+                                            variant="destructive"
+                                          >
+                                            Remove option
+                                          </Button>
+                                        </CardFooter>
+                                      </Card>
+                                    ))
+                                  ) : (
+                                    <p className="text-xs text-muted-foreground">
+                                      No options added.
+                                    </p>
+                                  )}
+                                  <Button
+                                    className="h-12"
+                                    onClick={() =>
+                                      optionsField.pushValue({
+                                        ...defaultOption,
+                                        _tempId: crypto.randomUUID(),
+                                      })
+                                    }
+                                    type="button"
+                                    variant="outline"
+                                  >
+                                    Add option
+                                  </Button>
+                                </div>
+                              )}
+                              mode="array"
+                              name={`optionGroups[${i}].options` as const}
                             />
                           </div>
                         </CardContent>
                         <CardFooter>
                           <Button
                             className="h-12"
-                            onClick={async () => {
-                              try {
-                                if (variant.id) {
-                                  await deleteVariantMutation.mutateAsync(variant.id)
-                                }
-                              } catch (error) {
-                                if (error instanceof Error) {
-                                  toast.error(error.message)
-                                }
-                              } finally {
-                                field.removeValue(i)
-                              }
-                            }}
+                            onClick={() => groupsField.removeValue(i)}
                             type="button"
                             variant="destructive"
                           >
-                            Remove variant
+                            Remove group
                           </Button>
                         </CardFooter>
                       </Card>
                     ))
                   ) : (
-                    <p className="text-xs text-muted-foreground">No variants added.</p>
+                    <p className="text-xs text-muted-foreground">No option groups added.</p>
                   )}
 
                   <Button
                     className="h-12"
                     onClick={() =>
-                      field.pushValue({
-                        ...defaultVariant,
-                        _tempId: crypto.randomUUID(),
+                      groupsField.pushValue({
+                        ...defaultOptionGroup,
                       })
                     }
                     type="button"
                     variant="outline"
                   >
-                    Add variant
+                    Add group
                   </Button>
                 </div>
               </div>
             )}
             mode="array"
-            name="variants"
+            name="optionGroups"
           />
 
           <form.AppForm>
