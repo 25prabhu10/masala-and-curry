@@ -9,13 +9,8 @@ interface AppStateActions {
   closeMobileMenu: () => void
 }
 
-export const useAppStore = create<AppState & AppStateActions>()((set) => {
-  return {
-    closeMobileMenu: () => set({ mobileMenuIsOpen: false }),
-    mobileMenuIsOpen: false,
-    toggleMobileMenu: () =>
-      set((state) => {
-        return { mobileMenuIsOpen: !state.mobileMenuIsOpen }
-      }),
-  }
-})
+export const useAppStore = create<AppState & AppStateActions>()((set) => ({
+  closeMobileMenu: () => set({ mobileMenuIsOpen: false }),
+  mobileMenuIsOpen: false,
+  toggleMobileMenu: () => set((state) => ({ mobileMenuIsOpen: !state.mobileMenuIsOpen })),
+}))

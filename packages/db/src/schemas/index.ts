@@ -34,13 +34,27 @@ export {
   UpdateMenuItemAllergenSchema,
 } from './menu-item-allergen.schema'
 export {
-  type InsertMenuItemVariantDB,
-  InsertMenuItemVariantSchema,
-  menuItemVariant,
-  SelectMenuItemVariantSchema,
-  type UpdateMenuItemVariantDB,
-  UpdateMenuItemVariantSchema,
-} from './menu-item-variant.schema'
+  type InsertMenuOptionDB,
+  InsertMenuOptionSchema,
+  menuOption,
+  SelectMenuOptionSchema,
+  type UpdateMenuOptionDB,
+  UpdateMenuOptionSchema,
+} from './menu-option.schema'
+export {
+  type InsertMenuOptionGroupDB,
+  InsertMenuOptionGroupSchema,
+  menuOptionGroup,
+  SelectMenuOptionGroupSchema,
+  type UpdateMenuOptionGroupDB,
+  UpdateMenuOptionGroupSchema,
+} from './menu-option-group.schema'
+export {
+  categoryRelations,
+  menuItemRelations,
+  menuOptionGroupRelations,
+  menuOptionRelations,
+} from './relations'
 export { SelectSessionSchema, session } from './session.schema'
 export {
   InsertUserSchema,

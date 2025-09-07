@@ -18,10 +18,10 @@
       "import": "./dist/category.repo.js",
       "default": "./dist/category.repo.js"
     },
-    "./menu-item-variants": {
-      "types": "./dist/menu-item-variants.repo.d.ts",
-      "import": "./dist/menu-item-variants.repo.js",
-      "default": "./dist/menu-item-variants.repo.js"
+    "./menu-options": {
+      "types": "./dist/menu-options.repo.d.ts",
+      "import": "./dist/menu-options.repo.js",
+      "default": "./dist/menu-options.repo.js"
     },
     "./menu-item": {
       "types": "./dist/menu-item.repo.d.ts",

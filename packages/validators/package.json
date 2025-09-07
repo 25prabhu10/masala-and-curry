@@ -33,10 +33,15 @@
       "import": "./dist/menu-item.validators.js",
       "default": "./dist/menu-item.validators.js"
     },
-    "./menu-item-variant": {
-      "types": "./dist/menu-item-variant.validators.d.ts",
-      "import": "./dist/menu-item-variant.validators.js",
-      "default": "./dist/menu-item-variant.validators.js"
+    "./menu-option-group": {
+      "types": "./dist/menu-option-group.validators.d.ts",
+      "import": "./dist/menu-option-group.validators.js",
+      "default": "./dist/menu-option-group.validators.js"
+    },
+    "./menu-option": {
+      "types": "./dist/menu-option.validators.d.ts",
+      "import": "./dist/menu-option.validators.js",
+      "default": "./dist/menu-option.validators.js"
     },
     "./general": {
       "types": "./dist/general.validators.d.ts",

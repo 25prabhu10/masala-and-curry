@@ -16,7 +16,6 @@ import { useCartStore } from '@/stores/cart-store'
 
 import { DietaryTags } from './dietary-tags'
 import { MenuItemAddDrawer } from './menu-item-add-drawer'
-import { SpiceLevelIndicator } from './spice-level-indicator'
 
 interface MenuItemCardProps {
   menuItem: MenuItem
@@ -73,9 +72,9 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
             size="sm"
           />
 
-          {(menuItem.spiceLevel ?? 0) > 0 && (
+          {/* {(menuItem.spiceLevel ?? 0) > 0 && (
             <SpiceLevelIndicator level={menuItem.spiceLevel ?? 0} showLabel={false} size="sm" />
-          )}
+          )} */}
 
           {menuItem.preparationTime && (
             <div className="flex items-center gap-1 text-muted-foreground">
@@ -116,7 +115,7 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
                 size="sm"
               >
                 <ShoppingCart className="h-4 w-4" />
-                {menuItem.variants?.length ? 'Select Options' : 'Add to Cart'}
+                Add to Cart
               </Button>
             }
             menuItem={menuItem}

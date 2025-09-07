@@ -1,4 +1,4 @@
-import { category, menuItem } from '@mac/db/schemas'
+import { category, menuItem, menuOption, menuOptionGroup } from '@mac/db/schemas'
 import type { DB } from '@mac/db/types'
 import type { TableRowCount } from '@mac/validators/general'
 import type {
@@ -9,11 +9,6 @@ import type {
 } from '@mac/validators/menu-item'
 import { and, asc, count, desc, eq, getTableColumns, like, type SQL } from 'drizzle-orm'
 
-import {
-  createMenuItemVariants,
-  getMenuItemVariants,
-  updateMenuItemVariant,
-} from './menu-item-variants.repo'
 import { withPagination } from './utils'
 
 export async function getTotalMenuItemsCount(
@@ -100,83 +95,73 @@ export async function getMenuItems(db: DB, filters: MenuItemFilters): Promise<Me
   }
 
   if (filters.pageIndex || filters.pageSize) {
-    const paginatedData = await withPagination(
-      query.$dynamic(),
-      filters.pageIndex,
-      filters.pageSize
-    )
-
-    return await Promise.all(
-      // oxlint-disable-next-line arrow-body-style
-      paginatedData.map(async (item) => ({
-        ...item,
-        variants: await getMenuItemVariants(db, item.id),
-      }))
-    )
+    return await withPagination(query.$dynamic(), filters.pageIndex, filters.pageSize)
   }
 
-  const queryData = await query.all()
-
-  return await Promise.all(
-    // oxlint-disable-next-line arrow-body-style
-    queryData.map(async (item) => ({
-      ...item,
-      variants: await getMenuItemVariants(db, item.id),
-    }))
-  )
+  return await query.all()
 }
 
-export async function getMenuItemById(
-  db: DB,
-  id: string,
-  includeVariants: boolean = true
-  // includeAllergens = false
-): Promise<MenuItem | undefined> {
-  const [item] = await db
-    .select({
+export async function getMenuItemById(db: DB, id: string): Promise<MenuItem | undefined> {
+  return (await db.query.menuItem.findFirst({
+    where: eq(menuItem.id, id),
+    with: {
       category: {
-        displayOrder: category.displayOrder,
-        id: category.id,
-        name: category.name,
+        columns: {
+          displayOrder: true,
+          id: true,
+          name: true,
+        },
       },
-      ...getTableColumns(menuItem),
-    })
-    .from(menuItem)
-    .leftJoin(category, eq(menuItem.categoryId, category.id))
-    .where(eq(menuItem.id, id))
-    .limit(1)
-
-  if (item && includeVariants) {
-    return {
-      ...item,
-      // allergens: includeAllergens ? await getMenuItemAllergens(db, id) : undefined,
-      variants: includeVariants ? await getMenuItemVariants(db, id) : undefined,
-    }
-  }
-
-  return item
+      optionGroups: {
+        with: {
+          options: true,
+        },
+      },
+    },
+  })) as MenuItem | undefined
 }
 
 export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<MenuItem | undefined> {
-  const [result] = await db
-    .insert({ ...menuItem, id: undefined })
-    .values(data)
-    .returning({
-      id: menuItem.id,
-    })
+  const result = await db.transaction(async (tx) => {
+    const [newMenuItem] = await tx
+      .insert({ ...menuItem, id: undefined })
+      .values(data)
+      .returning({
+        id: menuItem.id,
+      })
 
-  if (result) {
-    if (data.variants) {
-      // oxlint-disable-next-line arrow-body-style
-      const variants = data.variants.map((variant) => ({
-        ...variant,
-        id: undefined,
-        menuItemId: result.id,
+    if (newMenuItem && data.optionGroups && data.optionGroups.length > 0) {
+      const newOptionGroups = data.optionGroups.map((g) => ({
+        ...g,
+        menuItemId: newMenuItem.id,
       }))
 
-      await createMenuItemVariants(db, variants)
+      const createdGroups = await tx
+        .insert({ ...menuOptionGroup, id: undefined })
+        .values(newOptionGroups)
+        .returning({
+          id: menuOptionGroup.id,
+        })
+
+      await Promise.all(
+        createdGroups.map((g) => {
+          const group = newOptionGroups.find((grp) => grp.name === g.id)
+          if (group?.options && group.options.length > 0) {
+            return tx.insert(menuOption).values(
+              group.options.map((o) => ({
+                ...o,
+                groupId: g.id,
+              }))
+            )
+          }
+        })
+      )
     }
 
+    return newMenuItem
+  })
+
+  if (result) {
     return getMenuItemById(db, result.id)
   }
 
@@ -193,27 +178,91 @@ export async function updateMenuItem(
   })
 
   if (result) {
-    if (data.variants && data.variants.length > 0) {
-      const existingVariants = data.variants.filter(
-        (v): v is typeof v & { id: string } => typeof v.id === 'string' && v.id.trim() !== ''
-      )
-      const newVariants = data.variants.filter((v) => !v.id)
+    if (data.optionGroups && data.optionGroups.length > 0) {
+      const existingOptionGroups = data.optionGroups.filter((g) => g.id)
+      const newOptionGroups = data.optionGroups.filter((g) => !g.id)
 
-      if (existingVariants.length > 0) {
-        const updatePromises = existingVariants.map((variant) =>
-          updateMenuItemVariant(db, variant.id, variant)
+      if (existingOptionGroups.length > 0) {
+        await Promise.all(
+          existingOptionGroups.map((g) =>
+            db
+              .update(menuOptionGroup)
+              .set(g)
+              // oxlint-disable-next-line no-non-null-assertion
+              .where(and(eq(menuOptionGroup.id, g.id!), eq(menuOptionGroup.menuItemId, id)))
+          )
         )
-        await Promise.all(updatePromises)
+
+        await Promise.all(
+          existingOptionGroups.map((g) => {
+            if (g.options && g.options.length > 0) {
+              const existingOptions = g.options.filter((o) => o.id)
+              const newOptions = g.options.filter((o) => !o.id)
+
+              if (existingOptions.length > 0) {
+                return Promise.all(
+                  existingOptions.map((o) =>
+                    db
+                      .update(menuOption)
+                      .set(o)
+                      // oxlint-disable-next-line no-non-null-assertion
+                      .where(and(eq(menuOption.id, o.id!), eq(menuOption.groupId, g.id!)))
+                  )
+                )
+              }
+
+              if (newOptions.length > 0) {
+                db.insert(menuOption).values(
+                  newOptions.map((o) => ({
+                    caloriesModifier: o.caloriesModifier,
+                    displayOrder: o.displayOrder,
+                    // oxlint-disable-next-line no-non-null-assertion
+                    groupId: g.id!,
+                    isAvailable: o.isAvailable,
+                    isDefault: o.isDefault,
+                    name: o.name ?? '',
+                    priceModifier: o.priceModifier,
+                  }))
+                )
+              }
+            }
+          })
+        )
       }
 
-      if (newVariants.length > 0) {
-        // oxlint-disable-next-line arrow-body-style
-        const createPayload = newVariants.map((variant) => ({
-          ...variant,
-          id: undefined,
-          menuItemId: id,
-        }))
-        await createMenuItemVariants(db, createPayload)
+      if (newOptionGroups.length > 0) {
+        const createdGroups = await db
+          .insert({ ...menuOptionGroup, id: undefined })
+          .values(
+            newOptionGroups.map((g) => ({
+              ...g,
+              menuItemId: id,
+              name: g.name ?? '',
+            }))
+          )
+          .returning({
+            id: menuOptionGroup.id,
+          })
+
+        await Promise.all(
+          createdGroups.map((g) => {
+            const group = newOptionGroups.find((grp) => grp.id === g.id)
+            if (group?.options && group.options.length > 0) {
+              return db.insert(menuOption).values(
+                group.options.map((o) => ({
+                  caloriesModifier: o.caloriesModifier,
+                  displayOrder: o.displayOrder,
+                  // oxlint-disable-next-line no-non-null-assertion
+                  groupId: g.id!,
+                  isAvailable: o.isAvailable,
+                  isDefault: o.isDefault,
+                  name: o.name ?? '',
+                  priceModifier: o.priceModifier,
+                }))
+              )
+            }
+          })
+        )
       }
     }
 

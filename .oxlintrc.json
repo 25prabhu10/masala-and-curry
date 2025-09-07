@@ -17,7 +17,7 @@
     "arrow-body-style": [
       "error",
       "as-needed",
-      { "requireReturnForObjectLiteral": true }
+      { "requireReturnForObjectLiteral": false }
     ],
     "block-scoped-var": "error",
     "curly": "error",

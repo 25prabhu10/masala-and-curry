@@ -30,7 +30,6 @@ export const Route = createFileRoute('/dashboard')({
     return { session, user }
   },
   component: RouteComponent,
-  // oxlint-disable-next-line arrow-body-style
   loader: async ({ context: { session, user } }) => ({ session, user }),
 })
 

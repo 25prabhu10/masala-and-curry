@@ -106,7 +106,6 @@ const SidebarProvider = React.forwardRef<
     const state = open ? 'expanded' : 'collapsed'
 
     const contextValue = React.useMemo<SidebarContextProps>(
-      // oxlint-disable-next-line arrow-body-style
       () => ({
         isMobile,
         open,

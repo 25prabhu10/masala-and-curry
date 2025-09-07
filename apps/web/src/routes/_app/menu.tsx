@@ -12,9 +12,7 @@ import MenuTotalSelection from '@/components/menu/menu-total-selection'
 import { useFilters } from '@/hooks/use-filters'
 
 export const Route = createFileRoute('/_app/menu')({
-  beforeLoad: ({ search }) => {
-    return { search }
-  },
+  beforeLoad: ({ search }) => ({ search }),
   component: RouteComponent,
   loader: async ({ context: { queryClient, search } }) => {
     await Promise.all([

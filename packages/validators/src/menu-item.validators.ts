@@ -1,9 +1,15 @@
 import { z } from '@hono/zod-openapi'
 import {
   InsertMenuItemSchema,
+  InsertMenuOptionGroupSchema,
+  InsertMenuOptionSchema,
   SelectCategorySchema,
   SelectMenuItemSchema,
+  SelectMenuOptionGroupSchema,
+  SelectMenuOptionSchema,
   UpdateMenuItemSchema,
+  UpdateMenuOptionGroupSchema,
+  UpdateMenuOptionSchema,
 } from '@mac/db/schemas'
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
 
@@ -14,10 +20,6 @@ import {
   rowCountValidator,
 } from './general.validators'
 import { uploadImageSchema } from './image.validators'
-import {
-  createMenuItemVariantValidator,
-  readMenuItemVariantValidator,
-} from './menu-item-variant.validators'
 
 export const readMenuItemValidator = z.object({
   ...SelectMenuItemSchema.shape,
@@ -28,7 +30,19 @@ export const readMenuItemValidator = z.object({
       name: SelectCategorySchema.shape.name,
     })
     .nullable(),
-  variants: z.array(readMenuItemVariantValidator).optional(),
+  optionGroups: z
+    .array(
+      z.object({
+        ...SelectMenuOptionGroupSchema.omit({ menuItemId: true }).shape,
+        options: z.array(
+          z.object({
+            ...SelectMenuOptionSchema.omit({ groupId: true }).shape,
+            _tempId: z.uuid().optional(),
+          })
+        ),
+      })
+    )
+    .optional(),
 })
 export const readMenuItemsValidator = z.object({
   result: readMenuItemValidator.array(),
@@ -36,11 +50,35 @@ export const readMenuItemsValidator = z.object({
 })
 export const createMenuItemValidator = z.object({
   ...InsertMenuItemSchema.shape,
-  variants: z.array(createMenuItemVariantValidator).optional(),
+  optionGroups: z
+    .array(
+      z.object({
+        ...InsertMenuOptionGroupSchema.omit({ menuItemId: true }).shape,
+        options: z.array(
+          z.object({
+            ...InsertMenuOptionSchema.omit({ groupId: true }).shape,
+            _tempId: z.uuid().optional(),
+          })
+        ),
+      })
+    )
+    .optional(),
 })
 export const updateMenuItemValidator = z.object({
   ...UpdateMenuItemSchema.shape,
-  variants: z.array(createMenuItemVariantValidator).optional(),
+  optionGroups: z
+    .array(
+      z.object({
+        ...UpdateMenuOptionGroupSchema.omit({ menuItemId: true }).shape,
+        options: z.array(
+          z.object({
+            ...UpdateMenuOptionSchema.omit({ groupId: true }).shape,
+            _tempId: z.uuid().optional(),
+          })
+        ),
+      })
+    )
+    .optional(),
 })
 
 export const createMenuItemWithImageValidator = z.object({
