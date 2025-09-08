@@ -142,30 +142,27 @@ export function SignInForm({ callback }: CallbackSearchParam) {
             )}
             name="email"
           />
-          <div className="relative">
+          <form.AppField
+            children={(field) => (
+              <field.PasswordField
+                autoComplete="current-password"
+                className="h-12"
+                label="Password"
+                placeholder="********"
+                required
+              />
+            )}
+            name="password"
+          />
+          <div className="flex items-center justify-between">
             <form.AppField
-              children={(field) => (
-                <field.PasswordField
-                  autoComplete="current-password"
-                  className="h-12"
-                  label="Password"
-                  placeholder="********"
-                  required
-                />
-              )}
-              name="password"
+              children={(field) => <field.CheckboxField label="Remember me" />}
+              name="rememberMe"
             />
-            <Link
-              className="absolute top-0 right-0 text-sm text-primary hover:text-primary/80 transition-colors"
-              to="/"
-            >
+            <Link className="text-sm text-primary hover:text-primary/80 transition-colors" to="/">
               Forgot password?
             </Link>
           </div>
-          <form.AppField
-            children={(field) => <field.CheckboxField label="Remember me" />}
-            name="rememberMe"
-          />
           <form.AppForm>
             <form.FormErrors />
           </form.AppForm>

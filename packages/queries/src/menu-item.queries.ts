@@ -68,8 +68,13 @@ export function getMenuItemsQuery(
   })
 }
 
-export function getMenuItemByIdQuery(id: string, abortController?: AbortController) {
+export function getMenuItemByIdQuery(
+  id: string,
+  enabled: boolean = true,
+  abortController?: AbortController
+) {
   return queryOptions({
+    enabled,
     queryFn: async () => {
       const res = await apiClient.api.v1['menu-items'][':id'].$get(
         {

@@ -17,13 +17,14 @@ interface MenuFiltersProps {
 export function MenuFilters({ categories, filters, setFilters, resetFilters }: MenuFiltersProps) {
   const form = useAppForm({
     defaultValues: {
-      availableOnly: true,
-      categoryId: '',
-      glutenFree: false,
-      popular: false,
-      search: '',
-      vegan: false,
-      vegetarian: false,
+      availableOnly: filters.availableOnly ?? true,
+      categoryId: filters.categoryId || '_null',
+      glutenFree: filters.glutenFree ?? false,
+      popular: filters.popular ?? false,
+      search: filters.search || '',
+      sortBy: filters.sortBy || 'name.asc',
+      vegan: filters.vegan ?? false,
+      vegetarian: filters.vegetarian ?? false,
     } as MenuItemFilters,
     onSubmit: ({ value }) => {
       setFilters({
@@ -78,12 +79,10 @@ export function MenuFilters({ categories, filters, setFilters, resetFilters }: M
                   all={true}
                   allLabel="All Categories"
                   label="Category"
-                  options={categories.map((category) => {
-                    return {
-                      label: category.name,
-                      value: category.id,
-                    }
-                  })}
+                  options={categories.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                  }))}
                   title="Select a category"
                 />
               )}
@@ -92,6 +91,10 @@ export function MenuFilters({ categories, filters, setFilters, resetFilters }: M
             <div className="space-y-3">
               <h4 className="text-sm">Quick Filters</h4>
               <div className="space-y-2">
+                <form.AppField
+                  children={(field) => <field.CheckboxField label="Available only" />}
+                  name="availableOnly"
+                />
                 <form.AppField
                   children={(field) => <field.CheckboxField label="Popular items" />}
                   name="popular"
