@@ -19,6 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useQuery } from '@tanstack/react-query'
 import { X } from 'lucide-react'
 import React, { useState } from 'react'
+import { toast } from 'sonner'
 
 import { formatCurrencyUSD } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
@@ -36,6 +37,7 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
   const addItem = useCartStore((s) => s.addItem)
   const [openDrawer, setDrawerOpen] = useState(false)
   const [spiceLevel, setSpiceLevel] = useState(menuItem.spiceLevel ?? 0)
+  const [specialInstructions, setSpecialInstructions] = useState('')
 
   const optionGroups = menuItemWithOptions.data?.optionGroups || []
   function getDefaultSelections() {
@@ -62,10 +64,35 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
       })
       .filter((g) => g.options.length > 0)
 
-    const customizations = groupsPayload.length ? { options: groupsPayload } : undefined
+    const notes = specialInstructions.trim()
+    const includeSpice = Boolean(menuItem.spiceLevel)
+    const customizations = (() => {
+      const payload: {
+        options?: {
+          groupId: string
+          groupName: string
+          options: { id: string; name: string; priceModifier?: number }[]
+        }[]
+        specialInstructions?: string
+        spiceLevel?: number
+      } = {}
+      if (groupsPayload.length) {
+        payload.options = groupsPayload
+      }
+      if (includeSpice) {
+        payload.spiceLevel = spiceLevel
+      }
+      if (notes) {
+        payload.specialInstructions = notes
+      }
+
+      toast.success(`${menuItem.name} added to cart`)
+      return Object.keys(payload).length ? payload : undefined
+    })()
 
     addItem(menuItem, customizations, quantity)
     setQuantity(1)
+    setSpecialInstructions('')
     setDrawerOpen(false)
   }
 
@@ -103,15 +130,15 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
           </DrawerClose>
           <DrawerHeader>
             <DrawerTitle className="text-lg">Add {menuItem.name}</DrawerTitle>
-            <DrawerDescription>{`Choose ${
-              optionGroups.length ? 'options and ' : ''
+            <DrawerDescription>{`Choose spice level${
+              optionGroups.length ? ', options and ' : ''
             }quantity to add to your cart.`}</DrawerDescription>
           </DrawerHeader>
           <div className="p-4 space-y-4">
             {menuItem.spiceLevel ? (
               <div>
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="spice-level-select">Spice level</Label>
+                  <Label htmlFor="spice-level-select">How spicy do you want it?</Label>
                   <SpiceLevelIndicator
                     className="shrink-0"
                     level={spiceLevel}
@@ -272,6 +299,25 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                 })}
               </div>
             )}
+            <div>
+              <Label htmlFor="special-requests">
+                Special requests <span className="text-xs text-muted-foreground"> (optional)</span>
+              </Label>
+              <textarea
+                aria-describedby="special-requests-hint"
+                className="mt-2 block w-full rounded-md border bg-background p-3 text-sm outline-none ring-0 focus-visible:border-primary"
+                id="special-requests"
+                maxLength={300}
+                name="special-requests"
+                onChange={(e) => setSpecialInstructions(e.target.value)}
+                placeholder="e.g., No cilantro, extra onions, allergy info."
+                rows={3}
+                value={specialInstructions}
+              />
+              <p className="mt-1 text-xs text-muted-foreground" id="special-requests-hint">
+                We will do our best to accommodate. No alcohol requests.
+              </p>
+            </div>
             <div className="flex items-center justify-between pt-2 border-t">
               <QuantitySelector
                 disabled={!menuItem.isAvailable}
@@ -291,6 +337,11 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
             <Button disabled={!menuItem.isAvailable} onClick={handleAdd} type="button">
               Add to cart
             </Button>
+            <DrawerClose asChild>
+              <Button type="button" variant="ghost">
+                Cancel
+              </Button>
+            </DrawerClose>
           </DrawerFooterRoot>
         </div>
       </DrawerContent>
