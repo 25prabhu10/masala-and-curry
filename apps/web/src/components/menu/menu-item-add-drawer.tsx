@@ -15,6 +15,7 @@ import {
 } from '@mac/web-ui/drawer'
 import { Label } from '@mac/web-ui/label'
 import { RadioGroup, RadioGroupItem } from '@mac/web-ui/radio-group'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@mac/web-ui/select'
 import { useQuery } from '@tanstack/react-query'
 import { X } from 'lucide-react'
 import React, { useState } from 'react'
@@ -23,6 +24,7 @@ import { formatCurrencyUSD } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
 
 import { QuantitySelector } from './quantity-selector'
+import { SpiceLevelIndicator } from './spice-level-indicator'
 
 interface MenuItemAddDrawerProps {
   menuItem: MenuItem
@@ -33,6 +35,7 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
   const menuItemWithOptions = useQuery(getMenuItemByIdQuery(menuItem.id))
   const addItem = useCartStore((s) => s.addItem)
   const [openDrawer, setDrawerOpen] = useState(false)
+  const [spiceLevel, setSpiceLevel] = useState(menuItem.spiceLevel ?? 0)
 
   const optionGroups = menuItemWithOptions.data?.optionGroups || []
   function getDefaultSelections() {
@@ -105,37 +108,39 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
             }quantity to add to your cart.`}</DrawerDescription>
           </DrawerHeader>
           <div className="p-4 space-y-4">
-            {/* <div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="spice-level-select">Spice level</Label>
-                <SpiceLevelIndicator
-                  className="shrink-0"
-                  level={spiceLevel}
-                  showLabel={false}
-                  size="sm"
-                />
-              </div>
-              <div className="mt-2 flex items-center gap-3">
-                <div className="flex-1">
-                  <Select
-                    onValueChange={(value) => setSpiceLevel(Number(value))}
-                    value={String(spiceLevel)}
-                  >
-                    <SelectTrigger aria-label="Spice level" id="spice-level-select">
-                      <SelectValue placeholder="Select spice level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0">No Spice</SelectItem>
-                      <SelectItem value="1">Mild</SelectItem>
-                      <SelectItem value="2">Medium</SelectItem>
-                      <SelectItem value="3">Hot</SelectItem>
-                      <SelectItem value="4">Very Hot</SelectItem>
-                      <SelectItem value="5">Extremely Hot</SelectItem>
-                    </SelectContent>
-                  </Select>
+            {menuItem.spiceLevel ? (
+              <div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="spice-level-select">Spice level</Label>
+                  <SpiceLevelIndicator
+                    className="shrink-0"
+                    level={spiceLevel}
+                    showLabel={false}
+                    size="sm"
+                  />
+                </div>
+                <div className="mt-2 flex items-center gap-3">
+                  <div className="flex-1">
+                    <Select
+                      onValueChange={(value) => setSpiceLevel(Number(value))}
+                      value={String(spiceLevel)}
+                    >
+                      <SelectTrigger aria-label="Spice level" id="spice-level-select">
+                        <SelectValue placeholder="Select spice level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">No Spice</SelectItem>
+                        <SelectItem value="1">Mild</SelectItem>
+                        <SelectItem value="2">Medium</SelectItem>
+                        <SelectItem value="3">Hot</SelectItem>
+                        <SelectItem value="4">Very Hot</SelectItem>
+                        <SelectItem value="5">Extremely Hot</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
-            </div> */}
+            ) : null}
             {optionGroups.length > 0 && (
               <div className="space-y-6">
                 {optionGroups.map((group) => {

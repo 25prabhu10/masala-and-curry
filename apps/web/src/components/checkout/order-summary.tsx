@@ -49,7 +49,6 @@ export function OrderSummary() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Cart Items */}
         <div className="space-y-4">
           {mockCartItems.map((item) => (
             <div className="flex items-start gap-3" key={item.id}>
@@ -85,7 +84,6 @@ export function OrderSummary() {
 
         <Separator />
 
-        {/* Order Totals */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span>Subtotal</span>
@@ -110,13 +108,11 @@ export function OrderSummary() {
           </div>
         </div>
 
-        {/* Estimated Delivery Time */}
         <div className="bg-muted/50 p-3 rounded-lg">
           <p className="text-sm font-medium">Estimated Delivery</p>
           <p className="text-sm text-muted-foreground">30-45 minutes</p>
         </div>
 
-        {/* Promo Code Section */}
         <div className="space-y-2">
           <Button className="w-full" size="sm" variant="outline">
             Add Promo Code

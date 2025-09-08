@@ -47,34 +47,3 @@ export function MainNavigationMobile() {
     </div>
   )
 }
-
-/* <Sheet onOpenChange={setIsOpen} open={isOpen}>
-  <SheetTrigger asChild>
-  <Button
-  aria-label="Open navigation menu"
-  className="md:hidden"
-  size="icon"
-  variant="ghost"
-    >
-      <Menu className="h-5 w-5" />
-    </Button>
-  </SheetTrigger>
-  <SheetContent className="w-[300px] sm:w-[400px]" side="left">
-    <SheetHeader>
-      <SheetTitle>Navigation</SheetTitle>
-    </SheetHeader>
-    <nav className="flex flex-col gap-4 mt-6">
-      {navigationItems.map((item) => (
-        <SheetClose asChild key={item.label}>
-          <Link
-            className="flex items-center py-3 px-4 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md font-medium transition-colors [&.active]:bg-primary [&.active]:text-primary-foreground"
-            onClick={() => setIsOpen(false)}
-            to={item.to}
-          >
-            {item.label}
-          </Link>
-        </SheetClose>
-      ))}
-    </nav>
-  </SheetContent>
-</Sheet> */

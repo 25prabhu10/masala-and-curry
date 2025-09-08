@@ -4,6 +4,7 @@ import {
   MAX_STRING_LENGTH,
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
+  SELECTION_TYPES,
 } from '@mac/resources/constants'
 import { maxLengthDesc, minLengthDesc } from '@mac/resources/general'
 import { sql } from 'drizzle-orm'
@@ -17,7 +18,7 @@ const { createInsertSchema, createSelectSchema, createUpdateSchema } = createSch
   zodInstance: z,
 })
 
-const SelectionTypeEnum = z.enum(['single', 'multiple'], {
+const selectionTypeEnum = z.enum(SELECTION_TYPES, {
   error: (issue) => `Selection type must be one of: ${issue.options}`,
 })
 
@@ -92,7 +93,7 @@ export const SelectMenuOptionGroupSchema = createSelectSchema(menuOptionGroup, {
   required: (schema) =>
     schema.default(false).openapi({ description: 'Is selection required?', example: true }),
   selectionType: () =>
-    SelectionTypeEnum.openapi({
+    selectionTypeEnum.openapi({
       description: 'Selection behavior for the group',
       example: 'single',
     }),

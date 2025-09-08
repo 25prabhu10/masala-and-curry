@@ -6,6 +6,7 @@ import {
   MAX_NUMBER_IN_APP,
   MIN_CURRENCY_VALUE,
   NUMBER_STEPS,
+  SELECTION_TYPES,
 } from '@mac/resources/constants'
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
@@ -16,6 +17,11 @@ import {
   type UpdateMenuItemInput,
   updateMenuItemWithImageValidator,
 } from '@mac/validators/menu-item'
+import type { CreateMenuOption, UpdateMenuOptionInput } from '@mac/validators/menu-option'
+import type {
+  CreateMenuOptionGroup,
+  UpdateMenuOptionGroupInput,
+} from '@mac/validators/menu-option-group'
 import { Button } from '@mac/web-ui/button'
 import {
   Card,
@@ -36,13 +42,23 @@ import type { SelectOption } from '@/lib/types'
 
 type MenuItemFormProps = { data?: MenuItem; isNew?: boolean }
 
-// Narrow types for nested fields (no 'any')
-type OGCreate = NonNullable<CreateMenuItemInput['optionGroups']>[number]
-type OGUpdate = NonNullable<UpdateMenuItemInput['optionGroups']>[number]
+const spiceLevels = [
+  { description: 'No detectable heat', label: 'Not Spicy', value: 0 },
+  { description: 'Slight warmth, palatable for most', label: 'Mild', value: 1 },
+  { description: 'Noticeable heat, builds slightly', label: 'Medium', value: 2 },
+  { description: 'Strong heat, mouth-watering', label: 'Spicy', value: 3 },
+  { description: 'Intense heat, for chili enthusiasts', label: 'Very Spicy', value: 4 },
+  {
+    description: 'Extreme heat, proceed with caution',
+    label: 'Extremely Spicy',
+    value: 5,
+  },
+]
+
+type OGCreate = CreateMenuOptionGroup & { options: CreateMenuOption[] }
+type OGUpdate = UpdateMenuOptionGroupInput & { options: UpdateMenuOptionInput[] }
 type OptionGroupField = OGCreate | OGUpdate
-type OptCreate = NonNullable<OGCreate['options']>[number]
-type OptUpdate = NonNullable<OGUpdate['options']>[number]
-type OptionField = OptCreate | OptUpdate
+type OptionField = CreateMenuOption | UpdateMenuOptionInput
 
 const defaultValues: MenuItem = {
   basePrice: 0,
@@ -63,12 +79,13 @@ const defaultValues: MenuItem = {
   name: '',
   optionGroups: [],
   preparationTime: 15,
+  spiceLevel: 0,
 }
 
-const selectionTypeOptions = [
-  { label: 'Single', value: 'single' },
-  { label: 'Multiple', value: 'multiple' },
-]
+const selectionTypeOptions = SELECTION_TYPES.map((type) => ({
+  label: type.toLocaleUpperCase(),
+  value: type,
+}))
 
 const defaultOptionGroup: OptionGroupField = {
   displayOrder: 0,
@@ -78,7 +95,7 @@ const defaultOptionGroup: OptionGroupField = {
   name: '',
   options: [] as OptionField[],
   required: false,
-  selectionType: 'single' as const,
+  selectionType: 'single' satisfies (typeof SELECTION_TYPES)[number],
 }
 
 const defaultOption: OptionField = {
@@ -89,8 +106,6 @@ const defaultOption: OptionField = {
   name: '',
   priceModifier: 0,
 }
-
-// spice level is not part of the current schema; removed from form
 
 export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFormProps) {
   const queryClient = useQueryClient()
@@ -279,7 +294,18 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
               )}
               name="categoryId"
             />
-            {/* Spice level removed per schema */}
+            <form.AppField
+              children={(field) => (
+                <field.SelectField
+                  className="h-12"
+                  label="Spice Level"
+                  options={spiceLevels}
+                  required
+                  title="Select spice level"
+                />
+              )}
+              name="spiceLevel"
+            />
             <div className="col-span-2 flex flex-wrap gap-4">
               <form.AppField
                 children={(field) => <field.CheckboxField label="Vegetarian" />}
@@ -393,7 +419,6 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                             />
                           </div>
 
-                          {/* Options within this group */}
                           <div className="mt-6 space-y-4">
                             <h4 className="font-medium">Options</h4>
                             <form.Field

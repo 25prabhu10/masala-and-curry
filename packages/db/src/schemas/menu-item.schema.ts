@@ -51,6 +51,7 @@ export const menuItem = sqliteTable(
     isVegetarian: integer({ mode: 'boolean' }).notNull().default(false),
     name: text({ length: MAX_STRING_LENGTH }).notNull(),
     preparationTime: integer({ mode: 'number' }).notNull().default(15),
+    spiceLevel: integer({ mode: 'number' }).default(0),
     updatedAt: integer({ mode: 'timestamp' })
       .notNull()
       .default(sql`(unixepoch())`)
@@ -284,6 +285,11 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         description: 'Preparation time in minutes',
         example: 25,
       }),
+  spiceLevel: () =>
+    z.coerce.number().int().min(0).max(5).default(0).optional().openapi({
+      description: 'Spice level on a scale of 0-5',
+      example: 3,
+    }),
   updatedAt: (schema) =>
     schema.openapi({
       description: 'Last update timestamp',
@@ -312,6 +318,7 @@ export const InsertMenuItemSchema = createInsertSchema(menuItem, {
   isVegetarian: () => SelectMenuItemSchema.shape.isVegetarian,
   name: () => SelectMenuItemSchema.shape.name,
   preparationTime: () => SelectMenuItemSchema.shape.preparationTime,
+  spiceLevel: () => SelectMenuItemSchema.shape.spiceLevel,
 })
   .omit({
     createdAt: true,
@@ -336,6 +343,7 @@ export const UpdateMenuItemSchema = createUpdateSchema(menuItem, {
   isVegetarian: () => SelectMenuItemSchema.shape.isVegetarian,
   name: () => SelectMenuItemSchema.shape.name,
   preparationTime: () => SelectMenuItemSchema.shape.preparationTime,
+  spiceLevel: () => SelectMenuItemSchema.shape.spiceLevel,
 })
   .omit({
     createdAt: true,

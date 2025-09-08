@@ -182,7 +182,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Indian Lemon Tea',
               preparationTime: 5,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 4,
@@ -198,7 +198,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Indian Masala Tea',
               preparationTime: 8,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 4.99,
@@ -214,7 +214,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Mango Lassi',
               preparationTime: 5,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 4.99,
@@ -230,7 +230,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Rose Lassi',
               preparationTime: 5,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 4.99,
@@ -246,7 +246,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Salt Lassi',
               preparationTime: 5,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
           ])
           .returning()
@@ -268,7 +268,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Soft Drinks',
               preparationTime: 2,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 7,
@@ -284,7 +284,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Vegetable Samosa',
               preparationTime: 15,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 7,
@@ -300,7 +300,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Onion Bhaji',
               preparationTime: 12,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 7,
@@ -317,7 +317,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Vegetable Pakodas',
               preparationTime: 12,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 9,
@@ -333,7 +333,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Lasoni Gobi',
               preparationTime: 15,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
           ])
           .returning()
@@ -355,7 +355,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Mushroom Manchurian',
               preparationTime: 18,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 9,
@@ -371,7 +371,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Samosa Chaat',
               preparationTime: 10,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 8,
@@ -388,7 +388,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Panipuri',
               preparationTime: 8,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 9,
@@ -405,7 +405,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Chatpat',
               preparationTime: 8,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 8,
@@ -422,7 +422,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Aloo Tikki Chaat',
               preparationTime: 12,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
           ])
           .returning()
@@ -445,7 +445,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Pakodas',
               preparationTime: 15,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 10.99,
@@ -462,7 +462,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Shrimp Pakodas',
               preparationTime: 15,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 10,
@@ -479,7 +479,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Masala Wings',
               preparationTime: 20,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 10.99,
@@ -495,7 +495,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Appetizers Basket',
               preparationTime: 20,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 7.99,
@@ -512,7 +512,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Daal Soup',
               preparationTime: 15,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
           ])
           .returning()
@@ -535,7 +535,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Tomato Soup',
               preparationTime: 12,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 7.99,
@@ -552,7 +552,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Mulligatawny Soup',
               preparationTime: 20,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
           ])
           .returning()
@@ -575,7 +575,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Vegi-Coconut Soup',
               preparationTime: 15,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 15,
@@ -592,7 +592,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Aloo Gobi',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 15,
@@ -609,7 +609,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Aloo Matar',
               preparationTime: 25,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 15,
@@ -626,7 +626,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Baingan Bharta',
               preparationTime: 30,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 15,
@@ -643,7 +643,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Malai Kofta',
               preparationTime: 35,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
           ])
           .returning()
@@ -666,7 +666,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Dal Makhani',
               preparationTime: 40,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 15,
@@ -683,7 +683,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Dal Tadka',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 15,
@@ -700,7 +700,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Bhindi Masala',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 17,
@@ -717,7 +717,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Matar Paneer',
               preparationTime: 25,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 17,
@@ -734,7 +734,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Shahi Paneer',
               preparationTime: 30,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
           ])
           .returning()
@@ -756,7 +756,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Saag Paneer',
               preparationTime: 30,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 17,
@@ -773,7 +773,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Chana Masala',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 18,
@@ -790,7 +790,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Paneer Makhani',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 18,
@@ -807,7 +807,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Butter Chicken',
               preparationTime: 30,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 20,
@@ -824,7 +824,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Tikka Masala',
               preparationTime: 35,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
           ])
           .returning()
@@ -846,7 +846,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Saag',
               preparationTime: 30,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 18,
@@ -863,7 +863,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Korma',
               preparationTime: 35,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 17,
@@ -880,7 +880,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Vindaloo',
               preparationTime: 30,
-              // spiceLevel: 4,
+              spiceLevel: 4,
             },
             {
               basePrice: 17,
@@ -897,7 +897,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Kadai',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 17,
@@ -914,7 +914,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Jalfrezi',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
           ])
           .returning()
@@ -937,7 +937,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Curry',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
           ])
           .returning()
@@ -961,7 +961,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Coconut Curry',
               preparationTime: 30,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 18,
@@ -978,7 +978,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Rogan Josh',
               preparationTime: 35,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 19,
@@ -995,7 +995,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Pathia',
               preparationTime: 30,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 19,
@@ -1012,7 +1012,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Shehshan',
               preparationTime: 35,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 18,
@@ -1029,7 +1029,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Honey Chicken',
               preparationTime: 25,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
           ])
           .returning()
@@ -1052,7 +1052,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Lamb Makhani',
               preparationTime: 45,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 20,
@@ -1070,7 +1070,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Lamb Curry',
               preparationTime: 45,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 20,
@@ -1087,7 +1087,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Lamb Rogan Josh',
               preparationTime: 50,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 20,
@@ -1104,7 +1104,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Shrimp Makhani',
               preparationTime: 20,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 18,
@@ -1121,7 +1121,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Shrimp Curry',
               preparationTime: 20,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
           ])
           .returning()
@@ -1144,7 +1144,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Salmon Makhani',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 22,
@@ -1161,7 +1161,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Salmon Masala',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 3.5,
@@ -1178,7 +1178,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Butter Naan',
               preparationTime: 8,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 4,
@@ -1194,7 +1194,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Garlic Naan',
               preparationTime: 10,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 5,
@@ -1211,7 +1211,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Garlic Cheese Naan',
               preparationTime: 12,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
           ])
           .returning()
@@ -1233,7 +1233,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Coconut Naan',
               preparationTime: 10,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 5,
@@ -1249,7 +1249,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Cheese and Jalapeno Naan',
               preparationTime: 12,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 4.5,
@@ -1266,7 +1266,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Onion Kulcha',
               preparationTime: 12,
-              // spiceLevel: 1,
+              spiceLevel: 1,
             },
             {
               basePrice: 5,
@@ -1282,7 +1282,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Dates Naan',
               preparationTime: 10,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 5,
@@ -1298,7 +1298,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Cheese Naan',
               preparationTime: 10,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
           ])
           .returning()
@@ -1321,7 +1321,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Roti',
               preparationTime: 5,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
           ])
           .returning()
@@ -1343,7 +1343,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Plain Paratha',
               preparationTime: 10,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 5,
@@ -1360,7 +1360,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Aloo Paratha',
               preparationTime: 15,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
           ])
           .returning()
@@ -1383,7 +1383,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Breads Basket',
               preparationTime: 15,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 4,
@@ -1400,7 +1400,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Jeera Rice',
               preparationTime: 20,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 16,
@@ -1417,7 +1417,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Fried Rice',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 15,
@@ -1433,7 +1433,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Egg Fried Rice',
               preparationTime: 20,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 18,
@@ -1449,7 +1449,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Shrimp Fried Rice',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
           ])
           .returning()
@@ -1472,7 +1472,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Veg Biryani',
               preparationTime: 40,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 18,
@@ -1489,7 +1489,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Biryani',
               preparationTime: 45,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 20,
@@ -1506,7 +1506,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Shrimp Biryani',
               preparationTime: 40,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 20,
@@ -1523,7 +1523,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Lamb Biryani',
               preparationTime: 55,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 19,
@@ -1540,7 +1540,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Paneer Biryani',
               preparationTime: 40,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
           ])
           .returning()
@@ -1563,7 +1563,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Tandoori (with bone)',
               preparationTime: 35,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 22,
@@ -1580,7 +1580,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Salmon Tandoori',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 22,
@@ -1597,7 +1597,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Shrimp Tandoori',
               preparationTime: 20,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 17,
@@ -1614,7 +1614,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Tofu Tandoori',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 18,
@@ -1631,7 +1631,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Paneer Tandoori',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
           ])
           .returning()
@@ -1654,7 +1654,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Tikka Kabab (boneless)',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 20,
@@ -1671,7 +1671,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Malai Kabab',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 17,
@@ -1687,7 +1687,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Tofu Kabab',
               preparationTime: 20,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 18,
@@ -1703,7 +1703,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Paneer Kabab',
               preparationTime: 20,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 23.99,
@@ -1720,7 +1720,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Goat Curry',
               preparationTime: 60,
-              // spiceLevel: 4,
+              spiceLevel: 4,
             },
           ])
           .returning()
@@ -1742,7 +1742,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Lamb Vindaloo',
               preparationTime: 45,
-              // spiceLevel: 5,
+              spiceLevel: 5,
             },
             {
               basePrice: 15,
@@ -1759,7 +1759,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken MoMo (10 pcs)',
               preparationTime: 30,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 13,
@@ -1776,7 +1776,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Veg MoMo (10 pcs)',
               preparationTime: 30,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 17,
@@ -1793,7 +1793,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Chowmein',
               preparationTime: 25,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 15,
@@ -1809,7 +1809,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Veg Chowmein',
               preparationTime: 20,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
           ])
           .returning()
@@ -1832,7 +1832,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Chilli',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 18,
@@ -1849,7 +1849,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chilli Chicken',
               preparationTime: 25,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 19,
@@ -1865,7 +1865,7 @@ const router = createRouter()
               isVegetarian: false,
               name: 'Chicken Sekuwa',
               preparationTime: 30,
-              // spiceLevel: 3,
+              spiceLevel: 3,
             },
             {
               basePrice: 16,
@@ -1882,7 +1882,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Dal Bhat Thali',
               preparationTime: 35,
-              // spiceLevel: 2,
+              spiceLevel: 2,
             },
             {
               basePrice: 5.5,
@@ -1899,7 +1899,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Mango Kulfi',
               preparationTime: 5,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
           ])
           .returning()
@@ -1921,7 +1921,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Kulfi',
               preparationTime: 5,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 6.5,
@@ -1938,7 +1938,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Rasmalai (2 pcs)',
               preparationTime: 10,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 5.5,
@@ -1955,7 +1955,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Gulab Jamun (2 pcs)',
               preparationTime: 10,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 5.5,
@@ -1972,7 +1972,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Kheer',
               preparationTime: 15,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
             {
               basePrice: 6,
@@ -1989,7 +1989,7 @@ const router = createRouter()
               isVegetarian: true,
               name: 'Gajar Halwa',
               preparationTime: 20,
-              // spiceLevel: 0,
+              spiceLevel: 0,
             },
           ])
           .returning()
@@ -2208,7 +2208,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 5,
+              maxSelect: 3,
               menuItemId: menuItems.find((m) => m.name === 'Chicken Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',
@@ -2218,7 +2218,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 5,
+              maxSelect: 3,
               menuItemId: menuItems.find((m) => m.name === 'Chicken Coconut Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',
@@ -2228,7 +2228,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 5,
+              maxSelect: 3,
               menuItemId: menuItems.find((m) => m.name === 'Shrimp Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',
@@ -2238,7 +2238,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 5,
+              maxSelect: 3,
               menuItemId: menuItems.find((m) => m.name === 'Lamb Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',
@@ -2248,7 +2248,7 @@ const router = createRouter()
             {
               displayOrder: 1,
               isAvailable: true,
-              maxSelect: 5,
+              maxSelect: 3,
               menuItemId: menuItems.find((m) => m.name === 'Goat Curry')?.id || '',
               minSelect: 1,
               name: 'Choose extra ingredients',

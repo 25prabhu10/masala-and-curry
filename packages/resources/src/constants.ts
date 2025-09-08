@@ -23,3 +23,5 @@ export const MIN_FILE_SIZE_MB = 1
 export const MAX_FILE_SIZE_MB = 5
 
 export const IMAGE_MIME_TYPES = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/avif']
+
+export const SELECTION_TYPES = ['single', 'multiple'] as const

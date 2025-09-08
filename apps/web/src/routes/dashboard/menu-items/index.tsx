@@ -157,9 +157,7 @@ const columnsDef: ColumnDef<MenuItem>[] = [
 ]
 
 export const Route = createFileRoute('/dashboard/menu-items/')({
-  beforeLoad: ({ search }) => {
-    return { search }
-  },
+  beforeLoad: ({ search }) => ({ search }),
   component: RouteComponent,
   loader: async ({ context: { queryClient, search } }) => {
     await Promise.all([

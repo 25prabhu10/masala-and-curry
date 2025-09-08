@@ -1,0 +1,1 @@
+ALTER TABLE `menu_item` ADD `spice_level` integer DEFAULT 0;

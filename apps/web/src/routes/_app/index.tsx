@@ -130,10 +130,6 @@ function Index() {
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     {dish.description}
                   </p>
-                  {/* <div className="flex items-center justify-between pt-2">
-                    <span className="text-lg font-bold text-primary">{dish.price}</span>
-                    <Button size="sm">Add to Cart</Button>
-                  </div> */}
                 </div>
               </div>
             ))}

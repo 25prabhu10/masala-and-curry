@@ -140,7 +140,6 @@ export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<Menu
     await Promise.all(
       createdGroups.map((g) => {
         const group = newOptionGroups.find((grp) => grp.name === g.name)
-        console.error('createdGroups', group)
         if (group?.options && group.options.length > 0) {
           return db.insert(menuOption).values(
             group.options.map((o) => ({
