@@ -1,3 +1,4 @@
+// oxlint-disable no-nested-ternary
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { Separator } from '@mac/web-ui/separator'
@@ -15,7 +16,6 @@ export function CheckoutPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link to="/menu">
             <Button size="icon" variant="ghost">
@@ -28,7 +28,6 @@ export function CheckoutPage() {
           </div>
         </div>
 
-        {/* Progress Steps */}
         <div className="flex items-center justify-center mb-8 max-w-md mx-auto">
           <div className="flex items-center w-full">
             <div
@@ -66,9 +65,7 @@ export function CheckoutPage() {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Forms */}
           <div className="lg:col-span-2 space-y-6">
             {currentStep === 'delivery' && (
               <Card>
@@ -115,7 +112,6 @@ export function CheckoutPage() {
                       Please review your order details before completing your purchase.
                     </p>
 
-                    {/* Delivery Details Summary */}
                     <div className="p-4 bg-muted/50 rounded-lg">
                       <h4 className="font-medium mb-2">Delivery Address</h4>
                       <p className="text-sm text-muted-foreground">
@@ -123,7 +119,6 @@ export function CheckoutPage() {
                       </p>
                     </div>
 
-                    {/* Payment Method Summary */}
                     <div className="p-4 bg-muted/50 rounded-lg">
                       <h4 className="font-medium mb-2">Payment Method</h4>
                       <p className="text-sm text-muted-foreground">
@@ -147,7 +142,6 @@ export function CheckoutPage() {
             )}
           </div>
 
-          {/* Right Column - Order Summary */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               <OrderSummary />

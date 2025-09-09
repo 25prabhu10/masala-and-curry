@@ -2,7 +2,7 @@ import type { MenuItem } from '@mac/validators/menu-item'
 import { create } from 'zustand'
 import { persist, subscribeWithSelector } from 'zustand/middleware'
 
-export interface CartItem {
+interface CartItem {
   id: string
   menuItem: MenuItem
   quantity: number

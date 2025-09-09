@@ -164,19 +164,14 @@ export function DeliveryDetailsForm({ onContinue }: DeliveryDetailsFormProps) {
   }
 
   function handleInputChange(field: keyof FormData, value: string) {
-    setFormData((prev) => {
-      return { ...prev, [field]: value }
-    })
+    setFormData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
-      setErrors((prev) => {
-        return { ...prev, [field]: '' }
-      })
+      setErrors((prev) => ({ ...prev, [field]: '' }))
     }
   }
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
-      {/* Contact Information */}
       <div>
         <h3 className="text-lg font-medium mb-4">Contact Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -229,7 +224,6 @@ export function DeliveryDetailsForm({ onContinue }: DeliveryDetailsFormProps) {
 
       <Separator />
 
-      {/* Delivery Address */}
       <div>
         <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
           <MapPin className="h-5 w-5" />
@@ -294,7 +288,6 @@ export function DeliveryDetailsForm({ onContinue }: DeliveryDetailsFormProps) {
 
       <Separator />
 
-      {/* Delivery Time */}
       <div>
         <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
           <Clock className="h-5 w-5" />
@@ -322,7 +315,6 @@ export function DeliveryDetailsForm({ onContinue }: DeliveryDetailsFormProps) {
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex justify-end pt-4">
         <Button className="px-8" type="submit">
           Continue to Payment

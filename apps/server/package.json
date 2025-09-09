@@ -7,8 +7,7 @@
   "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "exports": {
-    "./routes": "./src/routes/index.ts",
-    "./types": "./src/lib/types.ts"
+    "./routes": "./src/routes/index.ts"
   },
   "scripts": {
     "build": "wrangler deploy --dry-run --outdir dist",

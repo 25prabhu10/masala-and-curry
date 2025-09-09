@@ -113,13 +113,9 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
   }
 
   function handleCardInputChange(field: keyof CardData, value: string) {
-    setCardData((prev) => {
-      return { ...prev, [field]: value }
-    })
+    setCardData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
-      setErrors((prev) => {
-        return { ...prev, [field]: '' }
-      })
+      setErrors((prev) => ({ ...prev, [field]: '' }))
     }
   }
 
@@ -164,11 +160,9 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
-      {/* Payment Method Selection */}
       <div>
         <h3 className="text-lg font-medium mb-4">Choose Payment Method</h3>
         <div className="space-y-3">
-          {/* Credit/Debit Card */}
           <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
             <input
               checked={paymentMethod === 'card'}
@@ -190,7 +184,6 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
             </Label>
           </div>
 
-          {/* Digital Payments */}
           <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
             <input
               checked={paymentMethod === 'digital'}
@@ -212,7 +205,6 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
             </Label>
           </div>
 
-          {/* Cash on Delivery */}
           <div className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
             <input
               checked={paymentMethod === 'cash'}
@@ -238,7 +230,6 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
         </div>
       </div>
 
-      {/* Card Details Form */}
       {paymentMethod === 'card' && (
         <>
           <Separator />
@@ -316,7 +307,6 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
         </>
       )}
 
-      {/* Digital Payment Notice */}
       {paymentMethod === 'digital' && (
         <>
           <Separator />
@@ -325,7 +315,6 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
               You will be redirected to complete your payment with your selected digital payment
               method.
             </p>
-            {/* TODO: Add integration with payment gateway SDKs */}
             <p className="text-xs text-muted-foreground mt-2">
               <strong>TODO:</strong> Integration with Apple Pay, Google Pay, and PayPal SDKs
             </p>
@@ -333,7 +322,6 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
         </>
       )}
 
-      {/* Cash Payment Notice */}
       {paymentMethod === 'cash' && (
         <>
           <Separator />
@@ -346,7 +334,6 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
         </>
       )}
 
-      {/* Security Notice */}
       <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
         <Lock className="h-4 w-4 text-green-600" />
         <p className="text-sm text-green-800">
@@ -354,7 +341,6 @@ export function PaymentMethodSelector({ onBack, onContinue }: PaymentMethodSelec
         </p>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex gap-4 pt-4">
         <Button className="flex-1" onClick={onBack} type="button" variant="outline">
           Back to Delivery

@@ -133,9 +133,7 @@ const columnsDef: ColumnDef<Category>[] = [
 ]
 
 export const Route = createFileRoute('/dashboard/categories/')({
-  beforeLoad: ({ search }) => {
-    return { search }
-  },
+  beforeLoad: ({ search }) => ({ search }),
   component: RouteComponent,
   loader: async ({ context: { queryClient, search } }) => {
     await queryClient.ensureQueryData(getCategoriesQuery(search))

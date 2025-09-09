@@ -12,8 +12,7 @@
     "./category": "./src/category.queries.ts",
     "./user": "./src/user.queries.ts",
     "./menu-item": "./src/menu-item.queries.ts",
-    "./image": "./src/image.queries.ts",
-    "./menu-item-variant": "./src/menu-item-variant.queries.ts"
+    "./image": "./src/image.queries.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

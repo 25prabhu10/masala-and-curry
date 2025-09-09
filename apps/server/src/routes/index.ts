@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth'
+import { authClient } from '@/lib/auth'
 import createApp from '@/lib/create-app'
 
 import categories from './categories/categories.route'
@@ -9,7 +9,7 @@ import users from './users/users.route'
 
 const app = createApp()
 
-app.on(['POST', 'GET'], '/auth/*', (c) => auth.handler(c.req.raw))
+app.on(['POST', 'GET'], '/auth/*', async (c) => (await authClient(c.env)).handler(c.req.raw))
 
 const routes = app
   .route('/', index)

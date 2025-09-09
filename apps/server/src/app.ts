@@ -19,29 +19,27 @@ app.openAPIRegistry.registerComponent('securitySchemes', 'bearerAuth', {
 })
 
 app
-  .doc31(`/${OPEN_API_SCHEMA_FILE}`, (c) => {
-    return {
-      info: {
-        description: packageJSON.description,
-        title: TITLE,
-        version: packageJSON.version,
+  .doc31(`/${OPEN_API_SCHEMA_FILE}`, (c) => ({
+    info: {
+      description: packageJSON.description,
+      title: TITLE,
+      version: packageJSON.version,
+    },
+    openapi: '3.1.1',
+    security: [
+      {
+        apiKeyCookie: [],
+        bearerAuth: [],
       },
-      openapi: '3.1.1',
-      security: [
-        {
-          apiKeyCookie: [],
-          bearerAuth: [],
-        },
-      ],
-      servers: [
-        {
-          description: API_SERVER_DESCRIPTION,
-          url: `${new URL(c.req.url).origin}`,
-        },
-      ],
-      // TODO: add tags
-    }
-  })
+    ],
+    servers: [
+      {
+        description: API_SERVER_DESCRIPTION,
+        url: `${new URL(c.req.url).origin}`,
+      },
+    ],
+    // TODO: add tags
+  }))
   .get(
     '/reference',
     Scalar({

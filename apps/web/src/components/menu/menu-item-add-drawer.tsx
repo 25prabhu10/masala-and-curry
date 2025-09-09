@@ -21,9 +21,10 @@ import { X } from 'lucide-react'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
 
-import { formatCurrencyUSD } from '@/lib/utils'
+import { formatCurrencyUSD, getImageURL } from '@/lib/utils'
 import { useCartStore } from '@/stores/cart-store'
 
+import ImageUI from '../image-ui'
 import { QuantitySelector } from './quantity-selector'
 import { SpiceLevelIndicator } from './spice-level-indicator'
 
@@ -116,12 +117,25 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
     <Drawer onOpenChange={setDrawerOpen} open={openDrawer}>
       <DrawerTrigger asChild>{closeButton}</DrawerTrigger>
       <DrawerContent className="max-h-[80%]">
-        <div className="mx-auto w-full overflow-y-auto">
+        <div className="mx-auto w-full overflow-y-auto mt-4">
           <div className="mx-auto w-full max-w-sm">
+            <div className="relative w-full h-48 overflow-hidden bg-muted">
+              {menuItem.image ? (
+                <ImageUI
+                  alt={menuItem.name}
+                  className="transition-transform duration-300 group-hover:scale-105"
+                  url={getImageURL(menuItem.image)}
+                />
+              ) : (
+                <div className="flex items-center justify-center w-full h-full text-xs text-muted-foreground">
+                  <span className="text-4xl">🍜</span>
+                </div>
+              )}
+            </div>
             <DrawerClose asChild>
               <Button
                 aria-label="Close"
-                className="absolute right-4 top-4"
+                className="absolute right-0 top-0 md:right-4 md:top-4"
                 size="icon"
                 type="button"
                 variant="ghost"
@@ -234,19 +248,6 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                                           id={`${group.id}_${opt.id}`}
                                           value={opt.id}
                                         />{' '}
-                                        <div className="flex-1 min-w-0">
-                                          <div className="flex items-center justify-between gap-2">
-                                            <p className="text-sm font-medium leading-none">
-                                              {opt.name}
-                                            </p>
-                                            {typeof opt.priceModifier === 'number' &&
-                                            opt.priceModifier !== 0 ? (
-                                              <span className="text-sm font-semibold">
-                                                {`+ ${formatCurrencyUSD(opt.priceModifier, menuItem.currency)}`}
-                                              </span>
-                                            ) : null}
-                                          </div>
-                                        </div>
                                       </Label>
                                     )
                                   })}
@@ -275,10 +276,12 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                                           setSelectedOptions((prev) => {
                                             const prevSelected = prev[group.id] || []
                                             if (nextChecked === true) {
-                                              if (prevSelected.includes(opt.id)) {
-                                                return prev
-                                              }
-                                              if (prevSelected.length >= group.maxSelect) {
+                                              // Add option respecting maxSelect
+                                              if (
+                                                group.maxSelect &&
+                                                group.maxSelect > 0 &&
+                                                prevSelected.length >= group.maxSelect
+                                              ) {
                                                 return prev
                                               }
                                               return {
@@ -286,6 +289,7 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                                                 [group.id]: [...prevSelected, opt.id],
                                               }
                                             }
+                                            // Remove option
                                             return {
                                               ...prev,
                                               [group.id]: prevSelected.filter(
@@ -296,17 +300,19 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                                         }}
                                       />{' '}
                                       <div className="flex-1 min-w-0">
-                                        <div className="flex items-center justify-between gap-2">
-                                          <p className="text-sm font-medium leading-none">
-                                            {opt.name}
-                                          </p>
-                                          {typeof opt.priceModifier === 'number' &&
-                                          opt.priceModifier !== 0 ? (
-                                            <span className="text-sm font-semibold">
-                                              {`+ ${formatCurrencyUSD(opt.priceModifier, menuItem.currency)}`}
-                                            </span>
-                                          ) : null}
-                                        </div>
+                                        <p className="text-sm font-medium break-words">
+                                          {opt.name}
+                                        </p>
+                                        {typeof opt.priceModifier === 'number' &&
+                                          opt.priceModifier !== 0 && (
+                                            <p className="text-xs text-muted-foreground">
+                                              {opt.priceModifier > 0 ? '+' : ''}
+                                              {formatCurrencyUSD(
+                                                opt.priceModifier,
+                                                menuItem.currency
+                                              )}
+                                            </p>
+                                          )}
                                       </div>
                                     </Label>
                                   )
