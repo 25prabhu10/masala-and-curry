@@ -25,3 +25,12 @@ export const MAX_FILE_SIZE_MB = 5
 export const IMAGE_MIME_TYPES = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/avif']
 
 export const SELECTION_TYPES = ['single', 'multiple'] as const
+
+export const SPICE_LABELS = {
+  0: 'No Spice',
+  1: 'Mild',
+  2: 'Medium',
+  3: 'Hot',
+  4: 'Very Hot',
+  5: 'Extremely Hot',
+} as const

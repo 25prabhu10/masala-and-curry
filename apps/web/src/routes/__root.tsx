@@ -4,8 +4,8 @@ import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 
-import { RouterLoader } from '@/components/router-loader'
-import { Spinner } from '@/components/spinner'
+import { RouterLoader } from '@/components/ui/router-loader'
+import { Spinner } from '@/components/ui/spinner'
 import { useTheme } from '@/context/theme-context'
 import { authClient, type Session } from '@/lib/auth-client'
 

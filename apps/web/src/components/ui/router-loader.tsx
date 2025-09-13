@@ -1,7 +1,7 @@
 import { useRouterState } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
-import { Spinner } from '@/components/spinner'
+import { Spinner } from '@/components/ui/spinner'
 
 export function RouterLoader() {
   const isLoading = useRouterState({ select: (s) => s.status === 'pending' })

@@ -22,7 +22,7 @@ export function MenuFilters({ categories, filters, setFilters, resetFilters }: M
       glutenFree: filters.glutenFree ?? false,
       popular: filters.popular ?? false,
       search: filters.search || '',
-      sortBy: filters.sortBy || 'name.asc',
+      sortBy: filters.sortBy || '',
       vegan: filters.vegan ?? false,
       vegetarian: filters.vegetarian ?? false,
     } as MenuItemFilters,

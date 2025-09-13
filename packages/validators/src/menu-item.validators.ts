@@ -1,15 +1,9 @@
 import { z } from '@hono/zod-openapi'
 import {
   InsertMenuItemSchema,
-  InsertMenuOptionGroupSchema,
-  InsertMenuOptionSchema,
   SelectCategorySchema,
   SelectMenuItemSchema,
-  SelectMenuOptionGroupSchema,
-  SelectMenuOptionSchema,
   UpdateMenuItemSchema,
-  UpdateMenuOptionGroupSchema,
-  UpdateMenuOptionSchema,
 } from '@mac/db/schemas'
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
 
@@ -20,6 +14,16 @@ import {
   rowCountValidator,
 } from './general.validators'
 import { uploadImageSchema } from './image.validators'
+import {
+  createMenuOptionValidator,
+  readMenuOptionValidator,
+  updateMenuOptionValidator,
+} from './menu-option.validators'
+import {
+  createMenuOptionGroupValidator,
+  readMenuOptionGroupValidator,
+  updateMenuOptionGroupValidator,
+} from './menu-option-group.validators'
 
 export const readMenuItemValidator = z.object({
   ...SelectMenuItemSchema.shape,
@@ -33,10 +37,10 @@ export const readMenuItemValidator = z.object({
   optionGroups: z
     .array(
       z.object({
-        ...SelectMenuOptionGroupSchema.omit({ menuItemId: true }).shape,
+        ...readMenuOptionGroupValidator.shape,
         options: z.array(
           z.object({
-            ...SelectMenuOptionSchema.omit({ groupId: true }).shape,
+            ...readMenuOptionValidator.shape,
             _tempId: z.uuid().optional(),
           })
         ),
@@ -53,10 +57,10 @@ export const createMenuItemValidator = z.object({
   optionGroups: z
     .array(
       z.object({
-        ...InsertMenuOptionGroupSchema.omit({ menuItemId: true }).shape,
+        ...createMenuOptionGroupValidator.shape,
         options: z.array(
           z.object({
-            ...InsertMenuOptionSchema.omit({ groupId: true }).shape,
+            ...createMenuOptionValidator.shape,
             _tempId: z.uuid().optional(),
           })
         ),
@@ -69,10 +73,10 @@ export const updateMenuItemValidator = z.object({
   optionGroups: z
     .array(
       z.object({
-        ...UpdateMenuOptionGroupSchema.omit({ menuItemId: true }).shape,
+        ...updateMenuOptionGroupValidator.shape,
         options: z.array(
           z.object({
-            ...UpdateMenuOptionSchema.omit({ groupId: true }).shape,
+            ...updateMenuOptionValidator.shape,
             _tempId: z.uuid().optional(),
           })
         ),

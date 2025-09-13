@@ -1,3 +1,4 @@
+import { SPICE_LABELS } from '@mac/resources/constants'
 import { cn } from '@mac/tailwind-config/utils'
 import { Flame } from 'lucide-react'
 
@@ -9,15 +10,6 @@ interface SpiceLevelIndicatorProps {
   className?: string
 }
 
-const SPICE_LABELS = {
-  0: 'No Spice',
-  1: 'Mild',
-  2: 'Medium',
-  3: 'Hot',
-  4: 'Very Hot',
-  5: 'Extremely Hot',
-} as const
-
 export function SpiceLevelIndicator({
   level,
   maxLevel = 5,
@@ -25,8 +17,7 @@ export function SpiceLevelIndicator({
   showLabel = true,
   className,
 }: SpiceLevelIndicatorProps) {
-  // Ensure level is within bounds
-  const normalizedLevel = Math.max(0, Math.min(level, maxLevel))
+  const normalizedLevel = Math.max(0, Math.min(level, maxLevel)) as keyof typeof SPICE_LABELS
 
   const sizeClasses = {
     default: 'h-4 w-4',
@@ -40,8 +31,7 @@ export function SpiceLevelIndicator({
     sm: 'text-xs',
   }
 
-  const label =
-    SPICE_LABELS[normalizedLevel as keyof typeof SPICE_LABELS] || `Level ${normalizedLevel}`
+  const label = SPICE_LABELS[normalizedLevel] || `Level ${normalizedLevel}`
 
   if (normalizedLevel === 0) {
     return showLabel ? (

@@ -37,6 +37,7 @@
     "@tanstack/react-router-devtools": "^1.131.42",
     "@tanstack/react-table": "^8.21.3",
     "lucide-react": "catalog:ui",
+    "motion": "^12.23.12",
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "sonner": "catalog:ui",
