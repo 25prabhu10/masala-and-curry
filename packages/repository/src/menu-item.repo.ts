@@ -186,12 +186,14 @@ export async function updateMenuItem(
 
         await Promise.all(
           existingOptionGroups.map((g) => {
+            const promiseArray = []
+
             if (g.options && g.options.length > 0) {
               const existingOptions = g.options.filter((o) => o.id)
               const newOptions = g.options.filter((o) => !o.id)
 
               if (existingOptions.length > 0) {
-                return Promise.all(
+                promiseArray.push(
                   existingOptions.map((o) =>
                     db
                       .update(menuOption)
@@ -203,20 +205,24 @@ export async function updateMenuItem(
               }
 
               if (newOptions.length > 0) {
-                db.insert(menuOption).values(
-                  newOptions.map((o) => ({
-                    caloriesModifier: o.caloriesModifier,
-                    displayOrder: o.displayOrder,
-                    // oxlint-disable-next-line no-non-null-assertion
-                    groupId: g.id!,
-                    isAvailable: o.isAvailable,
-                    isDefault: o.isDefault,
-                    name: o.name ?? '',
-                    priceModifier: o.priceModifier,
-                  }))
+                promiseArray.push(
+                  db.insert(menuOption).values(
+                    newOptions.map((o) => ({
+                      caloriesModifier: o.caloriesModifier,
+                      displayOrder: o.displayOrder,
+                      // oxlint-disable-next-line no-non-null-assertion
+                      groupId: g.id!,
+                      isAvailable: o.isAvailable,
+                      isDefault: o.isDefault,
+                      name: o.name ?? '',
+                      priceModifier: o.priceModifier,
+                    }))
+                  )
                 )
               }
             }
+
+            return Promise.all(promiseArray)
           })
         )
       }

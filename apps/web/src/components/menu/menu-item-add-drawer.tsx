@@ -42,6 +42,8 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
   const menuItemWithOptions = useQuery(getMenuItemByIdQuery(menuItem.id, openDrawer))
 
   const optionGroups = menuItemWithOptions.data?.optionGroups || []
+
+  console.log('optionGroups', optionGroups)
   function getDefaultSelections() {
     const defaults: Record<string, string[]> = {}
     for (const group of optionGroups) {
@@ -248,6 +250,19 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                                           id={`${group.id}_${opt.id}`}
                                           value={opt.id}
                                         />{' '}
+                                        <div className="flex-1 min-w-0">
+                                          <div className="flex items-center justify-between gap-2">
+                                            <p className="text-sm font-medium leading-none">
+                                              {opt.name}
+                                            </p>
+                                            {typeof opt.priceModifier === 'number' &&
+                                            opt.priceModifier !== 0 ? (
+                                              <span className="text-sm font-semibold">
+                                                {`+ ${formatCurrencyUSD(opt.priceModifier, menuItem.currency)}`}
+                                              </span>
+                                            ) : null}
+                                          </div>
+                                        </div>
                                       </Label>
                                     )
                                   })}
