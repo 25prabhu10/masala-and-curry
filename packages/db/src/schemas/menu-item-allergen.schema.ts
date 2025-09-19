@@ -43,7 +43,7 @@ export const SelectMenuItemAllergenSchema = createSelectSchema(menuItemAllergen,
   allergenId: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Allergen ID', NANOID_LENGTH),
+        error: maxLengthDesc('Allergen ID', NANOID_LENGTH),
       })
       .openapi({
         description: 'Allergen identifier',
@@ -57,7 +57,7 @@ export const SelectMenuItemAllergenSchema = createSelectSchema(menuItemAllergen,
   menuItemId: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Menu item ID', NANOID_LENGTH),
+        error: maxLengthDesc('Menu item ID', NANOID_LENGTH),
       })
       .openapi({
         description: 'Menu item identifier',

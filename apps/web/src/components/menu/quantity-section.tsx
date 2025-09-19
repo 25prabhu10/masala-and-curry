@@ -25,7 +25,7 @@ export default memo(function QuantitySection({
       <div className="text-right">
         <p className="text-xs text-muted-foreground">Unit Price</p>
         <p className="font-semibold tabular-nums">{formatCurrencyUSD(unitPrice, currency)}</p>
-        <p className="text-xs text-muted-foreground mt-1 tabular-nums">
+        <p className="text-xs mt-1 tabular-nums text-accent ">
           {`Subtotal: ${formatCurrencyUSD(unitPrice * quantity, currency)}`}
         </p>
       </div>

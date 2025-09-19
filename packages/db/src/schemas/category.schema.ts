@@ -49,7 +49,7 @@ export const SelectCategorySchema = createSelectSchema(category, {
       .string(invalidDesc('Category description', schema.def.type))
       .trim()
       .max(MAX_STRING_LENGTH, {
-        message: maxLengthDesc('Category description'),
+        error: maxLengthDesc('Category description'),
       })
       .optional()
       .openapi({
@@ -64,7 +64,7 @@ export const SelectCategorySchema = createSelectSchema(category, {
   id: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Category ID', NANOID_LENGTH),
+        error: maxLengthDesc('Category ID', NANOID_LENGTH),
       })
       .openapi({
         description: 'Unique category identifier',
@@ -83,7 +83,7 @@ export const SelectCategorySchema = createSelectSchema(category, {
           }
           ctx.addIssue({
             code: 'custom',
-            message: 'Category Active must be "true" or "false"',
+            error: 'Category Active must be "true" or "false"',
           })
           return z.NEVER
         }),
@@ -98,8 +98,8 @@ export const SelectCategorySchema = createSelectSchema(category, {
     z
       .string(invalidDesc('Category name', schema.def.type))
       .trim()
-      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Category name') })
-      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Category name') })
+      .min(MIN_STRING_LENGTH, { error: minLengthDesc('Category name') })
+      .max(MAX_STRING_LENGTH, { error: maxLengthDesc('Category name') })
       .openapi({
         description: 'Category name',
         example: 'Appetizers',

@@ -33,44 +33,61 @@ git clone https://github.com/25prabhu10/masala-and-curry.git
 cd masala-and-curry
 
 # Install dependencies
-pnpm install
+pnpm install --recursive
 ```
 
 ### Development
 
 ```bash
 # Start all applications in development mode
-pnpm dev
+pnpm run dev
 
 # Or start individual applications
-pnpm --filter @mac/web dev      # Web app
-pnpm --filter @mac/mobile dev   # Mobile app
-pnpm --filter @mac/server dev   # API server
+pnpm --filter @mac/web run dev      # Web app
+pnpm --filter @mac/mobile run dev   # Mobile app
+pnpm --filter @mac/server run dev   # API server
 ```
 
 ### Building
 
 ```bash
 # Build all applications
-pnpm build
+pnpm run build
 
 # Run mobile app on Android
-pnpm android
+pnpm run android
 ```
 
 ## Project Structure
 
-```
-masala-and-curry/
-├── apps/
-│   ├── web/          # React web application
-│   ├── mobile/       # React Native mobile app
-│   └── server/       # Hono.js API server
-├── packages/
-│   ├── web-ui/       # Web UI components
-│   ├── mobile-ui/    # Mobile UI components
-│   └── api-client/   # Shared API client
-└── tooling/          # Shared configurations
+```bash
+.
+├── apps
+│   ├── mobile          # React Native mobile app
+│   ├── server          # Hono.js API server
+│   └── web             # React web application
+├── biome.jsonc
+├── knip.ts
+├── lefthook.yml
+├── LICENSE
+├── package.json
+├── packages
+│   ├── api-client      # Shared API client
+│   ├── auth-client
+│   ├── db
+│   ├── mobile-ui       # Mobile UI components
+│   ├── queries
+│   ├── repository
+│   ├── resources
+│   ├── validators
+│   └── web-ui          # Web UI components
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+├── README.md
+├── tooling             # Shared configurations
+│   ├── tailwind
+│   └── typescript
+└── turbo.json
 ```
 
 ## Contributing
@@ -83,4 +100,4 @@ masala-and-curry/
 
 ## License
 
-This project is licensed under the GPLv2 License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GPLv2 License - see the [LICENSE](./LICENSE) file for details.

@@ -191,7 +191,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
             form.handleSubmit()
           }}
         >
-          <div className="grid grid-flow-dense md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+          <div className="grid grid-flow-dense md:grid-cols-2 lg:grid-cols-4 gap-4">
             <form.AppField
               children={(field) => (
                 <field.TextField

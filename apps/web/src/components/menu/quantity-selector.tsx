@@ -36,7 +36,7 @@ export function QuantitySelector({
   }, [value, min, onChange])
 
   return (
-    <div className="grid grid-cols-3 gap-2">
+    <div className="grid grid-cols-3 gap-2 bg-input border rounded-md p-1">
       <Button
         aria-label="Decrease quantity"
         disabled={disabled || value <= min}
@@ -48,10 +48,11 @@ export function QuantitySelector({
         <Minus className="h-3 w-3" />
       </Button>
 
-      <p className="text-center font-medium flex gap-1 leading-4 mx-auto">
+      <p className="text-center text-xl font-medium flex gap-1 leading-none mx-auto">
         {places.map((place) => (
-          <SlidingNumbers height={26} key={place} place={place} value={value} />
+          <SlidingNumbers aria-hidden={true} height={26} key={place} place={place} value={value} />
         ))}
+        <span className="sr-only">{value}</span>
       </p>
 
       <Button

@@ -63,7 +63,7 @@ export const SelectMenuOptionGroupSchema = createSelectSchema(menuOptionGroup, {
   id: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Option Group ID', NANOID_LENGTH),
+        error: maxLengthDesc('Option Group ID', NANOID_LENGTH),
       })
       .openapi({ description: 'Unique option group identifier', example: 'mog_size_001' }),
   isAvailable: (schema) =>
@@ -76,7 +76,7 @@ export const SelectMenuOptionGroupSchema = createSelectSchema(menuOptionGroup, {
   menuItemId: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Menu Item ID', NANOID_LENGTH),
+        error: maxLengthDesc('Menu Item ID', NANOID_LENGTH),
       })
       .openapi({ description: 'Menu item identifier', example: 'item_chicken_curry_001' }),
   minSelect: (schema) =>
@@ -87,8 +87,8 @@ export const SelectMenuOptionGroupSchema = createSelectSchema(menuOptionGroup, {
   name: (schema) =>
     schema
       .trim()
-      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Group name', MIN_STRING_LENGTH) })
-      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Group name', MAX_STRING_LENGTH) })
+      .min(MIN_STRING_LENGTH, { error: minLengthDesc('Group name', MIN_STRING_LENGTH) })
+      .max(MAX_STRING_LENGTH, { error: maxLengthDesc('Group name', MAX_STRING_LENGTH) })
       .openapi({ description: 'Option group name', example: 'Size' }),
   required: (schema) =>
     schema.default(false).openapi({ description: 'Is selection required?', example: true }),
@@ -103,21 +103,21 @@ export const SelectMenuOptionGroupSchema = createSelectSchema(menuOptionGroup, {
   .omit({ createdAt: true, updatedAt: true })
   .superRefine((val, ctx) => {
     if (val.selectionType === 'single' && val.maxSelect !== 1) {
-      ctx.addIssue({ code: 'custom', message: 'For single selection groups, maxSelect must be 1' })
+      ctx.addIssue({ code: 'custom', error: 'For single selection groups, maxSelect must be 1' })
     }
     if (val.minSelect < 0) {
-      ctx.addIssue({ code: 'custom', message: 'minSelect must be >= 0' })
+      ctx.addIssue({ code: 'custom', error: 'minSelect must be >= 0' })
     }
     if (val.maxSelect < 1) {
-      ctx.addIssue({ code: 'custom', message: 'maxSelect must be >= 1' })
+      ctx.addIssue({ code: 'custom', error: 'maxSelect must be >= 1' })
     }
     if (val.minSelect > val.maxSelect) {
-      ctx.addIssue({ code: 'custom', message: 'minSelect cannot exceed maxSelect' })
+      ctx.addIssue({ code: 'custom', error: 'minSelect cannot exceed maxSelect' })
     }
     if (val.selectionType === 'single' && val.required && val.minSelect < 1) {
       ctx.addIssue({
         code: 'custom',
-        message: 'Required single-select groups must have minSelect >= 1',
+        error: 'Required single-select groups must have minSelect >= 1',
       })
     }
   })
@@ -136,19 +136,19 @@ export const InsertMenuOptionGroupSchema = createInsertSchema(menuOptionGroup, {
   .omit({ createdAt: true, id: true, updatedAt: true })
   .superRefine((val, ctx) => {
     if (val.selectionType === 'single' && val.maxSelect !== 1) {
-      ctx.addIssue({ code: 'custom', message: 'For single selection groups, maxSelect must be 1' })
+      ctx.addIssue({ code: 'custom', error: 'For single selection groups, maxSelect must be 1' })
     }
     if (
       val.minSelect !== undefined &&
       val.maxSelect !== undefined &&
       val.minSelect > val.maxSelect
     ) {
-      ctx.addIssue({ code: 'custom', message: 'minSelect cannot exceed maxSelect' })
+      ctx.addIssue({ code: 'custom', error: 'minSelect cannot exceed maxSelect' })
     }
     if (val.selectionType === 'single' && val.required && (val.minSelect ?? 0) < 1) {
       ctx.addIssue({
         code: 'custom',
-        message: 'Required single-select groups must have minSelect >= 1',
+        error: 'Required single-select groups must have minSelect >= 1',
       })
     }
   })
@@ -167,14 +167,14 @@ export const UpdateMenuOptionGroupSchema = createUpdateSchema(menuOptionGroup, {
   .omit({ createdAt: true, updatedAt: true })
   .superRefine((val, ctx) => {
     if (val.selectionType === 'single' && val.maxSelect !== undefined && val.maxSelect !== 1) {
-      ctx.addIssue({ code: 'custom', message: 'For single selection groups, maxSelect must be 1' })
+      ctx.addIssue({ code: 'custom', error: 'For single selection groups, maxSelect must be 1' })
     }
     if (
       val.minSelect !== undefined &&
       val.maxSelect !== undefined &&
       val.minSelect > val.maxSelect
     ) {
-      ctx.addIssue({ code: 'custom', message: 'minSelect cannot exceed maxSelect' })
+      ctx.addIssue({ code: 'custom', error: 'minSelect cannot exceed maxSelect' })
     }
   })
   .openapi('MenuOptionGroupUpdate')

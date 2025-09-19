@@ -1,3 +1,4 @@
+import { cn } from '@mac/tailwind-config/utils'
 import { type MotionValue, motion, useSpring, useTransform } from 'motion/react'
 import { useEffect } from 'react'
 
@@ -29,20 +30,26 @@ function SlidingNumber({ motionValue, number, height }: SlidingNumberProps) {
   )
 }
 
-type SlidingNumbersProps = {
+export interface SlidingNumbersProps extends React.HTMLAttributes<HTMLSpanElement> {
   place: number
   value: number
   height: number
 }
 
-export function SlidingNumbers({ place, value, height }: SlidingNumbersProps) {
+export function SlidingNumbers({ place, value, height, className, ...props }: SlidingNumbersProps) {
   let valueRoundedToPlace = Math.floor(value / place)
   let animatedValue = useSpring(valueRoundedToPlace)
   useEffect(() => {
     animatedValue.set(valueRoundedToPlace)
   }, [animatedValue, valueRoundedToPlace])
   return (
-    <span className="relative inline-block w-[1ch] overflow-x-visible overflow-y-clip leading-none tabular-nums">
+    <span
+      className={cn(
+        className,
+        'relative inline-block w-[1ch] overflow-x-visible overflow-y-clip leading-none tabular-nums'
+      )}
+      {...props}
+    >
       {Array.from({ length: 10 }, (_, i) => (
         <SlidingNumber height={height} key={i} motionValue={animatedValue} number={i} />
       ))}

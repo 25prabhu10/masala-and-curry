@@ -35,8 +35,8 @@ export const InsertAccountSchema = createInsertSchema(account, {
     z
       .string(invalidDesc('Password', schema.def.type))
       .trim()
-      .min(MIN_PASSWORD_LENGTH, { message: minLengthDesc('Password') })
-      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Password') })
+      .min(MIN_PASSWORD_LENGTH, { error: minLengthDesc('Password') })
+      .max(MAX_STRING_LENGTH, { error: maxLengthDesc('Password') })
       .openapi({
         description: 'Password',
         example: '********',

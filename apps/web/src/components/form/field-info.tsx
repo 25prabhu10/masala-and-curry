@@ -1,6 +1,3 @@
-// oxlint-disable no-nested-ternary
-
-import type { z } from '@mac/validators/general'
 import type { AnyFieldMeta } from '@tanstack/react-form'
 
 interface FieldInfoProps {
@@ -9,31 +6,33 @@ interface FieldInfoProps {
 }
 
 export default function FieldInfo({ fieldName, meta }: FieldInfoProps) {
+  const hasErrors = meta.isTouched && !meta.isValid && meta.errors.length > 0
+
+  let code = ''
+  let error = ''
+
+  if (hasErrors) {
+    if (typeof meta.errors[0] === 'object') {
+      // oxlint-disable-next-line prefer-destructuring
+      code = meta.errors[meta.errors.length - 1].code
+      error = meta.errors[meta.errors.length - 1].message
+    } else {
+      error = meta.errors[meta.errors.length - 1]
+    }
+  }
+
   return (
     <div className="min-h-5">
-      {meta.isTouched && !meta.isValid && meta.errors.length > 0
-        ? typeof meta.errors[0] === 'object'
-          ? meta.errors.map(({ code, message }: z.core.$ZodIssue) => (
-              <p
-                className="text-sm font-medium text-destructive"
-                id={`${fieldName}-error`}
-                key={`${fieldName}-${code}`}
-                role="alert"
-              >
-                {message}
-              </p>
-            ))
-          : meta.errors.map((error) => (
-              <p
-                className="text-sm font-medium text-destructive"
-                id={`${fieldName}-error`}
-                key={`${fieldName}`}
-                role="alert"
-              >
-                {error}
-              </p>
-            ))
-        : null}
+      {hasErrors ? (
+        <p
+          className="text-sm font-medium text-destructive"
+          id={`${fieldName}-error`}
+          key={`${fieldName}-${code}`}
+          role="alert"
+        >
+          {error}
+        </p>
+      ) : null}
       {meta.isValidating ? 'Validating...' : null}
     </div>
   )

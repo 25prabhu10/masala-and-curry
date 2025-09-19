@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@mac/web-ui/dropdown-menu'
+import { Label } from '@mac/web-ui/label'
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import type { ColumnDef } from '@tanstack/react-table'
@@ -40,9 +41,11 @@ const columnsDef: ColumnDef<Category>[] = [
     cell: ({ row }) => (
       <div className="flex items-center mr-1">
         <Checkbox
-          aria-label="Select row"
+          aria-label={`Select ${row.getValue('name')} Category`}
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          disabled={!row.getCanSelect()}
+          id={row.getValue('name')}
+          onCheckedChange={row.getToggleSelectedHandler()}
         />
       </div>
     ),
@@ -170,8 +173,21 @@ function RouteComponent() {
               Manage your categories for better organization of menu items.
             </CardDescription>
           </div>
+          <div className="flex items-center gap-3 mr-auto lg:ml-auto">
+            <Checkbox
+              checked={filters.activeOnly === false}
+              id="all-categories"
+              name="activeOnly"
+              onCheckedChange={(checked) => {
+                setFilters({ activeOnly: !checked })
+              }}
+            />
+            <Label htmlFor="all-categories">All categories</Label>
+          </div>
           <Button asChild>
-            <Link to="/dashboard/categories/new">Add new category</Link>
+            <Link className="w-full sm:w-fit" to="/dashboard/categories/new">
+              Add new category
+            </Link>
           </Button>
         </div>
       </CardHeader>

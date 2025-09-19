@@ -42,7 +42,7 @@
     "nanoid": "catalog:"
   },
   "devDependencies": {
-    "@dotenvx/dotenvx": "^1.49.0",
+    "@dotenvx/dotenvx": "^1.49.1",
     "@libsql/client": "^0.15.15",
     "@mac/tsconfig": "workspace:*",
     "@types/node": "catalog:",
@@ -50,5 +50,5 @@
     "oxlint": "catalog:",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.15.1"
+  "packageManager": "pnpm@10.17.0"
 }

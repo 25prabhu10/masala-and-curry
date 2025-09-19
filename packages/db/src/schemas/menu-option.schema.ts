@@ -66,11 +66,11 @@ export const SelectMenuOptionSchema = createSelectSchema(menuOption, {
       .openapi({ description: 'Display order for options', example: 2 }),
   groupId: (schema) =>
     schema
-      .max(NANOID_LENGTH, { message: maxLengthDesc('Option Group ID', NANOID_LENGTH) })
+      .max(NANOID_LENGTH, { error: maxLengthDesc('Option Group ID', NANOID_LENGTH) })
       .openapi({ description: 'Option group identifier', example: 'mog_size_001' }),
   id: (schema) =>
     schema
-      .max(NANOID_LENGTH, { message: maxLengthDesc('Option ID', NANOID_LENGTH) })
+      .max(NANOID_LENGTH, { error: maxLengthDesc('Option ID', NANOID_LENGTH) })
       .openapi({ description: 'Unique option identifier', example: 'mo_large_001' }),
   isAvailable: (schema) =>
     schema.default(true).openapi({ description: 'Option availability', example: true }),
@@ -79,8 +79,8 @@ export const SelectMenuOptionSchema = createSelectSchema(menuOption, {
   name: (schema) =>
     schema
       .trim()
-      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Option name', MIN_STRING_LENGTH) })
-      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Option name', MAX_STRING_LENGTH) })
+      .min(MIN_STRING_LENGTH, { error: minLengthDesc('Option name', MIN_STRING_LENGTH) })
+      .max(MAX_STRING_LENGTH, { error: maxLengthDesc('Option name', MAX_STRING_LENGTH) })
       .openapi({ description: 'Option name', example: 'Large' }),
   priceModifier: (schema) =>
     schema

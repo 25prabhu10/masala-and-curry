@@ -53,7 +53,7 @@ export default memo(function OptionGroup({ group, selectedIds, onChange }: Optio
           <span className="ml-auto text-muted-foreground">{` (up to ${group.maxSelect})`}</span>
         )}
       </h4>
-      <div className="max-h-80 pr-2 overflow-y-auto">
+      <div className="overflow-y-auto">
         {isSingle ? (
           <RadioGroup onValueChange={handleSingleChange} value={selectedIds[0] ?? ''}>
             {group.options?.map((opt) => (

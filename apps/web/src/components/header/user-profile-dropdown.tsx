@@ -37,7 +37,7 @@ const navigationItems = [
   },
   {
     icon: Heart,
-    label: 'Favorites',
+    label: 'Favourites',
     to: '/',
   },
   {

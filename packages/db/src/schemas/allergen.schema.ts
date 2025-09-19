@@ -37,7 +37,7 @@ export const SelectAllergenSchema = createSelectSchema(allergen, {
   id: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Allergen ID', NANOID_LENGTH),
+        error: maxLengthDesc('Allergen ID', NANOID_LENGTH),
       })
       .openapi({
         description: 'Unique allergen identifier',
@@ -51,8 +51,8 @@ export const SelectAllergenSchema = createSelectSchema(allergen, {
   name: (schema) =>
     schema
       .trim()
-      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Allergen name') })
-      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Allergen name') })
+      .min(MIN_STRING_LENGTH, { error: minLengthDesc('Allergen name') })
+      .max(MAX_STRING_LENGTH, { error: maxLengthDesc('Allergen name') })
       .openapi({
         description: 'Allergen name',
         example: 'Nuts',

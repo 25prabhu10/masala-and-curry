@@ -6,6 +6,7 @@ import { AlreadySignedIn } from '@/components/auth/already-signed-in'
 
 export const Route = createFileRoute('/_app/(auth)')({
   component: RouteComponent,
+  gcTime: 0,
   loader: async ({ context: { session } }) => session,
   validateSearch: callbackSearchParam,
 })

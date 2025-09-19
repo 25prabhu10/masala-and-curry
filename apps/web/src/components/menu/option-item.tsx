@@ -43,10 +43,10 @@ export default memo(function OptionItem({
       ) : (
         <Checkbox checked={checked} id={id} name={id} onCheckedChange={onChange} />
       )}
-      <div className="flex-1 min-w-0">
+      <div className="flex flex-1 items-center min-w-0">
         <p className="text-sm font-medium break-words">{option.name}</p>
         {typeof option.priceModifier === 'number' && option.priceModifier !== 0 && (
-          <p className="text-xs text-muted-foreground tabular-nums">
+          <p className="ml-auto text-xs text-muted-foreground tabular-nums">
             {option.priceModifier > 0 ? '+' : ''}
             {formatCurrencyUSD(option.priceModifier)}
           </p>

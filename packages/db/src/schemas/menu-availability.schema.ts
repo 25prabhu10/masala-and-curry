@@ -67,7 +67,7 @@ export const SelectMenuAvailabilitySchema = createSelectSchema(menuAvailability,
   id: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Menu Availability ID', NANOID_LENGTH),
+        error: maxLengthDesc('Menu Availability ID', NANOID_LENGTH),
       })
       .openapi({
         description: 'Unique availability identifier',
@@ -81,7 +81,7 @@ export const SelectMenuAvailabilitySchema = createSelectSchema(menuAvailability,
   menuItemId: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Menu item ID', NANOID_LENGTH),
+        error: maxLengthDesc('Menu item ID', NANOID_LENGTH),
       })
       .openapi({
         description: 'Menu item identifier',
@@ -112,7 +112,7 @@ export const InsertMenuAvailabilitySchema = createInsertSchema(menuAvailability,
     updatedAt: true,
   })
   .refine((data) => data.startTime <= data.endTime, {
-    message: 'End time must be after start time',
+    error: 'End time must be after start time',
     path: ['endTime'],
   })
   .openapi('MenuAvailabilityCreate')

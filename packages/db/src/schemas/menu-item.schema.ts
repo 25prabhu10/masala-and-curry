@@ -74,7 +74,7 @@ export const menuItem = sqliteTable(
 export const SelectMenuItemSchema = createSelectSchema(menuItem, {
   basePrice: (schema) =>
     schema
-      .nonnegative({ message: 'Price must be positive' })
+      .nonnegative({ error: 'Price must be positive' })
       .min(MIN_CURRENCY_VALUE)
       .max(MAX_CURRENCY_VALUE)
       .transform((num) => Math.round((num + Number.EPSILON) * 100) / 100)
@@ -89,9 +89,9 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
     }),
   categoryId: (schema) =>
     schema
-      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Category ID', MIN_STRING_LENGTH) })
+      .min(MIN_STRING_LENGTH, { error: minLengthDesc('Category ID', MIN_STRING_LENGTH) })
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Category ID', NANOID_LENGTH),
+        error: maxLengthDesc('Category ID', NANOID_LENGTH),
       })
       .openapi({
         description: 'Category identifier',
@@ -111,7 +111,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
     schema
       .trim()
       .max(MAX_STRING_LENGTH, {
-        message: maxLengthDesc('Menu item description'),
+        error: maxLengthDesc('Menu item description'),
       })
       .optional()
       .openapi({
@@ -126,7 +126,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
   id: (schema) =>
     schema
       .max(NANOID_LENGTH, {
-        message: maxLengthDesc('Menu Item ID', NANOID_LENGTH),
+        error: maxLengthDesc('Menu Item ID', NANOID_LENGTH),
       })
       .openapi({
         description: 'Unique menu item identifier',
@@ -140,7 +140,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
   ingredients: (schema) =>
     schema
       .trim()
-      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Ingredients') })
+      .max(MAX_STRING_LENGTH, { error: maxLengthDesc('Ingredients') })
       .optional()
       .openapi({
         description: 'List of ingredients',
@@ -159,7 +159,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
           }
           ctx.addIssue({
             code: 'custom',
-            message: 'Menu Item Available must be "true" or "false"',
+            error: 'Menu Item Available must be "true" or "false"',
           })
           return z.NEVER
         }),
@@ -183,7 +183,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
           }
           ctx.addIssue({
             code: 'custom',
-            message: 'Menu Item Gluten Free must be "true" or "false"',
+            error: 'Menu Item Gluten Free must be "true" or "false"',
           })
           return z.NEVER
         }),
@@ -207,7 +207,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
           }
           ctx.addIssue({
             code: 'custom',
-            message: 'Menu Item Popular must be "true" or "false"',
+            error: 'Menu Item Popular must be "true" or "false"',
           })
           return z.NEVER
         }),
@@ -231,7 +231,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
           }
           ctx.addIssue({
             code: 'custom',
-            message: 'Menu Item Vegan must be "true" or "false"',
+            error: 'Menu Item Vegan must be "true" or "false"',
           })
           return z.NEVER
         }),
@@ -255,7 +255,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
           }
           ctx.addIssue({
             code: 'custom',
-            message: 'Menu Item Vegetarian must be "true" or "false"',
+            error: 'Menu Item Vegetarian must be "true" or "false"',
           })
           return z.NEVER
         }),
@@ -270,15 +270,15 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
     z
       .string(invalidDesc('Menu Item name', schema.def.type))
       .trim()
-      .min(MIN_STRING_LENGTH, { message: minLengthDesc('Menu Item name') })
-      .max(MAX_STRING_LENGTH, { message: maxLengthDesc('Menu Item name') })
+      .min(MIN_STRING_LENGTH, { error: minLengthDesc('Menu Item name') })
+      .max(MAX_STRING_LENGTH, { error: maxLengthDesc('Menu Item name') })
       .openapi({
         description: 'Menu Item name',
         example: 'Chicken Tikka Masala',
       }),
   preparationTime: (schema) =>
     schema
-      .nonnegative({ message: 'Preparation time must be positive' })
+      .nonnegative({ error: 'Preparation time must be positive' })
       .max(MAX_NUMBER_IN_APP)
       .default(15)
       .openapi({
