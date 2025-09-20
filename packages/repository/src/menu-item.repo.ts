@@ -113,8 +113,11 @@ export async function getMenuItemById(db: DB, id: string): Promise<MenuItem | un
         },
       },
       optionGroups: {
+        orderBy: [asc(menuOptionGroup.displayOrder)],
         with: {
-          options: true,
+          options: {
+            orderBy: [asc(menuOption.displayOrder)],
+          },
         },
       },
     },
@@ -126,33 +129,33 @@ export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<Menu
     id: menuItem.id,
   })
 
-  if (result && data.optionGroups && data.optionGroups.length > 0) {
-    const newOptionGroups = data.optionGroups.map((g) => ({
-      ...g,
-      menuItemId: result.id,
-    }))
-
-    const createdGroups = await db.insert(menuOptionGroup).values(newOptionGroups).returning({
-      id: menuOptionGroup.id,
-      name: menuOptionGroup.name,
-    })
-
-    await Promise.all(
-      createdGroups.map((g) => {
-        const group = newOptionGroups.find((grp) => grp.name === g.name)
-        if (group?.options && group.options.length > 0) {
-          return db.insert(menuOption).values(
-            group.options.map((o) => ({
-              ...o,
-              groupId: g.id,
-            }))
-          )
-        }
-      })
-    )
-  }
-
   if (result) {
+    if (data.optionGroups && data.optionGroups.length > 0) {
+      const newOptionGroups = data.optionGroups.map((og) => ({
+        ...og,
+        menuItemId: result.id,
+      }))
+
+      const createdGroups = await db.insert(menuOptionGroup).values(newOptionGroups).returning({
+        id: menuOptionGroup.id,
+        name: menuOptionGroup.name,
+      })
+
+      await Promise.all(
+        createdGroups.map((og) => {
+          const group = newOptionGroups.find((grp) => grp.name === og.name)
+          if (group?.options && group.options.length > 0) {
+            return db.insert(menuOption).values(
+              group.options.map((op) => ({
+                ...op,
+                groupId: og.id,
+              }))
+            )
+          }
+        })
+      )
+    }
+
     return getMenuItemById(db, result.id)
   }
 
@@ -162,7 +165,8 @@ export async function createMenuItem(db: DB, data: CreateMenuItem): Promise<Menu
 export async function updateMenuItem(
   db: DB,
   id: string,
-  data: UpdateMenuItem
+  data: UpdateMenuItem,
+  existingItem: MenuItem
 ): Promise<MenuItem | undefined> {
   const [result] = await db.update(menuItem).set(data).where(eq(menuItem.id, id)).returning({
     id: menuItem.id,
@@ -170,87 +174,85 @@ export async function updateMenuItem(
 
   if (result) {
     if (data.optionGroups && data.optionGroups.length > 0) {
-      const existingOptionGroups = data.optionGroups.filter((g) => g.id)
-      const newOptionGroups = data.optionGroups.filter((g) => !g.id)
-
+      const existingOptionGroups = data.optionGroups.filter((g) => g.id && g.id.trim() !== '')
       if (existingOptionGroups.length > 0) {
         await Promise.all(
-          existingOptionGroups.map((g) =>
+          existingOptionGroups.map((og) =>
             db
               .update(menuOptionGroup)
-              .set(g)
-              // oxlint-disable-next-line no-non-null-assertion
-              .where(and(eq(menuOptionGroup.id, g.id!), eq(menuOptionGroup.menuItemId, id)))
+              .set(og)
+              .where(
+                and(eq(menuOptionGroup.id, og.id ?? ''), eq(menuOptionGroup.menuItemId, result.id))
+              )
           )
         )
 
         await Promise.all(
-          existingOptionGroups.map((g) => {
+          existingOptionGroups.map(async (g) => {
             const promiseArray = []
 
             if (g.options && g.options.length > 0) {
-              const existingOptions = g.options.filter((o) => o.id)
-              const newOptions = g.options.filter((o) => !o.id)
+              const existingOptions = g.options.filter((o) => o.id && o.id.trim() !== '')
 
               if (existingOptions.length > 0) {
                 promiseArray.push(
-                  existingOptions.map((o) =>
-                    db
-                      .update(menuOption)
-                      .set(o)
-                      // oxlint-disable-next-line no-non-null-assertion
-                      .where(and(eq(menuOption.id, o.id!), eq(menuOption.groupId, g.id!)))
+                  await Promise.all(
+                    existingOptions.map((o) =>
+                      db
+                        .update(menuOption)
+                        .set(o)
+                        .where(
+                          and(eq(menuOption.id, o.id ?? ''), eq(menuOption.groupId, g.id ?? ''))
+                        )
+                    )
                   )
                 )
               }
 
+              const newOptions = g.options
+                .filter((o) => !o.id || o.id.trim() === '')
+                .map((o) => ({
+                  caloriesModifier: o.caloriesModifier,
+                  displayOrder: o.displayOrder,
+                  groupId: g.id ?? '',
+                  isAvailable: o.isAvailable,
+                  isDefault: o.isDefault,
+                  name: o.name ?? '',
+                  priceModifier: o.priceModifier,
+                }))
+
               if (newOptions.length > 0) {
-                promiseArray.push(
-                  db.insert(menuOption).values(
-                    newOptions.map((o) => ({
-                      caloriesModifier: o.caloriesModifier,
-                      displayOrder: o.displayOrder,
-                      // oxlint-disable-next-line no-non-null-assertion
-                      groupId: g.id!,
-                      isAvailable: o.isAvailable,
-                      isDefault: o.isDefault,
-                      name: o.name ?? '',
-                      priceModifier: o.priceModifier,
-                    }))
-                  )
-                )
+                promiseArray.push(await db.insert(menuOption).values(newOptions))
               }
             }
 
-            return Promise.all(promiseArray)
+            return promiseArray
           })
         )
       }
 
+      const newOptionGroups = data.optionGroups
+        .filter((g) => !g.id || g.id.trim() === '')
+        .map((og) => ({
+          ...og,
+          menuItemId: result.id,
+          name: og.name ?? '',
+        }))
       if (newOptionGroups.length > 0) {
-        const createdGroups = await db
-          .insert(menuOptionGroup)
-          .values(
-            newOptionGroups.map((g) => ({
-              ...g,
-              menuItemId: id,
-              name: g.name ?? '',
-            }))
-          )
-          .returning({
-            id: menuOptionGroup.id,
-          })
+        const createdGroups = await db.insert(menuOptionGroup).values(newOptionGroups).returning({
+          id: menuOptionGroup.id,
+          name: menuOptionGroup.name,
+        })
 
         await Promise.all(
           createdGroups.map((g) => {
-            const group = newOptionGroups.find((grp) => grp.id === g.id)
+            const group = newOptionGroups.find((grp) => grp.name === g.name)
             if (group?.options && group.options.length > 0) {
               return db.insert(menuOption).values(
                 group.options.map((o) => ({
                   caloriesModifier: o.caloriesModifier,
                   displayOrder: o.displayOrder,
-                  // oxlint-disable-next-line no-non-null-assertion
-                  groupId: g.id!,
+                  groupId: g.id ?? '',
                   isAvailable: o.isAvailable,
                   isDefault: o.isDefault,
                   name: o.name ?? '',
@@ -263,7 +265,29 @@ export async function updateMenuItem(
       }
     }
 
-    return getMenuItemById(db, result.id)
+    const deletedOptionGroups = existingItem.optionGroups
+      ?.filter((x) => !data.optionGroups?.some((y) => y.id === x.id))
+      .map((x) => x.id)
+
+    if (deletedOptionGroups && deletedOptionGroups.length > 0) {
+      await Promise.all(
+        deletedOptionGroups.map((x) => db.delete(menuOptionGroup).where(eq(menuOptionGroup.id, x)))
+      )
+    }
+
+    const existingOptionIds = existingItem.optionGroups
+      ?.filter((x) => !deletedOptionGroups?.includes(x.id))
+      .flatMap((x) => x.options.map((y) => y.id))
+    const updatedOptionIds = data.optionGroups?.flatMap((x) => x.options.map((y) => y.id))
+    const deletedOptionIds = existingOptionIds?.filter((x) => !updatedOptionIds?.includes(x))
+
+    if (deletedOptionIds && deletedOptionIds.length > 0) {
+      await Promise.all(
+        deletedOptionIds.map((x) => db.delete(menuOption).where(eq(menuOption.id, x)))
+      )
+    }
+
+    return await getMenuItemById(db, result.id)
   }
 
   return result

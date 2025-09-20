@@ -9,11 +9,9 @@ export const readMenuOptionValidator = SelectMenuOptionSchema
 export const readMenuOptionsValidator = z.array(SelectMenuOptionSchema)
 export const createMenuOptionValidator = z.object({
   ...InsertMenuOptionSchema.shape,
-  _tempId: z.uuid().optional(),
 })
 export const updateMenuOptionValidator = z.object({
   ...UpdateMenuOptionSchema.shape,
-  _tempId: z.uuid().optional(),
 })
 
 export type MenuOption = z.infer<typeof readMenuOptionValidator>

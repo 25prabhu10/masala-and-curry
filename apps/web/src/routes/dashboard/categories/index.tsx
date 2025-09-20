@@ -166,18 +166,18 @@ function RouteComponent() {
   return (
     <Card>
       <CardHeader className="gap-4">
-        <div className="flex flex-wrap gap-4 items-center justify-between">
+        <div className="flex flex-wrap gap-4">
           <div>
             <CardTitle>Categories</CardTitle>
             <CardDescription>
               Manage your categories for better organization of menu items.
             </CardDescription>
           </div>
-          <div className="flex items-center gap-3 mr-auto lg:ml-auto">
+          <div className="flex justify-end items-center gap-3 flex-1">
             <Checkbox
               checked={filters.activeOnly === false}
               id="all-categories"
-              name="activeOnly"
+              name="all-categories"
               onCheckedChange={(checked) => {
                 setFilters({ activeOnly: !checked })
               }}

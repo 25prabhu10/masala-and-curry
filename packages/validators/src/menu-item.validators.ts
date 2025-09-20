@@ -41,7 +41,6 @@ export const readMenuItemValidator = z.object({
         options: z.array(
           z.object({
             ...readMenuOptionValidator.shape,
-            _tempId: z.uuid().optional(),
           })
         ),
       })
@@ -61,7 +60,6 @@ export const createMenuItemValidator = z.object({
         options: z.array(
           z.object({
             ...createMenuOptionValidator.shape,
-            _tempId: z.uuid().optional(),
           })
         ),
       })
@@ -77,7 +75,6 @@ export const updateMenuItemValidator = z.object({
         options: z.array(
           z.object({
             ...updateMenuOptionValidator.shape,
-            _tempId: z.uuid().optional(),
           })
         ),
       })
@@ -140,7 +137,7 @@ export const menuItemFiltersValidator = z
 
 export const menuItemFiltersValidatorWithCatch = z
   .object({
-    availableOnly: readMenuItemValidator.shape.isAvailable.unwrap().catch(true),
+    availableOnly: readMenuItemValidator.shape.isAvailable.unwrap().default(true).catch(true),
     categoryId: SelectCategorySchema.shape.id
       .catch('')
       .transform((value) => (value === '_null' ? '' : value)),

@@ -1,4 +1,5 @@
 import { createCategoryMutation, updateCategoryMutation } from '@mac/queries/category'
+import { MAX_NUMBER_IN_APP, MAX_STRING_LENGTH, MIN_STRING_LENGTH } from '@mac/resources/constants'
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
 import {
@@ -99,6 +100,8 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
                 <field.TextField
                   className="h-12"
                   label="Name"
+                  maxLength={MAX_STRING_LENGTH}
+                  minLength={MIN_STRING_LENGTH}
                   required
                   title="Enter category name"
                   type="text"
@@ -111,6 +114,7 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
                 <field.TextField
                   className="h-12"
                   label="Description"
+                  maxLength={MAX_STRING_LENGTH}
                   title="Enter category description"
                   type="text"
                 />
@@ -122,6 +126,7 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
                 <field.TextField
                   className="h-12"
                   label="Display Order"
+                  max={MAX_NUMBER_IN_APP}
                   min={0}
                   required
                   title="What is display order of this category?"
@@ -134,7 +139,7 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
               children={(field) => (
                 <field.SelectField
                   className="h-12"
-                  label="Display Order"
+                  label="Is category active?"
                   options={activeOptions}
                   required
                   title="Whether the category is active and visible"

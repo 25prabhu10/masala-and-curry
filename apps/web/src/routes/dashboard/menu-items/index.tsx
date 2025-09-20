@@ -29,6 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@mac/web-ui/dropdown-menu'
+import { Label } from '@mac/web-ui/label'
 import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import type { ColumnDef } from '@tanstack/react-table'
@@ -190,13 +191,26 @@ function RouteComponent() {
   return (
     <Card>
       <CardHeader className="gap-4">
-        <div className="flex flex-wrap gap-4 items-center justify-between">
+        <div className="flex flex-wrap gap-4">
           <div>
             <CardTitle>Menu Items</CardTitle>
             <CardDescription>Manage the food items available in your menu.</CardDescription>
           </div>
+          <div className="flex justify-end items-center gap-3 flex-1">
+            <Checkbox
+              checked={filters.availableOnly === false}
+              id="all-menu-items"
+              name="all-menu-items"
+              onCheckedChange={(checked) => {
+                setFilters({ availableOnly: !checked })
+              }}
+            />
+            <Label htmlFor="all-menu-items">All Menu Items</Label>
+          </div>
           <Button asChild>
-            <Link to="/dashboard/menu-items/new">Add new menu-item</Link>
+            <Link className="w-full sm:w-fit" to="/dashboard/menu-items/new">
+              Add new menu-item
+            </Link>
           </Button>
         </div>
       </CardHeader>

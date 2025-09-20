@@ -9,11 +9,9 @@ export const readMenuOptionGroupValidator = SelectMenuOptionGroupSchema
 export const readMenuOptionGroupsValidator = z.array(SelectMenuOptionGroupSchema)
 export const createMenuOptionGroupValidator = z.object({
   ...InsertMenuOptionGroupSchema.shape,
-  _tempId: z.uuid().optional(),
 })
 export const updateMenuOptionGroupValidator = z.object({
   ...UpdateMenuOptionGroupSchema.shape,
-  _tempId: z.uuid().optional(),
 })
 
 export type MenuOptionGroup = z.infer<typeof readMenuOptionGroupValidator>

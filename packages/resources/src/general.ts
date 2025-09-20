@@ -1,10 +1,10 @@
-import { MAX_STRING_LENGTH, MIN_STRING_LENGTH } from './constants'
+import { MAX_NUMBER_IN_APP, MAX_STRING_LENGTH, MIN_STRING_LENGTH } from './constants'
 
 export const VALIDATION_ERROR_DESC: string = 'Validation error(s). Check your input!'
 
 export const FORM_SUBMISSION_ERROR_DESC: string =
-  'Please fix the errors in the form before submitting'
-export const FORM_SUBMISSION_GENERIC_DESC: string = 'Please check your input(s) and try again'
+  'Please fix the errors in the form before submitting.'
+export const FORM_SUBMISSION_GENERIC_DESC: string = 'Please check your input(s) and try again.'
 
 export const UNEXPECTED_ERROR_DESC: string = 'An unexpected error occurred. Please try again.'
 
@@ -14,7 +14,7 @@ export const NOT_AUTHORIZED: string = 'You are not authorized to perform this ac
 
 export const UPDATE_SUCCESS_DESC: string = 'Update successful.'
 
-export const PAGINATION_ERROR_DESC: string = 'Must be a valid position number (e.g. 0, 1, 10)'
+export const PAGINATION_ERROR_DESC: string = 'Must be a valid position number (e.g. 0, 1, 10).'
 
 export const INVALID_URL_DESC: string = 'Must be a valid URL.'
 
@@ -27,19 +27,27 @@ export function invalidDesc(entity: Readonly<string>, type: Readonly<string>): s
 }
 
 export function invalidIdDesc(entity: Readonly<string>): string {
-  return `id should be a valid ${entity} ID`
+  return `id should be a valid ${entity} ID.`
 }
 
 export function notEmptyDesc(name: Readonly<string>): string {
   return `${name} must not be empty.`
 }
 
+export function maxValueDesc(name: Readonly<string>, maxValue?: Readonly<number>): string {
+  return `${name} must be at most ${maxValue ?? MAX_NUMBER_IN_APP}.`
+}
+
+export function minValueDesc(name: Readonly<string>, minValue?: Readonly<number>): string {
+  return `${name} must be at least ${minValue ?? 0}.`
+}
+
 export function maxLengthDesc(name: Readonly<string>, maxLength?: Readonly<number>): string {
-  return `${name} must be at most ${maxLength ?? MAX_STRING_LENGTH} characters long`
+  return `${name} must be at most ${maxLength ?? MAX_STRING_LENGTH} characters long.`
 }
 
 export function minLengthDesc(name: Readonly<string>, minLength?: Readonly<number>): string {
-  return `${name} must be at least ${minLength ?? MIN_STRING_LENGTH} characters long`
+  return `${name} must be at least ${minLength ?? MIN_STRING_LENGTH} characters long.`
 }
 
 export function getDataSuccessDesc(name: Readonly<string>): string {
@@ -47,23 +55,23 @@ export function getDataSuccessDesc(name: Readonly<string>): string {
 }
 
 export function createDataDesc(entity: Readonly<string>): string {
-  return `${entity} data to create`
+  return `${entity} data to create.`
 }
 
 export function createDataSuccessDesc(entity: Readonly<string>): string {
-  return `${entity} created successfully`
+  return `${entity} created successfully.`
 }
 
 export function createFailedDesc(entity: Readonly<string>): string {
-  return `Failed to create ${entity}`
+  return `Failed to create ${entity}.`
 }
 
 export function deleteSuccessDesc(entity: Readonly<string>): string {
-  return `${entity} deleted successfully`
+  return `${entity} deleted successfully.`
 }
 
 export function deleteFailedDesc(entity: Readonly<string>): string {
-  return `Failed to delete ${entity}`
+  return `Failed to delete ${entity}.`
 }
 
 export function getDataFailedDesc(name: Readonly<string>): string {

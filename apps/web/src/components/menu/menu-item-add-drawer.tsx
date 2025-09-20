@@ -138,7 +138,7 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                   <span className="sr-only">Close</span>
                 </Button>
               </DrawerClose>
-              <div className="relative w-full h-48 overflow-hidden bg-muted">
+              <div className="w-full h-48 overflow-hidden bg-muted">
                 {menuItem.image ? (
                   <ImageUI alt={menuItem.name} url={getImageURL(menuItem.image)} />
                 ) : (
@@ -147,12 +147,14 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                   </div>
                 )}
               </div>
-              <DrawerTitle className="text-lg">Add {menuItem.name}</DrawerTitle>
+            </DrawerHeader>
+            <div className="p-4 space-y-4 pt-0">
+              <DrawerTitle className="text-lg sticky top-0 bg-background">
+                Add {menuItem.name}
+              </DrawerTitle>
               <DrawerDescription>{`Choose spice level ${
                 optionGroups.length ? ', options and ' : ''
               }quantity to add to your cart.`}</DrawerDescription>
-            </DrawerHeader>
-            <div className="p-4 space-y-4">
               {menuItem.spiceLevel ? (
                 <SpiceLevelSelector setSpiceLevel={setSpiceLevel} spiceLevel={spiceLevel} />
               ) : null}
@@ -205,7 +207,7 @@ export function MenuItemAddDrawer({ menuItem, closeButton }: MenuItemAddDrawerPr
                 unitPrice={unitPrice}
               />
             </div>
-            <DrawerFooterRoot>
+            <DrawerFooterRoot className="mb-4">
               <Button
                 disabled={!menuItem.isAvailable || menuItemWithOptions.isLoading}
                 onClick={handleAdd}

@@ -91,6 +91,7 @@ const defaultOptionGroup: OptionGroupField = {
   displayOrder: 0,
   isAvailable: true,
   maxSelect: 1,
+  menuItemId: '',
   minSelect: 0,
   name: '',
   options: [] as OptionField[],
@@ -101,6 +102,7 @@ const defaultOptionGroup: OptionGroupField = {
 const defaultOption: OptionField = {
   caloriesModifier: 0,
   displayOrder: 0,
+  groupId: '',
   isAvailable: true,
   isDefault: false,
   name: '',
@@ -349,10 +351,10 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
 
                 <div className="space-y-4">
                   {Array.isArray(groupsField.state.value) && groupsField.state.value.length > 0 ? (
-                    groupsField.state.value.map((group: any, i: number) => (
-                      <Card key={`${group.id ?? 'new'}-${i}`}>
+                    groupsField.state.value.map((group, i) => (
+                      <Card key={`${'id' in group ? group.id : 'new'}-${i}`}>
                         <CardHeader>
-                          <CardTitle>Group: {group.name || `#${i + 1}`}</CardTitle>
+                          <CardTitle className="text-accent">Group: {`${i + 1}`}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
@@ -420,14 +422,14 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                           </div>
 
                           <div className="mt-6 space-y-4">
-                            <h4 className="font-medium">Options</h4>
+                            <h4 className="font-medium text-accent">Options</h4>
                             <form.Field
                               children={(optionsField) => (
                                 <div className="space-y-4">
                                   {Array.isArray(optionsField.state.value) &&
                                   optionsField.state.value.length > 0 ? (
-                                    optionsField.state.value.map((opt: any, j: number) => (
-                                      <Card key={`${opt.id ?? 'new'}-${opt._tempId ?? j}`}>
+                                    optionsField.state.value.map((opt, j) => (
+                                      <Card key={`${'id' in opt ? opt.id : 'new'}-${j}`}>
                                         <CardContent className="pt-6">
                                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
                                             <form.AppField
@@ -514,7 +516,6 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                                     onClick={() =>
                                       optionsField.pushValue({
                                         ...defaultOption,
-                                        _tempId: crypto.randomUUID(),
                                       })
                                     }
                                     type="button"

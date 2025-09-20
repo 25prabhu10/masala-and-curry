@@ -118,7 +118,7 @@ const router = createRouter()
         return c.json(...notFound(routes.entity))
       }
 
-      const result = await updateMenuItem(db, id, reqData)
+      const result = await updateMenuItem(db, id, reqData, existingItem)
 
       const menuItem = await readMenuItemValidator.safeParseAsync(result)
 

@@ -5,7 +5,7 @@ import {
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
 } from '@mac/resources/constants'
-import { invalidDesc, maxLengthDesc, minLengthDesc } from '@mac/resources/general'
+import { invalidDesc, maxLengthDesc, maxValueDesc, minLengthDesc } from '@mac/resources/general'
 import { sql } from 'drizzle-orm'
 import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createSchemaFactory } from 'drizzle-zod'
@@ -57,10 +57,15 @@ export const SelectCategorySchema = createSelectSchema(category, {
         example: 'Delicious starters to begin your meal',
       }),
   displayOrder: (schema) =>
-    schema.nonnegative().max(MAX_NUMBER_IN_APP).openapi({
-      description: 'Display order for category listing',
-      example: 1,
-    }),
+    schema
+      .nonnegative()
+      .max(MAX_NUMBER_IN_APP, {
+        error: maxValueDesc('Category Display Order'),
+      })
+      .openapi({
+        description: 'Display order for category listing',
+        example: 1,
+      }),
   id: (schema) =>
     schema
       .max(NANOID_LENGTH, {
