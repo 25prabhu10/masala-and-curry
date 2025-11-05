@@ -7,11 +7,9 @@
     "erasableSyntaxOnly": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-
     "incremental": true,
     "isolatedModules": true,
     "lib": ["ES2022"],
-
     "module": "Preserve",
     "moduleDetection": "force",
     "moduleResolution": "Bundler",
@@ -23,7 +21,6 @@
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-
     "strict": true,
     "target": "ES2022",
     "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json",

@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "emitDeclarationOnly": false,
     "typeRoots": ["../../node_modules/@types"]
   },

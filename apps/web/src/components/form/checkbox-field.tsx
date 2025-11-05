@@ -1,20 +1,20 @@
 import { cn } from '@mac/tailwind-config/utils'
 import { Checkbox } from '@mac/web-ui/checkbox'
-import { Label } from '@mac/web-ui/label'
+import { Field, FieldDescription, FieldError, FieldLabel } from '@mac/web-ui/field'
 
 import { useFieldContext } from '@/context/form-context'
-
-import FieldInfo from './field-info'
 
 type CheckboxFieldProps = React.ComponentProps<typeof Checkbox> & {
   label: React.ReactNode
   showValidations?: boolean
+  description?: string
 }
 
 export default function CheckboxField({
   label,
   required,
   className,
+  description,
   showValidations = true,
   ...props
 }: CheckboxFieldProps) {
@@ -23,7 +23,7 @@ export default function CheckboxField({
   const isInvalid =
     field.state.meta.isTouched && !field.state.meta.isValid && field.state.meta.errors.length > 0
   return (
-    <div className="flex items-center gap-2">
+    <Field orientation="horizontal">
       <Checkbox
         aria-describedby={`${field.name}-error`}
         aria-invalid={isInvalid}
@@ -38,11 +38,12 @@ export default function CheckboxField({
         required={required}
         {...props}
       />
-      <Label htmlFor={field.name}>
+      <FieldLabel htmlFor={field.name}>
         {label}
-        {required ? <span className="text-xs text-destructive"> *</span> : ''}
-      </Label>
-      {showValidations ? <FieldInfo fieldName={field.name} meta={field.state.meta} /> : null}
-    </div>
+        {required ? <span className="text-xs text-destructive">*</span> : ''}
+      </FieldLabel>
+      {description && <FieldDescription>{description}</FieldDescription>}
+      {showValidations && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   )
 }

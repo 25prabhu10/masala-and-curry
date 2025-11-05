@@ -1,8 +1,8 @@
 import path from 'node:path'
 
-import { defineConfig } from 'vitest/config'
+import { defineWorkersConfig } from '@cloudflare/vitest-pool-workers/config'
 
-export default defineConfig({
+export default defineWorkersConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

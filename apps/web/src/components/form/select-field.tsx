@@ -1,11 +1,9 @@
 import { cn } from '@mac/tailwind-config/utils'
-import { Label } from '@mac/web-ui/label'
+import { Field, FieldDescription, FieldError, FieldLabel } from '@mac/web-ui/field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@mac/web-ui/select'
 
 import { useFieldContext } from '@/context/form-context'
 import type { SelectOption } from '@/lib/types'
-
-import FieldInfo from './field-info'
 
 type SelectFieldProps = React.ComponentProps<typeof SelectTrigger> & {
   options: SelectOption[]
@@ -14,6 +12,7 @@ type SelectFieldProps = React.ComponentProps<typeof SelectTrigger> & {
   showValidations?: boolean
   all?: boolean
   allLabel?: string
+  description?: string
 }
 
 export default function SelectField({
@@ -23,6 +22,7 @@ export default function SelectField({
   required,
   all,
   allLabel,
+  description,
   showValidations = true,
   ...props
 }: SelectFieldProps) {
@@ -34,11 +34,11 @@ export default function SelectField({
     typeof field.state.value !== 'string' ? String(field.state.value) : field.state.value
 
   return (
-    <div className="space-y-2">
-      <Label htmlFor={field.name}>
+    <Field data-invalid={isInvalid}>
+      <FieldLabel htmlFor={field.name}>
         {label}
-        {required ? <span className="text-xs text-destructive"> *</span> : ''}
-      </Label>
+        {required ? <span className="text-xs text-destructive">*</span> : ''}
+      </FieldLabel>
       <Select
         aria-required={required}
         onValueChange={(value) => field.handleChange(value ?? null)}
@@ -68,7 +68,8 @@ export default function SelectField({
           ))}
         </SelectContent>
       </Select>
-      {showValidations ? <FieldInfo fieldName={field.name} meta={field.state.meta} /> : null}
-    </div>
+      {description && <FieldDescription>{description}</FieldDescription>}
+      {showValidations && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   )
 }

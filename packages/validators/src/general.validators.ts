@@ -38,7 +38,7 @@ export const paginationValidator = z.object({
 })
 
 export const orderByValidator = z.enum(['asc', 'desc'], {
-  error: (issue) => `Order must be one of: ${issue.options}`,
+  error: (issue) => `Order must be one of: ${issue.values.join(', ')}`,
 })
 export type OrderBy = z.infer<typeof orderByValidator>
 
@@ -52,7 +52,7 @@ export type ColumnsOf<T> = readonly (keyof T & string)[]
 export function createSortingValidator<
   T extends Record<string, unknown>,
   TColumns extends ColumnsOf<T>,
->(validColumns: TColumns, defaultSortColumns: string, urlSafe: boolean = false) {
+>(validColumns: TColumns, defaultSortColumns: string) {
   type ColumnUnion = TColumns[number]
   return z.coerce
     .string()
@@ -60,8 +60,8 @@ export function createSortingValidator<
     .min(1, minLengthDesc('Sort By'))
     .optional()
     .default(defaultSortColumns)
-    .transform((val, ctx): SortingObject<ColumnUnion>[] | string => {
-      const parsedData = val
+    .transform((val, ctx): SortingObject<ColumnUnion>[] =>
+      val
         .split(',')
         .map((sortItem) => {
           const parts = sortItem.split('.')
@@ -94,19 +94,23 @@ export function createSortingValidator<
             }
           }
 
-          if (urlSafe) {
-            return `${column}.${direction}`
-          }
-          return { column: column as ColumnUnion, direction }
+          return { column: column as ColumnUnion, direction } as SortingObject<ColumnUnion>
         })
-        .filter((item): item is SortingObject<ColumnUnion> => Boolean(item))
-
-      return urlSafe ? parsedData.join(',') : parsedData
-    })
+        .filter((item) => Boolean(item))
+    )
     .openapi({
       description: 'Sort by columns',
       example: 'name,id.desc',
     })
+}
+
+export function createCategoryValidatorURLSafe<
+  T extends Record<string, unknown>,
+  TColumns extends ColumnsOf<T>,
+>(validColumns: TColumns, defaultSortColumns: string) {
+  return createSortingValidator(validColumns, defaultSortColumns).transform((x) =>
+    x.map((x) => `${x.column}.${x.direction}`).join(', ')
+  )
 }
 
 export type Pagination = z.infer<typeof paginationValidator>

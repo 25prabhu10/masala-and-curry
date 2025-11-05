@@ -1,4 +1,4 @@
-import { MAX_NUMBER_IN_APP, MAX_STRING_LENGTH, MIN_STRING_LENGTH } from './constants'
+import { MAX_STRING_LENGTH, MAX_VALUE_IN_APP, MIN_STRING_LENGTH } from './constants'
 
 export const VALIDATION_ERROR_DESC: string = 'Validation error(s). Check your input!'
 
@@ -35,7 +35,7 @@ export function notEmptyDesc(name: Readonly<string>): string {
 }
 
 export function maxValueDesc(name: Readonly<string>, maxValue?: Readonly<number>): string {
-  return `${name} must be at most ${maxValue ?? MAX_NUMBER_IN_APP}.`
+  return `${name} must be at most ${maxValue ?? MAX_VALUE_IN_APP}.`
 }
 
 export function minValueDesc(name: Readonly<string>, minValue?: Readonly<number>): string {

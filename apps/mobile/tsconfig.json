@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "moduleSuffixes": [".ios", ".android", ".native", ""],
     "paths": {
       "@/*": ["./src/*"],
       "@assets/*": ["./assets/*"]
     },
-    "typeRoots": ["../../node_modules/@types", "./types"],
-    "types": ["nativewind/types"]
+    "typeRoots": ["../../node_modules/@types", "./types"]
   },
   "exclude": [".expo", "babel.config.js", "metro.config.js"],
   "extends": "@mac/tsconfig/expo.json",

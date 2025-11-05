@@ -10,6 +10,11 @@
       ],
       "persistent": true,
       "interactive": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["../server/public"]
     }
   }
 }

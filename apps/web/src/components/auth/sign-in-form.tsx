@@ -15,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@mac/web-ui/card'
+import { FieldGroup } from '@mac/web-ui/field'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useRouter } from '@tanstack/react-router'
 import { useCallback } from 'react'
@@ -76,6 +77,7 @@ export function SignInForm({ callback }: CallbackSearchParam) {
       onChange: signInValidator,
       onSubmitAsync: async ({ value }) => {
         try {
+          await new Promise((resolve) => setTimeout(resolve, 5000))
           const res = await SignIN.mutateAsync(value)
 
           if (!res.error && res.data) {
@@ -122,47 +124,52 @@ export function SignInForm({ callback }: CallbackSearchParam) {
       <CardContent>
         <form
           className="space-y-3"
+          id="sign-in"
           onSubmit={(e) => {
             e.preventDefault()
             e.stopPropagation()
             form.handleSubmit()
           }}
         >
-          <form.AppField
-            children={(field) => (
-              <field.TextField
-                autoComplete="email"
-                className="h-12"
-                label="Email"
-                placeholder="your@email.com"
-                required
-                title="Enter your email address"
-                type="email"
-              />
-            )}
-            name="email"
-          />
-          <form.AppField
-            children={(field) => (
-              <field.PasswordField
-                autoComplete="current-password"
-                className="h-12"
-                label="Password"
-                placeholder="********"
-                required
-              />
-            )}
-            name="password"
-          />
-          <div className="flex items-center justify-between">
+          <FieldGroup>
             <form.AppField
-              children={(field) => <field.CheckboxField label="Remember me" />}
-              name="rememberMe"
+              children={(field) => (
+                <field.TextField
+                  autoComplete="email"
+                  className="h-12"
+                  label="Email"
+                  placeholder="your@email.com"
+                  required
+                  title="Enter your email address"
+                  type="email"
+                />
+              )}
+              name="email"
             />
-            <Link className="text-sm text-primary hover:text-primary/80 transition-colors" to="/">
-              Forgot password?
-            </Link>
-          </div>
+            <form.AppField
+              children={(field) => (
+                <field.PasswordField
+                  autoComplete="current-password"
+                  className="h-12"
+                  description="Provide a concise title for your bug report."
+                  label="Password"
+                  placeholder="********"
+                  required
+                />
+              )}
+              name="password"
+            />
+
+            <div className="flex items-center justify-between">
+              <form.AppField
+                children={(field) => <field.CheckboxField label="Remember me" />}
+                name="rememberMe"
+              />
+              <Link className="text-sm text-primary hover:text-primary/80 transition-colors" to="/">
+                Forgot password?
+              </Link>
+            </div>
+          </FieldGroup>
           <form.AppForm>
             <form.FormErrors />
           </form.AppForm>

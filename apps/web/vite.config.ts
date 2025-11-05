@@ -1,6 +1,7 @@
 import reactScan from '@react-scan/vite-plugin-react-scan'
+import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 // import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -19,8 +20,12 @@ export default defineConfig({
       autoCodeSplitting: true,
       target: 'react',
     }),
-    react(),
-    reactScan({}),
+    react({
+      babel: {
+        plugins: [['babel-plugin-react-compiler']],
+      },
+    }),
+    tailwindcss(),
     // visualizer({
     //   brotliSize: true,
     //   emitFile: true,

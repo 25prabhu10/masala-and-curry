@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "rootDir": ".",
-    "types": ["nativewind/types"]
   },
   "exclude": ["node_modules"],
   "extends": ["@mac/tsconfig/expo.json", "@mac/tsconfig/internal-package.json"],

@@ -1,3 +1,4 @@
+// oxlint-disable prefer-top-level-await
 import { z } from '@hono/zod-openapi'
 import {
   InsertMenuItemSchema,
@@ -9,6 +10,7 @@ import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
 
 import {
   type ColumnsOf,
+  createCategoryValidatorURLSafe,
   createSortingValidator,
   paginationValidator,
   rowCountValidator,
@@ -112,7 +114,7 @@ export const menuItemFiltersValidator = z
     glutenFree: readMenuItemValidator.shape.isGlutenFree.unwrap(),
     popular: readMenuItemValidator.shape.isPopular.unwrap(),
     search: InsertMenuItemSchema.shape.name,
-    sortBy: createSortingValidator(menuItemSortableColumns, 'displayOrder', false),
+    sortBy: createSortingValidator(menuItemSortableColumns, 'displayOrder'),
     vegan: readMenuItemValidator.shape.isVegan.unwrap(),
     vegetarian: readMenuItemValidator.shape.isVegetarian.unwrap(),
     ...paginationValidator.shape,
@@ -144,7 +146,7 @@ export const menuItemFiltersValidatorWithCatch = z
     glutenFree: readMenuItemValidator.shape.isGlutenFree.unwrap().catch(false),
     popular: readMenuItemValidator.shape.isPopular.unwrap().catch(false),
     search: InsertMenuItemSchema.shape.name.catch("''"),
-    sortBy: createSortingValidator(menuItemSortableColumns, 'displayOrder', true).catch(
+    sortBy: createCategoryValidatorURLSafe(menuItemSortableColumns, 'displayOrder').catch(
       'displayOrder'
     ),
     vegan: readMenuItemValidator.shape.isVegan.unwrap().catch(false),

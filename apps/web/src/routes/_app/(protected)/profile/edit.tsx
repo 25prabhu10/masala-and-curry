@@ -55,7 +55,7 @@ function RouteComponent() {
   })
 
   return (
-    <main className="flex-1 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 p-4 flex flex-col justify-center">
+    <main className="flex-1 bg-linear-to-br from-primary/5 via-accent/5 to-secondary/10 p-4 flex flex-col justify-center">
       <div className="w-full mx-auto max-w-md">
         <section className="space-y-8">
           <div className="text-center space-y-4">
@@ -66,10 +66,10 @@ function RouteComponent() {
           <Card>
             <form
               className="space-y-6"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                form.handleSubmit()
+                await form.handleSubmit()
               }}
             >
               <CardHeader>

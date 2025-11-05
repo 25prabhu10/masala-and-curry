@@ -30,8 +30,7 @@
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",
-    "lineWidth": 100,
-    "includes": ["**", "!worker-configuration.d.ts", "!routeTree.gen.ts"]
+    "lineWidth": 100
   },
   "javascript": {
     "formatter": {
@@ -51,13 +50,15 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "experimentalScannerIgnores": [
-      "node_modules",
-      "public",
-      "dist",
-      ".turbo",
-      ".cache",
-      "routeTree.gen.ts"
+    "includes": [
+      "**",
+      "!node_modules",
+      "!public",
+      "!dist",
+      "!.turbo",
+      "!.cache",
+      "!apps/server/worker-configuration.d.ts",
+      "!apps/web/src/routeTree.gen.ts"
     ]
   },
   "extends": ["ultracite"]

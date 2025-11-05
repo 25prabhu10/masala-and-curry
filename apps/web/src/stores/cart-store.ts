@@ -59,9 +59,9 @@ export const useCartStore = create<CartStore>()(
               .map((g) => ({
                 groupId: g.groupId,
                 groupName: g.groupName,
-                options: [...(g.options || [])].sort((a, b) => a.id.localeCompare(b.id)),
+                options: [...(g.options || [])].toSorted((a, b) => a.id.localeCompare(b.id)),
               }))
-              .sort((a, b) => a.groupId.localeCompare(b.groupId))
+              .toSorted((a, b) => a.groupId.localeCompare(b.groupId))
 
             return {
               options: normalizedGroups,

@@ -137,9 +137,9 @@ export function createCategoryMutation(
       throw new Error(responseData.message)
     },
     mutationKey: [...categoryKeys.all, 'create'],
-    onSuccess: (newCategory) => {
+    onSuccess: async (newCategory) => {
       queryClient.setQueryData(categoryKeys.detail(newCategory.id), newCategory)
-      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() })
+      await queryClient.invalidateQueries({ queryKey: categoryKeys.lists() })
     },
   })
 }
@@ -186,9 +186,9 @@ export function updateCategoryMutation(
       throw new Error(responseData.message)
     },
     mutationKey: [...categoryKeys.all, 'update', id],
-    onSuccess: (updatedCategory) => {
+    onSuccess: async (updatedCategory) => {
       queryClient.setQueryData(categoryKeys.detail(id), updatedCategory)
-      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() })
+      await queryClient.invalidateQueries({ queryKey: categoryKeys.lists() })
     },
   })
 }
@@ -245,8 +245,8 @@ export function deleteCategoryMutation(
 
       return { previousCategories }
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: categoryKeys.all })
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: categoryKeys.all })
     },
   })
 }

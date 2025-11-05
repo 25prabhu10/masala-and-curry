@@ -1,5 +1,5 @@
 import { Button } from '@mac/web-ui/button'
-import { Loader2 } from 'lucide-react'
+import { Spinner } from '@mac/web-ui/spinner'
 
 import { useFormContext } from '@/context/form-context'
 
@@ -19,12 +19,11 @@ export function SubmitButton({
         <Button disabled={isSubmitting || !canSubmit} type="submit" {...props}>
           {isSubmitting ? (
             <>
-              <Loader2 className="ml-2 h-4 w-4 animate-spin block motion-reduce:hidden" />
+              <Spinner className="motion-reduce:hidden" />
               <p className="hidden motion-reduce:block">...</p>
             </>
-          ) : (
-            label
-          )}
+          ) : null}
+          {label}
         </Button>
       )}
     </form.Subscribe>

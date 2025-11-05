@@ -1,9 +1,11 @@
+// oxlint-disable prefer-top-level-await
 import { z } from '@hono/zod-openapi'
 import { InsertCategorySchema, SelectCategorySchema, UpdateCategorySchema } from '@mac/db/schemas'
 import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from '@mac/resources/constants'
 
 import {
   type ColumnsOf,
+  createCategoryValidatorURLSafe,
   createSortingValidator,
   paginationValidator,
   rowCountValidator,
@@ -29,7 +31,7 @@ export const categoryFiltersValidator = z
   .object({
     activeOnly: SelectCategorySchema.shape.isActive,
     search: InsertCategorySchema.shape.name,
-    sortBy: createSortingValidator(categorySortableColumns, 'displayOrder', false),
+    sortBy: createSortingValidator(categorySortableColumns, 'displayOrder'),
     ...paginationValidator.shape,
   })
   .partial()
@@ -51,7 +53,7 @@ export const categoryFiltersValidatorWithCatch = z
     pageIndex: paginationValidator.shape.pageIndex.catch(DEFAULT_PAGE_INDEX),
     pageSize: paginationValidator.shape.pageSize.catch(DEFAULT_PAGE_SIZE),
     search: InsertCategorySchema.shape.name.catch("''"),
-    sortBy: createSortingValidator(categorySortableColumns, 'displayOrder', true).catch(
+    sortBy: createCategoryValidatorURLSafe(categorySortableColumns, 'displayOrder').catch(
       'displayOrder'
     ),
   })

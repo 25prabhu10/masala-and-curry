@@ -35,7 +35,7 @@ function RouteComponent() {
 
   return (
     <main className="flex-1 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10">
-      <section className="container mx-auto px-4 py-8 space-y-4">
+      <section className="container mx-auto px-4 lg:px-6 py-8 space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-foreground mb-4">Masala and Curry Menu</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

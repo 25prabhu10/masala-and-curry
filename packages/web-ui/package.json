@@ -1,9 +1,15 @@
 {
   "name": "@mac/web-ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
-  "description": "",
-  "keywords": [],
+  "description": "Web UI components for Masala and Curry applications",
+  "keywords": [
+    "tailwind",
+    "react",
+    "ui",
+    "components",
+    "web"
+  ],
   "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "type": "module",
@@ -17,6 +23,7 @@
     "./dialog": "./src/ui/dialog.tsx",
     "./drawer": "./src/ui/drawer.tsx",
     "./dropdown-menu": "./src/ui/dropdown-menu.tsx",
+    "./field": "./src/ui/field.tsx",
     "./input": "./src/ui/input.tsx",
     "./label": "./src/ui/label.tsx",
     "./radio-group": "./src/ui/radio-group.tsx",
@@ -26,34 +33,36 @@
     "./sidebar": "./src/ui/sidebar.tsx",
     "./skeleton": "./src/ui/skeleton.tsx",
     "./sonner": "./src/ui/sonner.tsx",
+    "./spinner": "./src/ui/spinner.tsx",
     "./table": "./src/ui/table.tsx",
     "./tooltip": "./src/ui/tooltip.tsx"
   },
   "scripts": {
-    "check-types": "tsc --noEmit",
+    "check-types": "tsgo --noEmit",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "lint": "oxlint . --type-aware  --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --type-aware  --fix --tsconfig ./tsconfig.json",
     "ui-add": "pnpm dlx shadcn@canary add"
   },
   "dependencies": {
-    "class-variance-authority": "^0.7.1",
-    "lucide-react": "catalog:ui",
+    "class-variance-authority": "catalog:frontend",
+    "lucide-react": "catalog:frontend",
     "radix-ui": "latest",
-    "sonner": "catalog:ui",
+    "sonner": "catalog:frontend",
     "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@mac/tailwind-config": "workspace:*",
     "@mac/tsconfig": "workspace:*",
     "@types/react": "catalog:react19",
+    "@typescript/native-preview": "catalog:",
     "oxlint": "catalog:",
-    "react": "catalog:react19",
-    "react-dom": "catalog:react19",
-    "typescript": "catalog:"
+    "oxlint-tsgolint": "catalog:"
   },
   "peerDependencies": {
-    "react": "catalog:react19"
+    "react": "catalog:react19",
+    "tailwindcss": "catalog:frontend",
+    "tw-animate-css": "catalog:frontend"
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.20.0"
 }

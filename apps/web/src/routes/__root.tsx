@@ -33,7 +33,6 @@ function RootLayout() {
   return (
     <div className="min-h-svh overflow-auto border-2 border-border/60 flex flex-col">
       <RouterLoader />
-      <hr />
       <Outlet />
       <Toaster richColors theme={theme} />
       <Suspense>

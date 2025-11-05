@@ -11,5 +11,5 @@
   },
   "exclude": ["node_modules"],
   "extends": ["@mac/tsconfig/internal-package.json"],
-  "include": ["src"]
+  "include": ["../../apps/server/src", "src"]
 }

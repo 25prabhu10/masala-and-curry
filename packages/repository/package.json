@@ -1,8 +1,8 @@
 {
   "name": "@mac/repository",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
-  "description": "Masala and Curry API.",
+  "description": "Masala and Curry API - Repository Layer",
   "keywords": [],
   "license": "GPL-2.0-only",
   "author": "Prabhu K H",
@@ -35,23 +35,24 @@
     }
   },
   "scripts": {
-    "build": "tsc",
-    "check-types": "tsc --noEmit",
+    "build": "tsgo",
+    "check-types": "tsgo --noEmit",
     "clean": "git clean -xdf dist .cache .turbo node_modules",
-    "dev": "tsc",
-    "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
+    "dev": "tsgo",
+    "lint": "oxlint . --type-aware  --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --type-aware  --fix --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@mac/db": "workspace:*",
     "@mac/resources": "workspace:*",
     "@mac/validators": "workspace:*",
-    "drizzle-orm": "catalog:"
+    "drizzle-orm": "catalog:backend"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "oxlint": "catalog:",
-    "typescript": "catalog:"
+    "oxlint-tsgolint": "catalog:"
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.20.0"
 }

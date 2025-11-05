@@ -2,14 +2,14 @@ import { Button } from '@mac/mobile-ui/button'
 import { Text } from '@mac/mobile-ui/text'
 import { Stack, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
-import { View } from 'react-native'
+import { Image, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { ThemeToggle } from '@/components/theme-toggle'
-import { useColorScheme } from '@/hooks/use-color-scheme'
+const HERO_IMAGE = require('../../assets/icons/splash-icon-light.png')
+const LOGO_IMAGE = require('../../assets/icons/icon.png')
 
 export default function Home() {
   const navigation = useNavigation()
-  const { isDarkColorScheme } = useColorScheme()
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false })
@@ -22,19 +22,36 @@ export default function Home() {
           title: 'Home',
         }}
       />
-      <View className="flex-1 justify-center items-center bg-background gap-5 p-6">
-        <View className="mb-8 items-center space-y-10">
-          <Text>🍜Welcome to 012345 ಮಸಾಲೆ Masala मुखपृष्ठ and Curry🍛</Text>
-          <ThemeToggle />
-          <Text className="text-4xl">
-            {`${isDarkColorScheme}`} : {isDarkColorScheme ? 'Dark Mode' : 'Light Mode'}
-          </Text>
-          <Text className="text-2xl">{process.env.NODE_ENV}</Text>
+      <SafeAreaView className="flex-1 bg-background">
+        <View className="flex-1 items-center justify-between px-6 py-12">
+          <View className="w-full items-center">
+            <Image
+              accessibilityLabel="Chef presenting dishes from Masala and Curry"
+              accessibilityRole="image"
+              className="h-60 w-60"
+              resizeMode="contain"
+              source={HERO_IMAGE}
+            />
+            <View className="mt-10 items-center space-y-4">
+              <Image
+                accessibilityIgnoresInvertColors
+                accessibilityLabel="Masala and Curry logo"
+                accessibilityRole="image"
+                className="h-20 w-20"
+                resizeMode="contain"
+                source={LOGO_IMAGE}
+              />
+              <Text className="text-center text-3xl font-semibold">Masala and Curry</Text>
+              <Text className="text-center text-base text-foreground/80">
+                Flavorful Indian meals prepared with care and delivered fresh.
+              </Text>
+            </View>
+          </View>
+          <Button className="w-full" size="lg">
+            <Text>Get Started</Text>
+          </Button>
         </View>
-        <Button size="lg">
-          <Text>Get Started</Text>
-        </Button>
-      </View>
+      </SafeAreaView>
     </>
   )
 }

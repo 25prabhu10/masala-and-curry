@@ -1,6 +1,6 @@
 {
   "name": "@mac/db",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Masala and Curry API.",
   "keywords": [],
@@ -25,30 +25,31 @@
     }
   },
   "scripts": {
-    "build": "tsc",
-    "check-types": "tsc --noEmit",
+    "build": "tsgo",
+    "check-types": "tsgo --noEmit",
     "clean": "git clean -xdf dist .cache .turbo node_modules",
-    "dev": "tsc",
+    "dev": "tsgo",
     "generate": "drizzle-kit generate",
-    "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "lint": "oxlint . --type-aware  --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --type-aware  --fix --tsconfig ./tsconfig.json",
     "studio": "dotenvx run -- drizzle-kit studio"
   },
   "dependencies": {
-    "@hono/zod-openapi": "catalog:api",
+    "@hono/zod-openapi": "catalog:backend",
     "@mac/resources": "workspace:*",
-    "drizzle-orm": "catalog:",
-    "drizzle-zod": "^0.8.2",
+    "drizzle-orm": "catalog:backend",
+    "drizzle-zod": "^0.8.3",
     "nanoid": "catalog:"
   },
   "devDependencies": {
-    "@dotenvx/dotenvx": "^1.49.1",
+    "@dotenvx/dotenvx": "^1.51.1",
     "@libsql/client": "^0.15.15",
     "@mac/tsconfig": "workspace:*",
     "@types/node": "catalog:",
-    "drizzle-kit": "^0.31.4",
+    "@typescript/native-preview": "catalog:",
+    "drizzle-kit": "^0.31.6",
     "oxlint": "catalog:",
-    "typescript": "catalog:"
+    "oxlint-tsgolint": "catalog:"
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.20.0"
 }

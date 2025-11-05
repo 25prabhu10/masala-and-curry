@@ -8,7 +8,7 @@ import router from './index.route'
 
 const client = testClient(createApp().route('/', router))
 
-describe('index routes', async () => {
+describe('index routes', () => {
   it('returns the API server description', async () => {
     const response = await client.api.v1.$get()
 

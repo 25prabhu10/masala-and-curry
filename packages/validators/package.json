@@ -1,13 +1,18 @@
 {
   "name": "@mac/validators",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
-  "description": "",
+  "description": "Masala and Curry API - Validation functions",
   "keywords": [],
   "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
+    "./allergen": {
+      "types": "./dist/allergen.validators.d.ts",
+      "import": "./dist/allergen.validators.js",
+      "default": "./dist/allergen.validators.js"
+    },
     "./auth": {
       "types": "./dist/auth.validators.d.ts",
       "import": "./dist/auth.validators.js",
@@ -60,23 +65,24 @@
     }
   },
   "scripts": {
-    "build": "tsc",
-    "check-types": "tsc --noEmit",
+    "build": "tsgo",
+    "check-types": "tsgo --noEmit",
     "clean": "git clean -xdf dist .turbo node_modules .cache",
-    "dev": "tsc",
-    "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
+    "dev": "tsgo",
+    "lint": "oxlint . --type-aware  --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --type-aware  --fix --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@hono/zod-openapi": "catalog:api",
+    "@hono/zod-openapi": "catalog:backend",
     "@mac/db": "workspace:*",
     "@mac/resources": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
+    "@typescript/native-preview": "catalog:",
     "oxlint": "catalog:",
-    "typescript": "catalog:"
+    "oxlint-tsgolint": "catalog:"
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.20.0"
 }

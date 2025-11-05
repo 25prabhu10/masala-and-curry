@@ -1,44 +1,55 @@
 {
   "name": "@mac/server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Masala and Curry API.",
-  "keywords": [],
+  "keywords": [
+    "api",
+    "server",
+    "backend",
+    "hono",
+    "cloudflare",
+    "d1",
+    "r2",
+    "typescript"
+  ],
   "license": "GPL-2.0-only",
   "author": "Prabhu K H",
   "exports": {
     "./routes": "./src/routes/index.ts"
   },
   "scripts": {
-    "build": "wrangler deploy --dry-run --outdir dist",
+    "build": "wrangler deploy --env=\"\" --dry-run --outdir dist",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-    "check-types": "tsc --noEmit",
+    "check-types": "tsgo --noEmit",
     "clean": "git clean -xdf dist .cache .turbo .wrangler node_modules",
     "db:migrate": "wrangler d1 migrations apply mac-dev --local",
     "deploy": "wrangler deploy --minify",
     "dev": "wrangler dev",
-    "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json",
+    "lint": "oxlint . --type-aware  --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --type-aware  --fix --tsconfig ./tsconfig.json",
     "test": "vitest"
   },
   "dependencies": {
-    "@hono/zod-openapi": "catalog:api",
+    "@hono/zod-openapi": "catalog:backend",
     "@mac/db": "workspace:*",
     "@mac/repository": "workspace:*",
     "@mac/resources": "workspace:*",
     "@mac/validators": "workspace:*",
-    "@scalar/hono-api-reference": "^0.9.18",
-    "better-auth": "catalog:api",
-    "hono": "catalog:api",
+    "@scalar/hono-api-reference": "^0.9.23",
+    "better-auth": "catalog:",
+    "hono": "catalog:backend",
     "nanoid": "catalog:"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.10.4",
     "@mac/tsconfig": "workspace:*",
     "@types/node": "catalog:",
+    "@typescript/native-preview": "catalog:",
     "oxlint": "catalog:",
-    "typescript": "catalog:",
-    "vitest": "^3.2.4",
-    "wrangler": "^4.38.0"
+    "oxlint-tsgolint": "catalog:",
+    "vitest": "^4.0.7",
+    "wrangler": "^4.45.4"
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.20.0"
 }

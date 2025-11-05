@@ -1,7 +1,7 @@
 import type { Category } from '@mac/validators/category'
 import type { MenuItemFilters } from '@mac/validators/menu-item'
 import { Button } from '@mac/web-ui/button'
-import { Card, CardContent, CardFooter, CardHeader } from '@mac/web-ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { FilterX } from 'lucide-react'
 
 import { useAppForm } from '@/hooks/use-form'
@@ -42,7 +42,7 @@ export function MenuFilters({ categories, filters, setFilters, resetFilters }: M
   return (
     <Card>
       <CardHeader>
-        <h2 className="text-xl font-semibold">Filter Menu</h2>
+        <CardTitle className="text-xl">Filter Menu</CardTitle>
       </CardHeader>
       <CardContent>
         <form

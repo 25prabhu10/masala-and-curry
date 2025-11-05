@@ -1,6 +1,6 @@
 {
   "name": "@mac/tsconfig",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "TypeScript configuration files.",
   "keywords": [
@@ -12,5 +12,5 @@
   "files": [
     "*.json"
   ],
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.20.0"
 }

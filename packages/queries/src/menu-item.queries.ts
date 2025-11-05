@@ -142,9 +142,9 @@ export function createMenuItemMutation(
       throw new Error(responseData.message)
     },
     mutationKey: [...menuItemKeys.all, 'create'],
-    onSuccess: (newMenuItem) => {
+    onSuccess: async (newMenuItem) => {
       queryClient.setQueryData(menuItemKeys.detail(newMenuItem.id), newMenuItem)
-      queryClient.invalidateQueries({ queryKey: menuItemKeys.lists() })
+      await queryClient.invalidateQueries({ queryKey: menuItemKeys.lists() })
     },
   })
 }
@@ -191,9 +191,9 @@ export function updateMenuItemMutation(
       throw new Error(responseData.message)
     },
     mutationKey: [...menuItemKeys.all, 'update', id],
-    onSuccess: (updatedMenuItem) => {
+    onSuccess: async (updatedMenuItem) => {
       queryClient.setQueryData(menuItemKeys.detail(id), updatedMenuItem)
-      queryClient.invalidateQueries({ queryKey: menuItemKeys.lists() })
+      await queryClient.invalidateQueries({ queryKey: menuItemKeys.lists() })
     },
   })
 }
@@ -246,8 +246,8 @@ export function deleteMenuItemMutation(
 
       return { previousMenuItems }
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: menuItemKeys.all })
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: menuItemKeys.all })
     },
   })
 }

@@ -1,6 +1,6 @@
 {
   "name": "@mac/tailwind-config",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Tailwind CSS configuration files.",
   "keywords": [
@@ -11,28 +11,24 @@
   "author": "Prabhu K H",
   "type": "module",
   "exports": {
-    "./native": "./native.ts",
-    "./web": "./web.ts",
+    ".": "./shared.css",
     "./utils": "./utils.ts"
   },
   "scripts": {
-    "check-types": "tsc --noEmit",
+    "check-types": "tsgo --noEmit",
     "clean": "git clean -xdf .cache .turbo node_modules",
-    "lint": "oxlint . --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint . --fix --tsconfig ./tsconfig.json"
+    "lint": "oxlint . --type-aware  --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --type-aware  --fix --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "class-variance-authority": "catalog:ui",
-    "tailwind-merge": "catalog:ui",
-    "tailwindcss": "catalog:ui",
-    "tailwindcss-animate": "^1.0.7"
+    "class-variance-authority": "catalog:frontend",
+    "tailwind-merge": "catalog:frontend"
   },
   "devDependencies": {
     "@mac/tsconfig": "workspace:*",
-    "autoprefixer": "^10.4.21",
+    "@typescript/native-preview": "catalog:",
     "oxlint": "catalog:",
-    "postcss": "^8.5.6",
-    "typescript": "catalog:"
+    "oxlint-tsgolint": "catalog:"
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.20.0"
 }

@@ -201,8 +201,8 @@ function RouteComponent() {
               checked={filters.availableOnly === false}
               id="all-menu-items"
               name="all-menu-items"
-              onCheckedChange={(checked) => {
-                setFilters({ availableOnly: !checked })
+              onCheckedChange={async (checked) => {
+                await setFilters({ availableOnly: !checked })
               }}
             />
             <Label htmlFor="all-menu-items">All Menu Items</Label>
@@ -225,8 +225,8 @@ function RouteComponent() {
           }}
           pagination={paginationState}
           paginationOptions={{
-            onPaginationChange: (pagination) => {
-              setFilters(
+            onPaginationChange: async (pagination) => {
+              await setFilters(
                 typeof pagination === 'function' ? pagination(paginationState) : pagination
               )
             },
@@ -269,15 +269,15 @@ function DeleteMenuItemDialog({ item, children }: { item: MenuItem; children: Re
   const queryClient = useQueryClient()
   const { mutateAsync, isPending } = useMutation(deleteMenuItemMutation(item.id, queryClient))
 
-  function handleDelete() {
-    mutateAsync()
-      .catch((error: unknown) => {
-        toast.error(`Failed to delete item: ${error instanceof Error ? error.message : ''}`)
-      })
-      .then(() => {
-        toast.success(`Item "${item.name}" deleted successfully`)
-      })
-      .finally(() => setOpen(false))
+  async function handleDelete() {
+    try {
+      await mutateAsync()
+      toast.success(`Item "${item.name}" deleted successfully`)
+    } catch (error) {
+      toast.error(`Failed to delete item: ${error instanceof Error ? error.message : ''}`)
+    } finally {
+      setOpen(false)
+    }
   }
 
   return (

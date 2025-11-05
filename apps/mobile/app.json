@@ -2,7 +2,7 @@
   "name": "masala-and-curry",
   "slug": "masala-and-curry",
   "scheme": "masala-and-curry",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "orientation": "portrait",
   "userInterfaceStyle": "automatic",
   "icon": "./assets/icons/icon.png",
@@ -21,7 +21,8 @@
       "backgroundColor": "#ffffff"
     },
     "allowBackup": false,
-    "edgeToEdgeEnabled": true
+    "edgeToEdgeEnabled": true,
+    "predictiveBackGestureEnabled": false
   },
   "ios": {
     "icon": {
@@ -39,7 +40,8 @@
   },
   "experiments": {
     "tsconfigPaths": true,
-    "typedRoutes": true
+    "typedRoutes": true,
+    "reactCompiler": true
   },
   "plugins": [
     "expo-localization",

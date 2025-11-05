@@ -1,11 +1,11 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
-// const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config')
 const { getDefaultConfig } = require('expo/metro-config')
 const { FileStore } = require('metro-cache')
-const { withNativeWind } = require('nativewind/metro')
+const { withNativewind } = require('nativewind/metro')
 
 const path = require('node:path')
 
+/** @type {import('expo/metro-config').MetroConfig} */
 const defaultConfig = getDefaultConfig(__dirname)
 
 defaultConfig.transformer.getTransformOptions = async () => ({
@@ -19,12 +19,7 @@ defaultConfig.transformer.getTransformOptions = async () => ({
   },
 })
 
-const config = withTurborepoManagedCache(
-  withNativeWind(defaultConfig, {
-    configPath: './tailwind.config.ts',
-    input: './src/styles/global.css',
-  })
-)
+const config = withTurborepoManagedCache(withNativewind(defaultConfig))
 module.exports = config
 
 /**

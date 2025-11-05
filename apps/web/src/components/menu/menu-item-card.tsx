@@ -24,7 +24,7 @@ export function MenuItemCard({ menuItem, className }: MenuItemCardProps) {
   return (
     <Card
       className={cn(
-        'group grid gap-2 overflow-hidden rounded-lg border bg-background motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-md',
+        'group grid gap-2 overflow-hidden rounded-lg border bg-background motion-safe:transition-shadow motion-safe:duration-200 hover:shadow-md p-0',
         className
       )}
     >

@@ -141,12 +141,12 @@ const AppprotectedProfileEditRoute = AppprotectedProfileEditRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/': typeof AppIndexRoute
   '/dashboard/categories': typeof DashboardCategoriesRouteRouteWithChildren
   '/dashboard/menu-items': typeof DashboardMenuItemsRouteRouteWithChildren
   '/about': typeof AppAboutRoute
   '/menu': typeof AppMenuRoute
   '/not-authorized': typeof AppNotAuthorizedRoute
+  '/': typeof AppIndexRoute
   '/sign-in': typeof AppauthSignInRoute
   '/sign-up': typeof AppauthSignUpRoute
   '/checkout': typeof AppprotectedCheckoutRoute
@@ -161,10 +161,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/': typeof AppIndexRoute
   '/about': typeof AppAboutRoute
   '/menu': typeof AppMenuRoute
   '/not-authorized': typeof AppNotAuthorizedRoute
+  '/': typeof AppIndexRoute
   '/sign-in': typeof AppauthSignInRoute
   '/sign-up': typeof AppauthSignUpRoute
   '/checkout': typeof AppprotectedCheckoutRoute
@@ -205,12 +205,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/dashboard'
-    | '/'
     | '/dashboard/categories'
     | '/dashboard/menu-items'
     | '/about'
     | '/menu'
     | '/not-authorized'
+    | '/'
     | '/sign-in'
     | '/sign-up'
     | '/checkout'
@@ -225,10 +225,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/dashboard'
-    | '/'
     | '/about'
     | '/menu'
     | '/not-authorized'
+    | '/'
     | '/sign-in'
     | '/sign-up'
     | '/checkout'
@@ -330,15 +330,15 @@ declare module '@tanstack/react-router' {
     }
     '/_app/(protected)': {
       id: '/_app/(protected)'
-      path: '/'
-      fullPath: '/'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof AppprotectedRouteRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/(auth)': {
       id: '/_app/(auth)'
-      path: '/'
-      fullPath: '/'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof AppauthRouteRouteImport
       parentRoute: typeof AppRouteRoute
     }

@@ -1,8 +1,9 @@
-export const MAX_NUMBER_IN_APP = 10_000
+export const MAX_VALUE_IN_APP = 10_000
 
 export const MAX_STRING_LENGTH = 255
 export const MIN_STRING_LENGTH = 1
 export const MIN_PASSWORD_LENGTH = 8
+export const MAX_PASSWORD_LENGTH = MAX_STRING_LENGTH
 export const MAX_URL_LENGTH = 2048
 export const MAX_PHONE_NUMBER_LENGTH = 12
 
@@ -29,8 +30,6 @@ export const SELECTION_TYPES = ['single', 'multiple'] as const
 export const SPICE_LABELS = {
   0: 'No Spice',
   1: 'Mild',
-  2: 'Medium',
-  3: 'Hot',
-  4: 'Very Hot',
-  5: 'Extremely Hot',
+  2: 'Hot',
+  3: 'Extremely Hot',
 } as const
