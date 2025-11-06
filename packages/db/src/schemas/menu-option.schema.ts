@@ -1,8 +1,8 @@
 import { z } from '@hono/zod-openapi'
 import {
   MAX_CURRENCY_VALUE,
-  MAX_NUMBER_IN_APP,
   MAX_STRING_LENGTH,
+  MAX_VALUE_IN_APP,
   MIN_CURRENCY_VALUE,
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
@@ -54,15 +54,15 @@ export const menuOption = sqliteTable(
 export const SelectMenuOptionSchema = createSelectSchema(menuOption, {
   caloriesModifier: (schema) =>
     schema
-      .min(-MAX_NUMBER_IN_APP)
-      .max(MAX_NUMBER_IN_APP)
+      .min(-MAX_VALUE_IN_APP)
+      .max(MAX_VALUE_IN_APP)
       .openapi({ description: 'Calorie delta relative to base', example: 150 }),
   createdAt: (schema) =>
     schema.openapi({ description: 'Creation timestamp', example: '2023-01-01T00:00:00Z' }),
   displayOrder: (schema) =>
     schema
       .nonnegative()
-      .max(MAX_NUMBER_IN_APP)
+      .max(MAX_VALUE_IN_APP)
       .openapi({ description: 'Display order for options', example: 2 }),
   groupId: (schema) =>
     schema

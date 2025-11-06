@@ -1,6 +1,6 @@
 import { Sun } from 'lucide-react-native'
 
-import { iconWithClassName } from './icon-with-class-name'
+// import { iconWithClassName } from './icon-with-class-name'
 
-iconWithClassName(Sun)
+// iconWithClassName(Sun)
 export { Sun }

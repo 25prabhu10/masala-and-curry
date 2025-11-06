@@ -35,7 +35,7 @@
     "lint:ws": "pnpm dlx sherif@latest"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.3",
+    "@biomejs/biome": "^2.3.4",
     "@typescript/native-preview": "catalog:",
     "knip": "^5.67.1",
     "lefthook": "^2.0.2",
@@ -43,7 +43,7 @@
     "oxlint-tsgolint": "catalog:",
     "prettier": "^3.6.2",
     "turbo": "latest",
-    "ultracite": "6.2.1"
+    "ultracite": "6.3.0"
   },
   "packageManager": "pnpm@10.20.0",
   "engines": {

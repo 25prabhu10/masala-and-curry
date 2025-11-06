@@ -34,6 +34,6 @@ export function uploadImageMutation() {
       const responseData = await res.json()
       throw new Error(responseData.message)
     },
-    mutationKey: [...imageKeys.all, 'upload'],
+    mutationKey: [imageKeys.all, 'upload'],
   })
 }

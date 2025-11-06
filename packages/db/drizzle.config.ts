@@ -17,8 +17,11 @@ function getLocalD1() {
 
     return pathToFileURL(resolve(basePath, dbFile)).href
   } catch (error) {
-    // oxlint-disable-next-line no-console
-    console.error(`Error  ${error}`)
+    if (error instanceof Error) {
+      console.error(`Error getting local D1 database: ${error.message}`)
+      return ''
+    }
+    console.error(`Error: `, error)
   }
 }
 

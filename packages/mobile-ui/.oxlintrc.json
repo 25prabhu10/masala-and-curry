@@ -23,6 +23,7 @@
     "react/rules-of-hooks": "error",
     "react/no-unknown-property": "warn",
     "react/prop-types": "off",
+    "typescript/explicit-module-boundary-types": "off",
     "react/no-unescaped-entities": "error",
     "react/jsx-no-useless-fragment": "error",
     "react/checked-requires-onchange-or-readonly": "error",

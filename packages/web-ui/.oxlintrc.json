@@ -22,6 +22,7 @@
     "react/no-this-in-sfc": "warn",
     "react/no-unknown-property": "warn",
     "react/jsx-no-useless-fragment": "error",
+    "typescript/explicit-module-boundary-types": "off",
     "react/rules-of-hooks": "error",
     "react/no-unescaped-entities": "error",
     "react/checked-requires-onchange-or-readonly": "error",

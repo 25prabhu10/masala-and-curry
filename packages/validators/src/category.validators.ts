@@ -60,3 +60,4 @@ export const categoryFiltersValidatorWithCatch = z
   .partial()
 
 export type CategoryFilters = z.output<typeof categoryFiltersValidator>
+export type CategoryFiltersWithCatch = z.output<typeof categoryFiltersValidatorWithCatch>

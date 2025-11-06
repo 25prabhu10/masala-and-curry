@@ -2,6 +2,10 @@
   "recommendations": [
     "streetsidesoftware.code-spell-checker",
     "yoavbls.pretty-ts-errors",
-    "oxc.oxc-vscode"
+    "oxc.oxc-vscode",
+    "biomejs.biome",
+    "naumovs.color-highlight",
+    "bradlc.vscode-tailwindcss",
+    "typescriptteam.native-preview"
   ]
 }

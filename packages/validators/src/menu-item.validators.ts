@@ -161,3 +161,4 @@ export const menuItemFiltersValidatorWithCatchAndPagination = z.object({
 })
 
 export type MenuItemFilters = z.infer<typeof menuItemFiltersValidator>
+export type MenuItemFiltersWithCatch = z.infer<typeof menuItemFiltersValidatorWithCatch>

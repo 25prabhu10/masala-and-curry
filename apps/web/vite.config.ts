@@ -1,4 +1,3 @@
-import reactScan from '@react-scan/vite-plugin-react-scan'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react'

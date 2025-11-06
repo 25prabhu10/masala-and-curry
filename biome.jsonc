@@ -61,5 +61,5 @@
       "!apps/web/src/routeTree.gen.ts"
     ]
   },
-  "extends": ["ultracite"]
+  "extends": ["ultracite/core"]
 }

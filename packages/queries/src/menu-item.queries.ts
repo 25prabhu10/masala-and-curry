@@ -11,7 +11,7 @@ import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
 import type {
   CreateMenuItemInput,
   MenuItem,
-  MenuItemFilters,
+  MenuItemFiltersWithCatch,
   UpdateMenuItemInput,
 } from '@mac/validators/menu-item'
 import { mutationOptions, type QueryClient, queryOptions } from '@tanstack/react-query'
@@ -21,12 +21,12 @@ import apiClient from './api-client'
 export const menuItemKeys = {
   all: ['menuItems'] as const,
   detail: (id: string) => [...menuItemKeys.all, 'detail', id] as const,
-  list: (query: MenuItemFilters) => [...menuItemKeys.lists(), query] as const,
+  list: (query: MenuItemFiltersWithCatch) => [...menuItemKeys.lists(), query] as const,
   lists: () => [...menuItemKeys.all, 'list'] as const,
 } as const
 
 export function getMenuItemsQuery(
-  filters: MenuItemFilters = {},
+  filters: MenuItemFiltersWithCatch = {},
   abortController?: AbortController
 ) {
   return queryOptions({

@@ -10,7 +10,7 @@ import {
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
 import type {
   Category,
-  CategoryFilters,
+  CategoryFiltersWithCatch,
   CreateCategory,
   UpdateCategoryInput,
 } from '@mac/validators/category'
@@ -21,12 +21,12 @@ import apiClient from './api-client'
 export const categoryKeys = {
   all: ['categories'] as const,
   detail: (id: string) => [...categoryKeys.all, 'detail', id] as const,
-  list: (query: CategoryFilters) => [...categoryKeys.lists(), query] as const,
+  list: (query: CategoryFiltersWithCatch) => [...categoryKeys.lists(), query] as const,
   lists: () => [...categoryKeys.all, 'list'] as const,
 } as const
 
 export function getCategoriesQuery(
-  filters: CategoryFilters = {},
+  filters: CategoryFiltersWithCatch = {},
   abortController?: AbortController
 ) {
   return queryOptions({

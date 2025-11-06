@@ -1,5 +1,5 @@
 import { createCategoryMutation, updateCategoryMutation } from '@mac/queries/category'
-import { MAX_NUMBER_IN_APP, MAX_STRING_LENGTH, MIN_STRING_LENGTH } from '@mac/resources/constants'
+import { MAX_STRING_LENGTH, MAX_VALUE_IN_APP, MIN_STRING_LENGTH } from '@mac/resources/constants'
 import { createDataSuccessDesc, UPDATE_SUCCESS_DESC } from '@mac/resources/general'
 import { FieldErrors, FormErrors } from '@mac/validators/api-errors'
 import {
@@ -62,7 +62,7 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
             await updateMutation.mutateAsync(value as UpdateCategoryInput)
             toast.success(UPDATE_SUCCESS_DESC)
           }
-          navigate({ to: '/dashboard/categories' })
+          await navigate({ to: '/dashboard/categories' })
         } catch (error) {
           if (error instanceof FieldErrors || error instanceof FormErrors) {
             toast.error(error.message)
@@ -91,7 +91,10 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
           onSubmit={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            form.handleSubmit()
+            form
+              .handleSubmit()
+              .then()
+              .catch(() => {})
           }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -126,7 +129,7 @@ export function CategoryForm({ data = defaultValues, isNew = false }: CategoryFo
                 <field.TextField
                   className="h-12"
                   label="Display Order"
-                  max={MAX_NUMBER_IN_APP}
+                  max={MAX_VALUE_IN_APP}
                   min={0}
                   required
                   title="What is display order of this category?"

@@ -1,5 +1,5 @@
 import { z } from '@hono/zod-openapi'
-import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, MAX_NUMBER_IN_APP } from '@mac/resources/constants'
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, MAX_VALUE_IN_APP } from '@mac/resources/constants'
 import { invalidIdDesc, minLengthDesc, PAGINATION_ERROR_DESC } from '@mac/resources/general'
 import { USER_ID_PARAM } from '@mac/resources/user'
 
@@ -20,7 +20,7 @@ export const paginationValidator = z.object({
     z
       .int(PAGINATION_ERROR_DESC)
       .nonnegative(PAGINATION_ERROR_DESC)
-      .max(MAX_NUMBER_IN_APP)
+      .max(MAX_VALUE_IN_APP)
       .default(DEFAULT_PAGE_INDEX)
       .optional()
       .openapi({ description: 'Page number', example: DEFAULT_PAGE_INDEX })
@@ -30,7 +30,7 @@ export const paginationValidator = z.object({
     z
       .int(PAGINATION_ERROR_DESC)
       .positive(PAGINATION_ERROR_DESC)
-      .max(MAX_NUMBER_IN_APP)
+      .max(MAX_VALUE_IN_APP)
       .default(DEFAULT_PAGE_SIZE)
       .optional()
       .openapi({ description: 'Items per page', example: DEFAULT_PAGE_SIZE })

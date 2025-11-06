@@ -1,6 +1,6 @@
 import { createDb } from '@mac/db'
 import * as schema from '@mac/db/schemas'
-import { TITLE } from '@mac/resources/app'
+import { API_TITLE } from '@mac/resources/app'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, openAPI, phoneNumber } from 'better-auth/plugins'
@@ -8,7 +8,7 @@ import { admin, openAPI, phoneNumber } from 'better-auth/plugins'
 import { BASE_PATH } from './constants'
 
 const betterAuthOptions = {
-  appName: TITLE,
+  appName: API_TITLE,
   basePath: `${BASE_PATH}/auth`,
 
   emailAndPassword: {

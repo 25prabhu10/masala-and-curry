@@ -66,10 +66,13 @@ function RouteComponent() {
           <Card>
             <form
               className="space-y-6"
-              onSubmit={async (e) => {
+              onSubmit={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                await form.handleSubmit()
+                form
+                  .handleSubmit()
+                  .then()
+                  .catch(() => {})
               }}
             >
               <CardHeader>

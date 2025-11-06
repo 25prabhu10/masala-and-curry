@@ -3,7 +3,7 @@ import { uploadImageMutation } from '@mac/queries/image'
 import { createMenuItemMutation, updateMenuItemMutation } from '@mac/queries/menu-item'
 import {
   MAX_CURRENCY_VALUE,
-  MAX_NUMBER_IN_APP,
+  MAX_VALUE_IN_APP,
   MIN_CURRENCY_VALUE,
   NUMBER_STEPS,
   SELECTION_TYPES,
@@ -190,7 +190,10 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
           onSubmit={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            form.handleSubmit()
+            form
+              .handleSubmit()
+              .then()
+              .catch(() => {})
           }}
         >
           <div className="grid grid-flow-dense md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -388,7 +391,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                                 <f.TextField
                                   className="h-12"
                                   label="Display Order"
-                                  max={MAX_NUMBER_IN_APP}
+                                  max={MAX_VALUE_IN_APP}
                                   min={0}
                                   type="number"
                                 />
@@ -400,7 +403,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                                 <f.TextField
                                   className="h-12"
                                   label="Min Select"
-                                  max={MAX_NUMBER_IN_APP}
+                                  max={MAX_VALUE_IN_APP}
                                   min={0}
                                   type="number"
                                 />
@@ -412,7 +415,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                                 <f.TextField
                                   className="h-12"
                                   label="Max Select"
-                                  max={MAX_NUMBER_IN_APP}
+                                  max={MAX_VALUE_IN_APP}
                                   min={1}
                                   type="number"
                                 />
@@ -461,8 +464,8 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                                                 <ff.TextField
                                                   className="h-12"
                                                   label="Calories Modifier"
-                                                  max={MAX_NUMBER_IN_APP}
-                                                  min={-MAX_NUMBER_IN_APP}
+                                                  max={MAX_VALUE_IN_APP}
+                                                  min={-MAX_VALUE_IN_APP}
                                                   type="number"
                                                 />
                                               )}
@@ -473,7 +476,7 @@ export function MenuItemForm({ data = defaultValues, isNew = false }: MenuItemFo
                                                 <ff.TextField
                                                   className="h-12"
                                                   label="Display Order"
-                                                  max={MAX_NUMBER_IN_APP}
+                                                  max={MAX_VALUE_IN_APP}
                                                   min={0}
                                                   type="number"
                                                 />

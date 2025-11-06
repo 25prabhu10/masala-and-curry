@@ -23,7 +23,7 @@ const { createInsertSchema, createSelectSchema, createUpdateSchema } = createSch
 })
 
 const roles = z.enum(['admin', 'user'], {
-  error: (issue) => `Role must be one of: ${issue.options}`,
+  error: (issue) => `Role must be one of: ${issue.values.join(', ')}`,
 })
 
 export const user = sqliteTable(

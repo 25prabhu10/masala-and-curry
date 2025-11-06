@@ -1,4 +1,4 @@
-import { API_SERVER_DESCRIPTION, TITLE } from '@mac/resources/app'
+import { API_SERVER_DESCRIPTION, API_TITLE } from '@mac/resources/app'
 import { Scalar } from '@scalar/hono-api-reference'
 
 import packageJSON from '@/../package.json' with { type: 'json' }
@@ -22,7 +22,7 @@ app
   .doc31(`/${OPEN_API_SCHEMA_FILE}`, (c) => ({
     info: {
       description: packageJSON.description,
-      title: TITLE,
+      title: API_TITLE,
       version: packageJSON.version,
     },
     openapi: '3.1.1',
@@ -48,7 +48,7 @@ app
         targetKey: 'js',
       },
       // proxyUrl: '',
-      pageTitle: TITLE,
+      pageTitle: API_TITLE,
       theme: 'kepler',
       url: `${BASE_PATH}/${OPEN_API_SCHEMA_FILE}`,
     })

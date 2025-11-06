@@ -1,7 +1,7 @@
 import { z } from '@hono/zod-openapi'
 import {
-  MAX_NUMBER_IN_APP,
   MAX_STRING_LENGTH,
+  MAX_VALUE_IN_APP,
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
 } from '@mac/resources/constants'
@@ -59,7 +59,7 @@ export const SelectCategorySchema = createSelectSchema(category, {
   displayOrder: (schema) =>
     schema
       .nonnegative()
-      .max(MAX_NUMBER_IN_APP, {
+      .max(MAX_VALUE_IN_APP, {
         error: maxValueDesc('Category Display Order'),
       })
       .openapi({

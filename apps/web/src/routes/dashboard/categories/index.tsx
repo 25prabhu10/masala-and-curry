@@ -41,10 +41,10 @@ const columnsDef: ColumnDef<Category>[] = [
     cell: ({ row }) => (
       <div className="flex items-center mr-1">
         <Checkbox
-          aria-label={`Select ${row.getValue('name')} Category`}
+          aria-label={`Select ${row.getValue('name') || ''} Category`}
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}
-          id={row.getValue('name')}
+          id={row.getValue('name') || ''}
           onCheckedChange={row.getToggleSelectedHandler()}
         />
       </div>
@@ -178,8 +178,8 @@ function RouteComponent() {
               checked={filters.activeOnly === false}
               id="all-categories"
               name="all-categories"
-              onCheckedChange={(checked) => {
-                setFilters({ activeOnly: !checked })
+              onCheckedChange={async (checked) => {
+                await setFilters({ activeOnly: !checked })
               }}
             />
             <Label htmlFor="all-categories">All categories</Label>
@@ -195,15 +195,15 @@ function RouteComponent() {
         <DataTable
           columns={columns}
           data={data?.result ?? []}
-          onSortingChange={(updaterOrValue) => {
+          onSortingChange={async (updaterOrValue) => {
             const newSortingState =
               typeof updaterOrValue === 'function' ? updaterOrValue(sortingState) : updaterOrValue
-            return setFilters({ sortBy: stateToSortBy(newSortingState) })
+            return await setFilters({ sortBy: stateToSortBy(newSortingState) })
           }}
           pagination={paginationState}
           paginationOptions={{
-            onPaginationChange: (pagination) => {
-              setFilters(
+            onPaginationChange: async (pagination) => {
+              await setFilters(
                 typeof pagination === 'function' ? pagination(paginationState) : pagination
               )
             },
@@ -258,11 +258,11 @@ function DeleteCategoryDialog({
 
   function handleDelete() {
     mutateAsync(category.id)
-      .catch((error) => {
-        toast.error(`Failed to delete category: ${error instanceof Error ? error.message : ''}`)
-      })
       .then(() => {
         toast.success(`Category "${category.name}" deleted successfully`)
+      })
+      .catch((error) => {
+        toast.error(`Failed to delete category: ${error instanceof Error ? error.message : ''}`)
       })
       .finally(() => setOpen(false))
   }

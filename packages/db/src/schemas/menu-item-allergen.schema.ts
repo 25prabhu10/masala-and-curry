@@ -14,7 +14,7 @@ const { createInsertSchema, createSelectSchema } = createSchemaFactory({
 })
 
 const severities = z.enum(['contains', 'may_contain', 'processed_in_facility'], {
-  error: (issue) => `Severity must be one of: ${issue.options}`,
+  error: (issue) => `Severity must be one of: ${issue.values.join(', ')}`,
 })
 
 export const menuItemAllergen = sqliteTable(

@@ -57,7 +57,7 @@ export function sortByToState<TColumns extends string>(
 }
 
 export function formatCurrencyUSD(value: number | null | undefined, currency = 'USD'): string {
-  if (value == null || Number.isNaN(value)) {
+  if (value === null || value === undefined || Number.isNaN(value)) {
     return '$0.00'
   }
   try {

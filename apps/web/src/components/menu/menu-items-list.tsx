@@ -1,6 +1,6 @@
 import { getMenuItemsQuery } from '@mac/queries/menu-item'
 import type { Category } from '@mac/validators/category'
-import type { MenuItemFilters } from '@mac/validators/menu-item'
+import type { MenuItemFiltersWithCatch } from '@mac/validators/menu-item'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
@@ -11,7 +11,7 @@ export default function MenuItemsList({
   filters,
 }: {
   categories: Category[]
-  filters: MenuItemFilters
+  filters: MenuItemFiltersWithCatch
 }) {
   const { data: menuData } = useSuspenseQuery(getMenuItemsQuery(filters))
 

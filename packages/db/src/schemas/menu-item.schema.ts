@@ -1,8 +1,8 @@
 import { z } from '@hono/zod-openapi'
 import {
   MAX_CURRENCY_VALUE,
-  MAX_NUMBER_IN_APP,
   MAX_STRING_LENGTH,
+  MAX_VALUE_IN_APP,
   MIN_CURRENCY_VALUE,
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
@@ -83,7 +83,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         example: 18.99,
       }),
   calories: (schema) =>
-    schema.nonnegative().max(MAX_NUMBER_IN_APP).optional().openapi({
+    schema.nonnegative().max(MAX_VALUE_IN_APP).optional().openapi({
       description: 'Calories per serving',
       example: 450,
     }),
@@ -119,7 +119,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
         example: 'Tender chicken pieces in a creamy tomato-based curry sauce',
       }),
   displayOrder: (schema) =>
-    schema.nonnegative().max(MAX_NUMBER_IN_APP).openapi({
+    schema.nonnegative().max(MAX_VALUE_IN_APP).openapi({
       description: 'Display order within menu items',
       example: 1,
     }),
@@ -279,7 +279,7 @@ export const SelectMenuItemSchema = createSelectSchema(menuItem, {
   preparationTime: (schema) =>
     schema
       .nonnegative({ error: 'Preparation time must be positive' })
-      .max(MAX_NUMBER_IN_APP)
+      .max(MAX_VALUE_IN_APP)
       .default(15)
       .openapi({
         description: 'Preparation time in minutes',

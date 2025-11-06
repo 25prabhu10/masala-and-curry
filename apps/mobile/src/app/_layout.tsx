@@ -1,4 +1,4 @@
-import '@/styles/global.css'
+import '../styles/global.css'
 
 import { DarkTheme, DefaultTheme, type Theme, ThemeProvider } from '@react-navigation/native'
 import { SplashScreen, Stack } from 'expo-router'
@@ -19,7 +19,7 @@ const DARK_THEME: Theme = {
   colors: NAV_THEME.dark,
 }
 
-SplashScreen.preventAutoHideAsync()
+await SplashScreen.preventAutoHideAsync()
 
 function App() {
   return <Stack screenOptions={{ headerShown: false }} />
@@ -38,6 +38,8 @@ export default function RootLayout() {
     setIsColorSchemeLoaded(true)
     hasMounted.current = true
     SplashScreen.hideAsync()
+      .then()
+      .catch(() => {})
   }, [])
 
   if (!isColorSchemeLoaded) {

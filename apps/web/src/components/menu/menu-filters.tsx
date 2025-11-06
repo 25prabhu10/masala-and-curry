@@ -1,5 +1,5 @@
 import type { Category } from '@mac/validators/category'
-import type { MenuItemFilters } from '@mac/validators/menu-item'
+import type { MenuItemFiltersWithCatch } from '@mac/validators/menu-item'
 import { Button } from '@mac/web-ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@mac/web-ui/card'
 import { FilterX } from 'lucide-react'
@@ -7,8 +7,8 @@ import { FilterX } from 'lucide-react'
 import { useAppForm } from '@/hooks/use-form'
 
 interface MenuFiltersProps {
-  filters: MenuItemFilters
-  setFilters: (filters: MenuItemFilters) => void
+  filters: MenuItemFiltersWithCatch
+  setFilters: (filters: MenuItemFiltersWithCatch) => void
   categories: Category[]
   resetFilters: () => Promise<void>
   className?: string
@@ -25,7 +25,7 @@ export function MenuFilters({ categories, filters, setFilters, resetFilters }: M
       sortBy: filters.sortBy || '',
       vegan: filters.vegan ?? false,
       vegetarian: filters.vegetarian ?? false,
-    } as MenuItemFilters,
+    } as MenuItemFiltersWithCatch,
     onSubmit: ({ value }) => {
       setFilters({
         availableOnly: value.availableOnly,
@@ -50,7 +50,10 @@ export function MenuFilters({ categories, filters, setFilters, resetFilters }: M
           onSubmit={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            form.handleSubmit()
+            form
+              .handleSubmit()
+              .then()
+              .catch(() => {})
           }}
         >
           <div className="grid grid-cols-1 md:grid-cols-8 gap-4">
@@ -136,6 +139,8 @@ export function MenuFilters({ categories, filters, setFilters, resetFilters }: M
               event.preventDefault()
               form.reset()
               resetFilters()
+                .then()
+                .catch(() => {})
             }}
             size="sm"
             type="reset"

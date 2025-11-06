@@ -3,6 +3,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "noEmit": true,
     "typeRoots": ["../../node_modules/@types"],
     "types": ["../../apps/server/worker-configuration.d.ts", "node"]
   },

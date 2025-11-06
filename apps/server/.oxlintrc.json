@@ -11,6 +11,7 @@
     "unicorn/no-process-exit": "error",
     "vitest/no-import-node-test": "error",
     "vitest/prefer-to-be-falsy": "error",
+    "typescript/explicit-module-boundary-types": "off",
     "vitest/prefer-to-be-object": "error",
     "vitest/prefer-to-be-truthy": "error"
   }

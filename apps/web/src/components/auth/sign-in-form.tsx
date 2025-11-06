@@ -128,7 +128,10 @@ export function SignInForm({ callback }: CallbackSearchParam) {
           onSubmit={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            form.handleSubmit()
+            form
+              .handleSubmit()
+              .then()
+              .catch(() => {})
           }}
         >
           <FieldGroup>

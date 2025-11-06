@@ -137,7 +137,10 @@ export function SignUpForm({ callback }: CallbackSearchParam) {
           onSubmit={(e) => {
             e.preventDefault()
             e.stopPropagation()
-            form.handleSubmit()
+            form
+              .handleSubmit()
+              .then()
+              .catch(() => {})
           }}
         >
           <form.AppField

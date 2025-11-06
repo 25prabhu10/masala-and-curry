@@ -50,9 +50,9 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
             </CardContent>
             <CardFooter className="grid grid-cols-2 gap-4">
               <Button
-                onClick={() => {
+                onClick={async () => {
                   // reset();
-                  router.invalidate()
+                  await router.invalidate()
                 }}
                 type="button"
               >

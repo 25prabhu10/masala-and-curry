@@ -1,7 +1,7 @@
 import { z } from '@hono/zod-openapi'
 import {
-  MAX_NUMBER_IN_APP,
   MAX_STRING_LENGTH,
+  MAX_VALUE_IN_APP,
   MIN_STRING_LENGTH,
   NANOID_LENGTH,
   SELECTION_TYPES,
@@ -19,7 +19,7 @@ const { createInsertSchema, createSelectSchema, createUpdateSchema } = createSch
 })
 
 const selectionTypeEnum = z.enum(SELECTION_TYPES, {
-  error: (issue) => `Selection type must be one of: ${issue.options}`,
+  error: (issue) => `Selection type must be one of: ${issue.values.join(', ')}`,
 })
 
 export const menuOptionGroup = sqliteTable(
@@ -58,7 +58,7 @@ export const SelectMenuOptionGroupSchema = createSelectSchema(menuOptionGroup, {
   displayOrder: (schema) =>
     schema
       .nonnegative()
-      .max(MAX_NUMBER_IN_APP)
+      .max(MAX_VALUE_IN_APP)
       .openapi({ description: 'Display order for groups', example: 1 }),
   id: (schema) =>
     schema
@@ -71,7 +71,7 @@ export const SelectMenuOptionGroupSchema = createSelectSchema(menuOptionGroup, {
   maxSelect: (schema) =>
     schema
       .positive()
-      .max(MAX_NUMBER_IN_APP)
+      .max(MAX_VALUE_IN_APP)
       .openapi({ description: 'Maximum selections allowed', example: 1 }),
   menuItemId: (schema) =>
     schema
@@ -82,7 +82,7 @@ export const SelectMenuOptionGroupSchema = createSelectSchema(menuOptionGroup, {
   minSelect: (schema) =>
     schema
       .nonnegative()
-      .max(MAX_NUMBER_IN_APP)
+      .max(MAX_VALUE_IN_APP)
       .openapi({ description: 'Minimum selections required', example: 1 }),
   name: (schema) =>
     schema
